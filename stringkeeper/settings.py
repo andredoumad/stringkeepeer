@@ -122,6 +122,7 @@ http://127.0.0.1
 """
 
 import os
+import socket
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -134,7 +135,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '89y+eudf0eoqxck3bk4=$c5#l#b7j2i4y0!k)5dta7qu-dy3ir'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+print(socket.gethostname())
+
+if str(socket.gethostname) != 'www.stringkeeper.com':
+    DEBUG = True
+    print('SETTING DEBUG TRUE')
+else:
+    DEBUG = False
+    print('SETTING DEBUG FALSE')
 
 ALLOWED_HOSTS = ['*']
 
