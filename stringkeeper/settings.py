@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 
-
+https://www.youtube.com/watch?v=CTywsY6RvqI
 apt install python3-pip python3-dev libpq-dev mysql-server libmysqlclient-dev nginx curl python3-widgetsnbextension python3-testresources build-essential dpkg-dev net-tools git nano gedit cmake curl wget dpkg-dev gdebi aptitude apt-transport-https ca-certificates software-properties-common -y
 
 mysql_secure_installation
@@ -33,7 +33,90 @@ source myprojectenv/bin/activate
 
 pip install django gunicorn mysqlclient
 
+django-admin.py startproject myproject ~/myprojectdir
 
+gedit ~/myprojectdir/myproject/settings.py &>/dev/null
+ALLOWED_HOSTS = ['*']
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'myproject',
+        'USER': 'myprojectuser',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+~/myprojectdir/manage.py check
+~/myprojectdir/manage.py makemigrations
+~/myprojectdir/manage.py migrate
+~/myprojectdir/manage.py createsuperuser
+~/myprojectdir/manage.py collectstatic
+
+~/myprojectdir/manage.py runserver 127.0.0.1:8000
+http://127.0.0.1:8000/
+
+cd ~/myprojectdir
+gunicorn --bind 127.0.0.1:8000 myproject.wsgi
+deactivate
+
+gedit /etc/systemd/system/gunicorn.socket &>/dev/null
+[unit]
+Description=gunicorn socket
+
+[Socket]
+ListenStream=/run/gunicorn.sock
+
+[Install]
+WantedBy=sockets.target
+
+gedit /etc/systemd/system/gunicorn.service &>/dev/null
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/root/myprojectdir
+ExecStart=/root/myprojectdir/myprojectenv/bin/gunicorn \
+    --access-logfile - \
+    --workers 3 \
+    --bind unix:/run/gunicorn.sock \
+    myproject.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+systemctl daemon-reload ; systemctl start gunicorn.socket ; systemctl enable gunicorn.socket
+
+gedit /etc/nginx/sites-available/myproject &>/dev/null
+server {
+    listen 80;
+    server_name 127.0.0.1;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /root/myprojectdir;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+
+ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled
+nginx -t
+
+systemctl daemon-reload
+
+systemctl restart gunicorn.socket gunicorn.service nginx.service ; systemctl status gunicorn.socket gunicorn.service nginx.service
+
+http://127.0.0.1
 
 
 """
