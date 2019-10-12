@@ -8,6 +8,34 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
+
+
+apt install python3-pip python3-dev libpq-dev mysql-server libmysqlclient-dev nginx curl python3-widgetsnbextension python3-testresources build-essential dpkg-dev net-tools git nano gedit cmake curl wget dpkg-dev gdebi aptitude apt-transport-https ca-certificates software-properties-common -y
+
+mysql_secure_installation
+
+
+mysql -u root -p
+
+
+CREATE DATABASE stringkeeper CHARACTER SET UTF8;
+CREATE USER root@localhost IDENTIFIED BY 'r00t@str1ngk33p3r';
+GRANT ALL PRIVILEGES ON stringkeeper.* TO root@localhost;
+FLUSH PRIVILEGES;
+exit
+
+sudo -H pip3 install --upgrade pip
+sudo -H pip3 install virtualenv
+
+mkdir ~/myprojectdir ; cd ~/myprojectdir
+virtualenv myprojectenv
+source myprojectenv/bin/activate
+
+pip install django gunicorn mysqlclient
+
+
+
+
 """
 
 import os
@@ -77,9 +105,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'stringkeeper',
-        'USER': 'ubuntu',
-        'PASSWORD': 'password',
-        'HOST': 'www.stringkeeper.com',
+        'USER': 'root',
+        'PASSWORD': 'r00t@str1ngk33p3r',
+        'HOST': 'localhost',
         'PORT': '',
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
