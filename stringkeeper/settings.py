@@ -137,6 +137,8 @@ SECRET_KEY = '89y+eudf0eoqxck3bk4=$c5#l#b7j2i4y0!k)5dta7qu-dy3ir'
 # SECURITY WARNING: don't run with debug turned on in production!
 print(socket.gethostname())
 
+
+# you can use --debug-mode to set the DEBUG setting to True prior to running tests.
 DEBUG = False
 
 
