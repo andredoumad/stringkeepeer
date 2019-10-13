@@ -24,17 +24,9 @@ def get_content():
     shuffled_art_files = tools.shuffle_list(list_of_ascii_art_files)
     chosen_art_file = shuffled_art_files[0]
     list_of_ascii_art_strings = tools.get_list_from_file(chosen_art_file)
-    art_string = ''
+    art_string = '\n'
     for line in list_of_ascii_art_strings:
-        '''
-        roll = randint(0, 1)
-        if roll == 0:
-            art_string += str('</p><p style="color:white">')
-        else:
-            art_string += str('</p><p style="color:green">')
-        '''
         art_string += str(line)
-        #art_string += str('<\p>')
         art_string += '\n'
     return str(art_string)
 
