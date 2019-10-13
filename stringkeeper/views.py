@@ -40,7 +40,7 @@ def get_content():
 
 
 def home_page(request):
-    title = str('You found the stringkeeper.')
+    title = str('This site is in active development.')
     subtitle = get_time_string()
     content = get_content()
     #doc = '<h1>{title}</h1>'.format(title=title)
