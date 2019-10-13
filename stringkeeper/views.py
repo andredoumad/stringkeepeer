@@ -7,6 +7,7 @@ from django.template.loader import get_template
 import stringkeeper.standalone_tools
 import datetime
 from django.utils.timezone import utc
+from random import randint
 tools = stringkeeper.standalone_tools.Tools()
 
 def get_time_string():
@@ -25,7 +26,15 @@ def get_content():
     list_of_ascii_art_strings = tools.get_list_from_file(chosen_art_file)
     art_string = ''
     for line in list_of_ascii_art_strings:
+        '''
+        roll = randint(0, 1)
+        if roll == 0:
+            art_string += str('</p><p style="color:white">')
+        else:
+            art_string += str('</p><p style="color:green">')
+        '''
         art_string += str(line)
+        #art_string += str('<\p>')
         art_string += '\n'
     return str(art_string)
 
