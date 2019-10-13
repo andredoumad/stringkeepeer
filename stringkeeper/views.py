@@ -5,13 +5,16 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template.loader import get_template
 import stringkeeper.standalone_tools
-
+import datetime
+from django.utils.timezone import utc
 tools = stringkeeper.standalone_tools.Tools()
 
 def get_time_string():
-    named_tuple = time.localtime() # get struct_time
-    time_string = str(time.strftime("%Y-%m-%d-%H:%M:%S", named_tuple))
-    return (time_string)
+    #named_tuple = time.localtime() # get struct_time
+    now = datetime.datetime.utcnow().replace(tzinfo=utc)
+    #time_string = str(time.strftime("%Y-%m-%d-%H:%M:%S", named_tuple))
+    #time_string = str(time.strftime("%Y-%m-%d-%H:%M:%S", now))
+    return (now)
 
 
 def get_content():
