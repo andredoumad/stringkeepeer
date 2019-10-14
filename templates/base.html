@@ -15,13 +15,16 @@
         <div class='row'>
             <div class ='col-12 mx-auto'>
                 <left>
-                <p style="font face=Palatino; font-size:8px; color:white">
+                <p style="font face=Palatino; font-size:10px; color:white">
                 {{title}}
-                <p style="font face=Palatino; font-size:6px; color:green">
+                <p style="font face=Palatino; font-size:8px; color:green">
                 {{subtitle}}
+                {% block content %}
+                {% endblock %}
                 <pre>
-                <p style="font face=Palatino; font-size:4px; color:white">
-                {{content}}
+                <p style="font face=Palatino; font-size:5px; color:white">
+                {{ascii_art}}
+
                 </p>
                 </pre>
                 </left>

@@ -18,7 +18,7 @@ def get_time_string():
     return (now)
 
 
-def get_content():
+def get_ascii_art():
     b_dp, b_fp, list_dp, list_fp = tools.get_list_files_folders_in_path('stringkeeper/landing_page_ascii_art')
     list_of_ascii_art_files = list_fp
     shuffled_art_files = tools.shuffle_list(list_of_ascii_art_files)
@@ -34,13 +34,22 @@ def get_content():
 def home_page(request):
     title = str('This site is in active development.')
     subtitle = get_time_string()
-    content = get_content()
+    ascii_art = get_ascii_art()
+    my_title = 'Welcome...'
+    my_list = [1,2,3,4,5]
+    context = {'title': my_title}
+    template_name   = 'title.txt'
+    template_obj    = get_template(template_name)
+    rendered_string = template_obj.render(context)
+    print(rendered_string)
     #doc = '<h1>{title}</h1>'.format(title=title)
     #django_rendered_doc = '<h1>{{title}}</h1>'.format(title=title)
     #return HttpResponse("<h1>This site is under construction.</h1>")
-    return render(request, "base.html", {'title': title,
+    return render(request, "home.html", {'home.html': context,
+                                         'my_list': my_list,
+                                         'title': rendered_string,
                                          'subtitle': subtitle,
-                                         'content': content})
+                                         'ascii_art': ascii_art})
 
 
 def about_page(request):
@@ -55,8 +64,8 @@ def contact_page(request):
 
 
 def example_page(request):
-    context = {'title': 'example'}
-    template_name = 'base.html'
-    template_obj = get_template(template_name)
-    rendered_item = template_obj.render(context)
+    context         = {'title': 'Example'}
+    template_name   = 'hello_world.html'
+    template_obj    = get_template(template_name)
+    rendered_item   = template_obj.render(context)
     return HttpResponse(template_obj.render(context))

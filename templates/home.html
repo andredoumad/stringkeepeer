@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<p style="font face=Palatino; font-size:8px; color:orange">
+request user: {{ request.user }}<br>
+request path: {{ request.path }}<br>
+user: {{ user }}<br>
+authenticated: {{ user.is_authenticated }}<br>
+
+{% if user.is_authenticated %}
+<font color = 'green'> You have been Authenticated.<br>
+<h1>User only data</h1>
+    {% for a in my_list %}
+        <li> {{ a }} </li>
+    {% endfor %}
+{% endif %}
+
+{% if not user.is_authenticated %}
+<font color = 'red'> You have been not been authenticated.<br>
+{% endif %}
+</p>
+{% endblock %}
