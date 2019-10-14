@@ -31,11 +31,18 @@ def get_ascii_art():
     return str(art_string)
 
 
+
 def home_page(request):
     title = str('This site is in active development.')
     subtitle = get_time_string()
     ascii_art = get_ascii_art()
-    my_title = 'Welcome...'
+    my_title = 'Welcome'
+    user_ip = tools.get_client_ip(request)
+    if request.user.is_authenticated:
+        my_title += str(' ' + str(request.user))
+    else:
+        my_title += str(' ' + str(' visitor ') + str(user_ip))
+
     my_list = [1,2,3,4,5]
     context = {'title': my_title}
     template_name   = 'title.txt'
