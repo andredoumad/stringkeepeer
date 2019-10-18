@@ -3,10 +3,12 @@
 {% block content %}
 
 <p style="font face=Palatino; font-size:8px; color:orange">
-request user: {{ request.user }}<br>
-request path: {{ request.path }}<br>
-user: {{ user }}<br>
-authenticated: {{ user.is_authenticated }}<br>
+{{ title }} <br>
+User IP: {{ user_ip}} <br>
+Request user: {{ request.user }}<br>
+Request path: {{ request.path }}<br>
+User: {{ user }}<br>
+Authenticated: {{ user.is_authenticated }}<br>
 
 {% if user.is_authenticated %}
 <font color = 'green'> You have been Authenticated.<br>

@@ -9,6 +9,8 @@ import datetime
 from django.utils.timezone import utc
 from random import randint
 tools = stringkeeper.standalone_tools.Tools()
+from .forms import ContactForm
+
 
 def get_time_string():
     #named_tuple = time.localtime() # get struct_time
@@ -53,6 +55,7 @@ def home_page(request):
     #django_rendered_doc = '<h1>{{title}}</h1>'.format(title=title)
     #return HttpResponse("<h1>This site is under construction.</h1>")
     return render(request, "home.html", {'home.html': context,
+                                         'user_ip': user_ip,
                                          'my_list': my_list,
                                          'title': rendered_string,
                                          'subtitle': subtitle,
@@ -66,8 +69,15 @@ def about_page(request):
 
 
 def contact_page(request):
-    title = 'Site contact details...'
-    return render(request, "base.html", {'title': title})
+    form = ContactForm(request.POST or None)
+    if form.is_valid():
+        print(form.cleaned_data)
+        form = ContactForm()
+    context = {
+        'title': 'Contact us',
+        'form': form
+    }
+    return render(request, "form.html", context)
 
 
 def example_page(request):
