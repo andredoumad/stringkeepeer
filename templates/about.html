@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 
-{% block head_title %} About This website. {% endblock %}
+{% block head_title %} Stringkeeper-About {% endblock %}
 
 {% block content %}
-<p> You've found the stringkeeper. Your personal automated assistant. </p>
+<p style="font face=Palatino; font-size:16px">
+<font color = 'white'>
+    {% if user.is_authenticated %}
+        <p> You've found the stringkeeper. Your personal automated assistant. </p>
+    {% endif %}
+    {% if not user.is_authenticated %}
+        <font color = 'red'>
+        You have been not been authenticated.<br>
+    {% endif %}
 {% endblock %}

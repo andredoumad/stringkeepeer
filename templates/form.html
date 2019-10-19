@@ -1,14 +1,21 @@
 {% extends 'base.html' %}
-
 {% block content %}
-
-{% if title %}
-    <h1>{{ title }}</h1>
-{% endif %}
-
-<form method='POST' action='.'> {% csrf_token %}
-    {{ form.as_p }}
-    <button type='submit'>Send</button>
-</form>
-
+<p style="font face=Palatino; font-size:16px">
+<font color = 'white'>
+    {% if user.is_authenticated %}
+        {% if title %}
+        <font color = 'white'> {{ title }}<br>
+        {% endif %}
+        {% if subtitle %}
+        <font color = 'grey'> {{subtitle}}<br>
+        {% endif %}
+        <form method='POST' action='.'> {% csrf_token %}
+                {{ form.as_p }}
+            <button type='submit'>Send</button>
+        </form>
+    {% endif %}
+    {% if not user.is_authenticated %}
+        <font color = 'red'>
+        You have been not been authenticated.<br>
+    {% endif %}
 {% endblock %}

@@ -32,8 +32,6 @@ def get_ascii_art():
         art_string += '\n'
     return str(art_string)
 
-
-
 def home_page(request):
     title = str('This site is in active development.')
     subtitle = get_time_string()
@@ -61,12 +59,10 @@ def home_page(request):
                                          'subtitle': subtitle,
                                          'ascii_art': ascii_art})
 
-
 def about_page(request):
     title = 'About this site...'
     return render(request, "about.html", {'title': title})
     #return HttpResponse("<h1>about.</h1>")
-
 
 def contact_page(request):
     form = ContactForm(request.POST or None)
@@ -79,10 +75,11 @@ def contact_page(request):
     }
     return render(request, "form.html", context)
 
-
+'''
 def example_page(request):
     context         = {'title': 'Example'}
-    template_name   = 'hello_world.html'
+    template_name   = 'base.html'
     template_obj    = get_template(template_name)
     rendered_item   = template_obj.render(context)
     return HttpResponse(template_obj.render(context))
+'''

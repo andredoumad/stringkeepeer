@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+Only used in the case that this is dropped into another django project
+<p style="font face=Palatino; font-size:16px">
+<font color = 'white'> 
+{% if title %}
+<font color = 'white'> {{ title }}<br>
+{% endif %}
+{% if subtitle %}
+<font color = 'grey'> {{subtitle}}<br>
+{% endif %}
+<form method='POST' action='.'> {% csrf_token %}
+    {{ form.as_p }}
+    <button type='submit'>Send</button>
+</form>
+{% endblock %}
