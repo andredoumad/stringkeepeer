@@ -1,0 +1,20 @@
+server {
+    server_name www.stringkeeper.com;
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/ubuntu/stringkeeper;
+    }
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/stringkeeper.com/fullchain.pem; # managed by Ce$
+    ssl_certificate_key /etc/letsencrypt/live/stringkeeper.com/privkey.pem; # managed by $
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+server {
+    if ($host = www.stringkeeper.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+    listen 80;
+    server_name www.stringkeeper.com;
+    return 404; # managed by Certbot
+}
