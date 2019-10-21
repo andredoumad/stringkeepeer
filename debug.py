@@ -3,5 +3,5 @@
 # pull in the normal settings
 from stringkeeper.settings import *
 
-# no debug for us
+# debug info for dev
 DEBUG = True
