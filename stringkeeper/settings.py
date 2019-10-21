@@ -249,14 +249,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 if socket.gethostname()=="www.stringkeeper.com":
     print ('running production mode')
-    DEBUG = True
+    DEBUG = False
     # ssl
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE=True
     SESSION_COOKIE_HTTPONLY=True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
     SECURE_SSL_REDIRECT = True
-    
 else:
     print(' running non-production settings')
     print('USE A PRIVATE WINDOW IN CHROME')
