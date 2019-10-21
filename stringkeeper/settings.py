@@ -249,7 +249,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 if socket.gethostname()=="www.stringkeeper.com":
     print ('running production mode')
-    DEBUG = False
+    DEBUG = True
     # ssl
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE=True
