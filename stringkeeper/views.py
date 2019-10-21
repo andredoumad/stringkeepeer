@@ -8,10 +8,10 @@ import stringkeeper.standalone_tools
 import datetime
 from django.utils.timezone import utc
 from random import randint
+
+from stringkeeper.forms import ContactForm
+
 tools = stringkeeper.standalone_tools.Tools()
-from .forms import ContactForm
-
-
 def get_time_string():
     #named_tuple = time.localtime() # get struct_time
     now = datetime.datetime.utcnow().replace(tzinfo=utc)
