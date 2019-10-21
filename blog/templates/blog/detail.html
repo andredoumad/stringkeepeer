@@ -1,9 +1,20 @@
 {% extends "base.html" %}
 
+{% block head_title %} Stringkeeper-Blog-Detail {% endblock %}
 
 {% block content %}
 
-<h1>{{ object.title }}</h1>
-<p>{{ object.content }}</p>
+<p style="font face=Palatino; font-size:16px">
+<font color = 'white'>
+
+{% if not user.is_authenticated %}
+    <font color = 'red'>
+    You have been not been authenticated.<br>
+{% endif %}
+
+{% if user.is_authenticated %}
+    <h1>{{ object.title }}</h1>
+    <p>{{ object.content }}</p>
+{% endif %}
 
 {% endblock %}

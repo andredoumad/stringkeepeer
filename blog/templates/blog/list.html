@@ -1,10 +1,22 @@
 {% extends "base.html" %}
 
+{% block head_title %} Stringkeeper-Blog-List {% endblock %}
 
 {% block content %}
 
+<p style="font face=Palatino; font-size:16px">
+<font color = 'white'>
+
+{% if not user.is_authenticated %}
+    <font color = 'red'>
+    You have been not been authenticated.<br>
+{% endif %}
+
+{% if user.is_authenticated %}
     {% for object in object_list %}
-    <li>{{ object.title }}</li>
-    <p>{{ object.content }}</p>
+        <li>{{ object.title }}</li>
+        <p>{{ object.content }}</p>
     {% endfor %}
+{% endif %}
+
 {% endblock %}
