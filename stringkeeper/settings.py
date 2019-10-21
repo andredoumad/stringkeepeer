@@ -143,7 +143,7 @@ print(socket.gethostname())
 #DEBUG = False
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['www.stringkeeper.com', '*']
 
 
 # Application definition
@@ -300,3 +300,6 @@ else:
     SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
     SECURE_FRAME_DENY               = False
     '''
+
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
