@@ -147,15 +147,14 @@ ALLOWED_HOSTS = ['*']
 
 
 # Application definition
-
-INSTALLED_APPS = [ # components
+# components
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
     'blog',
 ]
 
@@ -260,12 +259,37 @@ if socket.gethostname()=="www.stringkeeper.com":
     
 else:
     print(' running non-production settings')
+    print('USE A PRIVATE WINDOW IN CHROME')
+    print(' --- !! REMEMBER !! ---')
+    print('USE A PRIVATE WINDOW IN CHROME')
+    print(' --- !! REMEMBER !! ---')
+    print('USE A PRIVATE WINDOW IN CHROME')
+    print(' --- !! REMEMBER !! ---')
+    print('USE A PRIVATE WINDOW IN CHROME')
+    print(' --- !! REMEMBER !! ---')
+    print('USE A PRIVATE WINDOW IN CHROME')
+    print(' --- !! REMEMBER !! ---')
+    print('USE A PRIVATE WINDOW IN CHROME')
+    print(' --- !! REMEMBER !! ---')
+    print('USE A PRIVATE WINDOW IN CHROME')
+    print(' --- !! REMEMBER !! ---')
+    print('USE A PRIVATE WINDOW IN CHROME')
+    print(' --- !! REMEMBER !! ---')
+    print('USE A PRIVATE WINDOW IN CHROME')
+    print(' --- !! REMEMBER !! ---')
+    print('USE A PRIVATE WINDOW IN CHROME')
+    print(' --- !! REMEMBER !! ---')
+    print('USE A PRIVATE WINDOW IN CHROME')
+    print(' --- !! REMEMBER !! ---')
+    print('USE A PRIVATE WINDOW IN CHROME')
+    print(' --- !! REMEMBER !! ---')
     DEBUG = True
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE=False
     SESSION_COOKIE_HTTPONLY=False
     SECURE_PROXY_SSL_HEADER = None
     SECURE_SSL_REDIRECT = False
+    '''
     CORS_REPLACE_HTTPS_REFERER      = False
     HOST_SCHEME                     = "http://"
     SECURE_PROXY_SSL_HEADER         = None
@@ -275,3 +299,4 @@ else:
     SECURE_HSTS_SECONDS             = None
     SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
     SECURE_FRAME_DENY               = False
+    '''
