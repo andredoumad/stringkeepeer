@@ -123,22 +123,7 @@ http://127.0.0.1
 
 import os
 import socket
-if socket.gethostname()=="www.stringkeeper.com":
-    print ('running production mode')
-    DEBUG = False
-    # ssl
-    SESSION_COOKIE_SECURE=True
-    SESSION_COOKIE_HTTPONLY=True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
-    SECURE_SSL_REDIRECT = True
-    
-else:
-    print(' running non-production settings')
-    DEBUG = True
-    SESSION_COOKIE_SECURE=False
-    SESSION_COOKIE_HTTPONLY=False
-    SECURE_PROXY_SSL_HEADER = None
-    SECURE_SSL_REDIRECT = False
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -261,3 +246,32 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
+
+
+if socket.gethostname()=="www.stringkeeper.com":
+    print ('running production mode')
+    DEBUG = False
+    # ssl
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE=True
+    SESSION_COOKIE_HTTPONLY=True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
+    SECURE_SSL_REDIRECT = True
+    
+else:
+    print(' running non-production settings')
+    DEBUG = True
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE=False
+    SESSION_COOKIE_HTTPONLY=False
+    SECURE_PROXY_SSL_HEADER = None
+    SECURE_SSL_REDIRECT = False
+    CORS_REPLACE_HTTPS_REFERER      = False
+    HOST_SCHEME                     = "http://"
+    SECURE_PROXY_SSL_HEADER         = None
+    SECURE_SSL_REDIRECT             = False
+    SESSION_COOKIE_SECURE           = False
+    CSRF_COOKIE_SECURE              = False
+    SECURE_HSTS_SECONDS             = None
+    SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
+    SECURE_FRAME_DENY               = False
