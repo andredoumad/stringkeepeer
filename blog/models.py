@@ -12,3 +12,15 @@ class BlogPost(models.Model): # blogpost_set -> queryset
     title = models.CharField(max_length=120)
     slug = models.SlugField(unique=True) # url encoded value so hello world -> hello-world
     content = models.TextField(null=True, blank=True)
+    
+    def get_absolute_url(self):
+        return f"/blog/{self.slug}"
+    
+    def get_return_url(self):
+        return f"/blog/"
+    
+    def get_edit_url(self):
+        return f"/blog/{self.slug}/edit"
+    
+    def get_delete_url(self):
+        return f"/blog/{self.slug}/delete"

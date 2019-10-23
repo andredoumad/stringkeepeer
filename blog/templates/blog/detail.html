@@ -13,8 +13,30 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-    <h1>{{ object.title }}</h1>
-    <p>{{ object.content }}</p>
+    <font color = 'grey'>
+    ==============<br>
+    <font color = 'white'>
+    {{ object.title }}<br>
+    <font color = 'grey'>
+    ----<br>
+    <font color = 'white'>
+    {{ object.content }}<br>
+    <font color = 'grey'>
+    ==============<br>
+    <font color = 'orange'>
+    <a href='{{ object.get_return_url }}'>Return</a><br>
 {% endif %}
 
+{% if user.is_authenticated %}
+    {% if request.user.is_staff %}
+        <font color = 'grey'>
+        ---------<br>
+        <font color = 'green'>
+        <a href='{{ object.get_edit_url }}'>Edit</a><br>
+        <font color = 'grey'>
+        ---------<br>
+        <font color = 'red'>
+        <a href='{{ object.get_delete_url }}'>Delete</a><br>
+    {% endif %}
+{% endif %}
 {% endblock %}
