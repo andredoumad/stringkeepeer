@@ -145,6 +145,7 @@ print(socket.gethostname())
 
 ALLOWED_HOSTS = ['www.stringkeeper.com', '*']
 
+LOGIN_URL = '/login'
 
 # Application definition
 # components
