@@ -13,8 +13,15 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-    <h1>{{ object.title }} - Delete</h1>
-    <p>{{ object.content }}</p>
+    <font color = 'red'>
+    Are you sure you want to delete the following:<br>
+    <font color = 'white'>
+    {{ object.title }}<br>
+    {{ object.content }}<br>
+
+    <form method='POST'>{% csrf_token %}
+        <button class='btn btn-danger'> Yes, delete</button>
+    </form>
 {% endif %}
 
 {% endblock %}
