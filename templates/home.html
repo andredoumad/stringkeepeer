@@ -9,26 +9,31 @@
     {% if subtitle %}
         <font color = 'grey'> {{subtitle}}<br>
     {% endif %}
+
     <font color = 'orange'> User IP: <font color = 'white'> {{ user_ip}}<br>
     <font color = 'orange'> Request user: <font color = 'white'> {{ request.user }}<br>
     <font color = 'orange'> Request path: <font color = 'white'> {{ request.path }}<br>
     <font color = 'orange'> User: <font color = 'white'> {{ user }}<br>
     <font color = 'orange'> Authenticated: <font color = 'white'> {{ user.is_authenticated }}<br>
+
     {% if user.is_authenticated %}
         <font color = 'green'> You have been Authenticated.<br>
         <font color = 'white'> User only data:<br>
-        {% for a in my_list %}
-            <font color = 'white'> {{ a }} <br>
+        {% for a in blog_list %}
+            {% include 'blog/list-inline.html' with blog_post=a %}
         {% endfor %}
     {% endif %}
+
     {% if not user.is_authenticated %}
         <font color = 'red'>
         You have been not been authenticated.<br>
     {% endif %}
+
     {% if ascii_art %}
         <pre>
         <p style="font-size:2px">
         <font color = 'white'> {{ascii_art}}
         </pre>
     {% endif %}
+
 {% endblock %}

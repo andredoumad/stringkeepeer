@@ -10,6 +10,7 @@ from django.utils.timezone import utc
 from random import randint
 
 from stringkeeper.forms import ContactForm
+from blog.models import BlogPost
 
 tools = stringkeeper.standalone_tools.Tools()
 def get_time_string():
@@ -18,7 +19,6 @@ def get_time_string():
     #time_string = str(time.strftime("%Y-%m-%d-%H:%M:%S", named_tuple))
     #time_string = str(time.strftime("%Y-%m-%d-%H:%M:%S", now))
     return (now)
-
 
 def get_ascii_art():
     b_dp, b_fp, list_dp, list_fp = tools.get_list_files_folders_in_path('stringkeeper/landing_page_ascii_art')
@@ -33,7 +33,9 @@ def get_ascii_art():
     return str(art_string)
 
 def home_page(request):
-    title = str('This site is in active development.')
+    #title = str('This site is in active development.')
+    qs = BlogPost.objects.all()
+    print('BlogPost.objects.all()[:5] = ' + str(qs))
     subtitle = get_time_string()
     ascii_art = get_ascii_art()
     my_title = 'Welcome'
@@ -43,21 +45,25 @@ def home_page(request):
     else:
         my_title += str(' ' + str(' visitor ') + str(user_ip))
 
-    my_list = [1,2,3,4,5]
-    context = {'title': my_title}
-    template_name   = 'title.txt'
-    template_obj    = get_template(template_name)
-    rendered_string = template_obj.render(context)
-    print(rendered_string)
+    #my_list = [1,2,3,4,5]
+
+    #template_name   = 'title.txt'
+    #template_obj    = get_template(template_name)
+    #rendered_string = template_obj.render(context)
+    #print(rendered_string)
+    context = {
+        'user_ip': user_ip,
+        #'my_list': my_list,
+        'title': my_title,
+        'subtitle': subtitle,
+        'ascii_art': ascii_art,
+        'blog_list': qs}
     #doc = '<h1>{title}</h1>'.format(title=title)
     #django_rendered_doc = '<h1>{{title}}</h1>'.format(title=title)
     #return HttpResponse("<h1>This site is under construction.</h1>")
-    return render(request, "home.html", {'home.html': context,
-                                         'user_ip': user_ip,
-                                         'my_list': my_list,
-                                         'title': rendered_string,
-                                         'subtitle': subtitle,
-                                         'ascii_art': ascii_art})
+    return render(request, "home.html", context)
+
+
 
 def about_page(request):
     title = 'About this site...'

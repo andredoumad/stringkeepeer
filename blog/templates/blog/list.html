@@ -13,9 +13,9 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-        {% for object in object_list %}
-            {% include 'blog/list-inline.html' with blog_post=object %}
-        {% endfor %}
+    {% for object in object_list %}
+        {% include 'blog/list-inline.html' with blog_post=object %}
+    {% endfor %}
 {% endif %}
 
 {% endblock %}
