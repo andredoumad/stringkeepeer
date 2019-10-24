@@ -13,10 +13,9 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-    {% for object in object_list %}
-        <li><a href='{{ object.get_absolute_url }}'>{{ object.title }}</a></li>
-        <p>{{ object.content }}</p>
-    {% endfor %}
+        {% for object in object_list %}
+            {% include 'blog/list-inline.html' with blog_post=object %}
+        {% endfor %}
 {% endif %}
 
 {% endblock %}
