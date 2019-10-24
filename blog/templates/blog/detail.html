@@ -13,30 +13,25 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-    <font color = 'grey'>
-    ==============<br>
-    <font color = 'white'>
-    {{ object.title }}<br>
-    <font color = 'grey'>
-    ----<br>
-    <font color = 'white'>
-    {{ object.content }}<br>
-    <font color = 'grey'>
-    ==============<br>
-    <font color = 'orange'>
-    <a href='{{ object.get_return_url }}'>Return</a><br>
+    {% include 'blog/list-inline.html' with blog_post=object truncate=False detail=True %}
+    <div class='col-12'>
+        <font color = 'orange'>
+        <a href='{{ object.get_return_url }}'>Return</a><br>
+    </div>
 {% endif %}
 
 {% if user.is_authenticated %}
     {% if request.user.is_staff %}
-        <font color = 'grey'>
-        ---------<br>
-        <font color = 'green'>
-        <a href='{{ object.get_edit_url }}'>Edit</a><br>
-        <font color = 'grey'>
-        ---------<br>
-        <font color = 'red'>
-        <a href='{{ object.get_delete_url }}'>Delete</a><br>
+        <div class='col-12'>
+            <font color = 'grey'>
+            ---------<br>
+            <font color = 'green'>
+            <a href='{{ object.get_edit_url }}'>Edit</a><br>
+            <font color = 'grey'>
+            ---------<br>
+            <font color = 'red'>
+            <a href='{{ object.get_delete_url }}'>Delete</a><br>
+        </div>
     {% endif %}
 {% endif %}
 {% endblock %}
