@@ -38,3 +38,51 @@
 17:59:51 || MEDIA_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/media
 17:59:51 || MEDIA_URL: /media/
 17:59:51 || running production mode
+20:48:35 || BASE_DIR: /home/ubuntu/stringkeeper
+20:48:35 || www.stringkeeper.com
+20:48:35 || LOCAL_STATIC_CDN_PATH: /home/ubuntu/stringkeeper/static_cdn_test
+20:48:35 || STATIC_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/static
+20:48:35 || STATICFILES_DIRS: /home/ubuntu/stringkeeper/staticfiles
+20:48:35 || MEDIA_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/media
+20:48:35 || MEDIA_URL: /media/
+20:48:35 || running production mode
+20:48:35 || BASE_DIR: /home/ubuntu/stringkeeper
+20:48:35 || www.stringkeeper.com
+20:48:35 || LOCAL_STATIC_CDN_PATH: /home/ubuntu/stringkeeper/static_cdn_test
+20:48:35 || STATIC_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/static
+20:48:35 || STATICFILES_DIRS: /home/ubuntu/stringkeeper/staticfiles
+20:48:35 || MEDIA_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/media
+20:48:35 || MEDIA_URL: /media/
+20:48:35 || running production mode
+20:48:54 || BASE_DIR: /home/ubuntu/stringkeeper
+20:48:54 || www.stringkeeper.com
+20:48:54 || LOCAL_STATIC_CDN_PATH: /home/ubuntu/stringkeeper/static_cdn_test
+20:48:54 || STATIC_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/static
+20:48:54 || STATICFILES_DIRS: /home/ubuntu/stringkeeper/staticfiles
+20:48:54 || MEDIA_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/media
+20:48:54 || MEDIA_URL: /media/
+20:48:54 || running production mode
+20:48:54 || BASE_DIR: /home/ubuntu/stringkeeper
+20:48:54 || www.stringkeeper.com
+20:48:54 || LOCAL_STATIC_CDN_PATH: /home/ubuntu/stringkeeper/static_cdn_test
+20:48:54 || STATIC_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/static
+20:48:54 || STATICFILES_DIRS: /home/ubuntu/stringkeeper/staticfiles
+20:48:54 || MEDIA_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/media
+20:48:54 || MEDIA_URL: /media/
+20:48:54 || running production mode
+20:49:06 || BASE_DIR: /home/ubuntu/stringkeeper
+20:49:06 || www.stringkeeper.com
+20:49:06 || LOCAL_STATIC_CDN_PATH: /home/ubuntu/stringkeeper/static_cdn_test
+20:49:06 || STATIC_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/static
+20:49:06 || STATICFILES_DIRS: /home/ubuntu/stringkeeper/staticfiles
+20:49:06 || MEDIA_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/media
+20:49:06 || MEDIA_URL: /media/
+20:49:06 || running production mode
+20:49:06 || BASE_DIR: /home/ubuntu/stringkeeper
+20:49:06 || www.stringkeeper.com
+20:49:06 || LOCAL_STATIC_CDN_PATH: /home/ubuntu/stringkeeper/static_cdn_test
+20:49:06 || STATIC_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/static
+20:49:06 || STATICFILES_DIRS: /home/ubuntu/stringkeeper/staticfiles
+20:49:06 || MEDIA_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/media
+20:49:06 || MEDIA_URL: /media/
+20:49:06 || running production mode
