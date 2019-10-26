@@ -1,9 +1,0 @@
-log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
-log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
-log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
-log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
-log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
-log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
-02:59:10 || log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
-02:59:10 || log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
-02:59:10 || log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
