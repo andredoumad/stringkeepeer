@@ -1,0 +1,1 @@
+log_directory_path /home/gordon/stringkeeper/logs/2019-10-26/tr3b

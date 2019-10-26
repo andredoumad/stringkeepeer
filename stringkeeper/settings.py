@@ -127,31 +127,6 @@ from .standalone_logging import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-'''
-filepath_hostname = str(socket.gethostname())
-final_filepath_hostname = ''
-for ch in filepath_hostname:
-    if ch != '.':
-        final_filepath_hostname += str(ch)
-
-settings_log_directory_path = str(BASE_DIR + '/logs/' + final_filepath_hostname)
-if not os.path.exists(settings_log_directory_path):
-    os.makedirs(settings_log_directory_path)
-
-settings_log_filepath = str(BASE_DIR + '/logs/' + final_filepath_hostname + '/' + 'settings_log.txt')
-
-with open(settings_log_filepath, 'w+') as f:
-    f.write('')
-    f.close()
-
-def settings_log(logstring):
-    print(logstring)
-    with open(settings_log_filepath, 'a+') as f:
-        f.write(logstring)
-        f.write('\n')
-        f.close()
-'''
-
 eventlog('BASE_DIR: ' + str(BASE_DIR))
 
 # Quick-start development settings - unsuitable for production
