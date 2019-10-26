@@ -1,0 +1,8 @@
+17:57:18 || BASE_DIR: /home/ubuntu/stringkeeper
+17:57:18 || www.stringkeeper.com
+17:57:18 || LOCAL_STATIC_CDN_PATH: /home/ubuntu/stringkeeper/static_cdn_test
+17:57:18 || STATIC_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/static
+17:57:18 || STATICFILES_DIRS: /home/ubuntu/stringkeeper/staticfiles
+17:57:18 || MEDIA_ROOT: /home/ubuntu/stringkeeper/static_cdn_test/media
+17:57:18 || MEDIA_URL: /media/
+17:57:18 || running production mode
