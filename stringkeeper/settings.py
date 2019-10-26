@@ -123,10 +123,12 @@ http://127.0.0.1
 
 import os
 import socket
-
+from .standalone_logging import *
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+<<<<<<< HEAD
 filepath_hostname = str(socket.gethostname())
 final_filepath_hostname = ''
 for ch in filepath_hostname:
@@ -151,6 +153,9 @@ def settings_log(logstring):
         f.close()
 
 settings_log('BASE_DIR: ' + str(BASE_DIR))
+=======
+eventlog('BASE_DIR: ' + str(BASE_DIR))
+>>>>>>> 0c2b3b072ed8073c3ec340df545f62553c5ad140
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -159,7 +164,11 @@ settings_log('BASE_DIR: ' + str(BASE_DIR))
 SECRET_KEY = '89y+eudf0eoqxck3bk4=$c5#l#b7j2i4y0!k)5dta7qu-dy3ir'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+<<<<<<< HEAD
 settings_log(socket.gethostname())
+=======
+eventlog(socket.gethostname())
+>>>>>>> 0c2b3b072ed8073c3ec340df545f62553c5ad140
 
 
 # you can use --debug-mode to set the DEBUG setting to True prior to running tests.
@@ -270,14 +279,22 @@ STATIC_URL = '/static/'
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 LOCAL_STATIC_CDN_PATH = os.path.join(BASE_DIR, 'static_cdn_test')
+<<<<<<< HEAD
 settings_log('LOCAL_STATIC_CDN_PATH: ' + str(LOCAL_STATIC_CDN_PATH))
 #live cdn AWS S3  ? maybe in the future.
 STATIC_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'static')
 settings_log('STATIC_ROOT: ' + str(STATIC_ROOT))
+=======
+eventlog('LOCAL_STATIC_CDN_PATH: ' + str(LOCAL_STATIC_CDN_PATH))
+#live cdn AWS S3  ? maybe in the future.
+STATIC_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'static')
+eventlog('STATIC_ROOT: ' + str(STATIC_ROOT))
+>>>>>>> 0c2b3b072ed8073c3ec340df545f62553c5ad140
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'staticfiles')
 ]
 for item in STATICFILES_DIRS:
+<<<<<<< HEAD
     settings_log('STATICFILES_DIRS: ' + str(item))
 
 MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'media')
@@ -288,6 +305,18 @@ settings_log('MEDIA_URL: ' + str(MEDIA_URL))
 
 if socket.gethostname()=="www.stringkeeper.com":
     settings_log ('running production mode')
+=======
+    eventlog('STATICFILES_DIRS: ' + str(item))
+
+MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'media')
+eventlog('MEDIA_ROOT: ' + str(MEDIA_ROOT))
+MEDIA_URL = '/media/'
+eventlog('MEDIA_URL: ' + str(MEDIA_URL))
+
+
+if socket.gethostname()=="www.stringkeeper.com":
+    eventlog ('running production mode')
+>>>>>>> 0c2b3b072ed8073c3ec340df545f62553c5ad140
     DEBUG = False
     # ssl
     CSRF_COOKIE_SECURE = True
@@ -296,9 +325,15 @@ if socket.gethostname()=="www.stringkeeper.com":
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
     SECURE_SSL_REDIRECT = True
 else:
+<<<<<<< HEAD
     settings_log(' running non-production settings')
     settings_log(' --- !! REMEMBER !! ---')
     settings_log('USE A PRIVATE WINDOW IN CHROME')
+=======
+    eventlog(' running non-production settings')
+    eventlog(' --- !! REMEMBER !! ---')
+    eventlog('USE A PRIVATE WINDOW IN CHROME')
+>>>>>>> 0c2b3b072ed8073c3ec340df545f62553c5ad140
     DEBUG = True
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE=False
