@@ -26,3 +26,5 @@
 21:30:48 || log_directory_path /home/gordon/stringkeeper/logs/2019-10-26/tr3b
 14:30:53 || log_directory_path /home/gordon/stringkeeper/logs/2019-10-26/tr3b
 21:30:53 || log_directory_path /home/gordon/stringkeeper/logs/2019-10-26/tr3b
+15:15:14 || log_directory_path /home/gordon/stringkeeper/logs/2019-10-26/tr3b
+22:15:14 || log_directory_path /home/gordon/stringkeeper/logs/2019-10-26/tr3b
