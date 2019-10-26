@@ -88,3 +88,33 @@
 18:30:41 ||  running non-production settings
 18:30:41 ||  --- !! REMEMBER !! ---
 18:30:41 || USE A PRIVATE WINDOW IN CHROME
+12:46:01 || BASE_DIR: /home/gordon/stringkeeper
+12:46:01 || tr3b
+12:46:01 || LOCAL_STATIC_CDN_PATH: /home/gordon/stringkeeper/static_cdn_test
+12:46:01 || STATIC_ROOT: /home/gordon/stringkeeper/static_cdn_test/static
+12:46:01 || STATICFILES_DIRS: /home/gordon/stringkeeper/staticfiles
+12:46:01 || MEDIA_ROOT: /home/gordon/stringkeeper/static_cdn_test/media
+12:46:01 || MEDIA_URL: /media/
+12:46:01 ||  running non-production settings
+12:46:01 ||  --- !! REMEMBER !! ---
+12:46:01 || USE A PRIVATE WINDOW IN CHROME
+12:46:09 || BASE_DIR: /home/gordon/stringkeeper
+12:46:09 || tr3b
+12:46:09 || LOCAL_STATIC_CDN_PATH: /home/gordon/stringkeeper/static_cdn_test
+12:46:09 || STATIC_ROOT: /home/gordon/stringkeeper/static_cdn_test/static
+12:46:09 || STATICFILES_DIRS: /home/gordon/stringkeeper/staticfiles
+12:46:09 || MEDIA_ROOT: /home/gordon/stringkeeper/static_cdn_test/media
+12:46:09 || MEDIA_URL: /media/
+12:46:09 ||  running non-production settings
+12:46:09 ||  --- !! REMEMBER !! ---
+12:46:09 || USE A PRIVATE WINDOW IN CHROME
+19:46:09 || BASE_DIR: /home/gordon/stringkeeper
+19:46:09 || tr3b
+19:46:09 || LOCAL_STATIC_CDN_PATH: /home/gordon/stringkeeper/static_cdn_test
+19:46:09 || STATIC_ROOT: /home/gordon/stringkeeper/static_cdn_test/static
+19:46:09 || STATICFILES_DIRS: /home/gordon/stringkeeper/staticfiles
+19:46:09 || MEDIA_ROOT: /home/gordon/stringkeeper/static_cdn_test/media
+19:46:09 || MEDIA_URL: /media/
+19:46:09 ||  running non-production settings
+19:46:09 ||  --- !! REMEMBER !! ---
+19:46:09 || USE A PRIVATE WINDOW IN CHROME
