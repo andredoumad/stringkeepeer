@@ -1,8 +1,9 @@
 <div class='col-12 mb-3 col-md-12 mx-auto'>
-    <div class='card text-white bg-dark'>
+    <div class='card {% if not blog_post.publish_date %} bg-dark text-warning {% else %} text-white bg-dark {% endif %}  '>
         <div class='card-body'>
             <h5 class='card-title'>{{ blog_post.title }}</h5>
             <p class='card-text'>
+            <small class='text-muted'>{{ blog_post.publish_date }}</small>
             {% if truncate %}
                 {{ blog_post.content|linebreaks|truncatewords:30 }}
             {% else %}
@@ -10,6 +11,7 @@
             {% endif %}
             </p>
             {% if not detail %}
+                {% if not blog_post.publish_date %} Draft {% endif %}
                 <a href='{{ blog_post.get_absolute_url }}'>View</a>
             {% endif %}
         </div>

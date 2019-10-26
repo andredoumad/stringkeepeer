@@ -12,7 +12,7 @@ class BlogPostModelForm(forms.ModelForm):
     #title = forms.CharField()
     class Meta:
         model = BlogPost
-        fields = ['title', 'slug', 'content']
+        fields = ['title', 'slug', 'content', 'publish_date']
 
 
     #taking args and keyword args 

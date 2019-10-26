@@ -2,9 +2,12 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.admin.views.decorators import staff_member_required
+from django.utils import timezone
+
 # Create your views here.
 from blog.forms import BlogPostModelForm
 from blog.models import BlogPost
+
 
 
 # CRUD
@@ -16,10 +19,19 @@ from blog.models import BlogPost
 # Create Retrieve Update Delete
 
 def blog_post_list_view(request):
+    #now = timezone.now()
     # list out objects
     # could be search
         #qs = BlogPost.objects.filter(title__icontains='hello')
-    qs = BlogPost.objects.all() # queryset -> list of python object 
+    #qs = BlogPost.objects.all() # queryset -> list of python object
+    #__lte = less than or equal to while gte is greater than or equal to
+    #qs = BlogPost.objects.filter(publish_date__lte=now)
+    qs = BlogPost.objects.all().published()
+    if request.user.is_authenticated:
+        #only show blogs from current user
+        my_qs = BlogPost.objects.filter(user=request.user)
+        #combbines queries of the same class and then uses only the ones that are unique
+        qs = (qs | my_qs).distinct()
     template_name = 'blog/list.html'
     context = {'object_list': qs}
     return render(request, template_name, context)

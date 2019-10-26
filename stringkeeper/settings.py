@@ -127,7 +127,7 @@ import socket
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+print('BASE_DIR: ' + str(BASE_DIR))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -244,8 +244,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
+LOCAL_STATIC_CDN_PATH = os.path.join(BASE_DIR, 'static_cdn_test')
+print('LOCAL_STATIC_CDN_PATH: ' + str(LOCAL_STATIC_CDN_PATH))
+#live cdn AWS S3  ? maybe in the future.
+STATIC_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'static')
+print('STATIC_ROOT: ' + str(STATIC_ROOT))
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'staticfiles')
+]
+for item in STATICFILES_DIRS:
+    print('STATICFILES_DIRS: ' + str(item))
+
+MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'media')
+print('MEDIA_ROOT: ' + str(MEDIA_ROOT))
+MEDIA_URL = '/media/'
+print('MEDIA_URL: ' + str(MEDIA_URL))
 
 
 if socket.gethostname()=="www.stringkeeper.com":
@@ -259,30 +274,8 @@ if socket.gethostname()=="www.stringkeeper.com":
     SECURE_SSL_REDIRECT = True
 else:
     print(' running non-production settings')
-    print('USE A PRIVATE WINDOW IN CHROME')
     print(' --- !! REMEMBER !! ---')
     print('USE A PRIVATE WINDOW IN CHROME')
-    print(' --- !! REMEMBER !! ---')
-    print('USE A PRIVATE WINDOW IN CHROME')
-    print(' --- !! REMEMBER !! ---')
-    print('USE A PRIVATE WINDOW IN CHROME')
-    print(' --- !! REMEMBER !! ---')
-    print('USE A PRIVATE WINDOW IN CHROME')
-    print(' --- !! REMEMBER !! ---')
-    print('USE A PRIVATE WINDOW IN CHROME')
-    print(' --- !! REMEMBER !! ---')
-    print('USE A PRIVATE WINDOW IN CHROME')
-    print(' --- !! REMEMBER !! ---')
-    print('USE A PRIVATE WINDOW IN CHROME')
-    print(' --- !! REMEMBER !! ---')
-    print('USE A PRIVATE WINDOW IN CHROME')
-    print(' --- !! REMEMBER !! ---')
-    print('USE A PRIVATE WINDOW IN CHROME')
-    print(' --- !! REMEMBER !! ---')
-    print('USE A PRIVATE WINDOW IN CHROME')
-    print(' --- !! REMEMBER !! ---')
-    print('USE A PRIVATE WINDOW IN CHROME')
-    print(' --- !! REMEMBER !! ---')
     DEBUG = True
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE=False
