@@ -65,7 +65,8 @@ def eventlog(logstring):
     log_filepath = str(log_directory_path + '/' + str(caller_filename))
     print('log_filepath: ' + str(log_filepath))
     with open(log_filepath, 'a+') as f:
-        f.write(logstring)
+        timestamp = str(datetime.today().strftime('%H:%M:%S'))
+        f.write(str(timestamp + ' || ' + logstring))
         f.write('\n')
         f.close()
 
