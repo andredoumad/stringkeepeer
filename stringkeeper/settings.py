@@ -251,6 +251,8 @@ STATIC_URL = '/static/'
 #    os.path.join(BASE_DIR, "static"),
 #)
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
+MEDIA_URL = '/media/' #  django-storages
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 '''
 LOCAL_STATIC_CDN_PATH = os.path.join(BASE_DIR, 'static_cdn_test')
