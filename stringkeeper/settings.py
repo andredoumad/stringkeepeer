@@ -250,6 +250,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+STATIC_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'static')
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 '''
 LOCAL_STATIC_CDN_PATH = os.path.join(BASE_DIR, 'static_cdn_test')
