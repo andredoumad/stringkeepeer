@@ -1,0 +1,2 @@
+20:06:00 || log_directory_path /home/gordon/stringkeeper/logs/2019-10-28/gman
+20:59:15 || log_directory_path /home/gordon/stringkeeper/logs/2019-10-28/gman
