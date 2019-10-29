@@ -8,14 +8,9 @@ from django.utils import timezone
 from blog.forms import BlogPostModelForm
 from blog.models import BlogPost
 
-
-
 # CRUD
-
 # GET -> Retrieve / List
-
 # POST -> Create / Update / DELETE
-
 # Create Retrieve Update Delete
 
 def blog_post_list_view(request):
@@ -48,7 +43,7 @@ def blog_post_create_view(request):
     # create objects
     # use forms
     # request.user -> return something
-    form = BlogPostModelForm(request.POST or None)
+    form = BlogPostModelForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         # could also edit the commit like this:
         obj = form.save(commit=False) # so don't save just yet

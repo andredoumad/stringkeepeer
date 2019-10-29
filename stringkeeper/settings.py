@@ -261,7 +261,7 @@ for item in STATICFILES_DIRS:
 
 MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'media')
 eventlog('MEDIA_ROOT: ' + str(MEDIA_ROOT))
-MEDIA_URL = '/media/'
+MEDIA_URL = '/media/' #  django-storages
 eventlog('MEDIA_URL: ' + str(MEDIA_URL))
 
 
