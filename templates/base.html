@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!doctype html>
 <html lang="en">
   {% include 'head.html' %}
@@ -8,6 +9,7 @@
     <div class='container-fluid'>
       {% block content %}
       {% endblock %}
+      <img src="{% static '/media/image/guardians-of-the-galaxy_stills-8.jpg' %}">
     </div>
     {% include 'js.html' %}
   </body>
