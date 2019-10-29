@@ -247,8 +247,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-
+'''
 LOCAL_STATIC_CDN_PATH = os.path.join(BASE_DIR, 'static_cdn_test')
 eventlog('LOCAL_STATIC_CDN_PATH: ' + str(LOCAL_STATIC_CDN_PATH))
 #live cdn AWS S3  ? maybe in the future.
@@ -264,7 +267,7 @@ MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'media')
 eventlog('MEDIA_ROOT: ' + str(MEDIA_ROOT))
 MEDIA_URL = '/media/' #  django-storages
 eventlog('MEDIA_URL: ' + str(MEDIA_URL))
-
+'''
 
 if socket.gethostname()=="www.stringkeeper.com":
     eventlog ('running production mode')
