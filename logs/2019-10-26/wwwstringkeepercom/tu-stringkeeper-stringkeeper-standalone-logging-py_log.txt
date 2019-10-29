@@ -60,3 +60,6 @@
 22:30:01 || log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
 22:30:01 || log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
 22:30:02 || log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
+22:35:55 || log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
+22:35:55 || log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
+22:35:55 || log_directory_path /home/ubuntu/stringkeeper/logs/2019-10-26/wwwstringkeepercom
