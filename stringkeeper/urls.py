@@ -24,7 +24,7 @@ from searches.views import search_view
 from .views import (
     home_page,
     #about_page,
-    #contact_page,
+    contact_page,
     #example_page
 )
 
@@ -41,7 +41,7 @@ urlpatterns = [
     #re_path(r'^pages?/$', about_page),
     #re_path('^about/$', about_page),
     #path('example/', example_page),
-    #path('contact/', contact_page),
+    path('contact/', contact_page),
 
 
 ]

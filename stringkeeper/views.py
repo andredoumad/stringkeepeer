@@ -66,11 +66,12 @@ def home_page(request):
     return render(request, "home.html", context)
 
 
-'''
+
 def about_page(request):
     title = 'About this site...'
     return render(request, "about.html", {'title': title})
     #return HttpResponse("<h1>about.</h1>")
+
 
 def contact_page(request):
     form = ContactForm(request.POST or None)
@@ -78,17 +79,16 @@ def contact_page(request):
         print(form.cleaned_data)
         form = ContactForm()
     context = {
-        'title': 'Contact us',
-        'form': form
+        'title': 'Contact',
+        'content': 'Welcome to the contact page.'
     }
-    return render(request, "form.html", context)
-'''
+    return render(request, "contact_page.html", context)
 
-'''
+
+
 def example_page(request):
     context         = {'title': 'Example'}
     template_name   = 'base.html'
     template_obj    = get_template(template_name)
     rendered_item   = template_obj.render(context)
     return HttpResponse(template_obj.render(context))
-'''
