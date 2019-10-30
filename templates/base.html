@@ -6,12 +6,10 @@
   <body style="background-color:black;">
     {% if user.is_authenticated %}
       {% include 'navbar.html' %}
-      <img src="{% static '/media/image/guardians-of-the-galaxy_stills-10.jpg' %}">
     {% endif %}
     <div class='container-fluid'>
       {% block content %}
       {% endblock %}
-      
     </div>
     {% include 'js.html' %}
   </body>
