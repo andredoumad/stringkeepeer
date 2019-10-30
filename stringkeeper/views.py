@@ -66,7 +66,7 @@ def home_page(request):
     return render(request, "home.html", context)
 
 
-
+'''
 def about_page(request):
     title = 'About this site...'
     return render(request, "about.html", {'title': title})
@@ -82,6 +82,7 @@ def contact_page(request):
         'form': form
     }
     return render(request, "form.html", context)
+'''
 
 '''
 def example_page(request):
