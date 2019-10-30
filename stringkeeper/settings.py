@@ -136,6 +136,15 @@ eventlog('BASE_DIR: ' + str(BASE_DIR))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '89y+eudf0eoqxck3bk4=$c5#l#b7j2i4y0!k)5dta7qu-dy3ir'
 
+
+#amazon aws
+#django-storages documentation 
+AWS_ACCESS_KEY_ID='AKIAYZ2XE524MPVCJFBQ'
+AWS_SECRET_ACCESS_KEY='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'
+AWS_STORAGE_BUCKET_NAME='stringkeeper-django-static'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # SECURITY WARNING: don't run with debug turned on in production!
 eventlog(socket.gethostname())
 
@@ -159,6 +168,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'searches',
+    'storages',
     
 ]
 
