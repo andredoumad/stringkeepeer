@@ -10,12 +10,16 @@
         <a class="nav-link" href="/">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/login">Login</a>
-        <a class="nav-link" href="/register">Register</a>
-        {% if user.is_authenticated %}
-        <a class="nav-link" href="/blog">Blog</a>
-        {% endif %}
+          <a class="nav-link" href="/login">Login</a>
       </li>
+      <li class="nav-item">
+          <a class="nav-link" href="/register">Register</a>
+      </li>
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="/blog">Blog</a>
+      </li>
+      {% endif %}
     </ul>
     <form class="form-inline my-2 my-lg-0" action='/search/'>
       <input class="form-control mr-sm-2" type="search" placeholder="Search" name='q' aria-label="Search">
