@@ -8,7 +8,8 @@
 <font color = 'black'>
 
 <h3>{{ content }}</h3><br>
-{% if activated %}
+
+{% if activated is True %}
 <form method='POST'> {% csrf_token %}
     <div class="card border-secondary mb-1" style="max-width: 32rem;">
     {{ form }}
