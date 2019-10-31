@@ -25,7 +25,9 @@ from .views import (
     home_page,
     #about_page,
     contact_page,
-    #example_page
+    #example_page,
+    login_page,
+    register_page
 )
 
 urlpatterns = [
@@ -42,6 +44,9 @@ urlpatterns = [
     #re_path('^about/$', about_page),
     #path('example/', example_page),
     path('contact/', contact_page),
+    path('login/', login_page),
+    path('register/', register_page),
+
 
 
 ]

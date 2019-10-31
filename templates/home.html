@@ -25,15 +25,17 @@
     {% endif %}
 
     {% if not user.is_authenticated %}
-        <font color = 'red'>
-        You have been not been authenticated.<br>
+        <a class="btn btn-primary" href="/login">Login to continue</a>
+    
+    <!-- <font color = 'red'>
+        You have been not been authenticated.<br> -->
     {% endif %}
-
+<!-- 
     {% if ascii_art %}
         <pre>
         <p style="font-size:2px">
         <font color = 'white'> {{ascii_art}}
         </pre>
-    {% endif %}
+    {% endif %} -->
 
 {% endblock %}

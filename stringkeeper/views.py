@@ -1,16 +1,16 @@
-import os, time, random
+import os, time, random, socket
 from time import sleep
 from random import *
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template.loader import get_template
 from django.utils import timezone
 import stringkeeper.standalone_tools
 import datetime
 from django.utils.timezone import utc
 from random import randint
-
-from stringkeeper.forms import ContactForm
+from django.contrib.auth import authenticate, login, get_user_model
+from .forms import ContactForm, LoginForm, RegisterForm
 from blog.models import BlogPost
 
 tools = stringkeeper.standalone_tools.Tools()
@@ -47,46 +47,92 @@ def home_page(request):
     else:
         my_title += str(' ' + str(' visitor ') + str(user_ip))
 
-    #my_list = [1,2,3,4,5]
-
-    #template_name   = 'title.txt'
-    #template_obj    = get_template(template_name)
-    #rendered_string = template_obj.render(context)
-    #print(rendered_string)
     context = {
         'user_ip': user_ip,
-        #'my_list': my_list,
         'title': my_title,
         'subtitle': subtitle,
         'ascii_art': ascii_art,
         'blog_list': qs}
-    #doc = '<h1>{title}</h1>'.format(title=title)
-    #django_rendered_doc = '<h1>{{title}}</h1>'.format(title=title)
-    #return HttpResponse("<h1>This site is under construction.</h1>")
     return render(request, "home.html", context)
-
-
 
 def about_page(request):
     title = 'About this site...'
     return render(request, "about.html", {'title': title})
     #return HttpResponse("<h1>about.</h1>")
 
-
 def contact_page(request):
-    form = ContactForm(request.POST or None)
-    if form.is_valid():
-        print(form.cleaned_data)
+    ascii_art = get_ascii_art()
+    contact_form = ContactForm(request.POST or None)
+    
+    if contact_form.is_valid():
+        print(contact_form.cleaned_data)
         form = ContactForm()
+    
     context = {
         'title': 'Contact',
-        'content': 'Welcome to the contact page.'
+        'content': 'Send us an inquiry: ',
+        'form': contact_form,
+        'ascii_art': ascii_art
     }
-    return render(request, "contact_page.html", context)
+    return render(request, "contact/view.html", context)
 
+def login_page(request):
+    ascii_art = get_ascii_art()
+    #djangoproject.com - how-to-log-a-user-in
+    form = LoginForm(request.POST or None)
+    context = {
+        'form': form,
+        'ascii_art': ascii_art
+    }
+    #print('request.user.is_authenticated: ' + 
+    #str(request.user.is_authenticated))
+    if form.is_valid():
+        print(form.cleaned_data)
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(request, username=username, password=password)
+        print(str(user))
+        #print(str(request.user.is_authenticated))
+        if user is not None:
+            #redirect to success page
+            #print(str(request.user.is_authenticated))
+            login(request, user)
+            context['form'] = LoginForm()
+            return redirect('/')
+        else:
+            #return an invalid login message
+            print('Error')
 
+    return render(request, "auth/login.html", context)
+
+User = get_user_model()
+def register_page(request):
+    ascii_art = get_ascii_art()
+    form = RegisterForm(request.POST or None)
+    if socket.gethostname() == 'tr3b':
+        
+        context = {
+            'content': 'Registration is not available on the production server during construction.',
+            'activated': False,
+            'ascii_art': ascii_art,
+        }
+    else:
+        context = {
+            'form': form,
+            'activated': False,
+            'ascii_art': ascii_art,
+        }
+    if form.is_valid():
+        print(form.cleaned_data)
+        username = form.cleaned_data.get('username')
+        email = form.cleaned_data.get('email')
+        password = form.cleaned_data.get('password')
+        new_user = User.objects.create_user(username, email, password)
+        print(new_user)
+    return render(request, "auth/register.html", context)
 
 def example_page(request):
+    ascii_art = get_ascii_art()
     context         = {'title': 'Example'}
     template_name   = 'base.html'
     template_obj    = get_template(template_name)

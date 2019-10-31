@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+
+<p style="font-family: 'Courier New', Courier, monospace; font-size:16px">
+<font color = 'black'>
+
+<h3>{{ content }}</h3><br>
+{% if activated %}
+<form method='POST'> {% csrf_token %}
+    <div class="card border-secondary mb-1" style="max-width: 32rem;">
+    {{ form }}
+
+    </div>
+    <div class="card border-info mb-3" style="max-width: 32rem;">
+            <button type='submit' class='btn btn-default'>Send</button>
+    </div>
+</form>
+{% endif %}
+
+<a class="btn btn-primary" href="/">Return to home</a>
+
+{% endblock %}
