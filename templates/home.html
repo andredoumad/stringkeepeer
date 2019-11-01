@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block head_title %} Hello. {% endblock %}
 {% block content %}
-    <p style="font-family: 'Courier New', Courier, monospace; font-size:16px">
+    <p style="font-family: 'Palatino'; font-size:14px">
     <font color = 'white'>
     {% if title %}
         <font color = 'white'> {{ title }}<br>
@@ -14,7 +14,7 @@
     <font color = 'orange'> Request user: <font color = 'white'> {{ request.user }}<br>
     <font color = 'orange'> Request path: <font color = 'white'> {{ request.path }}<br>
     <font color = 'orange'> User: <font color = 'white'> {{ user }}<br>
-    <font color = 'orange'> Authenticated: <font color = 'white'> {{ user.is_authenticated }}<br>
+    <font color = 'orange'> Authenticated: <font color = 'white'> {{ user.is_authenticated }}<br><br>
 
     {% if user.is_authenticated %}
         <font color = 'green'> You have been Authenticated.<br>
@@ -25,7 +25,7 @@
     {% endif %}
 
     {% if not user.is_authenticated %}
-        <a class="btn btn-primary" href="/login">Login to continue</a>
+        <a class="btn btn-info" href="/login">Log in to continue</a>
     
     <!-- <font color = 'red'>
         You have been not been authenticated.<br> -->

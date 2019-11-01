@@ -7,6 +7,7 @@ from django.utils import timezone
 # Create your views here.
 from blog.forms import BlogPostModelForm
 from blog.models import BlogPost
+from stringkeeper.views import get_ascii_art
 
 # CRUD
 # GET -> Retrieve / List
@@ -14,6 +15,7 @@ from blog.models import BlogPost
 # Create Retrieve Update Delete
 
 def blog_post_list_view(request):
+    ascii_art = get_ascii_art()
     #now = timezone.now()
     # list out objects
     # could be search
@@ -28,7 +30,10 @@ def blog_post_list_view(request):
         #combbines queries of the same class and then uses only the ones that are unique
         qs = (qs | my_qs).distinct()
     template_name = 'blog/list.html'
-    context = {'object_list': qs}
+    context = {
+        'object_list': qs,
+        'ascii_art': ascii_art
+        }
     return render(request, template_name, context)
 
 #wrapper that goes around this view
@@ -40,6 +45,7 @@ def blog_post_list_view(request):
 
 @staff_member_required
 def blog_post_create_view(request):
+    ascii_art = get_ascii_art()
     # create objects
     # use forms
     # request.user -> return something
@@ -62,33 +68,49 @@ def blog_post_create_view(request):
         # ** turns the data from the from , each key value pair into ARGUMENTS :)
         #obj = BlogPost.objects.create(**form.cleaned_data)
     template_name = 'form.html'
-    context = {'form': form}
+    context = {
+        'form': form,
+        'ascii_art': ascii_art
+        }
     return render(request, template_name, context)
 
 def blog_post_detail_view(request, slug):
+    ascii_art = get_ascii_art()
     # retrieve
     # 1 object -> detail view
     obj = get_object_or_404(BlogPost, slug=slug)
     template_name = 'blog/detail.html'
-    context = {'object': obj}
+    context = {
+        'object': obj,
+        'ascii_art': ascii_art
+        }
     return render(request, template_name, context)
 
 @staff_member_required
 def blog_post_update_view(request, slug):
+    ascii_art = get_ascii_art()
     obj = get_object_or_404(BlogPost, slug=slug)
     form = BlogPostModelForm(request.POST or None, instance=obj)
     if form.is_valid():
         form.save()
     template_name = 'form.html'
-    context = {'title': f'Update {obj.title}', 'form': form}
+    context = {
+        'title': f'Update {obj.title}',
+        'form': form,
+        'ascii_art': ascii_art        
+        }
     return render(request, template_name, context)
 
 @staff_member_required
 def blog_post_delete_view(request, slug):
+    ascii_art = get_ascii_art()
     obj = get_object_or_404(BlogPost, slug=slug)
     template_name = 'blog/delete.html'
     if request.method == 'POST':
         obj.delete()
         return redirect('/blog')
-    context = {'object': obj}
+    context = {
+        'object': obj,
+        'ascii_art': ascii_art
+        }
     return render(request, template_name, context)
