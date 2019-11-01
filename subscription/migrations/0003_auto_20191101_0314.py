@@ -6,12 +6,12 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0002_product_price'),
+        ('subscription', '0002_subscription_price'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
+            model_name='subscription',
             name='price',
             field=models.DecimalField(decimal_places=2, default=0.0, max_digits=20),
             preserve_default=False,
