@@ -169,6 +169,7 @@ INSTALLED_APPS = [
     'blog',
     'searches',
     'storages',
+    'products',
     
 ]
 
