@@ -119,6 +119,13 @@ systemctl restart gunicorn.socket gunicorn.service nginx.service ; systemctl sta
 http://127.0.0.1
 
 
+
+amazon aurora postgresql
+aurora postgresql 10.7
+stringkeeper-django-mysql
+root
+r00tp0strgr3sqlstr1ngk33p3r
+
 """
 
 import os
@@ -209,12 +216,24 @@ WSGI_APPLICATION = 'stringkeeper.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        
+        #standard localhost settings
+        #'ENGINE': 'django.db.backends.mysql',
+        #'NAME': 'stringkeeper',
+        #'USER': 'root',
+        #'PASSWORD': 'r00t@str1ngk33p3r',
+        #'HOST': 'localhost',
+        #'PORT': '',
+        
+        
+        #local postgre settings
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'stringkeeper',
         'USER': 'root',
-        'PASSWORD': 'r00t@str1ngk33p3r',
+        'PASSWORD': 'r00tp0strgr3sqlstr1ngk33p3r',
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '5432',
+        
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
