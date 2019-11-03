@@ -227,13 +227,22 @@ DATABASES = {
         
         
         #local postgre settings
+        #'ENGINE': 'django.db.backends.postgresql',
+        #'NAME': 'stringkeeper',
+        #'USER': 'root',
+        #'PASSWORD': 'r00tp0strgr3sqlstr1ngk33p3r',
+        #'HOST': 'localhost',
+        #'PORT': '5432',
+        
+
+        #amazon rds postgre settings
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'stringkeeper',
         'USER': 'root',
         'PASSWORD': 'r00tp0strgr3sqlstr1ngk33p3r',
-        'HOST': 'localhost',
+        'HOST': 'stringkeeper.c23mwd8ntiyq.us-west-2.rds.amazonaws.com',
         'PORT': '5432',
-        
+
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
