@@ -12,6 +12,8 @@
 {% if user.is_authenticated %}
     {{object.title}}<br/>
     {{object.description}}<br/>
+    {{ object.image.url}}<br/>
+    <img src='{{ object.image.url }}' class='img-fluid' />
 {% endif %}
 
 {% endblock %}
