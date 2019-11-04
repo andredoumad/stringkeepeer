@@ -23,7 +23,7 @@ from subscription.views import SubscriptionListView, subscription_list_view, Sub
 from searches.views import search_view
 from .views import (
     home_page,
-    #about_page,
+    about_page,
     contact_page,
     #example_page,
     login_page,
