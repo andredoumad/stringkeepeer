@@ -19,8 +19,21 @@ from django.urls import path, re_path, include #url
 from blog.views import (
     blog_post_create_view,
 )
-from subscription.views import SubscriptionListView, subscription_list_view, SubscriptionDetailView, subscription_detail_view
+
+from subscription.views import (
+    SubscriptionListView, 
+    subscription_list_view, 
+    
+    SubscriptionDetailView, 
+    subscription_detail_view,
+
+    SubscriptionFeaturedListView,    
+    SubscriptionFeaturedDetailView, 
+
+)
+
 from searches.views import search_view
+
 from .views import (
     home_page,
     about_page,
@@ -49,10 +62,18 @@ urlpatterns = [
     
     #two examples here:
     #djangoproject.com django-views-generic list view
+    path('featured/', SubscriptionFeaturedListView.as_view()),
+    re_path(r'^featured/(?P<pk>\d+)/$', SubscriptionFeaturedDetailView.as_view()), # as view means callable
+    re_path(r'^featured/(?P<slug>[\w-]+)/$', SubscriptionDetailSlugView.as_view()), 
+
+
     path('subscription/', SubscriptionListView.as_view()), # as view means callable 
     path('subscription-fbv/', subscription_list_view),
+
     re_path(r'^subscription/(?P<pk>\d+)/$', SubscriptionDetailView.as_view()), # as view means callable 
-    re_path(r'^subscription-fbv/(?P<pk>\d+)/$', subscription_detail_view) 
+    re_path(r'^subscription-fbv/(?P<pk>\d+)/$', subscription_detail_view)
+
+
 
 
 

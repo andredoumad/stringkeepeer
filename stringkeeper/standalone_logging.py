@@ -2,6 +2,7 @@ import inspect
 import os.path
 import socket
 from datetime import datetime
+from stringkeeper.standalone_logging import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print('standalone logging BASE_DIR: ' + str(BASE_DIR) )
@@ -46,10 +47,15 @@ if b_fp == True:
 
 def eventlog(logstring):
     # get the caller's stack frame and extract its file path
-    frame_info = inspect.stack()[1]
-    caller_filepath = frame_info.filename  # in python 3.5+, you can use frame_info.filename
-    del frame_info  # drop the reference to the stack frame to avoid reference cycles
-
+    #frame_info = inspect.stack()[1]
+    previous_frame = inspect.currentframe().f_back
+    (filename, line_number, 
+     function_name, lines, index) = inspect.getframeinfo(previous_frame)
+      
+    #caller_filepath = frame_info.filename  # in python 3.5+, you can use frame_info.filename
+    #caller_linenumber = frame_info.caller_linenumber
+    del previous_frame  # drop the reference to the stack frame to avoid reference cycles
+    caller_filepath = filename
     # make the path absolute (optional)
     caller_filepath = os.path.abspath(caller_filepath)
     caller_filename = ''
@@ -58,12 +64,21 @@ def eventlog(logstring):
             caller_filename += str('-')
         else:
             caller_filename += str(ch)
-    if len(caller_filename) > 50:
-        caller_filename = caller_filename[-50:]
+    if len(caller_filename) > 25:
+        caller_filename = caller_filename[-25:]
     caller_filename += '_log.txt'
-    print(logstring)
-    log_filepath = str(log_directory_path + '/' + str(caller_filename))
-    print('log_filepath: ' + str(log_filepath))
+    debug_line_number = line_number
+    if line_number < 10:
+        debug_line_number = str('0000' + str(line_number))        
+    elif line_number < 100:
+        debug_line_number = str('000' + str(line_number))
+    elif line_number < 1000:
+        debug_line_number = str('00' + str(line_number))
+    elif line_number < 10000:
+        debug_line_number = str('0' + str(line_number))
+    print('|eventlog| ' + str(filename)[-25:] + ' | ' + str(debug_line_number) + ' | ' + str(logstring))
+    log_filepath = str(str(log_directory_path) + '/' + str(caller_filename))
+    #print('log_filepath: ' + str(log_filepath))
     #with open(log_filepath, 'a+') as f:
     #    timestamp = str(datetime.today().strftime('%H:%M:%S'))
     #    f.write(str(timestamp + ' || ' + logstring))
