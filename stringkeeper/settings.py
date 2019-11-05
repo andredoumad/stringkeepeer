@@ -163,6 +163,7 @@ eventlog(socket.gethostname())
 ALLOWED_HOSTS = ['www.stringkeeper.com', '*']
 
 LOGIN_URL = '/login'
+LOGOUT_REDIRECT_URL = '/'
 
 # Application definition
 # components

@@ -45,6 +45,29 @@ def subscription_list_view(request):
     }
     return render(request, "subscription/list.html", context)
 
+class SubscriptionDetailSlugView(DetailView):
+    queryset = Subscription.objects.all()
+    template_name = "subscription/detail.html"
+
+    def get_object(self, *args, **kwargs):
+        request = self.request
+        slug = self.kwargs.get('slug')
+        #instance = get_object_or_404(Subscription, slug=slug, active=True)
+        #eventlog('instance: ' + str(instance))
+        try:
+            instance = Subscription.objects.get(slug=slug, active=True)
+        except Subscription.DoesNotExist:
+            raise Http404("Not Found...")
+        except Subscription.MultipleObjectsReturned:
+            qs = Subscription.objects.filter(slug=slug, active=True)
+            instance = qs.first()
+        except:
+            raise Http404("This is odd... I couldn't find what you're looking for.")
+        
+        eventlog('instance: ' + str(instance))
+        return instance
+
+
 class SubscriptionDetailView(DetailView):
     #everything in the database
     #queryset = Subscription.objects.all()

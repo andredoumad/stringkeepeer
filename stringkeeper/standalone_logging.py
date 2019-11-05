@@ -5,7 +5,7 @@ from datetime import datetime
 from stringkeeper.standalone_logging import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print('standalone logging BASE_DIR: ' + str(BASE_DIR) )
+
 filepath_hostname = str(socket.gethostname())
 final_filepath_hostname = ''
 for ch in filepath_hostname:
@@ -85,4 +85,5 @@ def eventlog(logstring):
     #    f.write('\n')
     #    f.close()
 
+eventlog('standalone logging BASE_DIR: ' + str(BASE_DIR) )
 eventlog('log_directory_path ' + log_directory_path)

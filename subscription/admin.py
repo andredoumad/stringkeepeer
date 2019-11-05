@@ -6,7 +6,7 @@ from .models import Subscription
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'slug']
     class Meta:
-        model = Product
+        model = Subscription
 
 
 admin.site.register(Subscription)

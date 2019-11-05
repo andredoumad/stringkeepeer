@@ -1,7 +1,8 @@
 import random, os
 from django.db import models
 from stringkeeper.standalone_logging import *
-
+from .utils import unique_slug_generator
+from django.db.models.signals import pre_save, post_save
 # Create your models here.
 
 def get_filename_ext(filepath):
@@ -50,7 +51,7 @@ class SubscriptionManager(models.Manager):
 
 class Subscription(models.Model): 
     title           = models.CharField(max_length=120)
-    slug            = models.SlugField(blank=True)
+    slug            = models.SlugField(blank=True, unique=True)
     description     = models.TextField()
     price           = models.DecimalField(max_digits=20,  decimal_places=2)
     image           = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
@@ -62,3 +63,10 @@ class Subscription(models.Model):
     #this will show the overriding the 'class name' by the title string
     def __str__(self):
         return self.title
+
+
+def subscription_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(subscription_pre_save_receiver, sender=Subscription)

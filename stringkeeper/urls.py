@@ -28,9 +28,12 @@ from subscription.views import (
     subscription_detail_view,
 
     SubscriptionFeaturedListView,    
-    SubscriptionFeaturedDetailView, 
+    SubscriptionFeaturedDetailView,
+    SubscriptionDetailSlugView
 
 )
+
+from django.views.generic.base import TemplateView # new
 
 from searches.views import search_view
 
@@ -64,14 +67,15 @@ urlpatterns = [
     #djangoproject.com django-views-generic list view
     path('featured/', SubscriptionFeaturedListView.as_view()),
     re_path(r'^featured/(?P<pk>\d+)/$', SubscriptionFeaturedDetailView.as_view()), # as view means callable
-    re_path(r'^featured/(?P<slug>[\w-]+)/$', SubscriptionDetailSlugView.as_view()), 
-
 
     path('subscription/', SubscriptionListView.as_view()), # as view means callable 
     path('subscription-fbv/', subscription_list_view),
 
-    re_path(r'^subscription/(?P<pk>\d+)/$', SubscriptionDetailView.as_view()), # as view means callable 
-    re_path(r'^subscription-fbv/(?P<pk>\d+)/$', subscription_detail_view)
+    #re_path(r'^subscription/(?P<pk>\d+)/$', SubscriptionDetailView.as_view()), # as view means callable 
+    re_path(r'^subscription/(?P<slug>[\w-]+)/$', SubscriptionDetailSlugView.as_view()), 
+    re_path(r'^subscription-fbv/(?P<pk>\d+)/$', subscription_detail_view),
+
+    path('accounts/', include('django.contrib.auth.urls')),
 
 
 
