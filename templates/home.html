@@ -23,13 +23,8 @@
             {% include 'blog/list-inline.html' with blog_post=a truncate=True detail=False %}
         {% endfor %}
     {% endif %}
-
-    {% if not user.is_authenticated %}
-        <a class="btn btn-info" href="/login">Log in to continue</a>
-    
     <!-- <font color = 'red'>
         You have been not been authenticated.<br> -->
-    {% endif %}
 <!-- 
     {% if ascii_art %}
         <pre>
