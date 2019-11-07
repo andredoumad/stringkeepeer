@@ -41,6 +41,7 @@ class SubscriptionListView(ListView):
 def subscription_list_view(request):
     queryset = Subscription.objects.all()
     context = {
+        'title': 'Subscription List',
         'object_list': queryset
     }
     return render(request, "subscription/list.html", context)
@@ -127,6 +128,7 @@ def subscription_detail_view(request, pk=None, *args, **kwargs):
 
 
     context = {
+        'title': 'Subscription Details',
         'object': instance
     }
     return render(request, "subscription/detail.html", context)

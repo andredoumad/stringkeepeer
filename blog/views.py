@@ -31,6 +31,7 @@ def blog_post_list_view(request):
         qs = (qs | my_qs).distinct()
     template_name = 'blog/list.html'
     context = {
+        'title': 'blog',
         'object_list': qs,
         'ascii_art': ascii_art
         }
@@ -69,6 +70,7 @@ def blog_post_create_view(request):
         #obj = BlogPost.objects.create(**form.cleaned_data)
     template_name = 'form.html'
     context = {
+        'title': 'blog create',
         'form': form,
         'ascii_art': ascii_art
         }
@@ -81,6 +83,7 @@ def blog_post_detail_view(request, slug):
     obj = get_object_or_404(BlogPost, slug=slug)
     template_name = 'blog/detail.html'
     context = {
+        'title': 'blog detail',
         'object': obj,
         'ascii_art': ascii_art
         }
@@ -95,6 +98,7 @@ def blog_post_update_view(request, slug):
         form.save()
     template_name = 'form.html'
     context = {
+        'title': 'blog update',
         'title': f'Update {obj.title}',
         'form': form,
         'ascii_art': ascii_art        
@@ -110,6 +114,7 @@ def blog_post_delete_view(request, slug):
         obj.delete()
         return redirect('/blog')
     context = {
+        'title': 'blog delete',
         'object': obj,
         'ascii_art': ascii_art
         }
