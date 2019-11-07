@@ -1,0 +1,27 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      {% include 'base/css.html' %}
+      <title>{% block title %} Under Construction {% endblock %}</title>
+  </head>
+  <body style="background-color:rgb(61, 70, 78);">
+    {% include 'navbar.html' %}
+    <div class='container-fluid'>
+      {% block content %}
+      {% endblock %}
+
+      {% if ascii_art %}
+      <pre>
+        <p style="font-size:2px">
+        <font color = '#85C1E9'> {{ascii_art}}
+      </pre>
+      {% endif %}
+    </div>
+    {% include 'base/js.html' %}
+  </body>
+</html>

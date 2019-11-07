@@ -60,6 +60,9 @@ class Subscription(models.Model):
 
     objects = SubscriptionManager()
     
+    def get_absolute_url(self):
+        return "/subscriptions/{slug}/".format(slug=self.slug)
+
     #this will show the overriding the 'class name' by the title string
     def __str__(self):
         return self.title
