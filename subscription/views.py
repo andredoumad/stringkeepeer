@@ -3,6 +3,7 @@ from django.http import Http404
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render, get_object_or_404
 from stringkeeper.standalone_logging import *
+import stringkeeper.standalone_tools
 # Create your views here.
 
 from .models import Subscription
@@ -42,7 +43,8 @@ def subscription_list_view(request):
     queryset = Subscription.objects.all()
     context = {
         'title': 'Subscription List',
-        'object_list': queryset
+        'object_list': queryset,
+        'ascii_art': ascii_art
     }
     return render(request, "subscription/list.html", context)
 
@@ -96,6 +98,7 @@ class SubscriptionDetailView(DetailView):
 
 
 def subscription_detail_view(request, pk=None, *args, **kwargs):
+    ascii_art = get_ascii_art()
     #pk stands for primary key
     eventlog('pk = ' + str(pk))
     eventlog('args = ' + str(args))
@@ -129,6 +132,7 @@ def subscription_detail_view(request, pk=None, *args, **kwargs):
 
     context = {
         'title': 'Subscription Details',
-        'object': instance
+        'object': instance,
+        'ascii_art': ascii_art
     }
     return render(request, "subscription/detail.html", context)

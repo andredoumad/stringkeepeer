@@ -1,0 +1,58 @@
+{% url 'home' as home_url %}
+{% url 'auth_login' as auth_login_url %}
+{% url 'auth_register' as auth_register_url %}
+{% url 'blog:list' as blog_url %}
+{% url 'subscription:list' as subscription_url %}
+{% url 'contact' as contact_url %}
+{% url 'logout' as logout_url %}
+
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{{ home_url }}">Stringkeeper | {{ request.user|truncatechars_html:14 }}</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <!-- <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+      </li> -->
+
+      {% if not user.is_authenticated %}
+        <li class="nav-item {% if request.path == auth_login_url  %}active{% endif %}">
+          <a class="nav-link" href="{{ auth_login_url }}">Login</a>
+        </li>
+        <li class="nav-item {% if request.path == auth_register_url  %}active{% endif %}">
+          <a class="nav-link" href="{{ auth_register_url }}">Register</a>
+        </li>
+      {% endif %}
+
+      {% if user.is_authenticated %}
+      <li class="nav-item {% if request.path == home_url  %}active{% endif %}">
+          <a class="nav-link" href="{{ home_url }}">Home</a>
+        </li>
+      <li class="nav-item {% if request.path == blog_url  %}active{% endif %}">
+        <a class="nav-link" href="{{ blog_url }}">Blog</a>
+      </li>
+      <li class="nav-item {% if request.path == subscription_url  %}active{% endif %}">
+        <a class="nav-link" href="{{ subscription_url }}">Subscriptions</a>
+      </li>
+      <li class="nav-item {% if request.path == contact_url  %}active{% endif %}">
+          <a class="nav-link" href="{{ contact_url }}">Contact</a>
+      </li>
+      <li class="nav-item">
+          <a class='nav-link' href="/admin">Admin</a>
+      </li>
+      <li class="nav-item {% if request.path == logout_url  %}active{% endif %}">
+          <!-- <a class='nav-link' href="{% url 'logout' %}">Logout</a> -->
+          <a class='nav-link' href="{{ logout_url }}">Logout</a>
+      </li>
+      {% endif %}
+    </ul>
+
+    <form class="form-inline my-2 my-lg-0" action='/search/'>
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" name='q' aria-label="Search">
+      <!-- <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button> -->
+    </form>
+  </div>
+</nav>

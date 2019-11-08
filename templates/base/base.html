@@ -12,18 +12,21 @@
 
   </head>
   <body style="background-color:rgb(61, 70, 78);">
-    {% include 'navbar.html' %}
+    {% include 'base/navbar.html' %}
     <div class='container-fluid'>
       {% block content %}
       {% endblock %}
 
-      {% if ascii_art %}
-      <pre>
-        <p style="font-size:2px">
-        <font color = '#85C1E9'> {{ascii_art}}
-      </pre>
-      {% endif %}
+
     </div>
     {% include 'base/js.html' %}
+    <footer class="container-fluid">
+        {% if ascii_art %}
+        <pre>
+          <p style="font-size:2px">
+          <font color = '#85C1E9'> {{ascii_art}}
+        </pre>
+        {% endif %}
+    </footer>
   </body>
 </html>

@@ -46,12 +46,13 @@ from .views import (
     register_page
 )
 
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', home_page),
+    path('admin/', admin.site.urls, name='site_admin'),
+    path('', home_page, name='home'),
 
     path('blog-new/', blog_post_create_view),
-    path('blog/', include('blog.urls')),
+    path('blog/', include('blog.urls', namespace='blog'), name='blog'),
     path('search/', search_view),
     #old django == re_path(r'^blog/(?P<slug>\w+)/$', blog_post_detail_page),
     #path('page/', about_page),
@@ -59,11 +60,11 @@ urlpatterns = [
     #re_path(r'^pages?/$', about_page),
     #re_path('^about/$', about_page),
     #path('example/', example_page),
-    path('contact/', contact_page),
-    path('login/', login_page),
-    path('register/', register_page),
+    path('contact/', contact_page, name='contact'),
+    path('login/', login_page, name='auth_login'),
+    path('register/', register_page, name='auth_register'),
     #path('subscriptions/', include('subscription.urls')),
-    path('subscriptions/', include('subscription.urls')),
+    path('subscriptions/', include('subscription.urls', namespace='subscription'), name='subscription'),
     #two examples here:
     #djangoproject.com django-views-generic list view
     # path('featured/', SubscriptionFeaturedListView.as_view()),

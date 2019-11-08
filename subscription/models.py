@@ -3,6 +3,7 @@ from django.db import models
 from stringkeeper.standalone_logging import *
 from .utils import unique_slug_generator
 from django.db.models.signals import pre_save, post_save
+from django.urls import reverse
 # Create your models here.
 
 def get_filename_ext(filepath):
@@ -61,7 +62,8 @@ class Subscription(models.Model):
     objects = SubscriptionManager()
     
     def get_absolute_url(self):
-        return "/subscriptions/{slug}/".format(slug=self.slug)
+        #return "/subscriptions/{slug}/".format(slug=self.slug)
+        return reverse("subscription:detail", kwargs={"slug": self.slug})
 
     #this will show the overriding the 'class name' by the title string
     def __str__(self):
