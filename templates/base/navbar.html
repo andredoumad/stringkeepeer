@@ -6,7 +6,7 @@
 {% url 'contact' as contact_url %}
 {% url 'logout' as logout_url %}
 
-<nav class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
+<nav class="navbar sticky-top navbar-expand-sm navbar-dark bg-dark">
   <!-- <a class="navbar-brand" href="{{ home_url }}">Stringkeeper | {{ request.user|truncatechars_html:14 }}</a> -->
   <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">Navigation</button> -->
 
@@ -56,13 +56,28 @@
       {% endif %}
     </ul>
   </div>
-
+<!--   
   <div class='mx-auto' style='width: 500px;'>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
       <form class="form" action='/search/'>
         <input class="form-control" type="search" placeholder="Search" name='q' aria-label="Search">
       </form>
-  </div>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-  </button>
+  </div> -->
+
+  <form class="form-inline" action='/search/'>
+      <div class="input-group">
+        <div class="input-group-prepend">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+              <!-- <span class="navbar-toggler-icon"></span> -->
+            <!-- <span class="input-group-text" id="basic-addon1">Menu</span> -->
+          </button>
+        
+        <!-- <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"> -->
+        <input class="form-control form-control-mx" type="search" placeholder="Search" name='q' aria-label="Search" aria-describedby="basic-addon1">
+      </div>
+      </div>
+    </form>
 </nav>
