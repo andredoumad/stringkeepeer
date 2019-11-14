@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, re_path, include #url
+from django.views.generic import TemplateView
 from blog.views import (
     blog_post_create_view,
 )
@@ -63,6 +64,7 @@ urlpatterns = [
     path('contact/', contact_page, name='contact'),
     path('login/', login_page, name='auth_login'),
     path('register/', register_page, name='auth_register'),
+    path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),
     #path('subscriptions/', include('subscription.urls')),
     path('subscriptions/', include('subscription.urls', namespace='subscription'), name='subscription'),
     #two examples here:

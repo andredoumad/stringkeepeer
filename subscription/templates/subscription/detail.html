@@ -10,8 +10,9 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-    {{object.title}}<br/>
-    {{object.description}}<br/>
+    <h1>{{object.title}}</h1><br/>
+    <h2>Updated {{ object.timestamp |timesince}} ago.</h2><br/>
+    {{object.description|linebreaks}}<br/>
     {% if object.image %}
         {{ object.image.url}}<br/>
         <img src='{{ object.image.url }}' class='img-fluid' />

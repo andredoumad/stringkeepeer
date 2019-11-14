@@ -6,8 +6,10 @@
 {% url 'contact' as contact_url %}
 {% url 'logout' as logout_url %}
 
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="{{ home_url }}">Stringkeeper | {{ request.user|truncatechars_html:14 }}</a>
+<nav class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
+  <!-- <a class="navbar-brand" href="{{ home_url }}">Stringkeeper | {{ request.user|truncatechars_html:14 }}</a> -->
+  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">Navigation</button> -->
+
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -17,6 +19,13 @@
       <!-- <li class="nav-item">
         <a class="nav-link" href="/">Home</a>
       </li> -->
+
+      <!-- <form class="form-inline" action='/search/'>
+        <input class="form-control" type="search" placeholder="Search" name='q' aria-label="Search"> -->
+        <!-- <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button> -->
+      <!-- </form> -->
+
+
 
       {% if not user.is_authenticated %}
         <li class="nav-item {% if request.path == auth_login_url  %}active{% endif %}">
@@ -49,10 +58,12 @@
       </li>
       {% endif %}
     </ul>
-
-    <form class="form-inline my-2 my-lg-0" action='/search/'>
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" name='q' aria-label="Search">
-      <!-- <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button> -->
-    </form>
   </div>
+    <div class='mx-auto' style='width: 600px;'>
+        <form class="form" action='/search/'>
+        <input class="form-control" type="search" placeholder="Search" name='q' aria-label="Search">
+        <!-- <input type='text' class='form-control' placeholder='Search'> -->
+        </form>
+    </div>
+
 </nav>
