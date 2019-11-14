@@ -10,9 +10,6 @@
   <!-- <a class="navbar-brand" href="{{ home_url }}">Stringkeeper | {{ request.user|truncatechars_html:14 }}</a> -->
   <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">Navigation</button> -->
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
@@ -59,10 +56,13 @@
       {% endif %}
     </ul>
   </div>
-  <div class='mx-auto' style='width: 250px;'>
+
+  <div class='mx-auto' style='width: 500px;'>
       <form class="form" action='/search/'>
-      <input class="form-control" type="search" placeholder="Search" name='q' aria-label="Search">
-      <!-- <input type='text' class='form-control' placeholder='Search'> -->
+        <input class="form-control" type="search" placeholder="Search" name='q' aria-label="Search">
       </form>
   </div>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+  </button>
 </nav>
