@@ -9,69 +9,76 @@
 <nav class="navbar sticky-top navbar-expand-sm navbar-dark bg-dark mb-3">
   <!-- <a class="navbar-brand" href="{{ home_url }}">Stringkeeper | {{ request.user|truncatechars_html:14 }}</a> -->
   <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">Navigation</button> -->
+  <div class='container'>
+    <div class='row'>
+      <div class='col-12'>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li> -->
 
-    <ul class="navbar-nav mr-auto">
-      
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="/">Home</a>
-      </li> -->
-
-      <!-- <form class="form-inline" action='/search/'>
-        <input class="form-control" type="search" placeholder="Search" name='q' aria-label="Search"> -->
-        <!-- <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button> -->
-      <!-- </form> -->
+            <!-- <form class="form-inline" action='/search/'>
+              <input class="form-control" type="search" placeholder="Search" name='q' aria-label="Search"> -->
+              <!-- <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button> -->
+            <!-- </form> -->
 
 
 
-      {% if not user.is_authenticated %}
-        <li class="nav-item {% if request.path == auth_login_url  %}active{% endif %}">
-          <a class="nav-link" href="{{ auth_login_url }}">Login</a>
-        </li>
-        <li class="nav-item {% if request.path == auth_register_url  %}active{% endif %}">
-          <a class="nav-link" href="{{ auth_register_url }}">Register</a>
-        </li>
-      {% endif %}
+            {% if not user.is_authenticated %}
+              <li class="nav-item {% if request.path == auth_login_url  %}active{% endif %}">
+                <a class="nav-link" href="{{ auth_login_url }}">Login</a>
+              </li>
+              <li class="nav-item {% if request.path == auth_register_url  %}active{% endif %}">
+                <a class="nav-link" href="{{ auth_register_url }}">Register</a>
+              </li>
+            {% endif %}
 
-      {% if user.is_authenticated %}
-      <li class="nav-item {% if request.path == home_url  %}active{% endif %}">
-          <a class="nav-link" href="{{ home_url }}">Home</a>
-        </li>
-      <li class="nav-item {% if request.path == blog_url  %}active{% endif %}">
-        <a class="nav-link" href="{{ blog_url }}">Blog</a>
-      </li>
-      <li class="nav-item {% if request.path == subscription_url  %}active{% endif %}">
-        <a class="nav-link" href="{{ subscription_url }}">Subscriptions</a>
-      </li>
-      <li class="nav-item {% if request.path == contact_url  %}active{% endif %}">
-          <a class="nav-link" href="{{ contact_url }}">Contact</a>
-      </li>
-      <li class="nav-item">
-          <a class='nav-link' href="/admin">Admin</a>
-      </li>
-      <li class="nav-item {% if request.path == logout_url  %}active{% endif %}">
-          <!-- <a class='nav-link' href="{% url 'logout' %}">Logout</a> -->
-          <a class='nav-link' href="{{ logout_url }}">Logout</a>
-      </li>
-      {% endif %}
-    </ul>
-  </div>
+            {% if user.is_authenticated %}
+            <li class="nav-item {% if request.path == home_url  %}active{% endif %}">
+                <a class="nav-link" href="{{ home_url }}">Home</a>
+              </li>
+            <li class="nav-item {% if request.path == blog_url  %}active{% endif %}">
+              <a class="nav-link" href="{{ blog_url }}">Blog</a>
+            </li>
+            <li class="nav-item {% if request.path == subscription_url  %}active{% endif %}">
+              <a class="nav-link" href="{{ subscription_url }}">Subscriptions</a>
+            </li>
+            <li class="nav-item {% if request.path == contact_url  %}active{% endif %}">
+                <a class="nav-link" href="{{ contact_url }}">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a class='nav-link' href="/admin">Admin</a>
+            </li>
+            <li class="nav-item {% if request.path == logout_url  %}active{% endif %}">
+                <!-- <a class='nav-link' href="{% url 'logout' %}">Logout</a> -->
+                <a class='nav-link' href="{{ logout_url }}">Logout</a>
+            </li>
+            {% endif %}
+          </ul>
 
-  <form class="form-inline" action='/search/'>
-    <div class="input-group">
-      <div class="input-group-prepend ">
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+          <form class="form-inline" action='/search/'>
+            <div class="input-group">
+              <div class="input-group-prepend ">
+        
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+        
+                </button>
+        
+                <div class='container'>
+                  <input class="form-control" type="search" placeholder="Search" name='q' aria-label="Search" aria-describedby="basic-addon1">
+                </div>
 
-        </button>
-
-        <div class='container'>
-          <input class="form-control" type="search" placeholder="Search" name='q' aria-label="Search" aria-describedby="basic-addon1">
+              </div>
+            </div>
+          </form>
         </div>
-
       </div>
     </div>
-  </form>
+  </div>
+
 </nav>
