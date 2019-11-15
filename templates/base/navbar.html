@@ -6,16 +6,18 @@
 {% url 'contact' as contact_url %}
 {% url 'logout' as logout_url %}
 
-<nav class="navbar sticky-top navbar-expand-sm navbar-dark bg-dark mb-3">
-  <!-- <a class="navbar-brand" href="{{ home_url }}">Stringkeeper | {{ request.user|truncatechars_html:14 }}</a> -->
-  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">Navigation</button> -->
-  <div class='container'>
-    <div class='row'>
-      <div class='col-12'>
+<div class='container'>
+  <div class='row'>
+    <div class='col mx-auto'>
+      <nav class="navbar sticky-top navbar-expand-sm navbar-dark bg-dark mb-3">
+
+        <!-- <a class="navbar-brand" href="{{ home_url }}">Stringkeeper | {{ request.user|truncatechars_html:14 }}</a> -->
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">Navigation</button> -->
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
           <ul class="navbar-nav mr-auto">
-            
+
             <!-- <li class="nav-item">
               <a class="nav-link" href="/">Home</a>
             </li> -->
@@ -59,26 +61,30 @@
             {% endif %}
           </ul>
 
+        
+        </div>
 
-          <form class="form-inline" action='/search/'>
-            <div class="input-group">
-              <div class="input-group-prepend ">
-        
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-        
-                </button>
-        
-                <div class='container'>
-                  <input class="form-control" type="search" placeholder="Search" name='q' aria-label="Search" aria-describedby="basic-addon1">
+
+        <form class="form-inline" action='/search/'>
+          <div class="input-group">
+            <div class="input-group-prepend ">
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+
+              <div class='container'>
+                  <div class='row'>
+                      <div class='col mx-auto'>
+                        <input class="form-control" type="search" placeholder="Search" name='q' aria-label="Search" aria-describedby="basic-addon1">
+                  </div>
                 </div>
-
               </div>
             </div>
-          </form>
-        </div>
-      </div>
+          </div>
+        </form>
+      </nav>
     </div>
   </div>
+</div>
 
-</nav>
+

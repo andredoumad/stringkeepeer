@@ -10,13 +10,14 @@
       <title>{% block title %} Under Construction {% endblock %}</title>
   </head>
 
-  {% include 'base/navbar.html' %}
-  
-  <body style="background-color:rgb(61, 70, 78);">
+{% include 'base/navbar.html' %}
 
+  <body style="background-color:rgb(61, 70, 78);">
+    
     <div class='container'>
         <div class='row'>
           <div class='col-12'>
+
             {% block content %}
             {% endblock %}
 
