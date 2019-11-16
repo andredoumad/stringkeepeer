@@ -13,6 +13,9 @@ from django.contrib.auth import authenticate, login, get_user_model
 from .forms import ContactForm, LoginForm, RegisterForm
 from blog.models import BlogPost
 
+#definition for wsgi 
+#Web Server Gateway Interface wsgi 
+
 tools = stringkeeper.standalone_tools.Tools()
 def get_time_string():
     #named_tuple = time.localtime() # get struct_time
