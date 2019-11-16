@@ -7,7 +7,7 @@
 {% url 'logout' as logout_url %}
 
 
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark mb-3">
+<nav class="navbar sticky-top navbar-expand-md navbar-dark bg-dark mb-3">
   <div class='container'>
     <!-- <a class="navbar-brand" href="{{ home_url }}">Stringkeeper | {{ request.user|truncatechars_html:14 }}</a> -->
     <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">Navigation</button> -->
@@ -25,31 +25,31 @@
         <!-- </form> -->
 
         {% if not user.is_authenticated %}
-          <li class="nav-item mx-3 {% if request.path == auth_login_url  %}active{% endif %}">
+          <li class="nav-item {% if request.path == auth_login_url  %}active{% endif %}">
             <a class="nav-link" href="{{ auth_login_url }}">Login</a>
           </li>
-          <li class="nav-item mx-3 {% if request.path == auth_register_url  %}active{% endif %}">
+          <li class="nav-item {% if request.path == auth_register_url  %}active{% endif %}">
             <a class="nav-link" href="{{ auth_register_url }}">Register</a>
           </li>
         {% endif %}
 
         {% if user.is_authenticated %}
-        <li class="nav-item mx-3 {% if request.path == home_url  %}active{% endif %}">
+        <li class="nav-item {% if request.path == home_url  %}active{% endif %}">
             <a class="nav-link" href="{{ home_url }}">Home</a>
           </li>
-        <li class="nav-item mx-3 {% if request.path == blog_url  %}active{% endif %}">
+        <li class="nav-item {% if request.path == blog_url  %}active{% endif %}">
           <a class="nav-link" href="{{ blog_url }}">Blog</a>
         </li>
-        <li class="nav-item mx-3 {% if request.path == subscription_url  %}active{% endif %}">
+        <li class="nav-item {% if request.path == subscription_url  %}active{% endif %}">
           <a class="nav-link" href="{{ subscription_url }}">Subscriptions</a>
         </li>
-        <li class="nav-item mx-3 {% if request.path == contact_url  %}active{% endif %}">
+        <li class="nav-item {% if request.path == contact_url  %}active{% endif %}">
             <a class="nav-link" href="{{ contact_url }}">Contact</a>
         </li>
-        <li class="nav-item mx-3">
+        <li class="nav-item">
             <a class='nav-link' href="/admin">Admin</a>
         </li>
-        <li class="nav-item mx-3 mb-4 {% if request.path == logout_url  %}active{% endif %}">
+        <li class="nav-item mb-4 {% if request.path == logout_url  %}active{% endif %}">
             <!-- <a class='nav-link' href="{% url 'logout' %}">Logout</a> -->
             <a class='nav-link' href="{{ logout_url }}">Logout</a>
         </li>
