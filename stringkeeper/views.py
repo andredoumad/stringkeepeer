@@ -5,7 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 from django.utils import timezone
-import stringkeeper.standalone_tools
+from stringkeeper.standalone_tools import *
+from stringkeeper.standalone_logging import *
 import datetime
 from django.utils.timezone import utc
 from random import randint
@@ -16,7 +17,7 @@ from blog.models import BlogPost
 #definition for wsgi 
 #Web Server Gateway Interface wsgi 
 
-tools = stringkeeper.standalone_tools.Tools()
+tools = Tools()
 def get_time_string():
     #named_tuple = time.localtime() # get struct_time
     now = timezone.now()
@@ -38,9 +39,10 @@ def get_ascii_art():
     return str(art_string)
 
 def home_page(request):
+    #eventlog('firstname: ' + request.session.get('first_name', 'Unknown'))
     #title = str('This site is in active development.')
     qs = BlogPost.objects.all()
-    print('BlogPost.objects.all()[:5] = ' + str(qs))
+    eventlog('BlogPost.objects.all()[:5] = ' + str(qs))
     subtitle = get_time_string()
     ascii_art = get_ascii_art()
     my_title = 'Welcome'
@@ -69,7 +71,7 @@ def contact_page(request):
     contact_form = ContactForm(request.POST or None)
     
     if contact_form.is_valid():
-        print(contact_form.cleaned_data)
+        eventlog(contact_form.cleaned_data)
         form = ContactForm()
     
     context = {
@@ -91,11 +93,11 @@ def login_page(request):
     #print('request.user.is_authenticated: ' + 
     #str(request.user.is_authenticated))
     if form.is_valid():
-        print(form.cleaned_data)
+        eventlog(form.cleaned_data)
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
         user = authenticate(request, username=username, password=password)
-        print(str(user))
+        eventlog(str(user))
         #print(str(request.user.is_authenticated))
         if user is not None:
             #redirect to success page
@@ -105,7 +107,7 @@ def login_page(request):
             return redirect('/')
         else:
             #return an invalid login message
-            print('Error')
+            eventlog('Error')
 
     return render(request, "auth/login.html", context)
 
@@ -127,12 +129,12 @@ def register_page(request):
             'ascii_art': ascii_art,
         }
     if form.is_valid():
-        print(form.cleaned_data)
+        eventlog(form.cleaned_data)
         username = form.cleaned_data.get('username')
         email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
         new_user = User.objects.create_user(username, email, password)
-        print(new_user)
+        eventlog(new_user)
     return render(request, "auth/register.html", context)
 
 def example_page(request):
