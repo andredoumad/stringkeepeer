@@ -33,19 +33,24 @@
                 {% include 'blog/list-inline.html' with blog_post=blog_item truncate=True detail=False %}
             {% endfor %} -->
             
-            
+            <!-- <div class='col'> -->
+                <div class='col-12'><hr/></div>
+                <div class='row'>
             {% for obj in object_list %}
-            <div class='col'>
+            
                 {% include 'subscription/snippets/card.html' with instance=obj %}
-                {% if forloop.counter|divisibleby:3 %}
-                </div> </div><div class='row'><div class='col-12'><hr/></div>
-            {% elif forloop.counter|divisibleby:2 %}
-                </div> </div><div class='row'><div class='col-12'><hr/></div>
-            {% else %}
 
-            </div>
+                {% if forloop.counter|divisibleby:3 %}
+                <div class='col-12'><hr/></div>
+                {% elif forloop.counter|divisibleby:2 %}
+                </div> <div class='row'><div class='col-12'><hr/></div>
+                {% else %}
+                </div> <div class='row'><div class='col-12'><hr/></div>
+                
             {% endif %}
+            
             {% endfor  %}
+            </div>
         {% else %}
             <p style="font-family: 'Palatino'; font-size:14px">
             <font color = 'orange'>
