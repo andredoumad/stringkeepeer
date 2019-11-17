@@ -1,0 +1,60 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-12 mb-3'>
+        <div class='col-12 mx-auto py-4'>
+            {% include 'searches/snippets/search-form.html' %}
+            <!-- <form class="form" action='/search/'>
+            <input class='form-control' type="search" placeholder="Search" name='q'>
+            </form> -->
+        </div>
+    <hr/>
+        {% if query %}
+            <p style="font-family: 'Palatino'; font-size:14px">
+            <font color = 'white'>
+            <div class='container'>
+                <div class='row'>
+                    <div class='col-12 mb-3'>
+                        <div class='col-12 col-md-8 mx-auto py-1'>
+                            <h4>Results for '{{ query }}': </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <form class="form-inline my-2 my-lg-0" action='/search/'>
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" name='q' aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form> -->
+        {% endif %}
+        {% if user.is_authenticated %}
+            <!-- {% for blog_item in blog_list %}
+                {% include 'blog/list-inline.html' with blog_post=blog_item truncate=True detail=False %}
+            {% endfor %} -->
+            
+            
+            {% for obj in object_list %}
+            <div class='col'>
+                {% include 'subscription/snippets/card.html' with instance=obj %}
+                {% if forloop.counter|divisibleby:3 %}
+                </div> </div><div class='row'><div class='col-12'><hr/></div>
+            {% elif forloop.counter|divisibleby:2 %}
+                </div> </div><div class='row'><div class='col-12'><hr/></div>
+            {% else %}
+
+            </div>
+            {% endif %}
+            {% endfor  %}
+        {% else %}
+            <p style="font-family: 'Palatino'; font-size:14px">
+            <font color = 'orange'>
+            Registered users may perform search queries. <br><br>
+            <a class="btn btn-info" href="/login">Log in to continue</a>
+        {% endif %}
+    </div>
+
+
+</div>
+
+{% endblock %}

@@ -4,7 +4,7 @@ from django.views.generic import ListView, DetailView
 from django.shortcuts import render, get_object_or_404
 from stringkeeper.standalone_logging import *
 import stringkeeper.standalone_tools
-# Create your views here.
+
 
 from .models import Subscription
 

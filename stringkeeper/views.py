@@ -55,7 +55,8 @@ def home_page(request):
         'title': my_title,
         'subtitle': subtitle,
         'ascii_art': ascii_art,
-        'blog_list': qs}
+        'blog_list': qs
+        }
     return render(request, "home.html", context)
 
 def about_page(request):

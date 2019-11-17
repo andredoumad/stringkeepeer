@@ -4,7 +4,7 @@ from stringkeeper.standalone_logging import *
 from .utils import unique_slug_generator
 from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
-# Create your models here.
+from django.db.models import Q
 
 def get_filename_ext(filepath):
     base_name = os.path.basename(filepath)
@@ -27,12 +27,19 @@ def upload_image_path(instance, filename):
         )
 
 
-class SubscriptionQuerySet(models.QuerySet):
+class SubscriptionQuerySet(models.query.QuerySet):
+    
     def active(self):
         return self.filter(active=True)
 
     def featured(self):
         return self.filter(featured=True, active=True)
+
+    def search(self, query):
+        eventlog(query)
+        lookups = (Q(title__icontains=query) | Q(description__icontains=query) | Q(price__icontains=query))
+        return self.filter(lookups).distinct()
+
 
 class SubscriptionManager(models.Manager):
     def get_queryset(self):
@@ -49,6 +56,10 @@ class SubscriptionManager(models.Manager):
         if qs.count() == 1:
             return qs.first() 
         return None
+    
+    def search(self, query):
+        return self.get_queryset().active().search(query)
+
 
 class Subscription(models.Model): 
     title           = models.CharField(max_length=120)

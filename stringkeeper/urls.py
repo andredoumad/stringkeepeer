@@ -54,7 +54,8 @@ urlpatterns = [
 
     path('blog-new/', blog_post_create_view),
     path('blog/', include('blog.urls', namespace='blog'), name='blog'),
-    path('search/', search_view),
+    # path('search/', search_view),
+    # path('search/', include('searches.urls', namespace='searches')),
     #old django == re_path(r'^blog/(?P<slug>\w+)/$', blog_post_detail_page),
     #path('page/', about_page),
     #path('pages/', about_page),
@@ -67,6 +68,7 @@ urlpatterns = [
     path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),
     #path('subscriptions/', include('subscription.urls')),
     path('subscriptions/', include('subscription.urls', namespace='subscription'), name='subscription'),
+    path('search/', include('search.urls', namespace='search'), name='search'),
     #two examples here:
     #djangoproject.com django-views-generic list view
     # path('featured/', SubscriptionFeaturedListView.as_view()),

@@ -178,6 +178,7 @@ INSTALLED_APPS = [
     'searches',
     'storages',
     'subscription',
+    'search'
     
 ]
 
