@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from stringkeeper.standalone_tools import *
+from stringkeeper.standalone_logging import *
 # Create your views here.
 
 def cart_home(request):
