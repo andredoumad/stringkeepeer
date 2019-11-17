@@ -40,8 +40,9 @@ class SubscriptionQuerySet(models.query.QuerySet):
         lookups = (
             Q(title__icontains=query) | 
             Q(description__icontains=query) | 
-            Q(price__icontains=query))
-        #Q(tag__name__icontains=query)
+            Q(price__icontains=query)|
+            Q(tag__title__icontains=query)
+            )
         # tshirt, t-shirt, t shirt
         return self.filter(lookups).distinct()
 

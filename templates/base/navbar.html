@@ -3,6 +3,7 @@
 {% url 'auth_register' as auth_register_url %}
 {% url 'blog:list' as blog_url %}
 {% url 'subscription:list' as subscription_url %}
+{% url 'carts:home' as cart_url %}
 {% url 'contact' as contact_url %}
 {% url 'logout' as logout_url %}
 
@@ -46,6 +47,9 @@
         </li>
         <li class="nav-item {% if request.path == subscription_url  %}active{% endif %}">
           <a class="nav-link" href="{{ subscription_url }}">Subscriptions</a>
+        </li>
+        <li class="nav-item {% if request.path == cart_url  %}active{% endif %}">
+          <a class="nav-link" href="{{ cart_url }}">Cart</a>
         </li>
         <li class="nav-item {% if request.path == contact_url  %}active{% endif %}">
             <a class="nav-link" href="{{ contact_url }}">Contact</a>
