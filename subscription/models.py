@@ -37,7 +37,12 @@ class SubscriptionQuerySet(models.query.QuerySet):
 
     def search(self, query):
         eventlog(query)
-        lookups = (Q(title__icontains=query) | Q(description__icontains=query) | Q(price__icontains=query))
+        lookups = (
+            Q(title__icontains=query) | 
+            Q(description__icontains=query) | 
+            Q(price__icontains=query))
+        #Q(tag__name__icontains=query)
+        # tshirt, t-shirt, t shirt
         return self.filter(lookups).distinct()
 
 
