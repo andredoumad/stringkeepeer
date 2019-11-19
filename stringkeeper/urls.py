@@ -44,7 +44,7 @@ urlpatterns = [
     path('blog/', include('blog.urls', namespace='blog'), name='blog'),
     path('contact/', contact_page, name='contact'),
     path('login/', login_page, name='auth_login'),
-    path('cart/', include('carts.urls', namespace='carts'), name='carts'),
+    path('cart/', include('carts.urls', namespace='cart'), name='cart'),
     path('register/', register_page, name='auth_register'),
     path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),
     path('subscriptions/', include('subscription.urls', namespace='subscription'), name='subscription'),
