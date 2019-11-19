@@ -5,15 +5,7 @@ from .models import Cart
 
 def cart_home(request):
     cart_obj, new_obj = Cart.objects.new_or_get(request)
-    subscriptions = cart_obj.subscriptions.all()
-    total = 0
-    for x in subscriptions:
-        total += x.price
-    eventlog('total: ' + str(total))
-    cart_obj.total = total
-    cart_obj.save()
-
-    return render(request, "carts/home.html", {})
+    return render(request, "carts/home.html", {'cart': cart_obj})
 
 
 def cart_update(request):
