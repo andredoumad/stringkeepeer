@@ -51,9 +51,7 @@
         <li class="nav-item {% if request.path == subscription_url  %}active{% endif %}">
           <a class="nav-link" href="{{ subscription_url }}">Subscriptions</a>
         </li>
-        <li class="nav-item {% if request.path == cart_url  %}active{% endif %}">
-          <a class="nav-link" href="{{ cart_url }}">Cart</a>
-        </li>
+
         <li class="nav-item {% if request.path == contact_url  %}active{% endif %}">
             <a class="nav-link" href="{{ contact_url }}">Contact</a>
         </li>
@@ -64,6 +62,14 @@
             <!-- <a class='nav-link' href="{% url 'logout' %}">Logout</a> -->
             <a class='nav-link' href="{{ logout_url }}">Logout</a>
         </li>
+        <!-- <div class='container'> -->
+          <!-- <div class='col-2'> -->
+        <li class="nav-item {% if request.path == cart_url  %}active{% endif %}">
+            <a class="nav-link" href="{{ cart_url }}"><i class="fas fa-shopping-cart"></i> {{ request.session.cart_items }}</a>
+        </li>
+        <!-- </div> -->
+        <!-- </div> -->
+        
         <li class="nav-item">
             <!-- <a class='nav-link' href="{% url 'logout' %}">Logout</a> -->
             <hr/>
@@ -71,9 +77,9 @@
         {% endif %}
       </ul>
 
-    
+      
     </div>
-
+    <div class='col-sm-12 col-md-6 col-lg-6'>
     <div class="input-group">
       <div class='container'>
           <!-- <div class='row'> -->
@@ -92,10 +98,11 @@
               {% include 'search/snippets/search-form.html' %}
               <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span> -->
-              </button>
+              <!-- </button> -->
             <!-- </div> -->
           <!-- </div> -->
         </div>
+      </div>
     </div>
   </div>
 

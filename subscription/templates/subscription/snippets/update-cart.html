@@ -2,10 +2,14 @@
     subscription ID: {{ subscription.id }}
     <form method='POST' class="form" action='{% url "cart:update" %}'> {% csrf_token %}
         <input type='hidden' name='subscription_id' value='{{ subscription.id }}' >
-        {% if subscription in cart.subscriptions.all %}
-            In cart <button type='submit' class='btn btn-link'>Remove?</button>
-        {% else %}  
-            Add to cart <button type='submit' class='btn btn-success'>Add</button>
+        {% if in_cart %}
+            <button type='submit' class='btn btn-link btn-sm' style="padding:0px;cursor: pointer">Remove</button>
+        {% else %}
+            {% if subscription in cart.subscriptions.all %}
+                In cart <button type='submit' class='btn btn-link'>Remove</button>
+            {% else %}  
+                Add to cart <button type='submit' class='btn btn-success'>Add</button>
+            {% endif %}
         {% endif %}
     </form>
 </div>

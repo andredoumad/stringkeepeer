@@ -10,23 +10,26 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-    <div class='row'>
-        <div class='col-12 col-md-6'>
-            <h1>{{object.title}}</h1><br/>
-            <h2>Updated {{ object.timestamp |timesince}} ago.</h2><br/>
-            {{object.description|linebreaks}}<br/>
-            {% if object.image %}
-                {{ object.image.url}}<br/>
-                <img src='{{ object.image.url }}' class='img-fluid' />
-            {% endif %}
-        </div>
-        <hr/>
-        <div class='col-12 col-md-6'>
-            {% include 'subscription/snippets/update-cart.html' with subscription=object cart=cart %}
-
+    <div class='col'>
+        <div class='row'>
+            <div class='col-12 mr-auto'>
+                <h1>{{object.title}}</h1><br/>
+                <h2>Updated {{ object.timestamp |timesince}} ago.</h2><br/>
+                {{object.description|linebreaks}}<br/>
+                {% if object.image %}
+                    {{ object.image.url}}<br/>
+                    <img src='{{ object.image.url }}' class='img-fluid' />
+                {% endif %}
+            </div>
+            <div class='ml-auto fixed-bottom' style='min-height:50px;background-color:rgba(0, 115, 100, 0.8);'>
+                <div class='col-12 mx-1 my-1'>
+                    <font color = 'white'>
+                    {% include 'subscription/snippets/update-cart.html' with subscription=object cart=cart %}
+                </div>
+            </div>
         </div>
     </div>
-    <hr/>
+
 
 {% endif %}
 

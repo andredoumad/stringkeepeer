@@ -25,5 +25,6 @@ def cart_update(request):
         else:
             eventlog('Adding ' + str(subscription_obj))
             cart_obj.subscriptions.add(subscription_obj)
+        request.session['cart_items'] = cart_obj.subscriptions.count()
         # return redirect(subscription_obj.get_absolute_url())
     return redirect("cart:home")
