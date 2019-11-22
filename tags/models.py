@@ -1,11 +1,11 @@
 from django.db import models
-from subscription.utils import unique_slug_generator
+from stringkeeper.utils import unique_slug_generator
 from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 # Create your models here.
 
 from subscription.models import Subscription
-from subscription.utils import unique_slug_generator
+
 
 class Tag(models.Model):
     title           = models.CharField(max_length=120)

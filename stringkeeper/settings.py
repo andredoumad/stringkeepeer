@@ -180,7 +180,8 @@ INSTALLED_APPS = [
     'subscription',
     'search',
     'tags',
-    'carts'
+    'carts',
+    'orders'
     
 ]
 

@@ -1,7 +1,7 @@
 import random, os
 from django.db import models
 from stringkeeper.standalone_logging import *
-from .utils import unique_slug_generator
+from stringkeeper.utils import unique_slug_generator
 from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 from django.db.models import Q
