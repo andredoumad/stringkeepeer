@@ -130,7 +130,7 @@ r00tp0strgr3sqlstr1ngk33p3r
 
 import os
 import socket
-from .standalone_logging import *
+from .standalone_tools import *
 from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -181,7 +181,8 @@ INSTALLED_APPS = [
     'search',
     'tags',
     'carts',
-    'orders'
+    'orders',
+    'accounts'
     
 ]
 

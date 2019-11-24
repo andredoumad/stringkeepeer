@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_save, post_save
-from stringkeeper.standalone_logging import *
+from stringkeeper.standalone_tools import *
 # Create your models here.
 from carts.models import Cart
 from stringkeeper.utils import unique_order_id_generator
@@ -30,6 +30,9 @@ class Order(models.Model):
         cart_total = self.cart.total
         # shipping total
         new_total = cart_total #plus whatever
+        #if your going to add try using fsum
+        # like so math.fsum([cart_total, shipping_total])
+        # then formatted_total = format(new_total, '.2f')
         self.total = new_total
         self.save()
         return new_total

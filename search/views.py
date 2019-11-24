@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 from subscription.models import Subscription
-from stringkeeper.standalone_logging import *
+from stringkeeper.standalone_tools import *
 
 # class SearchSubscriptionView(ListView):
 #     template_name = 'subscription/list.html'

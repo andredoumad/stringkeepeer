@@ -27,13 +27,15 @@ from searches.views import search_view
 
 from carts.views import cart_home
 
+from accounts.views import login_page, register_page
+
 from .views import (
     home_page,
     about_page,
     contact_page,
     #example_page,
-    login_page,
-    register_page
+    #login_page,
+    #register_page
 )
 
 

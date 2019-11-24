@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from stringkeeper.standalone_logging import *
+from stringkeeper.standalone_tools import *
 from subscription.models import Subscription
 from django.db.models.signals import pre_save, post_save, m2m_changed
 

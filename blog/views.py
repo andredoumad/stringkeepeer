@@ -3,16 +3,17 @@ from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils import timezone
-
 # Create your views here.
 from blog.forms import BlogPostModelForm
 from blog.models import BlogPost
-from stringkeeper.views import get_ascii_art
+from stringkeeper.standalone_tools import *
 
 # CRUD
 # GET -> Retrieve / List
 # POST -> Create / Update / DELETE
 # Create Retrieve Update Delete
+
+eventlog('creating Tools instance ')
 
 def blog_post_list_view(request):
     ascii_art = get_ascii_art()

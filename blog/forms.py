@@ -1,7 +1,7 @@
 
 from django import forms
 from blog.models import BlogPost
-from stringkeeper.standalone_logging import *
+from stringkeeper.standalone_tools import *
 
 class BlogPostForm(forms.Form):
     title = forms.CharField()

@@ -4,7 +4,7 @@ from blog.models import BlogPost
 from subscription.models import Subscription
 # Create your views here.
 from .models import SearchQuery
-from stringkeeper.views import get_ascii_art
+from stringkeeper.standalone_tools import *
 
 
 

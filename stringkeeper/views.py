@@ -4,10 +4,9 @@ from random import *
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
-from django.utils import timezone
+
 from stringkeeper.standalone_tools import *
-from stringkeeper.standalone_logging import *
-import datetime
+
 from django.utils.timezone import utc
 from random import randint
 from django.contrib.auth import authenticate, login, get_user_model
@@ -17,26 +16,6 @@ from blog.models import BlogPost
 #definition for wsgi 
 #Web Server Gateway Interface wsgi 
 
-tools = Tools()
-def get_time_string():
-    #named_tuple = time.localtime() # get struct_time
-    now = timezone.now()
-    #now = datetime.datetime.utcnow().replace(tzinfo=utc)
-    #time_string = str(time.strftime("%Y-%m-%d-%H:%M:%S", named_tuple))
-    #time_string = str(time.strftime("%Y-%m-%d-%H:%M:%S", now))
-    return (now)
-
-def get_ascii_art():
-    b_dp, b_fp, list_dp, list_fp = tools.get_list_files_folders_in_path('stringkeeper/landing_page_ascii_art')
-    list_of_ascii_art_files = list_fp
-    shuffled_art_files = tools.shuffle_list(list_of_ascii_art_files)
-    chosen_art_file = shuffled_art_files[0]
-    list_of_ascii_art_strings = tools.get_list_from_file(chosen_art_file)
-    art_string = '\n'
-    for line in list_of_ascii_art_strings:
-        art_string += str(line)
-        art_string += '\n'
-    return str(art_string)
 
 def home_page(request):
     #eventlog('firstname: ' + request.session.get('first_name', 'Unknown'))
@@ -46,7 +25,7 @@ def home_page(request):
     subtitle = get_time_string()
     ascii_art = get_ascii_art()
     my_title = 'Welcome'
-    user_ip = tools.get_client_ip(request)
+    user_ip = get_client_ip(request)
     if request.user.is_authenticated:
         my_title += str(' ' + str(request.user))
     else:
@@ -72,7 +51,7 @@ def contact_page(request):
     
     if contact_form.is_valid():
         eventlog(contact_form.cleaned_data)
-        form = ContactForm()
+        contact_form = ContactForm()
     
     context = {
         'title': 'Contact',
@@ -81,61 +60,6 @@ def contact_page(request):
         'ascii_art': ascii_art
     }
     return render(request, "contact/view.html", context)
-
-def login_page(request):
-    ascii_art = get_ascii_art()
-    #djangoproject.com - how-to-log-a-user-in
-    form = LoginForm(request.POST or None)
-    context = {
-        'form': form,
-        'ascii_art': ascii_art
-    }
-    #print('request.user.is_authenticated: ' + 
-    #str(request.user.is_authenticated))
-    if form.is_valid():
-        eventlog(form.cleaned_data)
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        user = authenticate(request, username=username, password=password)
-        eventlog(str(user))
-        #print(str(request.user.is_authenticated))
-        if user is not None:
-            #redirect to success page
-            #print(str(request.user.is_authenticated))
-            login(request, user)
-            context['form'] = LoginForm()
-            return redirect('/')
-        else:
-            #return an invalid login message
-            eventlog('Error')
-
-    return render(request, "auth/login.html", context)
-
-User = get_user_model()
-def register_page(request):
-    ascii_art = get_ascii_art()
-    form = RegisterForm(request.POST or None)
-    if socket.gethostname() == 'www.stringkeeper.com':
-        
-        context = {
-            'content': 'Registration is not available on the production server during construction.',
-            'activated': False,
-            'ascii_art': ascii_art,
-        }
-    else:
-        context = {
-            'form': form,
-            'activated': True,
-            'ascii_art': ascii_art,
-        }
-    if form.is_valid():
-        eventlog(form.cleaned_data)
-        username = form.cleaned_data.get('username')
-        email = form.cleaned_data.get('email')
-        password = form.cleaned_data.get('password')
-        new_user = User.objects.create_user(username, email, password)
-        eventlog(new_user)
-    return render(request, "auth/register.html", context)
 
 def example_page(request):
     ascii_art = get_ascii_art()
