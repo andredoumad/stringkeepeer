@@ -4,16 +4,30 @@
 <p style="font-family: 'Palatino'; font-size:14px">
 <font color = 'white'>
 
-{% if not user.is_authenticated %}
+<!-- {% if not user.is_authenticated %}
     <font color = 'red'>
     You have been not been authenticated.<br>
+{% endif %} -->
+
+<!-- {% if user.is_authenticated %} -->
+
+{% if not biling_profile %}
+<div class='container'></div>
+    <div class='row text-center'>
+        <div class='col-12 col-md-6'>
+            <p class='lead'>Login</p>
+            {% include 'accounts/snippets/form.html' with form=login_form next=request.build_absolute_uri %}
+        </div>
+        <div class='col-12 col-md-6'>
+            Continue as Guest
+        </div>
+    </div>
+</div>
+{% else %}
+    <h1>Checkout</h1>
+
+    <p>Subtotal: {{ object.cart.subtotal }}</p>
+    <p>Total: {{ object.total }}</p>
 {% endif %}
-
-{% if user.is_authenticated %}
-<h1>Checkout</h1>
-
-<p>Subtotal: {{ object.cart.subtotal }}</p>
-<p>Total: {{ object.total }}</p>
-
-{% endif %}
+<!-- {% endif %} -->
 {% endblock %}

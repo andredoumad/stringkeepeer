@@ -3,6 +3,7 @@ from stringkeeper.standalone_tools import *
 from orders.models import Order
 from subscription.models import Subscription
 from .models import Cart
+from accounts.forms import LoginForm
 
 def cart_home(request):
     cart_obj, new_obj = Cart.objects.new_or_get(request)
@@ -37,4 +38,17 @@ def checkout_home(request):
         return redirect('cart:home')
     else:
         order_obj, new_order_obj = Order.objects.get_or_create(cart=cart_obj)
-    return render(request, 'carts/checkout.html', {'object': order_obj})
+    user = request.user
+    billing_profile = None
+    login_form = LoginForm()
+
+    if user.is_authenticated:
+        billing_profile = None
+
+    context = {
+        'object': order_obj,
+        'billing_profile': billing_profile,
+        'login_form': login_form
+    }
+    
+    return render(request, 'carts/checkout.html', context)
