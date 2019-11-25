@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from stringkeeper.forms import LoginForm, RegisterForm
 # Create your views here.
 from stringkeeper.standalone_tools import *
+from django.utils.http import is_safe_url
 
 def login_page(request):
     ascii_art = get_ascii_art()
@@ -16,6 +17,9 @@ def login_page(request):
     }
     #print('request.user.is_authenticated: ' + 
     #str(request.user.is_authenticated))
+    next_ = request.GET.get('next')
+    next_post = request.POST.get('next')
+    redirect_path = next_ or next_post or None
     if form.is_valid():
         eventlog(form.cleaned_data)
         username = form.cleaned_data.get('username')
@@ -27,8 +31,12 @@ def login_page(request):
             #redirect to success page
             #print(str(request.user.is_authenticated))
             login(request, user)
-            context['form'] = LoginForm()
-            return redirect('/')
+            #context['form'] = LoginForm()
+            if is_safe_url(redirect_path, request.get_host()):
+                return redirect(redirect_path)
+            else:
+
+                return redirect('/')
         else:
             #return an invalid login message
             eventlog('Error')

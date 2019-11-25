@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import path, re_path, include #url
 from django.views.generic import TemplateView
 from blog.views import (
@@ -28,6 +29,7 @@ from searches.views import search_view
 from carts.views import cart_home
 
 from accounts.views import login_page, register_page
+
 
 from .views import (
     home_page,
@@ -46,6 +48,7 @@ urlpatterns = [
     path('blog/', include('blog.urls', namespace='blog'), name='blog'),
     path('contact/', contact_page, name='contact'),
     path('login/', login_page, name='auth_login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('cart/', include('carts.urls', namespace='cart'), name='cart'),
     path('register/', register_page, name='auth_register'),
     path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),
