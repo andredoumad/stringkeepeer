@@ -28,7 +28,7 @@ from searches.views import search_view
 
 from carts.views import cart_home
 
-from accounts.views import login_page, register_page
+from accounts.views import login_page, register_page, guest_register_view
 
 
 from .views import (
@@ -47,10 +47,11 @@ urlpatterns = [
     path('blog-new/', blog_post_create_view),
     path('blog/', include('blog.urls', namespace='blog'), name='blog'),
     path('contact/', contact_page, name='contact'),
-    path('login/', login_page, name='auth_login'),
+    path('login/', login_page, name='login'),
+    path('register/guest/', guest_register_view, name='guest_register'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('cart/', include('carts.urls', namespace='cart'), name='cart'),
-    path('register/', register_page, name='auth_register'),
+    path('register/', register_page, name='register'),
     path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),
     path('subscriptions/', include('subscription.urls', namespace='subscription'), name='subscription'),
     path('search/', include('search.urls', namespace='search'), name='search'),

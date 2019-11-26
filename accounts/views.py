@@ -2,10 +2,37 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, GuestForm
+from .models import GuestEmail
 # Create your views here.
 from stringkeeper.standalone_tools import *
 from django.utils.http import is_safe_url
+
+
+def guest_register_view(request):
+    eventlog('LOGIN_PAGE -- ACCOUNTS')
+    ascii_art = get_ascii_art()
+    form = GuestForm(request.POST or None)
+    context = {
+        'form': form,
+        'ascii_art': ascii_art
+    }
+    next_ = request.GET.get('next')
+    next_post = request.POST.get('next')
+    redirect_path = next_ or next_post or None
+    if form.is_valid():
+        email = form.cleaned_data.get('email')
+        new_guest_email = GuestEmail.objects.create(email=email)
+        request.session['guest_email_id'] = new_guest_email.id
+        if is_safe_url(redirect_path, request.get_host()):
+            eventlog('safe url')
+            return redirect(redirect_path)
+        else:
+            eventlog('not safe url')
+            return redirect('/register/')
+
+    return redirect('/register/')
+
 
 def login_page(request):
     eventlog('LOGIN_PAGE -- ACCOUNTS')
