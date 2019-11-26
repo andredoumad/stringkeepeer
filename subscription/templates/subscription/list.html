@@ -4,12 +4,6 @@
 <p style="font-family: 'Palatino'; font-size:14px">
 <font color = 'white'>
 
-{% if not user.is_authenticated %}
-    <font color = 'red'>
-    You have been not been authenticated.<br>
-{% endif %}
-
-{% if user.is_authenticated %}
 
 <div class='container'>
     <div class='row'>
@@ -29,6 +23,6 @@
     {% endfor %}
 </div>
 </div>
-{% endif %}
+
 
 {% endblock %}

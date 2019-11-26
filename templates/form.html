@@ -4,12 +4,6 @@
 <p style="font-family: 'Palatino'; font-size:14px">
 <font color = 'white'>
 
-{% if not user.is_authenticated %}
-    <font color = 'red'>
-    You have been not been authenticated.<br>
-{% endif %}
-
-{% if user.is_authenticated %}
     {% if title %}
     <font color = 'white'> {{ title }}<br>
     {% endif %}
@@ -20,6 +14,6 @@
             {{ form.as_p }}
         <button type='submit'>Send</button>
     </form>
-{% endif %}
+
 
 {% endblock %}

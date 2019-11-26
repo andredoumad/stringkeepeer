@@ -5,15 +5,7 @@
 
 {% block content %}
 
-<p style="font-family: 'Palatino'; font-size:14px">
-<font color = 'white'>
 
-{% if not user.is_authenticated %}
-    <font color = 'red'>
-    You have been not been authenticated.<br>
-{% endif %}
-
-{% if user.is_authenticated %}
 <h3>{{ content }}</h3><br>
 
 <form method='POST'> {% csrf_token %}
@@ -25,6 +17,5 @@
     </div>
 </form>
 
-{% endif %}
 
 {% endblock %}

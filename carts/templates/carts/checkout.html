@@ -1,33 +1,28 @@
 {% extends 'base/base.html' %}
 {% block content %}
-
+SUBSCRIPTIONS CHECKOUT
 <p style="font-family: 'Palatino'; font-size:14px">
 <font color = 'white'>
 
-<!-- {% if not user.is_authenticated %}
-    <font color = 'red'>
-    You have been not been authenticated.<br>
-{% endif %} -->
-
-<!-- {% if user.is_authenticated %} -->
-
-{% if not biling_profile %}
-<div class='container'></div>
-    <div class='row text-center'>
+{% if not billing_profile %}
+<div class='row text-center'>
         <div class='col-12 col-md-6'>
             <p class='lead'>Login</p>
-            {% include 'accounts/snippets/form.html' with form=login_form next=request.build_absolute_uri %}
+            {% include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri %}
         </div>
-        <div class='col-12 col-md-6'>
+        <div class='col-12 col-md-6'> 
             Continue as Guest
+    
+            {% url "guest_register" as guest_register_url %}
+            {% include 'accounts/snippets/form.html' with form=guest_form next_url=request.build_absolute_uri action_url=guest_register_url %}
         </div>
-    </div>
-</div>
+    
+        </div>
 {% else %}
+Billing Profile
     <h1>Checkout</h1>
 
     <p>Subtotal: {{ object.cart.subtotal }}</p>
     <p>Total: {{ object.total }}</p>
 {% endif %}
-<!-- {% endif %} -->
 {% endblock %}

@@ -1,4 +1,3 @@
-
 #might want to copy this for the regular user profile too! 
 from django.conf import settings
 from django.db import models

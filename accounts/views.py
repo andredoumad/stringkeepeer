@@ -2,12 +2,13 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from stringkeeper.forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm
 # Create your views here.
 from stringkeeper.standalone_tools import *
 from django.utils.http import is_safe_url
 
 def login_page(request):
+    eventlog('LOGIN_PAGE -- ACCOUNTS')
     ascii_art = get_ascii_art()
     #djangoproject.com - how-to-log-a-user-in
     form = LoginForm(request.POST or None)
@@ -20,6 +21,7 @@ def login_page(request):
     next_ = request.GET.get('next')
     next_post = request.POST.get('next')
     redirect_path = next_ or next_post or None
+    eventlog(str(redirect_path))
     if form.is_valid():
         eventlog(form.cleaned_data)
         username = form.cleaned_data.get('username')
@@ -28,14 +30,16 @@ def login_page(request):
         eventlog(str(user))
         #print(str(request.user.is_authenticated))
         if user is not None:
+            eventlog('user is none')
             #redirect to success page
             #print(str(request.user.is_authenticated))
             login(request, user)
             #context['form'] = LoginForm()
             if is_safe_url(redirect_path, request.get_host()):
+                eventlog('safe url')
                 return redirect(redirect_path)
             else:
-
+                eventlog('not safe url')
                 return redirect('/')
         else:
             #return an invalid login message

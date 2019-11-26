@@ -4,13 +4,6 @@
 <p style="font-family: 'Palatino'; font-size:14px">
 <font color = 'white'>
 
-{% if not user.is_authenticated %}
-    <font color = 'red'>
-    You have been not been authenticated.<br>
-{% endif %}
-
-{% if user.is_authenticated %}
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -86,6 +79,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body>
 </html>
-{% endif %}
+
 
 {% endblock %}

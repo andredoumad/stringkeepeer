@@ -41,7 +41,6 @@
           </li>
         {% endif %}
 
-        {% if user.is_authenticated %}
         <li class="nav-item {% if request.path == home_url  %}active{% endif %}">
             <a class="nav-link" href="{{ home_url }}">Home</a>
           </li>
@@ -58,10 +57,13 @@
         <li class="nav-item">
             <a class='nav-link' href="/admin">Admin</a>
         </li>
+
+        {% if user.is_authenticated %}
         <li class="nav-item {% if request.path == logout_url  %}active{% endif %}">
             <!-- <a class='nav-link' href="{% url 'logout' %}">Logout</a> -->
             <a class='nav-link' href="{{ logout_url }}">Logout</a>
         </li>
+        {% endif %}
         <!-- <div class='container'> -->
           <!-- <div class='col-2'> -->
         <li class="nav-item {% if request.path == cart_url  %}active{% endif %}">
@@ -74,7 +76,7 @@
             <!-- <a class='nav-link' href="{% url 'logout' %}">Logout</a> -->
             <hr/>
         </li>
-        {% endif %}
+
       </ul>
 
       

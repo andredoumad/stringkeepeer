@@ -4,18 +4,13 @@
 <p style="font-family: 'Palatino'; font-size:14px">
 <font color = 'white'>
 
-{% if not user.is_authenticated %}
-    <font color = 'red'>
-    You have been not been authenticated.<br>
+
+{{object.title}}<br/>
+{{object.description}}<br/>
+{% if object.image %}
+    {{ object.image.url}}<br/>
+    <img src='{{ object.image.url }}' class='img-fluid' />
 {% endif %}
 
-{% if user.is_authenticated %}
-    {{object.title}}<br/>
-    {{object.description}}<br/>
-    {% if object.image %}
-        {{ object.image.url}}<br/>
-        <img src='{{ object.image.url }}' class='img-fluid' />
-    {% endif %}
-{% endif %}
 
 {% endblock %}
