@@ -165,6 +165,11 @@ ALLOWED_HOSTS = ['www.stringkeeper.com', '*']
 LOGIN_URL = '/login'
 LOGOUT_REDIRECT_URL = '/'
 
+# LOGIN_URL = '/login/'
+# LOGIN_URL_REDIRECT = '/'
+# LOGOUT_URL = '/logout/'
+
+
 # Application definition
 # components
 INSTALLED_APPS = [

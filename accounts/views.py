@@ -61,6 +61,10 @@ def login_page(request):
             #redirect to success page
             #print(str(request.user.is_authenticated))
             login(request, user)
+            try:
+                del request.session['guest_email_id']
+            except:
+                pass
             #context['form'] = LoginForm()
             if is_safe_url(redirect_path, request.get_host()):
                 eventlog('safe url')

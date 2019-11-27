@@ -47,7 +47,10 @@ urlpatterns = [
     path('blog-new/', blog_post_create_view),
     path('blog/', include('blog.urls', namespace='blog'), name='blog'),
     path('contact/', contact_page, name='contact'),
-    path('login/', login_page, name='login'),
+    # path('login/', login_page, name='login'),
+    #how come i cant use anything beyond auth_login - everytime i try just login it breaks
+    #even if i change the navbar template, its not right...
+    path('login/', login_page, name='auth_login'),
     path('register/guest/', guest_register_view, name='guest_register'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('cart/', include('carts.urls', namespace='cart'), name='cart'),
