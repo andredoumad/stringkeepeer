@@ -43,6 +43,7 @@ def cart_update(request):
             json_data = {
                 'added': added,
                 'removed': not added,
+                'cartItemCount': cart_obj.subscriptions.count(),
             }
             return JsonResponse(json_data)
     return redirect("cart:home")
