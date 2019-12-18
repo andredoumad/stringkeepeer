@@ -5,6 +5,7 @@
         {% if in_cart %}
             <button type='submit' class='btn btn-link btn-sm' style="padding:0px;cursor: pointer">Remove</button>
         {% else %}
+            <span class='submit-span'>
             {% if subscription in cart.subscriptions.all %}
                 In cart <button type='submit' class='btn btn-link'>Remove</button>
             {% else %}  

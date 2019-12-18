@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from stringkeeper.standalone_tools import *
 from orders.models import Order
@@ -17,6 +18,7 @@ def cart_home(request):
 def cart_update(request):
     eventlog('request.POST: ' + str(request.POST))
     subscription_id = request.POST.get('subscription_id')
+
     if subscription_id is not None:
         try:
             subscription_obj = Subscription.objects.get(id=subscription_id)
@@ -28,11 +30,21 @@ def cart_update(request):
         if subscription_obj in cart_obj.subscriptions.all():
             eventlog('Removing ' + str(subscription_obj))
             cart_obj.subscriptions.remove(subscription_obj)
+            added = False
         else:
             eventlog('Adding ' + str(subscription_obj))
             cart_obj.subscriptions.add(subscription_obj)
+            added = True
+
         request.session['cart_items'] = cart_obj.subscriptions.count()
         # return redirect(subscription_obj.get_absolute_url())
+        if request.is_ajax(): # Asynchronous javascript and XML / JSON JAVASCRIPT OBJECT NOTATION
+            eventlog('ajax request')
+            json_data = {
+                'added': added,
+                'removed': not added,
+            }
+            return JsonResponse(json_data)
     return redirect("cart:home")
 
 def checkout_home(request):
