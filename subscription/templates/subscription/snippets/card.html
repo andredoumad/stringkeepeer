@@ -6,6 +6,7 @@
       <h5 class="card-title">{{ instance.title }}</h5>
       <p class="card-text">{{ instance.description|truncatewords:20 }}</p>
       <a href="{{ instance.get_absolute_url }}" class="btn btn-info">View</a>
+        {% include 'subscription/snippets/update-cart.html' with subscription=instance cart=cart %}
       <!-- <a href="{% url 'subscription:detail' slug=instance.slug %}" class="btn btn-warning">URL SHORTCUT</a> -->
     </div>
   </div>

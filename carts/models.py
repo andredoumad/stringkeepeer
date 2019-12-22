@@ -46,9 +46,9 @@ class Cart(models.Model):
     def __str__(self):
         return str(self.id)
 
-    # @property
-    # def name(self):
-    #     return self.title
+    @property
+    def name(self):
+        return self.title
 
 
 def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):

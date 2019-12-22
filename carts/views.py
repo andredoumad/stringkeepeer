@@ -10,6 +10,32 @@ from accounts.forms import LoginForm, GuestForm
 from billing.models import BillingProfile
 from addresses.models import Address
 
+
+def cart_detail_api_view(request):
+    cart_obj, new_obj = Cart.objects.new_or_get(request)
+    #converting it 
+    eventlog('cart_obj.subscriptions.all(): ' + str(cart_obj.subscriptions.all()))
+
+    # subscriptions = [{'name': x.name, 'price': x.price} for x in cart_obj.subscriptions.all()] 
+
+    # for x in subscriptions:
+    #     eventlog('subscription: ' + str(x))
+
+    #this line above is same as the loop below    
+    
+    subscriptions_list = []
+    for x in cart_obj.subscriptions.all():
+        subscriptions_list.append(
+            {
+                'id': x.id,
+                'url': x.get_absolute_url(),
+                'title': x.title, 
+                'price': x.price}
+        )
+
+    cart_data = {'subscriptions': subscriptions_list, 'subtotal': cart_obj.subtotal, 'total': cart_obj.total}
+    return JsonResponse(cart_data)
+
 def cart_home(request):
     cart_obj, new_obj = Cart.objects.new_or_get(request)
     return render(request, "carts/home.html", {'cart': cart_obj})

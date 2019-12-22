@@ -1,0 +1,5 @@
+<form class='form-subscription-ajax' method='POST' class="form" action='{% url "cart:update" %}' data-endpoint='{% url "cart:update" %}'> {% csrf_token %}
+    <input class='cart-item-subscription-id' type='hidden' name='subscription_id' value='{{ subscription_id }}' >
+        <button type='submit' class='btn btn-link btn-sm' style="padding:0px;cursor: pointer">Remove</button>
+    </span>
+</form>
