@@ -1,7 +1,7 @@
 import os, time, random, socket
 from time import sleep
 from random import *
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 
@@ -51,7 +51,9 @@ def contact_page(request):
     
     if contact_form.is_valid():
         eventlog(contact_form.cleaned_data)
-        contact_form = ContactForm()
+        if request.is_ajax():
+            return JsonResponse({"message": "Thank you"})
+        # contact_form = ContactForm()
     
     context = {
         'title': 'Contact',

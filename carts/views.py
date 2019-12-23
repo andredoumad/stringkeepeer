@@ -71,7 +71,10 @@ def cart_update(request):
                 'removed': not added,
                 'cartItemCount': cart_obj.subscriptions.count(),
             }
-            return JsonResponse(json_data)
+            return JsonResponse(json_data, status=200) # default status code is 200 -- error is 400 or 500
+            #return JsonResponse({'message': 'error'}, status=400) # << emulating an error with message  #Django REST framework is better for doing this kind of thing
+            # try using https://craftpip.github.io/jquery-confirm/ for these kind of error messages
+            # creates popup menues
     return redirect("cart:home")
 
 def checkout_home(request):
