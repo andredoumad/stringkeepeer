@@ -7,15 +7,11 @@
 <p style="font-family: 'Palatino'; font-size:14px">
 <font color = 'white'>
 
-{% if not user.is_authenticated %}
-    <font color = 'red'>
-    You have been not been authenticated.<br>
-{% endif %}
 
-{% if user.is_authenticated %}
-    {% for object in object_list %}
-        {% include 'blog/list-inline.html' with blog_post=object truncate=True detail=False %}
-    {% endfor %}
-{% endif %}
+
+{% for object in object_list %}
+    {% include 'blog/list-inline.html' with blog_post=object truncate=True detail=False %}
+{% endfor %}
+
 
 {% endblock %}

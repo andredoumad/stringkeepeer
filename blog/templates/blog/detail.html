@@ -7,18 +7,14 @@
 <p style="font-family: 'Palatino'; font-size:14px">
 <font color = 'white'>
 
-{% if not user.is_authenticated %}
-    <font color = 'red'>
-    You have been not been authenticated.<br>
-{% endif %}
 
-{% if user.is_authenticated %}
-    {% include 'blog/list-inline.html' with blog_post=object truncate=False detail=True %}
-    <div class='col-12'>
-        <font color = 'orange'>
-        <a href='{{ object.get_return_url }}'>Return</a><br>
-    </div>
-{% endif %}
+
+{% include 'blog/list-inline.html' with blog_post=object truncate=False detail=True %}
+<div class='col-12'>
+    <font color = 'orange'>
+    <a href='{{ object.get_return_url }}'>Return</a><br>
+</div>
+
 
 {% if user.is_authenticated %}
     {% if request.user.is_staff %}
