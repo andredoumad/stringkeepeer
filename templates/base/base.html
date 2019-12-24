@@ -29,12 +29,30 @@
 
                 var contactForm = $(".contact-form")
                 var contactFormMethod = contactForm.attr("method")
-                var contactFormEndpoint = contactForm.attr("action") // /abc/  
+                var contactFormEndpoint = contactForm.attr("action") // /abc/ 
+
+                function displaySubmitting(submitBtn, defaultText, doSubmit){
+                  
+                  if (doSubmit){
+                    submitBtn.addClass("disabled")
+                    submitBtn.html("<i class='fa fa-spin fa-spinner'></i> Sending...")
+
+                  } else {
+                    submitBtn.removeClass("disabled")
+                    submitBtn.html(contactFormSubmitBtnTxt)
+                  }
+                }
+
 
                 contactForm.submit(function(event){
                   event.preventDefault()
+
+                  var contactFormSubmitBtn = contactForm.find("[type='submit']")
+                  var contactFormSubmitBtnTxt = contactFormSubmitBtn.text()
+
                   var contactFormData = contactForm.serialize()
                   var thisForm = $(this)
+                  displaySubmitting(contactFormSubmitBtn, "", true)
 
                   $.ajax({
                     method: contactFormMethod,
@@ -47,14 +65,28 @@
                         content: data.message,
                         theme: 'modern'
                       })
+                      setTimeout(function(){
+                        displaySubmitting(contactFormSubmitBtn, contactFormSubmitBtnTxt, false)
+                      }, 500)
                     },
                     error: function(errorData){
-                      console.log(error)
+                      console.log(error.responseJSON)
+                      var jsonData = error.responseJSON
+                      var msg = ""
+
+                      $.each(jsonData, function(key, value){ // key, value instead of an array of index / object 
+                        msg += key + ": " + value[0].message + "</br>"
+
+                      })
+                      
                       $.alert({
                         title: "That was unexpected...",
                         content: 'An error occured, please try again later...',
                         theme: 'modern'
                       })
+                      setTimeout(function(){
+                        displaySubmitting(contactFormSubmitBtn, contactFormSubmitBtnTxt, false)
+                      }, 500)
                     }
                   })
                 })
@@ -208,7 +240,7 @@
             </script>
 
             <footer class="container">
-                <font color = '#FFFFFF  '>
+                <font color = '#FFFFFF'>
                 <h4> THIS SITE IS UNDER CONSTRUCTION. </h4>
                 {% if ascii_art %}
                 <pre>

@@ -31,15 +31,20 @@ class ContactForm(forms.Form):
         )
     )
     
-    #taking args and keyword args 
-    def clean_email(self, *args, **kwargs):
-        email = self.cleaned_data.get('email')
-        # u can prevent certain types of emails from here
-        # so good place to clean -- data
-        #if email.endswith('.edu'):
-        #    raise forms.ValidationError("This is not a valid email - don't use .edu")
-        print(email)
-        return email
+    # #taking args and keyword args 
+    # def clean_email(self, *args, **kwargs):
+    #     email = self.cleaned_data.get('email')
+    #     # u can prevent certain types of emails from here
+    #     # so good place to clean -- data
+    #     #if email.endswith('.edu'):
+    #     #    raise forms.ValidationError("This is not a valid email - don't use .edu")
+    #     print(email)
+    #     return email
+
+    
+    # def clean_content(self):
+    #     raise forms.ValidationError("content is wrong.")
+
 
 class LoginForm(forms.Form):
     username = forms.CharField()
@@ -79,3 +84,4 @@ class RegisterForm(forms.Form):
         if password2 != password:
             raise forms.ValidationError('Passwords must match.')
         return data
+

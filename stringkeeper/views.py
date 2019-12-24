@@ -54,7 +54,14 @@ def contact_page(request):
         if request.is_ajax():
             return JsonResponse({"message": "Thank you"})
         # contact_form = ContactForm()
-    
+
+    if contact_form.errors:
+        eventlog(contact_form.cleaned_data)
+        errors = contact_form.errors.as_json()
+        if request.is_ajax():
+            return HttpResponse(errors, status=400, content_type='application/json')
+
+        # contact_form = ContactForm()    
     context = {
         'title': 'Contact',
         'content': 'Send us an inquiry: ',
