@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True)),
                 ('update', models.DateTimeField(auto_now=True)),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('user', models.OneToOneField(blank=True, null=True, on_delete='SET_NULL', to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(blank=True, null=True, on_delete=models.SET_NULL, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

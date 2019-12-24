@@ -30,7 +30,7 @@ class BillingProfileManager(models.Manager):
         return obj, created
 
 class BillingProfile(models.Model):
-    user    = models.OneToOneField(User, null=True, blank=True, on_delete='SET_NULL')
+    user    = models.OneToOneField(User, null=True, blank=True, on_delete=models.SET_NULL)
     email   = models.EmailField()
     active = models.BooleanField(default=True)
     update = models.DateTimeField(auto_now=True)
