@@ -39,7 +39,7 @@
 
                   } else {
                     submitBtn.removeClass("disabled")
-                    submitBtn.html(contactFormSubmitBtnTxt)
+                    submitBtn.html(defaultText)
                   }
                 }
 
@@ -67,7 +67,7 @@
                       })
                       setTimeout(function(){
                         displaySubmitting(contactFormSubmitBtn, contactFormSubmitBtnTxt, false)
-                      }, 500)
+                      }, 1000)
                     },
                     error: function(errorData){
                       console.log(error.responseJSON)
@@ -86,7 +86,7 @@
                       })
                       setTimeout(function(){
                         displaySubmitting(contactFormSubmitBtn, contactFormSubmitBtnTxt, false)
-                      }, 500)
+                      }, 1000)
                     }
                   })
                 })
