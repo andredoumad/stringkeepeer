@@ -82,19 +82,26 @@ User = get_user_model()
 def register_page(request):
     ascii_art = get_ascii_art()
     form = RegisterForm(request.POST or None)
-    if socket.gethostname() == 'www.stringkeeper.com':
+    # if socket.gethostname() == 'www.stringkeeper.com':
         
-        context = {
-            'content': 'Registration is not available on the production server during construction.',
-            'activated': False,
-            'ascii_art': ascii_art,
-        }
-    else:
-        context = {
-            'form': form,
-            'activated': True,
-            'ascii_art': ascii_art,
-        }
+    #     context = {
+    #         'content': 'Registration is not available on the production server during construction.',
+    #         'activated': False,
+    #         'ascii_art': ascii_art,
+    #     }
+    # else:
+    #     context = {
+    #         'form': form,
+    #         'activated': True,
+    #         'ascii_art': ascii_art,
+    #     }
+
+    context = {
+        'form': form,
+        'activated': True,
+        'ascii_art': ascii_art,
+    }
+
     if form.is_valid():
         eventlog(form.cleaned_data)
         username = form.cleaned_data.get('username')
