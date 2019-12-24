@@ -43,6 +43,10 @@ from .views import (
     #register_page
 )
 
+admin.site.site_header = 'Administration'                    # default: "Django Administration"
+admin.site.index_title = 'Administration'                 # default: "Site administration"
+admin.site.site_title = 'Administration' # default: "Django site admin"
+
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='site_admin'),
