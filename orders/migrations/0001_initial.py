@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('order_id', models.CharField(blank=True, max_length=120)),
                 ('status', models.CharField(choices=[('created', 'Created'), ('paid', 'Paid'), ('active', 'Active'), ('refunded', 'Refunded')], default='created', max_length=120)),
                 ('total', models.DecimalField(decimal_places=2, default=0, max_digits=100)),
-                ('cart', models.ForeignKey(on_delete='SET_NULL', to='carts.Cart')),
+                ('cart', models.ForeignKey(on_delete=models.SET_NULL, to='carts.Cart')),
             ],
         ),
     ]

@@ -19,6 +19,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='order',
             name='billing_profile',
-            field=models.ForeignKey(blank=True, null=True, on_delete='SET_NULL', to='billing.BillingProfile'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=models.SET_NULL, to='billing.BillingProfile'),
         ),
     ]
