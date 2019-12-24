@@ -8,15 +8,18 @@
 <div class='container'>
     <div class='row'>
     {% for obj in object_list %}
-        <div class='col-6'>
+        <!-- <div class='col-12'> -->
         <!-- {{ forloop.counter }} -->
         {% include 'subscription/snippets/card.html' with instance=obj %}
         <!-- <a href="{{ obj.get_absolute_url }}"> {{ obj.title }} </a><br/> -->
-        {% if forloop.counter|divisibleby:2 %}
+        <!-- {% if forloop.counter|divisibleby:2 %}
             </div> </div><div class='row'><div class='col-12'><hr/></div>
         {% else %}
             </div>
-        {% endif %}
+        {% endif %} -->
+
+
+
 
         <!-- {% cycle '<h1>Hello 1</h1>' '<h1>Hello 2</h1>' '<h1>Hello 3</h1>'  %} -->
 

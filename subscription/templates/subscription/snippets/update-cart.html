@@ -1,12 +1,13 @@
 <div class='container'> 
     subscription ID: {{ subscription.id }}
     <form class='form-subscription-ajax' method='POST' class="form" action='{% url "cart:update" %}' data-endpoint='{% url "cart:update" %}'> {% csrf_token %}
-        <input type='hidden' name='subscription_id' value='{{ subscription.id }}' >
+
         <span class='submit-span'>
+        <input type='hidden' name='subscription_id' value='{{ subscription.id }}' >
         {% if subscription in cart.subscriptions.all %}
-            In cart <button type='submit' class='btn btn-link'>Remove</button>
+        In cart <button type='submit' class='btn btn-link'>Remove</button>
         {% else %}  
-            Add to cart <button type='submit' class='btn btn-success'>Add</button>
+        Add to cart <button type='submit' class='btn btn-success'>Add</button>
         {% endif %}
         </span>
 
