@@ -8,22 +8,24 @@
 <div class='text-center'>
 
     <font color = '#FFFFFF'>
-    <h1>{{ title }}</h1>
+
     </font>
     </div>
     <div class='container'>
     <div class='row'>
     <div class='col'>
 
-        <div class='col-md-6 col-12 mx-auto'>
+        <div class='col-md-12 col-12 mx-auto'>
             <font color = '#FFFFFF'>
-            <p>{{ content }}</p>
+            <!-- <h3>{{ title }}</h3>
+            <h4>{{ content }}</h4> -->
             </font>
             <form class='contact-form' method='POST' action='{% url "contact" %}'> {% csrf_token %}
                 <font color = 'white'>
                 {{ form.as_p }}
             </font>
-            <button type='submit' class='btn btn-light'>Submit</button>
+            <button type='submit' class='btn btn-light'>Send</button>
+            <hr>
             </form>
         </div>
     </div>

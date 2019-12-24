@@ -64,7 +64,7 @@ def contact_page(request):
         # contact_form = ContactForm()    
     context = {
         'title': 'Contact',
-        'content': 'Send us an inquiry: ',
+        'content': 'Send us an inquiry',
         'form': contact_form,
         'ascii_art': ascii_art
     }

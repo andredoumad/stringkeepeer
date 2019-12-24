@@ -9,6 +9,7 @@ class ContactForm(forms.Form):
         #docs.djangoproject.com - customizing-widget-instances
         widget=forms.TextInput(
             attrs={
+                'style': 'background-color:rgb(39, 64, 89); color: white;',
                 "class": "form-control", 
                 "placeholder": "Full Name"
             }
@@ -17,6 +18,7 @@ class ContactForm(forms.Form):
     email = forms.EmailField(
         widget=forms.EmailInput(
             attrs={
+                'style': 'background-color:rgb(39, 64, 89); color: white;',
                 'class': 'form-control',
                 'placeholder': 'Your-email'
             }
@@ -25,7 +27,8 @@ class ContactForm(forms.Form):
     content = forms.CharField(
         widget=forms.Textarea(
             attrs={
-                'class': 'form-control',
+                'style': 'background-color:rgb(39, 64, 89); color: white;',
+                'class': 'form-control ',
                 'placeholder': 'Your inuiry'    
             }
         )
