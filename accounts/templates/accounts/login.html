@@ -9,13 +9,13 @@
 
 <h3>{{ content }}</h3><br>
 
-<font color = 'black'>
+
 <form method='POST'> {% csrf_token %}
-    <div class="card border-secondary mb-1" style="max-width: 32rem;">
+    <div class="card border-secondary mb-1" style="max-width: 32rem; background-color: rgb(61, 70, 78);">
     {{ form }}
     </div>
     <div class="card border-info mb-3" style="max-width: 32rem;">
-            <button type='submit' class='btn btn-default'>Send</button>
+            <button type='submit' class='btn btn-secondary'>Send</button>
     </div>
 </form>
 

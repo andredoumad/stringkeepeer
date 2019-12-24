@@ -4,23 +4,69 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class GuestForm(forms.Form):
-    email = forms.EmailField()
+    email = forms.EmailField(
+        widget=forms.TextInput(
+           attrs={
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                "placeholder": "email"
+            }
+        )
+    )
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
+    username = forms.CharField(
+        widget=forms.TextInput(
+           attrs={
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                'class': 'form-control',
+
+            }
+        )
+    )
     password = forms.CharField(
-        widget=forms.PasswordInput()
+        widget=forms.PasswordInput(
+           attrs={
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                'class': 'form-control',
+
+            }
+        )
     )
 
 class RegisterForm(forms.Form):
-    username = forms.CharField()
-    email = forms.EmailField()
+    username = forms.CharField(
+        widget=forms.TextInput(
+           attrs={
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                'class': 'form-control',
+
+            }
+        )
+    )
+    email = forms.EmailField(
+        widget=forms.TextInput(
+           attrs={
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                'class': 'form-control',
+            }
+        )
+    )
     password = forms.CharField(
-        widget=forms.PasswordInput()
+        widget=forms.PasswordInput(
+           attrs={
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                'class': 'form-control',
+            }
+        )
     )
     password2 = forms.CharField(
         label='Confirm password',
-        widget=forms.PasswordInput()
+        widget=forms.PasswordInput(
+           attrs={
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                'class': 'form-control',
+            }
+        )
     )
 
     def clean_username(self):
