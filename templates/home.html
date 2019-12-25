@@ -17,14 +17,7 @@
     <font color = 'orange'> Authenticated: <font color = 'white'> {{ user.is_authenticated }}<br><br>
 
     {% if user.is_authenticated %}
-    {% load static %}
-    <img src="{% static 'image/Screenshot_from_2019-10-29_14-37-25.png' %}">
 
-        <!-- <font color = 'green'> You have been Authenticated.<br>
-        <font color = 'white'> User only data:<br>
-        {% for a in blog_list %}
-            {% include 'blog/list-inline.html' with blog_post=a truncate=True detail=False %}
-        {% endfor %} -->
     {% endif %}
     <!-- <font color = 'red'>
         You have been not been authenticated.<br> -->

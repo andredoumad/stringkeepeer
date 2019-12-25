@@ -149,6 +149,20 @@ SECRET_KEY = '89y+eudf0eoqxck3bk4=$c5#l#b7j2i4y0!k)5dta7qu-dy3ir'
 AWS_ACCESS_KEY_ID='AKIAYZ2XE524MPVCJFBQ'
 AWS_SECRET_ACCESS_KEY='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'
 AWS_STORAGE_BUCKET_NAME='stringkeeper-django-static'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3-us-west-2.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+eventlog('STATIC_FILES_DIRS 0 == ' + str(STATICFILES_DIRS[0]))
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+eventlog('STATIC_URL == ' + str(STATIC_URL))
+MEDIA_ROOT = ''
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -298,11 +312,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
 #STATICFILES_DIRS = (
 #    os.path.join(BASE_DIR, "static"),
 #')
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 #MEDIA_URL = '/media/' #  django-storages
 #MEDIA_URL = '/media/' #  django-storages
@@ -344,6 +358,9 @@ else:
     SESSION_COOKIE_HTTPONLY=False
     SECURE_PROXY_SSL_HEADER = None
     SECURE_SSL_REDIRECT = False
+
+
+
     '''
     CORS_REPLACE_HTTPS_REFERER      = False
     HOST_SCHEME                     = "http://"

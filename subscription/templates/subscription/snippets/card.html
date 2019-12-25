@@ -1,5 +1,10 @@
 <div class="card mx-3 my-3 bg-secondary text-white" style="width: 28rem;">
   {% if instance.image %}
+    {% load static %}
+    <img src={{instance.image.url}}>
+     
+    instance get absolute url {{ instance.get_absolute_url }} <br>
+    instance  image url {{ instance.image.url }} <br>
     <a href="{{ instance.get_absolute_url }}" > <img class="card-img-top" src="{{ instance.image.url }}" alt="{{ instance.title }}"></a>
   {% endif %}
     <div class="card-body">
