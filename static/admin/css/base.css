@@ -10,8 +10,8 @@ body {
     font-size: 14px;
     font-family: "Roboto","Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
     color: #333;
-    /* background: #fff; */
-    background: #3d464e;
+    background: #fff;
+    /* background: #3d464e; */
 }
 
 /* LINKS */
@@ -82,8 +82,8 @@ h3 {
 }
 
 h4 {
-    font-size: 24px;
-    /* font-size: 12px; */
+    /* font-size: 24px; */
+    font-size: 12px;
     margin: 1em 0 .8em 0;
     padding-bottom: 3px;
 }
