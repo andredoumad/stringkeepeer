@@ -157,54 +157,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_DEFAULT_ACL = 'private'
 
 
-
-
 STATIC_URL = '/static/'
-eventlog('STATIC_URL: ' + STATIC_URL)
-# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-# AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-
-##  debug this block start
-
-# AWS_LOCATION = ''
-
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),
-# ]
-# eventlog('STATIC_FILES_DIRS 0 == ' + str(STATICFILES_DIRS[0]))
-# STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-# STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, '/static/')
-
-
-
-# STATIC_URL = '/static/'
-
-# ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
-# STATICFILES_FINDERS = (
-#     'django.contrib.staticfiles.finders.FileSystemFinder',
-#     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
-#     )
-##  debug this block end
-
-# MEDIA_ROOT = ''
-
-
-# AWS_S3_FILE_OVERWRITE = False
-#AWS_DEFAULT_ACL = None
-
-# eventlog(socket.gethostname())
-# you can use --debug-mode to set the DEBUG setting to True prior to running tests.
-#DEBUG = False
-
-# AWS_DEFAULT_ACL = 'private'
-# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-# AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-# # s3 static settings
-# AWS_LOCATION = ''
-# S3_USE_SIGV4 = True
-# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# AWS_QUERYSTRING_AUTH = True
 
 ALLOWED_HOSTS = ['www.stringkeeper.com', '*']
 
