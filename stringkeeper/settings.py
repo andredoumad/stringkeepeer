@@ -149,6 +149,7 @@ SECRET_KEY = '89y+eudf0eoqxck3bk4=$c5#l#b7j2i4y0!k)5dta7qu-dy3ir'
 AWS_ACCESS_KEY_ID='AKIAYZ2XE524MPVCJFBQ'
 AWS_SECRET_ACCESS_KEY='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'
 AWS_STORAGE_BUCKET_NAME='stringkeeper-django-static'
+AWS_S3_REGION_NAME = 'us-west-2'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
@@ -157,16 +158,15 @@ AWS_DEFAULT_ACL = 'private'
 
 
 
-# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
 STATIC_URL = '/static/'
-# AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+eventlog('STATIC_URL: ' + STATIC_URL)
+# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+# AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 
 ##  debug this block start
-# AWS_S3_CUSTOM_DOMAIN = '%s.s3-us-west-2.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
-# AWS_LOCATION = 'static'
+# AWS_LOCATION = ''
 
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),
@@ -186,16 +186,25 @@ AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 #     )
 ##  debug this block end
 
-MEDIA_ROOT = ''
+# MEDIA_ROOT = ''
 
-eventlog('STATIC_URL == ' + str(STATIC_URL))
-AWS_S3_FILE_OVERWRITE = False
+
+# AWS_S3_FILE_OVERWRITE = False
 #AWS_DEFAULT_ACL = None
 
-eventlog(socket.gethostname())
+# eventlog(socket.gethostname())
 # you can use --debug-mode to set the DEBUG setting to True prior to running tests.
 #DEBUG = False
 
+# AWS_DEFAULT_ACL = 'private'
+# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+# AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+# # s3 static settings
+# AWS_LOCATION = ''
+# S3_USE_SIGV4 = True
+# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS_QUERYSTRING_AUTH = True
 
 ALLOWED_HOSTS = ['www.stringkeeper.com', '*']
 
@@ -206,6 +215,10 @@ LOGOUT_REDIRECT_URL = '/'
 # LOGIN_URL_REDIRECT = '/'
 # LOGOUT_URL = '/logout/'
 
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+MEDIA_URL = '/mediafiles/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 # Application definition
 # components
