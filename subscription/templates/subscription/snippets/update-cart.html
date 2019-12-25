@@ -1,5 +1,5 @@
 <div class='container'> 
-    subscription ID: {{ subscription.id }}
+    <!-- subscription ID: {{ subscription.id }} -->
     <form class='form-subscription-ajax' method='POST' class="form" action='{% url "cart:update" %}' data-endpoint='{% url "cart:update" %}'> {% csrf_token %}
 
         <span class='submit-span'>

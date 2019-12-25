@@ -8,11 +8,11 @@
 <div class='col'>
     <div class='row'>
         <div class='col-12 mr-auto'>
-            <h1>{{object.title}}</h1><br/>
-            <h2>Updated {{ object.timestamp |timesince}} ago.</h2><br/>
+            <h4>{{object.title}}</h4><br/>
+            <!-- <h2>Updated {{ object.timestamp |timesince}} ago.</h2><br/> -->
             {{object.description|linebreaks}}<br/>
             {% if object.image %}
-                {{ object.image.url}}<br/>
+                <!-- {{ object.image.url}}<br/> -->
                 <img src='{{ object.image.url }}' class='img-fluid' />
             {% endif %}
         </div>

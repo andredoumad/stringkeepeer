@@ -1,11 +1,11 @@
-<div class="card mx-2 my-2 bg-secondary text-white" style="width: 28rem;">
+<div class="card mx-3 my-3 bg-secondary text-white" style="width: 28rem;">
   {% if instance.image %}
     <a href="{{ instance.get_absolute_url }}" > <img class="card-img-top" src="{{ instance.image.url }}" alt="{{ instance.title }}"></a>
   {% endif %}
     <div class="card-body">
-      <h5 class="card-title">{{ instance.title }}</h5>
+      <h4 class="card-title">{{ instance.title }}</h4>
       <p class="card-text">{{ instance.description|truncatewords:60 }}</p>
-      <a href="{{ instance.get_absolute_url }}" class="btn btn-info">View</a>
+      <a href="{{ instance.get_absolute_url }}" class="btn btn-info">Subscription details</a>
       <hr>
       {% include 'subscription/snippets/update-cart.html' with subscription=instance cart=cart %}
       <hr>
