@@ -17,12 +17,12 @@
     <font color = 'orange'> Authenticated: <font color = 'white'> {{ user.is_authenticated }}<br><br>
 
     {% if user.is_authenticated %}
-    {% load static %}
+    <!-- {% load static %} -->
     <img src="{% static 'static/images/gman.jpeg' %}"/>
     {% endif %}
     <!-- <font color = 'red'>
         You have been not been authenticated.<br> -->
-<!-- 
+    <!-- 
     {% if ascii_art %}
         <pre>
         <p style="font-size:2px">
