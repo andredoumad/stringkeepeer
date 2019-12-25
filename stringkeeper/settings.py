@@ -149,12 +149,23 @@ SECRET_KEY = '89y+eudf0eoqxck3bk4=$c5#l#b7j2i4y0!k)5dta7qu-dy3ir'
 AWS_ACCESS_KEY_ID='AKIAYZ2XE524MPVCJFBQ'
 AWS_SECRET_ACCESS_KEY='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'
 AWS_STORAGE_BUCKET_NAME='stringkeeper-django-static'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+#https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl
+AWS_DEFAULT_ACL = 'private'
+
+
+
+# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+STATIC_URL = '/static/'
+# AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 
 ##  debug this block start
 # AWS_S3_CUSTOM_DOMAIN = '%s.s3-us-west-2.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-# AWS_S3_OBJECT_PARAMETERS = {
-#     'CacheControl': 'max-age=86400',
-# }
+
 # AWS_LOCATION = 'static'
 
 # STATICFILES_DIRS = [
@@ -162,18 +173,25 @@ AWS_STORAGE_BUCKET_NAME='stringkeeper-django-static'
 # ]
 # eventlog('STATIC_FILES_DIRS 0 == ' + str(STATICFILES_DIRS[0]))
 # STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-# eventlog('STATIC_URL == ' + str(STATIC_URL))
-# MEDIA_ROOT = ''
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, '/static/')
 
+
+
+# STATIC_URL = '/static/'
+
+# ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+# STATICFILES_FINDERS = (
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
+#     )
 ##  debug this block end
 
+MEDIA_ROOT = ''
 
-STATIC_URL = '/static/'
+eventlog('STATIC_URL == ' + str(STATIC_URL))
 AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# SECURITY WARNING: don't run with debug turned on in production!
+#AWS_DEFAULT_ACL = None
+
 eventlog(socket.gethostname())
 # you can use --debug-mode to set the DEBUG setting to True prior to running tests.
 #DEBUG = False
@@ -313,36 +331,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
-
-#STATIC_URL = '/static/'
-#STATICFILES_DIRS = (
-#    os.path.join(BASE_DIR, "static"),
-#')
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-#MEDIA_URL = '/media/' #  django-storages
-#MEDIA_URL = '/media/' #  django-storages
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-'''
-LOCAL_STATIC_CDN_PATH = os.path.join(BASE_DIR, 'static_cdn_test')
-eventlog('LOCAL_STATIC_CDN_PATH: ' + str(LOCAL_STATIC_CDN_PATH))
-#live cdn AWS S3  ? maybe in the future.
-STATIC_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'static')
-eventlog('STATIC_ROOT: ' + str(STATIC_ROOT))
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'staticfiles')
-]
-for item in STATICFILES_DIRS:
-    eventlog('STATICFILES_DIRS: ' + str(item))
-
-MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'media')
-eventlog('MEDIA_ROOT: ' + str(MEDIA_ROOT))
-MEDIA_URL = '/media/' #  django-storages
-eventlog('MEDIA_URL: ' + str(MEDIA_URL))
-'''
 
 if socket.gethostname()=="www.stringkeeper.com":
     eventlog ('running production mode')
