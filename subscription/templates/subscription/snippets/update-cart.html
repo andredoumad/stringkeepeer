@@ -1,15 +1,15 @@
-<div class='container'> 
-    <!-- subscription ID: {{ subscription.id }} -->
-    <form class='form-subscription-ajax' method='POST' class="form" action='{% url "cart:update" %}' data-endpoint='{% url "cart:update" %}'> {% csrf_token %}
-
-        <span class='submit-span'>
-        <input type='hidden' name='subscription_id' value='{{ subscription.id }}' >
-        {% if subscription in cart.subscriptions.all %}
-        In cart <button type='submit' class='btn btn-link'>Remove</button>
-        {% else %}  
-        Add to cart <button type='submit' class='btn btn-success'>Add</button>
-        {% endif %}
-        </span>
-
-    </form>
-</div>
+<form class='form-subscription-ajax' method='POST' class="form" action='{% url "cart:update" %}' data-endpoint='{% url "cart:update" %}'> {% csrf_token %}
+    <span class='submit-span'>
+    <input type='hidden' name='subscription_id' value='{{ subscription.id }}' >
+    {% if subscription in cart.subscriptions.all %}
+    subscription added: {{ subscription }}
+    <button type='submit' class='btn btn-danger'>Remove</button>
+    <!-- <div class='btn-group'> <a class='btn btn-danger' href='/cart/'>In cart</a> <button type='submit' class='btn btn-link'>Remove?</button></div> -->
+    {% else %}
+    <hr>
+    subscription: {{ subscription }}
+    <hr>
+    <button type='submit' class='btn btn-success'>Add {{ subscription }}</button>
+    {% endif %}
+    </span>
+</form>

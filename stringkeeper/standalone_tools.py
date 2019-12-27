@@ -169,7 +169,7 @@ def eventlog(logstring):
         debug_line_number = str('00' + str(line_number))
     elif line_number < 10000:
         debug_line_number = str('0' + str(line_number))
-    print('|')
+    # print('|')
     print('|-| ' + str(filename)[-25:] + ' | ' + str(debug_line_number) + ' | ' + str(logstring))
     log_filepath = str(str(log_directory_path) + '/' + str(caller_filename))
     #print('log_filepath: ' + str(log_filepath))

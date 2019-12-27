@@ -15,9 +15,7 @@
             </tr>
         </thead>
         <tbody class='cart-body'>
-
         {% for subscription in cart.subscriptions.all %}
-        
             <tr class='cart-subscription'>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td><a href='{{ subscription.get_absolute_url }}'>{{ subscription.title }}</a>
@@ -44,10 +42,10 @@
         </tbody>
     </table>
 
-<div class='cart-item-remove-form' style='display:none'>
-    {% include 'carts/snippets/remove-subscription.html' %}
+    <div class='cart-item-remove-form' style='display:none'>
 
-</div>
+        {% include 'carts/snippets/remove-subscription.html' %}
+      </div>
 {% else %}
     <p class='lead'> Cart is empty </p>
 {% endif %}

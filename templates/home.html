@@ -17,9 +17,16 @@
     <font color = 'orange'> Authenticated: <font color = 'white'> {{ user.is_authenticated }}<br><br>
 
     {% if user.is_authenticated %}
+    <font color = 'orange'>
+    <h3>Welcome {{ request.user }}.</h3>
+    <h4>This site is currently under construction.</h4>
+    <hr>
     <!-- {% load static %} -->
-    <img src="{% static 'images/rocketraccoon.jpeg' %}"/>
-    <img src="{% static 'images/gman.jpeg' %}"/>
+    <img src="{% static 'images/rocketraccoon.jpeg' %}" width='50%'/>
+    <hr>
+    <h5>Please excuse the mess.</h5>
+    </font>
+    <!-- <img src="{% static 'images/gman.jpeg' %}"/> -->
     {% endif %}
     <!-- <font color = 'red'>
         You have been not been authenticated.<br> -->
