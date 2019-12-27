@@ -1,0 +1,2 @@
+#how to backup data to fixtures from the database into some file -- in this example, the subscription app data
+python manage.py dumpdata subscription --format json --indent 4 > fixtures/subscription.json

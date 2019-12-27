@@ -14,7 +14,7 @@ class UserManager(BaseUserManager):
         if not password:
             raise ValueError("Users mus have a password")
 
-        user = self.model(
+        user_obj = self.model(
             email = self.normalize_email(email)
         )
 
@@ -22,7 +22,7 @@ class UserManager(BaseUserManager):
         user_obj.staff = is_staff
         user_obj.admin = is_admin
         user_obj.save(using=self._db)
-        return user
+        return user_obj
 
     def create_staffuser(self, email, password=None):
         user = self.create_user(
@@ -77,6 +77,12 @@ class User(AbstractBaseUser):
 
     def get_short_name(self):
         return self.email
+
+    def has_perm(self, perm, obj=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
 
     @property
     def is_staff(self):
