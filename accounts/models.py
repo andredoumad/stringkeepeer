@@ -7,38 +7,46 @@ from django.contrib.auth.models import (
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, password=None, is_staff=False, is_admin=False):
+    def create_user(self, email, password=None, first_name=None, is_staff=False, is_admin=False):
         
         if not email:
             raise ValueError("users must of an email address")
+
         if not password:
-            raise ValueError("Users mus have a password")
+            raise ValueError("Users must have a password")
+
+        if not first_name:
+            raise ValueError("Users must have a full name")
 
         user_obj = self.model(
-            email = self.normalize_email(email)
+            email = self.normalize_email(email),
+            first_name = first_name
         )
 
         user_obj.set_password(password)
         user_obj.staff = is_staff
         user_obj.admin = is_admin
+
         user_obj.save(using=self._db)
         return user_obj
 
-    def create_staffuser(self, email, password=None):
+    def create_staffuser(self, email, password=None, first_name=None):
         user = self.create_user(
             email,
-            password=password,
-            is_staff=True
+            password = password,
+            first_name = first_name,
+            is_staff = True
         )
         return user
 
 
-    def create_superuser(self, email, password=None):
+    def create_superuser(self, email, password=None, first_name=None):
         user = self.create_user(
             email,
-            password=password,
-            is_staff=True,
-            is_admin=True
+            password = password,
+            first_name = first_name,
+            is_staff = True,
+            is_admin = True
         )
         return user
 
@@ -47,7 +55,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     #identity
     email   = models.EmailField(max_length=255, unique=True)
-    # full_name = models.CharField(max_length=255, blank=True, null=True)
+    first_name = models.CharField(max_length=255, blank=True, null=True)
 
     #
     active = models.BooleanField(default=True)
@@ -64,6 +72,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
     #email and password are required by default
     REQUIRED_FIELDS = [
+        'first_name'
         
     ] 
 
@@ -72,8 +81,8 @@ class User(AbstractBaseUser):
     def __str__(self):
         return self.email
 
-    def get_full_name(self):
-        return self.email
+    def get_first_name(self):
+        return self.first_name
 
     def get_short_name(self):
         return self.email

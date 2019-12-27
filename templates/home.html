@@ -18,7 +18,8 @@
 
     {% if user.is_authenticated %}
     <font color = 'orange'>
-    <h3>Welcome {{ request.user }}.</h3>
+    <h3>User Email: {{ request.user.email }}.</h3>
+    <h3>Welcome {{ request.user.first_name }}.</h3>
     <h4>This site is currently under construction.</h4>
     <hr>
     <!-- {% load static %} -->
