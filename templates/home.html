@@ -13,7 +13,7 @@
     <font color = 'orange'> Your IP: <font color = 'white'> {{ user_ip }}<br>
     <font color = 'orange'> Profile Email: <font color = 'white'> {{ request.user.email }}<br>
     <font color = 'orange'> Requested path: <font color = 'white'> {{ request.path }}<br>
-    <font color = 'orange'> Your name: <font color = 'white'> {{ request.user.first_name }}<br>
+    <font color = 'orange'> Your first name: <font color = 'white'> {{ request.user.first_name }}<br>
     <font color = 'orange'> Authentication Status: <font color = 'white'> {{ user.is_authenticated }}<br><br>
 
     {% if user.is_authenticated %}
