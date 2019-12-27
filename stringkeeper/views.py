@@ -27,7 +27,7 @@ def home_page(request):
     my_title = 'Welcome'
     user_ip = get_client_ip(request)
     if request.user.is_authenticated:
-        my_title += str(' ' + str(request.user))
+        my_title += str(' ' + str(request.user.first_name) + '.')
     else:
         my_title += str(' ' + str(' visitor ') + str(user_ip))
 
