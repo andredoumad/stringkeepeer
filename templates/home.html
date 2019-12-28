@@ -11,21 +11,24 @@
     {% endif %}
 
     <font color = 'orange'> Your IP: <font color = 'white'> {{ user_ip }}<br>
-    <font color = 'orange'> Profile Email: <font color = 'white'> {{ request.user.email }}<br>
     <font color = 'orange'> Requested path: <font color = 'white'> {{ request.path }}<br>
-    <font color = 'orange'> Your first name: <font color = 'white'> {{ request.user.first_name }}<br>
-    <font color = 'orange'> Authentication Status: <font color = 'white'> {{ user.is_authenticated }}<br><br>
+    <font color = 'orange'> Authentication Status: <font color = 'white'> {{ user.is_authenticated }}<br>
 
     {% if user.is_authenticated %}
-    <font color = 'orange'>
+    
     <!-- <h3>User Email: {{ request.user.email }}.</h3>
     <h3>Welcome {{ request.user.first_name }}.</h3> -->
-    <h4>This site is currently under construction.</h4>
+    <hr>
+    <h4><font color = 'orange'> This site is currently under construction.</font></h4>
+    <font color = 'orange'> Your first name: <font color = 'white'> {{ request.user.first_name }}<br>
+    <font color = 'orange'> Your last name: <font color = 'white'> {{ request.user.last_name }}<br>
+    <font color = 'orange'> Your full name: <font color = 'white'> {{ request.user.full_name }}<br>
+    <font color = 'orange'> Profile Email: <font color = 'white'> {{ request.user.email }}<br>
     <hr>
     <!-- {% load static %} -->
     <img src="{% static 'images/rocketraccoon.jpeg' %}" width='50%'/>
     <hr>
-    <h5>Please excuse the mess.</h5>
+    <h5><font color = 'orange'> Please excuse the mess.</font></h5>
     </font>
     <!-- <img src="{% static 'images/gman.jpeg' %}"/> -->
     {% endif %}

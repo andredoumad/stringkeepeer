@@ -24,6 +24,8 @@ class UserAdmin(BaseUserAdmin):
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': (
             'first_name',
+            'last_name',
+            'full_name',
             )}),
         ('Permissions', {'fields': ('admin', 'staff', 'active')}),
     )
@@ -35,7 +37,12 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('email', 'password1', 'password2')}
         ),
     )
-    search_fields = ('email', 'first_name',)
+    search_fields = (
+        'email', 
+        'first_name', 
+        'last_name', 
+        'full_name',
+    )
     ordering = ('email',)
     filter_horizontal = ()
 

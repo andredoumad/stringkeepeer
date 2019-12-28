@@ -28,7 +28,7 @@ from searches.views import search_view
 
 from carts.views import cart_home
 
-from accounts.views import login_page, register_page, guest_register_view
+from accounts.views import login_page, RegisterView, guest_register_view
 
 from addresses.views import checkout_address_create_view, checkout_address_reuse_view
 
@@ -64,7 +64,7 @@ urlpatterns = [
     path('checkout/address/create/', checkout_address_create_view, name='checkout_address_create'),
     path('checkout/address/reuse/', checkout_address_reuse_view, name='checkout_address_reuse'),
     path('cart/', include('carts.urls', namespace='cart'), name='cart'),
-    path('register/', register_page, name='register'),
+    path('register/', RegisterView.as_view(), name='register'),
     path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),
     path('subscriptions/', include('subscription.urls', namespace='subscription'), name='subscription'),
     path('search/', include('search.urls', namespace='search'), name='search'),
