@@ -3,27 +3,35 @@
 
 <p style="font-family: 'Palatino'; font-size:14px">
 <font color = 'white'>
-SUBSCRIPTIONS CHECKOUT
 
 <!-- {{ object.order_id }} -- {{ object.cart }} -->
 
 {% if not billing_profile %}
-NEW BILLING PROFILE
 
     <div class='row'>
         <div class='col'>
             <p class='lead'>Login</p>
+            
             {% include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri %}
+            <br>
         </div>
         <div class='col'> 
+            <br>
             Continue as Guest
-    
+            <br>
             {% url "guest_register" as guest_register_url %}
+            <br>
             {% include 'accounts/snippets/form.html' with form=guest_form next_url=request.build_absolute_uri action_url=guest_register_url %}
+            <br>
         </div>
     
         </div>
-
+        {% if ascii_art %}
+        <pre>
+          <p style="font-size:2px">
+          <font color = '#85C1E9'> {{ascii_art}}
+        </pre>
+        {% endif %}
 {% else %}
     {% if not object.billing_address %}
         <div class='row'>

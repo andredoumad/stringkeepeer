@@ -163,8 +163,11 @@ STATIC_URL = '/static/'
 
 ALLOWED_HOSTS = ['www.stringkeeper.com', '*']
 
-LOGIN_URL = '/login'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
+LOGIN_URL_REDIRECT = '/'
+LOGOUT_URL = '/logout/'
+LOGOUT_REDIRECT_URL = '/login/'
+ROOT_URLCONF = 'stringkeeper.urls'
 
 # LOGIN_URL = '/login/'
 # LOGIN_URL_REDIRECT = '/'

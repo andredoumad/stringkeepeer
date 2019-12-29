@@ -10,6 +10,9 @@ from stringkeeper.standalone_tools import *
 from django.utils.http import is_safe_url
 
 
+# User = get_user_model()
+
+
 def guest_register_view(request):
     eventlog('LOGIN_PAGE -- ACCOUNTS')
     ascii_art = get_ascii_art()
@@ -48,6 +51,7 @@ class LoginView(FormView):
         email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
         user = authenticate(request, username=email, password=password)
+        
         if user is not None:
             login(request, user)
             try:
@@ -59,6 +63,7 @@ class LoginView(FormView):
             else:
                 return redirect('/')
         return super(LoginView, self).form_invalid(form)
+
 
 
 class RegisterView(CreateView):
