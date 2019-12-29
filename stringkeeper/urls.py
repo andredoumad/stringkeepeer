@@ -28,7 +28,7 @@ from searches.views import search_view
 
 from carts.views import cart_home
 
-from accounts.views import login_page, RegisterView, guest_register_view
+from accounts.views import LoginView, RegisterView, guest_register_view
 
 from addresses.views import checkout_address_create_view, checkout_address_reuse_view
 
@@ -57,7 +57,7 @@ urlpatterns = [
     # path('login/', login_page, name='login'),
     #how come i cant use anything beyond auth_login - everytime i try just login it breaks
     #even if i change the navbar template, its not right...
-    path('login/', login_page, name='auth_login'),
+    path('login/', LoginView.as_view(), name='auth_login'),
     path('register/guest/', guest_register_view, name='guest_register'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('api/cart/', cart_detail_api_view, name='api-cart'),

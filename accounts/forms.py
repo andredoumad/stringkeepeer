@@ -39,7 +39,7 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('full_name', 'email',) #'full_name',)
+        fields = ('first_name', 'last_name', 'email',) #'full_name',)
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -53,7 +53,7 @@ class RegisterForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(RegisterForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        user.is_active = False # send confirmation email via signals
+        # user.is_active = False # send confirmation email via signals
         # obj = EmailActivation.objects.create(user=user)
         # obj.send_activation_email()
         if commit:
@@ -90,7 +90,7 @@ class GuestForm(forms.Form):
     )
 
 class LoginForm(forms.Form):
-    username = forms.EmailField(
+    email = forms.EmailField(
         label='Email',
         widget=forms.TextInput(
             
@@ -109,61 +109,3 @@ class LoginForm(forms.Form):
             }
         )
     )
-
-# class RegisterForm(forms.Form):
-#     username = forms.CharField(
-#         widget=forms.TextInput(
-#            attrs={
-#                 'style': 'background-color:rgb(35, 39, 43); color: white;',
-#                 'class': 'form-control',
-
-#             }
-#         )
-#     )
-#     email = forms.EmailField(
-#         widget=forms.TextInput(
-#            attrs={
-#                 'style': 'background-color:rgb(35, 39, 43); color: white;',
-#                 'class': 'form-control',
-#             }
-#         )
-#     )
-#     password = forms.CharField(
-#         widget=forms.PasswordInput(
-#            attrs={
-#                 'style': 'background-color:rgb(35, 39, 43); color: white;',
-#                 'class': 'form-control',
-#             }
-#         )
-#     )
-#     password2 = forms.CharField(
-#         label='Confirm password',
-#         widget=forms.PasswordInput(
-#            attrs={
-#                 'style': 'background-color:rgb(35, 39, 43); color: white;',
-#                 'class': 'form-control',
-#             }
-#         )
-#     )
-
-#     def clean_username(self):
-#         username = self.cleaned_data.get('username')
-#         qs = User.objects.filter(username=username)
-#         if qs.exists():
-#             raise forms.ValidationError('Username is taken')
-#         return username
-
-#     def clean_email(self):
-#         email = self.cleaned_data.get('email')
-#         qs = User.objects.filter(email=email)
-#         if qs.exists():
-#             raise forms.ValidationError('Email is taken')
-#         return email
-
-#     def clean(self):
-#         data = self.cleaned_data
-#         password = self.cleaned_data.get('password')
-#         password2 = self.cleaned_data.get('password2')
-#         if password2 != password:
-#             raise forms.ValidationError('Passwords must match.')
-#         return data

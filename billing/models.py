@@ -17,8 +17,7 @@ class BillingProfileManager(models.Manager):
         obj = None
         if user.is_authenticated:
             eventlog('logged in user checkout remembers payment stuff')
-            if user.email:
-                obj, created = self.model.objects.get_or_create(user=user, email=user.email)
+            obj, created = self.model.objects.get_or_create(user=user, email=user.email)
         elif guest_email_id is not None:
             eventlog('guest user checkout auto reloads payment')
             guest_email_obj = GuestEmail.objects.get(id=guest_email_id)
