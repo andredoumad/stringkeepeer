@@ -13,6 +13,11 @@ from .utils import get_client_ip
 User = settings.AUTH_USER_MODEL
 
 
+FORCE_SESSION_TO_ONE = getattr(settings, 'FORCE_SESSION_TO_ONE', False)
+FORCE_INACTIVE_USER_ENDSESSION= getattr(settings, 'FORCE_INACTIVE_USER_ENDSESSION', False)
+
+
+
 class ObjectViewed(models.Model):
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL) # user instance.id
     ip_address = models.CharField(max_length=220, blank=True, null=True) # IP field
@@ -83,7 +88,10 @@ def post_save_session_receiver(sender, instance, created, *args, **kwargs):
     if not instance.active and not instance.ended:
         instance.end_session()
 
-post_save.connect(post_save_session_receiver, sender=UserSession)
+
+if FORCE_SESSION_TO_ONE:
+    post_save.connect(post_save_session_receiver, sender=UserSession)
+
 
 def post_save_user_changed_receiver(sender, instance, created, *args, **kwargs):
     if not created:
@@ -92,7 +100,9 @@ def post_save_user_changed_receiver(sender, instance, created, *args, **kwargs):
             for i in qs:
                 i.end_session()
 
-post_save.connect(post_save_user_changed_receiver, sender=User)
+
+if FORCE_INACTIVE_USER_ENDSESSION:
+    post_save.connect(post_save_user_changed_receiver, sender=User)
 
 
 def user_logged_in_receiver(sender, instance, request, *args, **kwargs):
