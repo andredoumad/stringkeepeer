@@ -53,6 +53,7 @@ class RegisterForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(RegisterForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        user.full_name = str(str(user.first_name) + ' ' + str(user.last_name))
         # user.is_active = False # send confirmation email via signals
         # obj = EmailActivation.objects.create(user=user)
         # obj.send_activation_email()

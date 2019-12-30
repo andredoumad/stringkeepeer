@@ -20,10 +20,10 @@
     <h3>Welcome {{ request.user.first_name }}.</h3> -->
     <hr>
     <h4><font color = 'orange'> This site is currently under construction.</font></h4>
-    <font color = 'orange'> Your first name: <font color = 'white'> {{ request.user.first_name }}<br>
-    <font color = 'orange'> Your last name: <font color = 'white'> {{ request.user.last_name }}<br>
-    <font color = 'orange'> Your full name: <font color = 'white'> {{ request.user.full_name }}<br>
-    <font color = 'orange'> Profile Email: <font color = 'white'> {{ request.user.email }}<br>
+    <font color = 'orange'> First name: <font color = 'white'> {{ request.user.first_name }}<br>
+    <font color = 'orange'> Last name: <font color = 'white'> {{ request.user.last_name }}<br>
+    <font color = 'orange'> Full name: <font color = 'white'> {{ request.user.full_name }}<br>
+    <font color = 'orange'> Email: <font color = 'white'> {{ request.user.email }}<br>
     <hr>
     <!-- {% load static %} -->
     <img src="{% static 'images/rocketraccoon.jpeg' %}" width='50%'/>
