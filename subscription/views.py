@@ -5,9 +5,11 @@ from django.shortcuts import render, get_object_or_404
 from stringkeeper.standalone_tools import *
 import stringkeeper.standalone_tools
 
+from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 
 from .models import Subscription
+
 
 
 class SubscriptionFeaturedListView(ListView):
@@ -17,7 +19,7 @@ class SubscriptionFeaturedListView(ListView):
         request = self.request
         return Subscription.objects.all().featured()
 
-class SubscriptionFeaturedDetailView(DetailView):
+class SubscriptionFeaturedDetailView(ObjectViewedMixin, DetailView):
     queryset = Subscription.objects.all().featured()
     template_name = 'subscription/featured-detail.html'
 
@@ -55,7 +57,7 @@ def subscription_list_view(request):
     }
     return render(request, "subscription/list.html", context)
 
-class SubscriptionDetailSlugView(DetailView):
+class SubscriptionDetailSlugView(ObjectViewedMixin, DetailView):
     queryset = Subscription.objects.all()
     template_name = "subscription/detail.html"
 
@@ -68,6 +70,7 @@ class SubscriptionDetailSlugView(DetailView):
     def get_object(self, *args, **kwargs):
         request = self.request
         slug = self.kwargs.get('slug')
+
         #instance = get_object_or_404(Subscription, slug=slug, active=True)
         #eventlog('instance: ' + str(instance))
         try:
@@ -79,12 +82,12 @@ class SubscriptionDetailSlugView(DetailView):
             instance = qs.first()
         except:
             raise Http404("This is odd... I couldn't find what you're looking for.")
-        
+        # object_viewed_signal.send(instance.__class__, instance=instance, request=request)        
         eventlog('instance: ' + str(instance))
         return instance
 
 
-class SubscriptionDetailView(DetailView):
+class SubscriptionDetailView(ObjectViewedMixin, DetailView):
     #everything in the database
     #queryset = Subscription.objects.all()
     template_name = 'subscription/detail.html'

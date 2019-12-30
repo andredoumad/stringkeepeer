@@ -5,7 +5,8 @@ from django.shortcuts import render, redirect
 
 from .forms import LoginForm, RegisterForm, GuestForm
 from .models import GuestEmail
-# Create your views here.
+from .signals import user_logged_in
+
 from stringkeeper.standalone_tools import *
 from django.utils.http import is_safe_url
 
@@ -54,6 +55,7 @@ class LoginView(FormView):
         
         if user is not None:
             login(request, user)
+            user_logged_in.send(user.__class__, instance=user, request=request)
             try:
                 del request.session['guest_email_id']
             except:
