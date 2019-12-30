@@ -89,15 +89,15 @@ def post_save_session_receiver(sender, instance, created, *args, **kwargs):
 post_save.connect(post_save_session_receiver, sender=UserSession)
 
 
-def post_save_user_changed_receiver(sender, instance, created, *args, **kwargs):
-    # when a user is not active -- we ended all of the sessions for that user
-    if not created:
-        if instance.is_active == False:
-            qs = UserSession.objects.filter(user=instance.user, ended=False, active=False)
-            for i in qs:
-                i.end_session()
+# def post_save_user_changed_receiver(sender, instance, created, *args, **kwargs):
+#     # when a user is not active -- we ended all of the sessions for that user
+#     if not created:
+#         if instance.is_active == False:
+#             qs = UserSession.objects.filter(user=instance.user, ended=False, active=False)
+#             for i in qs:
+#                 i.end_session()
 
-post_save.connect(post_save_user_changed_receiver, sender=User)
+# post_save.connect(post_save_user_changed_receiver, sender=User)
 
 def user_logged_in_receiver(sender, instance, request, *args, **kwargs):
     print(instance)
