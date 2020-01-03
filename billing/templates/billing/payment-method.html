@@ -1,0 +1,71 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+
+{% if payment_company == 'stripe' %}
+<!-- _Stripe_ Form START -->
+<div class='col-10 col-md-6 mx-auto'>
+    <h1>Add Payment Method</h1>
+    <div class='stripe-payment-form-module' data-token='{{ publish_key }}' data-next-url='{% if next_url %}{{ next_url }}{% endif %}' data-btn-title='Add New Card'></div>
+</div>
+<!-- _Stripe_ Form END -->
+{% endif %}
+
+{% if payment_company == 'paypal' %}
+<!-- _paypal_ start -->
+<div class='col-10 col-md-6 mx-auto'>
+  <h1>Add Payment Method</h1>
+  <div class='paypal-payment-form-module' data-token='{{ publish_key }}' data-next-url='{% if next_url %}{{ next_url }}{% endif %}' data-btn-title='Add New Card'>
+  <h3>{{ testThing }}</h3>
+  </div>
+
+<!-- _paypal_ end -->
+{% endif %}
+
+{% endblock %}
+
+
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ensures optimal rendering on mobile devices. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
+</head>
+
+<body>
+
+  <!-- SUBSCRIPTIONS means VAULT IS TRUE  -->
+  <script
+       src="https://www.paypal.com/sdk/js?client-id=AZ8LR5b_9c_lReQvCfVbj79a6OQe3vdPy_5TbB-IBJ59khQl-IW4dWZq7Zwh2xUjv668fU0G9HDHBPDZ&vault=true&debug=true">
+  </script>
+
+  <div id="paypal-button-container"></div>
+
+  <script>
+    paypal.Buttons({
+
+  style: {
+    layout:  'vertical',
+    color:   'blue',
+    shape:   'rect',
+    label:   'paypal'
+
+  },
+
+  createOrder: function(data, actions) {
+  // This function sets up the details of the transaction, including the amount and line item details.
+
+  return actions.order.create({
+      purchase_units: [{
+      amount: {
+          value: '0.01'
+      }
+      }]
+  });
+  }
+  }).render('#paypal-button-container');
+  </script>
+</div>
+
+
+</body>

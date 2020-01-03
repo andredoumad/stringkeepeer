@@ -181,3 +181,15 @@ def eventlog(logstring):
 
 eventlog('standalone logging BASE_DIR: ' + str(BASE_DIR) )
 eventlog('log_directory_path ' + log_directory_path)
+
+
+
+
+
+def find_between(s, first, last ):
+    try:
+        start = s.index( first ) + len( first )
+        end = s.index( last, start )
+        return s[start:end]
+    except ValueError:
+        return ''

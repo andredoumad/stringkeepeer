@@ -48,13 +48,13 @@
         {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri action_url=checkout_address_reuse address_type='billing' %}
     {% else %}
 
-        <h1>Complete Checkout</h1>
+        <h1>Finalize Checkout</h1>
         <p>Billing Address: {{ object.billing_address.get_address }}</p>
         <p>Cart Items: {% for subscription in object.cart.subscriptions.all %}{{ subscription }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
         <p>Subtotal: {{ object.cart.subtotal }}</p>
         <p>Total: {{ object.total }}</p>
         <form class='form' method='POST' action=''>{% csrf_token %}
-            <button type='submit' class ='btn btn-info'>Complete Checkout</button>
+            <button type='submit' class ='btn btn-info'>Finalize Checkout</button>
         </form>
 
     {% endif %}

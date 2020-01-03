@@ -8,6 +8,7 @@ class UserAdminCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
@@ -34,9 +35,28 @@ class UserAdminCreationForm(forms.ModelForm):
 class RegisterForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    # password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(
+           attrs={
+                'label': 'Password',
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                'class': 'form-control',
 
+            }
+        )
+    )
+    # password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(
+           attrs={
+                'label': 'Password confirmation',
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                'class': 'form-control',
+
+            }
+        )
+    )
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email',) #'full_name',)
@@ -90,6 +110,11 @@ class GuestForm(forms.Form):
         )
     )
 
+
+    def __init__(self, request, *args, **kwargs):
+        self.request = request
+        super(GuestForm, self).__init__(*args, **kwargs)
+
 class LoginForm(forms.Form):
     email = forms.EmailField(
         label='Email',
@@ -110,3 +135,7 @@ class LoginForm(forms.Form):
             }
         )
     )
+
+    # def __init__(self, request, *args, **kwargs):
+    #     self.request = request
+    #     super(LoginForm, self).__init__(*args, **kwargs)

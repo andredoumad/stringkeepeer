@@ -10,8 +10,10 @@ from stringkeeper.standalone_tools import *
 from django.utils.timezone import utc
 from random import randint
 from django.contrib.auth import authenticate, login, get_user_model
-from .forms import ContactForm, LoginForm, RegisterForm
+from .forms import ContactForm
 from blog.models import BlogPost
+
+
 
 #definition for wsgi 
 #Web Server Gateway Interface wsgi 

@@ -14,6 +14,7 @@
     <font color = 'orange'> Requested path: <font color = 'white'> {{ request.path }}<br>
     <font color = 'orange'> Authentication Status: <font color = 'white'> {{ user.is_authenticated }}<br>
 
+
     {% if user.is_authenticated %}
     
     <!-- <h3>User Email: {{ request.user.email }}.</h3>
@@ -26,9 +27,12 @@
     <font color = 'orange'> Email: <font color = 'white'> {{ request.user.email }}<br>
     <hr>
     <!-- {% load static %} -->
-    <img src="{% static 'images/rocketraccoon.jpeg' %}" width='50%'/>
+    <img src="{% static 'images/rocketraccoon.jpeg' %}" width='25%'/>
     <hr>
     <h5><font color = 'orange'> Please excuse the mess.</font></h5>
+
+
+
     </font>
     <!-- <img src="{% static 'images/gman.jpeg' %}"/> -->
     {% endif %}

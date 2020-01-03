@@ -9,8 +9,18 @@
 <script src="https://kit.fontawesome.com/1fa1fc778c.js" crossorigin="anonymous"></script>
 
 
+
+<!-- _stripe_ js-->
+<script src="https://js.stripe.com/v3/"></script>
+<script src='{% static "js/stringkeeper-stripe-billing.js" %}'></script>
+
+
 <!-- jquery confirm -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+<!-- js Render https://cdnjs.com/libraries/jsrender -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.5/jsrender.min.js"></script>
+{% include 'base/js_templates.html' %}
 
 <!-- Django Secure AJAX JS -->
 <script src='{% static "js/csrf.ajax.js" %}'></script>
