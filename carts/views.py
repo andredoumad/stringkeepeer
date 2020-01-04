@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from stringkeeper.standalone_tools import *
@@ -9,7 +10,12 @@ from .models import Cart
 from accounts.forms import LoginForm, GuestForm
 from billing.models import BillingProfile
 from addresses.models import Address
+import stripe
 
+STRIPE_SECRET_KEY = getattr(settings, 'STRIPE_SECRET_KEY', 'sk_test_UQ6hFgP5OZ9KXeSWvO39jgTb0099ffMFNJ')
+STRIPE_PUB_KEY =  getattr(settings, 'STRIPE_PUB_KEY',  'pk_test_k8LAxPXmWxonT6ZUDVxjsuzL00LCGJ2rLX')
+
+stripe.api_key = STRIPE_SECRET_KEY
 
 def cart_detail_api_view(request):
     cart_obj, new_obj = Cart.objects.new_or_get(request)
@@ -108,6 +114,7 @@ def checkout_home(request):
             del request.session["billing_address_id"]
         if billing_address_id or shipping_address_id:
             order_obj.save()
+        has_card = billing_profile.has_card
 
 
 
@@ -135,7 +142,9 @@ def checkout_home(request):
         'login_form': login_form,
         'guest_form': guest_form,
         'address_form': address_form,
-        'address_qs': address_qs
+        'address_qs': address_qs,
+        "has_card": has_card,
+        'publish_key': STRIPE_PUB_KEY
     }
     
     return render(request, 'carts/checkout.html', context)

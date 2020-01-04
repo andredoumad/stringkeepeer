@@ -124,11 +124,9 @@ if STRIPE_BILLING_SERVICE:
     class CardManager(models.Manager):
         
         def add_new(self, billing_profile, token):
-            # if str(stripe_card_response.object) == "card":
             if token:
                 customer = stripe.Customer.retrieve(billing_profile.stripe_customer_id)
-                # https://stripe.com/docs/api/customers/object?lang=python
-                card_response = customer.sources.create(source=token)
+                stripe_card_response = customer.sources.create(source=token)
                 new_card = self.model(
                     billing_profile=billing_profile,
                     stripe_id = stripe_card_response.id,
