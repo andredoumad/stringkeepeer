@@ -122,7 +122,8 @@ if STRIPE_BILLING_SERVICE:
 
 if STRIPE_BILLING_SERVICE:
     class CardManager(models.Manager):
-        
+        def all(self, *args, **kwargs):
+            return self.get_queryset().filter(active=True)
         def add_new(self, billing_profile, token):
             if token:
                 customer = stripe.Customer.retrieve(billing_profile.stripe_customer_id)
@@ -135,7 +136,7 @@ if STRIPE_BILLING_SERVICE:
                     exp_month = stripe_card_response.exp_month,
                     exp_year = stripe_card_response.exp_year,
                     last4 = stripe_card_response.last4
-                )
+                ) 
                 new_card.save()
                 return new_card
             return None

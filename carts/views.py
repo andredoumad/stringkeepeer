@@ -129,6 +129,7 @@ def checkout_home(request):
                 del request.session['cart_id']
                 if not billing_profile.user:
                     '''
+                    if guest...
                     is this the best spot?
                     '''
                     billing_profile.set_cards_inactive()
