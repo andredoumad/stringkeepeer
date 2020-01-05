@@ -153,7 +153,7 @@ function displayBtnStatus(element, newHtml, newClasses, loadTime, timeout){
     // var defaultHtml = element.html()
     // var defaultClasses = element.attr("class")
     element.html(newHtml)
-    element.removeClass(defaultClasses)
+    element.removeClass(btnLoadDefaultClasses)
     element.addClass(newClasses)
     return setTimeout(function(){
         element.html(btnLoadDefaultHtml)
