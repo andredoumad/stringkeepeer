@@ -152,8 +152,9 @@ def checkout_home(request):
 
 
 
-
-
-
 def checkout_done_view(request):
-    return render(request, 'carts/checkout-done.html', {})
+    ascii_art = get_ascii_art()
+    context = {
+        'ascii_art': ascii_art,
+    }
+    return render(request, 'carts/checkout-done.html', context)
