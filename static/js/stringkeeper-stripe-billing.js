@@ -134,7 +134,7 @@ form.on('submit', function(event) {
             btnLoad, 
             loadingHtml, 
             loadingClasses, 
-            10000, 
+            1000, 
             currentTimeout)
         stripeTokenHandler(nextUrl, result.token);
         card.clear()
