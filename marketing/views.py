@@ -58,8 +58,8 @@ data[action]: unsub
 """
 
 class MailchimpWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF?????
-    # def get(self, request, *args, **kwargs):
-    #     return HttpResponse("Thank you", status=200)
+    def get(self, request, *args, **kwargs):
+        return HttpResponse("Thank you", status=200)
     def post(self, request, *args, **kwargs):
         data = request.POST
         list_id = data.get('data[list_id]')
