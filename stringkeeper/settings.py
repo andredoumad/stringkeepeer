@@ -331,8 +331,10 @@ if socket.gethostname()=="www.stringkeeper.com":
     SESSION_COOKIE_HTTPONLY=True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
     SECURE_SSL_REDIRECT = True
-    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeper.log')) )
-
+    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeper.livedebug')) )
+    f = open(str(os.path.join(BASE_DIR, 'stringkeeper.livedebug')), "w")
+    f.write("")
+    f.close()
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
@@ -376,8 +378,10 @@ else:
     SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
     SECURE_FRAME_DENY               = False
     '''
-    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeper.log')) )
-
+    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeper.localdebug')) )
+    f = open(str(os.path.join(BASE_DIR, 'stringkeeper.localdebug')), "w")
+    f.write("")
+    f.close()
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
