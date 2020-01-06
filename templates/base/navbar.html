@@ -42,7 +42,7 @@
         {% endif %}
 
         <li class="nav-item {% if request.path == home_url  %}active{% endif %}">
-            <a class="nav-link" href="{{ home_url }}">Home</a>
+            <a class="nav-link" href="{{ home_url }}">Stringkeeper</a>
           </li>
         <!-- <li class="nav-item {% if request.path == blog_url  %}active{% endif %}">
           <a class="nav-link" href="{{ blog_url }}">Blog</a>
@@ -70,7 +70,7 @@
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item {% if request.path == accounts_url  %}active{% endif %}" href="{{ accounts_url }}">Home</a>
-            <a class="dropdown-item" href="#">Another action</a>
+            <!-- <a class="dropdown-item" href="#">Another action</a> -->
             <a class='dropdown-item' href="{{ logout_url }}">Logout</a>
           </div>
         </div>

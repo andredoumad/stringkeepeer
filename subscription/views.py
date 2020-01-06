@@ -42,6 +42,8 @@ class SubscriptionListView(ListView):
         context = super(SubscriptionListView, self).get_context_data(*args, **kwargs)
         cart_obj, new_obj = Cart.objects.new_or_get(self.request)
         context['cart'] = cart_obj
+        context['ascii_art'] = get_ascii_art()
+        eventlog(context)
         return context
 
     def get_queryset(self, *args, **kwargs):
@@ -50,6 +52,7 @@ class SubscriptionListView(ListView):
 
 def subscription_list_view(request):
     queryset = Subscription.objects.all()
+    ascii_art = get_ascii_art()
     context = {
         'title': 'Subscription List',
         'object_list': queryset,
@@ -62,6 +65,7 @@ class SubscriptionDetailSlugView(ObjectViewedMixin, DetailView):
     template_name = "subscription/detail.html"
 
     def get_context_data(self, *args, **kwargs):
+        ascii_art = get_ascii_art()
         context = super(SubscriptionDetailSlugView, self).get_context_data(*args, **kwargs)
         cart_obj, new_obj = Cart.objects.new_or_get(self.request)
         context['cart'] = cart_obj
@@ -70,6 +74,7 @@ class SubscriptionDetailSlugView(ObjectViewedMixin, DetailView):
     def get_object(self, *args, **kwargs):
         request = self.request
         slug = self.kwargs.get('slug')
+        ascii_art = get_ascii_art()
 
         #instance = get_object_or_404(Subscription, slug=slug, active=True)
         #eventlog('instance: ' + str(instance))
