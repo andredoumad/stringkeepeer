@@ -2,6 +2,7 @@
 {% url 'blog:list' as blog_url %}
 {% url 'subscription:list' as subscription_url %}
 {% url 'carts:home' as cart_url %}
+{% url 'account:home' as accounts_url %}
 {% url 'contact' as contact_url %}
 {% url 'logout' as logout_url %}
 {% url 'register' as register_url %}
@@ -60,8 +61,21 @@
         {% if user.is_authenticated %}
         <li class="nav-item {% if request.path == logout_url  %}active{% endif %}">
             <!-- <a class='nav-link' href="{% url 'logout' %}">Logout</a> -->
-            <a class='nav-link' href="{{ logout_url }}">Logout</a>
+
         </li>
+
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle mx-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Account
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item {% if request.path == accounts_url  %}active{% endif %}" href="{{ accounts_url }}">Home</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class='dropdown-item' href="{{ logout_url }}">Logout</a>
+          </div>
+        </div>
+
+
         {% endif %}
         <!-- <div class='container'> -->
           <!-- <div class='col-2'> -->

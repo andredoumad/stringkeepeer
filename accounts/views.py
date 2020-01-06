@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login, get_user_model
 from django.http import HttpResponse
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, FormView, DetailView
 from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+from django.utils.decorators import method_decorator
 from .forms import LoginForm, RegisterForm, GuestForm
 from .models import GuestEmail
 from .signals import user_logged_in
@@ -11,7 +13,20 @@ from stringkeeper.standalone_tools import *
 from django.utils.http import is_safe_url
 
 
+
 # User = get_user_model()
+
+# @login_required
+# def account_home_view(request):
+#     return render(request, "accounts/home.html", {})
+
+
+#LoginRequiredMixin,
+class AccountHomeView(LoginRequiredMixin, DetailView):
+    template_name = 'accounts/home.html'
+    def get_object(self):
+        return self.request.user
+
 
 
 def guest_register_view(request):

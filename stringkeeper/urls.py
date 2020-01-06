@@ -17,7 +17,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path, re_path, include #url
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from blog.views import (
     blog_post_create_view,
 )
@@ -53,6 +53,9 @@ urlpatterns = [
     path('', home_page, name='home'),
     path('blog-new/', blog_post_create_view),
     path('blog/', include('blog.urls', namespace='blog'), name='blog'),
+    # path('about/', contact_page, name='about'),
+    path('accounts/', RedirectView.as_view(url='/account')),
+    path('account/', include('accounts.urls', namespace='account'), name='account'),
     path('contact/', contact_page, name='contact'),
     # path('login/', login_page, name='login'),
     #how come i cant use anything beyond auth_login - everytime i try just login it breaks
@@ -70,6 +73,7 @@ urlpatterns = [
     path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),
     path('subscriptions/', include('subscription.urls', namespace='subscription'), name='subscription'),
     path('search/', include('search.urls', namespace='search'), name='search'),
+    path('settings/', RedirectView.as_view(url='/account')),
     path('settings/email/', MarketingPreferenceUpdateView.as_view(), name='marketing-pref'),
     path('webhooks/mailchimp/', MailchimpWebhookView.as_view(), name='webhooks-mailchimp'),
     path('accounts/', include('django.contrib.auth.urls')),
