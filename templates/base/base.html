@@ -15,12 +15,21 @@
   <body style="background-color:rgb(61, 70, 78);">
     
     <div class='container'>
-        <!-- <div class='row'> -->
-          <!-- <div class='col-12'> -->
+      {% if messages %}
+      <div class="alert alert-success messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ messages.tags }}"{% endif %}>
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+            {{ message }}
+          </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+        </div>
 
             {% block content %}
             {% endblock %}
-
+            
             {% include 'base/js.html' %}
             {% block javascript %}
             

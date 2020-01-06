@@ -33,6 +33,7 @@ from billing.views import payment_method_view, payment_method_createview
 from addresses.views import checkout_address_create_view, checkout_address_reuse_view
 
 from carts.views import cart_detail_api_view
+from marketing.views import MarketingPreferenceUpdateView, MailchimpWebhookView
 
 from .views import (
     home_page,
@@ -49,7 +50,6 @@ admin.site.site_title = 'Administration' # default: "Django site admin"
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls, name='site_admin'),
     path('', home_page, name='home'),
     path('blog-new/', blog_post_create_view),
     path('blog/', include('blog.urls', namespace='blog'), name='blog'),
@@ -70,7 +70,10 @@ urlpatterns = [
     path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),
     path('subscriptions/', include('subscription.urls', namespace='subscription'), name='subscription'),
     path('search/', include('search.urls', namespace='search'), name='search'),
+    path('settings/email/', MarketingPreferenceUpdateView.as_view(), name='marketing-pref'),
+    path('webhooks/mailchimp/', MailchimpWebhookView.as_view(), name='webhooks-mailchimp'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('admin/', admin.site.urls, name='site_admin'),
 
 ]
 

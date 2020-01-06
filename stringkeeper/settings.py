@@ -194,6 +194,7 @@ INSTALLED_APPS = [
     'search',
     'tags',
     'carts',
+    'marketing',
     'orders',
     'accounts',
     'analytics',
@@ -213,6 +214,10 @@ STRIPE_BILLING_SERVICE = True
 
 STRIPE_SECRET_KEY = 'sk_test_UQ6hFgP5OZ9KXeSWvO39jgTb0099ffMFNJ'
 STRIPE_PUB_KEY = 'pk_test_k8LAxPXmWxonT6ZUDVxjsuzL00LCGJ2rLX'
+
+MAILCHIMP_API_KEY = "b1ac039ee89ff25296c78c3d3d6874b4-us4"
+MAILCHIMP_DATA_CENTER = "us4"
+MAILCHIMP_EMAIL_LIST_ID = "7d3e434d40"
 
 
 MIDDLEWARE = [
