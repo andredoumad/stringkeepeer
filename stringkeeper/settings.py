@@ -331,6 +331,26 @@ if socket.gethostname()=="www.stringkeeper.com":
     SESSION_COOKIE_HTTPONLY=True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
     SECURE_SSL_REDIRECT = True
+    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeper.log')) )
+
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(BASE_DIR, 'stringkeeper.livedebug'),
+            },
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['file'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+        },
+    }
 
 else:
     eventlog(' running non-production settings')
@@ -356,29 +376,29 @@ else:
     SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
     SECURE_FRAME_DENY               = False
     '''
+    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeper.log')) )
 
-
-
-
-eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeper.log')) )
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'stringkeeper.log'),
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(BASE_DIR, 'stringkeeper.localdebug'),
+            },
         },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
+        'loggers': {
+            'django': {
+                'handlers': ['file'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
         },
-    },
-}
+    }
+
+
+
+
 
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
