@@ -56,7 +56,7 @@ urlpatterns = [
     path('about/', about_page, name='about'),
     path('accounts/', RedirectView.as_view(url='/account')),
     path('account/', include('accounts.urls', namespace='account'), name='account'),
-    path('accounts/', include('accounts.passwords.urls', namespace='account')),
+    path('accounts/', include('accounts.passwords.urls')),
     path('contact/', contact_page, name='contact'),
     # path('login/', login_page, name='login'),
     #how come i cant use anything beyond auth_login - everytime i try just login it breaks

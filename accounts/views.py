@@ -69,6 +69,8 @@ class LoginView(FormView):
         user = authenticate(request, username=email, password=password)
         
         if user is not None:
+            if not user.is_active:
+                return super(LoginView, self).form_invalid(form)
             login(request, user)
             user_logged_in.send(user.__class__, instance=user, request=request)
             try:
