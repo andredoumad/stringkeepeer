@@ -37,7 +37,8 @@ if STRIPE_BILLING_SERVICE:
         context = {
             'publish_key': STRIPE_PUB_KEY,
             'next_url': next_url, 
-            'payment_company': 'stripe'
+            'payment_company': 'stripe',
+            'ascii_art': get_ascii_art()
             }
 
         return render(request, 'billing/payment-method.html', context)

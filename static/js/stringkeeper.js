@@ -69,41 +69,41 @@ $(document).ready(function(){
 
 
 
-  //auto search
-  var searchForm = $(".search-form")
-  var searchInput = searchForm.find("[name='q']") // input name = 'q'
-  var typingTimer;
-  var typingInterval = 333
-  var searchBtn = searchForm.find("[type='submit']")
+  // //auto search
+  // var searchForm = $(".search-form")
+  // var searchInput = searchForm.find("[name='q']") // input name = 'q'
+  // var typingTimer;
+  // var typingInterval = 333
+  // var searchBtn = searchForm.find("[type='submit']")
 
-  searchInput.keyup(function(event){
-    console.log(searchInput.val())
-    clearTimeout(typingTimer)
-    typingTimer = setTimeout(performSearch, typingInterval)
-  })
+  // searchInput.keyup(function(event){
+  //   console.log(searchInput.val())
+  //   clearTimeout(typingTimer)
+  //   typingTimer = setTimeout(performSearch, typingInterval)
+  // })
 
-  searchInput.keydown(function(event){
-    console.log(searchInput.val())
-    clearTimeout(typingTimer)
-  })
-
-
-  function displaySearching(){
-    searchBtn.addClass("disabled")
-    searchBtn.html("<i class='fa fa-spin fa-spinner'></i> Searching...")
-  }
-
-  function performSearch(){
-    displaySearching()
-
-    var query = searchInput.val()
-
-    setTimeout(function(){
-      window.location.href='/search/?q=' + query
-    }, 200)
+  // searchInput.keydown(function(event){
+  //   console.log(searchInput.val())
+  //   clearTimeout(typingTimer)
+  // })
 
 
-  }
+  // function displaySearching(){
+  //   searchBtn.addClass("disabled")
+  //   searchBtn.html("<i class='fa fa-spin fa-spinner'></i> Searching...")
+  // }
+
+  // function performSearch(){
+  //   displaySearching()
+
+  //   var query = searchInput.val()
+
+  //   setTimeout(function(){
+  //     window.location.href='/search/?q=' + query
+  //   }, 200)
+
+
+  // }
 
   //cart = add products
 
