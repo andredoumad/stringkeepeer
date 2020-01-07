@@ -8,9 +8,7 @@ from django.urls import reverse # OLD from django.core.urlresolvers import rever
 
 import requests
 from accounts.models import GuestEmail
-import logging
 
-logging.basicConfig(level=logging.INFO)
 
 
 User = settings.AUTH_USER_MODEL

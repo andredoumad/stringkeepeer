@@ -53,7 +53,7 @@ urlpatterns = [
     path('', home_page, name='home'),
     path('blog-new/', blog_post_create_view),
     path('blog/', include('blog.urls', namespace='blog'), name='blog'),
-    # path('about/', contact_page, name='about'),
+    path('about/', about_page, name='about'),
     path('accounts/', RedirectView.as_view(url='/account')),
     path('account/', include('accounts.urls', namespace='account'), name='account'),
     path('contact/', contact_page, name='contact'),

@@ -132,6 +132,11 @@ import os
 import socket
 from .standalone_tools import *
 from django.core.exceptions import ImproperlyConfigured
+
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
 # from django.contrib.auth.models import User
 # SECRET_KEY
 

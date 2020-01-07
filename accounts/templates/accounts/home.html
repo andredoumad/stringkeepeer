@@ -3,16 +3,14 @@
 {% block content %}
 <div class='row'>
 <div class='col-12'>
-<h1>Account</h1>
-<hr/>
 </div>
-<div class='col-12 col-md-3 my-3'>
+<div class='col-12 col-md-6 my-3'>
     <div class="card bg-dark text-white">
       <div class="card-body ">
         <h4 class="card-title">Support</h4>
             <div class='list-group'>
-
-                <a class='list-group-item bg-secondary text-white' href='{% url "contact" %}'>Contact</a>
+                <a class='list-group-item bg-info text-white' href='{% url "about" %}'>About</a>
+                <a class='list-group-item bg-info text-white' href='{% url "contact" %}'>Contact</a>
             </div>
       </div>
     </div>
@@ -20,15 +18,14 @@
 
 
 
-<div class='col-12 col-md-3 my-3' id='billing'>
+<div class='col-12 col-md-6 my-3' id='billing'>
     <div class="card bg-dark text-white">
       <div class="card-body">
         <h4 class="card-title">Billing</h4>
             <div class='list-group'>
-                orders
-                <a class='list-group-item bg-secondary text-white' href='{% url "billing-payment-method" %}'>Payment Methods</a>
-                addresses
-                
+                <a class='list-group-item bg-info text-white' href='#'>Orders</a>
+                <a class='list-group-item bg-info text-white' href='{% url "billing-payment-method" %}'>Payment Methods</a>
+                <a class='list-group-item bg-info text-white' href='#'>Addresses</a>                
                 
             </div>
       </div>
@@ -36,14 +33,14 @@
 </div>
 
 
-<div class='col-12 col-md-3 my-3'>
+<div class='col-12 col-md-6 my-3'>
     <div class="card bg-dark text-white">
       <div class="card-body">
         <h4 class="card-title">Account Details</h4> 
             <div class='list-group'>
-                account-user-update
-                <a class='list-group-item bg-secondary text-white' href='{% url "password_change" %}'>Change Password</a>
-                library
+              <a class='list-group-item bg-info text-white' href='#'>Account User Update </a>
+              <a class='list-group-item bg-info text-white' href='{% url "password_change" %}'>Change Password</a>
+              <a class='list-group-item bg-info text-white' href='#'>Library</a>
                 
             </div>
 
@@ -52,13 +49,12 @@
 </div>
 
 
-<div class='col-12 col-md-3 my-3'>
+<div class='col-12 col-md-6 my-3'>
     <div class="card bg-dark text-white">
       <div class="card-body">
         <h4 class="card-title">Preferences</h4> 
             <div class='list-group'>
-                <a class='list-group-item bg-secondary text-white' href='{% url "marketing-pref" %}'>Email Marketing</a>
-                
+                <a class='list-group-item bg-info text-white' href='{% url "marketing-pref" %}'>Email Marketing</a>
             </div>
 
       </div>
@@ -66,12 +62,12 @@
 </div>
 
 
-<div class='col-12 col-md-3 my-3'>
+<div class='col-12 col-md-6 my-3'>
     <div class="card bg-dark text-white">
       <div class="card-body">
         <h4 class="card-title">History</h4> 
               <div class='list-group'>
-                subscription-history
+                <a class='list-group-item bg-info text-white' href='#'>Subscription History</a>
             </div>
       </div>
     </div>
