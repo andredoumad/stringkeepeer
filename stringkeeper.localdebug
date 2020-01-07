@@ -3050,3 +3050,97 @@ Traceback (most recent call last):
     raise VariableDoesNotExist("Failed lookup for key "
 django.template.base.VariableDoesNotExist: Failed lookup for key [ascii_art] in [{'True': True, 'False': False, 'None': None}, {'csrf_token': <SimpleLazyObject: <function csrf.<locals>._get_val at 0x7febf3d24ca0>>, 'request': <WSGIRequest: GET '/account/'>, 'user': <SimpleLazyObject: <User: andre@stringkeeper.com>>, 'perms': <django.contrib.auth.context_processors.PermWrapper object at 0x7febf8f484c0>, 'messages': <django.contrib.messages.storage.fallback.FallbackStorage object at 0x7febf3eb2df0>, 'DEFAULT_MESSAGE_LEVELS': {'DEBUG': 10, 'INFO': 20, 'SUCCESS': 25, 'WARNING': 30, 'ERROR': 40}}, {}, {'object': <SimpleLazyObject: <User: andre@stringkeeper.com>>, 'user': <SimpleLazyObject: <User: andre@stringkeeper.com>>, 'view': <accounts.views.AccountHomeView object at 0x7febf8f09160>}]
 "GET /account/ HTTP/1.1" 200 10339
+(0.041) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2020-01-06T06:29:56.400292+00:00'::timestamptz AND "django_session"."session_key" = '6jz7yz2jvcudhlb7tesscvccn1dh56te'); args=(datetime.datetime(2020, 1, 6, 6, 29, 56, 400292, tzinfo=<UTC>), '6jz7yz2jvcudhlb7tesscvccn1dh56te')
+(0.047) SELECT "accounts_user"."id", "accounts_user"."password", "accounts_user"."last_login", "accounts_user"."email", "accounts_user"."first_name", "accounts_user"."last_name", "accounts_user"."full_name", "accounts_user"."active", "accounts_user"."staff", "accounts_user"."admin", "accounts_user"."timestamp" FROM "accounts_user" WHERE "accounts_user"."id" = 1; args=(1,)
+Exception while resolving variable 'cart_items' in template 'accounts/home.html'.
+Traceback (most recent call last):
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 829, in _resolve_lookup
+    current = current[bit]
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/contrib/sessions/backends/base.py", line 54, in __getitem__
+    return self._session[key]
+KeyError: 'cart_items'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 837, in _resolve_lookup
+    current = getattr(current, bit)
+AttributeError: 'SessionStore' object has no attribute 'cart_items'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 843, in _resolve_lookup
+    current = current[int(bit)]
+ValueError: invalid literal for int() with base 10: 'cart_items'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
+    raise VariableDoesNotExist("Failed lookup for key "
+django.template.base.VariableDoesNotExist: Failed lookup for key [cart_items] in <django.contrib.sessions.backends.db.SessionStore object at 0x7febf34c9310>
+Exception while resolving variable 'q' in template 'accounts/home.html'.
+Traceback (most recent call last):
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/utils/datastructures.py", line 78, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'q'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 829, in _resolve_lookup
+    current = current[bit]
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/utils/datastructures.py", line 80, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'q'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 837, in _resolve_lookup
+    current = getattr(current, bit)
+AttributeError: 'QueryDict' object has no attribute 'q'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 843, in _resolve_lookup
+    current = current[int(bit)]
+ValueError: invalid literal for int() with base 10: 'q'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
+    raise VariableDoesNotExist("Failed lookup for key "
+django.template.base.VariableDoesNotExist: Failed lookup for key [q] in <QueryDict: {}>
+Exception while resolving variable 'ascii_art' in template 'accounts/home.html'.
+Traceback (most recent call last):
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 829, in _resolve_lookup
+    current = current[bit]
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/template/context.py", line 83, in __getitem__
+    raise KeyError(key)
+KeyError: 'ascii_art'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 835, in _resolve_lookup
+    if isinstance(current, BaseContext) and getattr(type(current), bit):
+AttributeError: type object 'RequestContext' has no attribute 'ascii_art'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 843, in _resolve_lookup
+    current = current[int(bit)]
+ValueError: invalid literal for int() with base 10: 'ascii_art'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gordon/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
+    raise VariableDoesNotExist("Failed lookup for key "
+django.template.base.VariableDoesNotExist: Failed lookup for key [ascii_art] in [{'True': True, 'False': False, 'None': None}, {'csrf_token': <SimpleLazyObject: <function csrf.<locals>._get_val at 0x7febf3d24c10>>, 'request': <WSGIRequest: GET '/account/'>, 'user': <SimpleLazyObject: <User: andre@stringkeeper.com>>, 'perms': <django.contrib.auth.context_processors.PermWrapper object at 0x7febf34c9e80>, 'messages': <django.contrib.messages.storage.fallback.FallbackStorage object at 0x7febf34c9220>, 'DEFAULT_MESSAGE_LEVELS': {'DEBUG': 10, 'INFO': 20, 'SUCCESS': 25, 'WARNING': 30, 'ERROR': 40}}, {}, {'object': <SimpleLazyObject: <User: andre@stringkeeper.com>>, 'user': <SimpleLazyObject: <User: andre@stringkeeper.com>>, 'view': <accounts.views.AccountHomeView object at 0x7febf34c9130>}]
+"GET /account/ HTTP/1.1" 200 10345
