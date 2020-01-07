@@ -25,13 +25,12 @@
         {% endfor %}
         </ul>
         {% endif %}
-        
+
 
             {% block content %}
             {% endblock %}
 
 
-            <h6><font color = 'orange'> BE ADVISED: </font>  <font color = 'white'>This site is under active development and is for <font color = 'orange'> demonstration purposes only.</font></h6>
             {% include 'base/js.html' %}
             {% block javascript %}
             
@@ -45,7 +44,14 @@
                   <font color = '#85C1E9'> {{ascii_art}}
                 </pre>
                 {% endif %}
-            </footer>
+                <hr/>
+                <h6><font color = 'white'>This site is under active development and is for <font color = 'orange'> demonstration purposes only.</font></h6>
+                <script type="text/javascript">
+                  var d = new Date()
+                  document.write("<font color = 'grey'><p style='font-size:80%;'>Stringkeeper &copy; " + d.getFullYear() + "</p></font>")
+                </script>
+                <hr/>
+              </footer>
         <!-- </div> -->
       <!-- </div> -->
     </div>
