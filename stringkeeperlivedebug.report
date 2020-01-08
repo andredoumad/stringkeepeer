@@ -25,7 +25,7 @@ During handling of the above exception, another exception occurred:
 Traceback (most recent call last):
   File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
     raise VariableDoesNotExist("Failed lookup for key "
-django.template.base.VariableDoesNotExist: Failed lookup for key [cart_items] in <django.contrib.sessions.backends.db.SessionStore object at 0x7f49149c6af0>
+django.template.base.VariableDoesNotExist: Failed lookup for key [cart_items] in <django.contrib.sessions.backends.db.SessionStore object at 0x7f45c77d39d0>
 Exception while resolving variable 'q' in template 'home.html'.
 Traceback (most recent call last):
   File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/utils/datastructures.py", line 78, in __getitem__
@@ -61,160 +61,6 @@ Traceback (most recent call last):
   File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
     raise VariableDoesNotExist("Failed lookup for key "
 django.template.base.VariableDoesNotExist: Failed lookup for key [q] in <QueryDict: {}>
-Exception while resolving variable 'cart_items' in template 'home.html'.
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 829, in _resolve_lookup
-    current = current[bit]
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/contrib/sessions/backends/base.py", line 54, in __getitem__
-    return self._session[key]
-KeyError: 'cart_items'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 837, in _resolve_lookup
-    current = getattr(current, bit)
-AttributeError: 'SessionStore' object has no attribute 'cart_items'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 843, in _resolve_lookup
-    current = current[int(bit)]
-ValueError: invalid literal for int() with base 10: 'cart_items'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
-    raise VariableDoesNotExist("Failed lookup for key "
-django.template.base.VariableDoesNotExist: Failed lookup for key [cart_items] in <django.contrib.sessions.backends.db.SessionStore object at 0x7f4912ba6640>
-Exception while resolving variable 'q' in template 'home.html'.
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/utils/datastructures.py", line 78, in __getitem__
-    list_ = super().__getitem__(key)
-KeyError: 'q'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 829, in _resolve_lookup
-    current = current[bit]
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/utils/datastructures.py", line 80, in __getitem__
-    raise MultiValueDictKeyError(key)
-django.utils.datastructures.MultiValueDictKeyError: 'q'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 837, in _resolve_lookup
-    current = getattr(current, bit)
-AttributeError: 'QueryDict' object has no attribute 'q'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 843, in _resolve_lookup
-    current = current[int(bit)]
-ValueError: invalid literal for int() with base 10: 'q'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
-    raise VariableDoesNotExist("Failed lookup for key "
-django.template.base.VariableDoesNotExist: Failed lookup for key [q] in <QueryDict: {}>
-Exception while resolving variable 'cart_items' in template 'accounts/register.html'.
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 829, in _resolve_lookup
-    current = current[bit]
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/contrib/sessions/backends/base.py", line 54, in __getitem__
-    return self._session[key]
-KeyError: 'cart_items'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 837, in _resolve_lookup
-    current = getattr(current, bit)
-AttributeError: 'SessionStore' object has no attribute 'cart_items'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 843, in _resolve_lookup
-    current = current[int(bit)]
-ValueError: invalid literal for int() with base 10: 'cart_items'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
-    raise VariableDoesNotExist("Failed lookup for key "
-django.template.base.VariableDoesNotExist: Failed lookup for key [cart_items] in <django.contrib.sessions.backends.db.SessionStore object at 0x7f4912c71310>
-Exception while resolving variable 'q' in template 'accounts/register.html'.
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/utils/datastructures.py", line 78, in __getitem__
-    list_ = super().__getitem__(key)
-KeyError: 'q'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 829, in _resolve_lookup
-    current = current[bit]
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/utils/datastructures.py", line 80, in __getitem__
-    raise MultiValueDictKeyError(key)
-django.utils.datastructures.MultiValueDictKeyError: 'q'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 837, in _resolve_lookup
-    current = getattr(current, bit)
-AttributeError: 'QueryDict' object has no attribute 'q'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 843, in _resolve_lookup
-    current = current[int(bit)]
-ValueError: invalid literal for int() with base 10: 'q'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
-    raise VariableDoesNotExist("Failed lookup for key "
-django.template.base.VariableDoesNotExist: Failed lookup for key [q] in <QueryDict: {}>
-Exception while resolving variable 'ascii_art' in template 'accounts/register.html'.
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 829, in _resolve_lookup
-    current = current[bit]
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/context.py", line 83, in __getitem__
-    raise KeyError(key)
-KeyError: 'ascii_art'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 835, in _resolve_lookup
-    if isinstance(current, BaseContext) and getattr(type(current), bit):
-AttributeError: type object 'RequestContext' has no attribute 'ascii_art'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 843, in _resolve_lookup
-    current = current[int(bit)]
-ValueError: invalid literal for int() with base 10: 'ascii_art'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
-    raise VariableDoesNotExist("Failed lookup for key "
-django.template.base.VariableDoesNotExist: Failed lookup for key [ascii_art] in [{'True': True, 'False': False, 'None': None}, {'csrf_token': <SimpleLazyObject: 's657JlpjWo6l6Ulkg7ZXEPnJf2Lx7Gvi2zerhAQNZfMj834JYQiE0RLlVrV1nWqw'>, 'request': <WSGIRequest: GET '/register/'>, 'user': <SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x7f4912bd3820>>, 'perms': <django.contrib.auth.context_processors.PermWrapper object at 0x7f4912bb71c0>, 'messages': <django.contrib.messages.storage.fallback.FallbackStorage object at 0x7f4912c715b0>, 'DEFAULT_MESSAGE_LEVELS': {'DEBUG': 10, 'INFO': 20, 'SUCCESS': 25, 'WARNING': 30, 'ERROR': 40}}, {}, {'form': <RegisterForm bound=False, valid=False, fields=(first_name;last_name;email;password1;password2)>, 'view': <accounts.views.RegisterView object at 0x7f4912c71370>}]
 Exception while resolving variable 'cart_items' in template 'accounts/login.html'.
 Traceback (most recent call last):
   File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 829, in _resolve_lookup
@@ -242,7 +88,7 @@ During handling of the above exception, another exception occurred:
 Traceback (most recent call last):
   File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
     raise VariableDoesNotExist("Failed lookup for key "
-django.template.base.VariableDoesNotExist: Failed lookup for key [cart_items] in <django.contrib.sessions.backends.db.SessionStore object at 0x7f4912c178e0>
+django.template.base.VariableDoesNotExist: Failed lookup for key [cart_items] in <django.contrib.sessions.backends.db.SessionStore object at 0x7f45c5bc0cd0>
 Exception while resolving variable 'q' in template 'accounts/login.html'.
 Traceback (most recent call last):
   File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/utils/datastructures.py", line 78, in __getitem__
@@ -305,7 +151,7 @@ During handling of the above exception, another exception occurred:
 Traceback (most recent call last):
   File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
     raise VariableDoesNotExist("Failed lookup for key "
-django.template.base.VariableDoesNotExist: Failed lookup for key [ascii_art] in [{'True': True, 'False': False, 'None': None}, {'csrf_token': <SimpleLazyObject: 'b2GHuG7Cj8hKJlKLSSuqSZZK0N5TnJecLvP12Vy6mZXILutaABN7e1nmGcfnDZ9q'>, 'request': <WSGIRequest: GET '/login/'>, 'user': <SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x7f4912833d60>>, 'perms': <django.contrib.auth.context_processors.PermWrapper object at 0x7f4912bd5c70>, 'messages': <django.contrib.messages.storage.fallback.FallbackStorage object at 0x7f4912c17a60>, 'DEFAULT_MESSAGE_LEVELS': {'DEBUG': 10, 'INFO': 20, 'SUCCESS': 25, 'WARNING': 30, 'ERROR': 40}}, {}, {'form': <LoginForm bound=False, valid=False, fields=(email;password)>, 'view': <accounts.views.LoginView object at 0x7f4912be84c0>}]
+django.template.base.VariableDoesNotExist: Failed lookup for key [ascii_art] in [{'True': True, 'False': False, 'None': None}, {'csrf_token': <SimpleLazyObject: 'hw7542wPuYPpaLewC7XeKvHzg4zZ3a0xvunQXZZEKLLEGGG9hU2f6mEqtfgCewlE'>, 'request': <WSGIRequest: GET '/login/'>, 'user': <SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x7f45c5b34820>>, 'perms': <django.contrib.auth.context_processors.PermWrapper object at 0x7f45c6bf74f0>, 'messages': <django.contrib.messages.storage.fallback.FallbackStorage object at 0x7f45c5bc0af0>, 'DEFAULT_MESSAGE_LEVELS': {'DEBUG': 10, 'INFO': 20, 'SUCCESS': 25, 'WARNING': 30, 'ERROR': 40}}, {}, {'form': <LoginForm bound=False, valid=False, fields=(email;password)>, 'view': <accounts.views.LoginView object at 0x7f45c5bc0d60>}]
 Internal Server Error: /login/
 Traceback (most recent call last):
   File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/core/handlers/exception.py", line 34, in inner
