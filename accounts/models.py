@@ -7,7 +7,7 @@ from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager
 )
-
+from django.db.models import Q
 from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.utils import timezone

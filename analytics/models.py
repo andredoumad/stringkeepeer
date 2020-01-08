@@ -81,8 +81,9 @@ class UserSession(models.Model):
 
 
 def post_save_session_receiver(sender, instance, created, *args, **kwargs):
+    print('post_save_session_receiver INSTANCE: ' + str(instance))
     if created:
-        qs = UserSession.objects.filter(user=instance.user, ended=False, active=True).exclude(id=instance.id)
+        qs = UserSession.objects.filter(user=instance, ended=False, active=True).exclude(id=instance.id)
         for i in qs:
             i.end_session()
     if not instance.active and not instance.ended:
@@ -94,10 +95,12 @@ if FORCE_SESSION_TO_ONE:
 
 
 def post_save_user_changed_receiver(sender, instance, created, *args, **kwargs):
+    print('post_save_user_changed_receiver INSTANCE: ' + str(instance))
+    # print('post_save_user_changed_receiver instance.full_name: ' + str(instance.full_name))
     if not created:
         if instance.is_active == False:
-            eventlog('INSTANCE: ' + str(instance))
-            qs = UserSession.objects.filter(user=instance.user, ended=False, active=True)
+            
+            qs = UserSession.objects.filter(user=instance, ended=False, active=True)
             for i in qs:
                 i.end_session()
 

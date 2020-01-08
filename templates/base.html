@@ -18,18 +18,18 @@
       {% if messages %}
       <div class="alert alert-success messages">
           {% for message in messages %}
-          <li{% if message.tags %} class="{{ messages.tags }}"{% endif %}>
+          <span{% if message.tags %} class="{{ messages.tags }}"{% endif %}>
             {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-            {{ message }}
-          </li>
+            {{ message }}<br/>
+      </span>
         {% endfor %}
-        </ul>
+    </div>
         {% endif %}
 
 
             {% block content %}
             {% endblock %}
-
+  </div>
 
             {% include 'base/js.html' %}
             {% block javascript %}
