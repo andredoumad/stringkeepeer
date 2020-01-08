@@ -1483,3 +1483,6 @@ File /home/gordon/stringkeeper/lib/python3.8/site-packages/django/db/migrations/
 File /home/gordon/stringkeeper/lib/python3.8/site-packages/cffi/api.py first seen with mtime 1577747532.5809107
 File /home/gordon/stringkeeper/addresses/migrations/__init__.py first seen with mtime 1575091876.7302322
 File /home/gordon/stringkeeper/lib/python3.8/site-packages/django/contrib/sessions/migrations/__init__.py first seen with mtime 1572129128.3670123
+File /home/gordon/stringkeeper/stringkeeper/settings.py previous mtime: 1578469328.042609, current mtime: 1578469365.2519372
+/home/gordon/stringkeeper/stringkeeper/settings.py notified as changed. Signal results: [(<function translation_file_changed at 0x7f191a0be820>, None)].
+/home/gordon/stringkeeper/stringkeeper/settings.py changed, reloading.

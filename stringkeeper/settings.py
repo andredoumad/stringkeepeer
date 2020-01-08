@@ -395,8 +395,8 @@ else:
     SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
     SECURE_FRAME_DENY               = False
     '''
-    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.report')) )
-    f = open(str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.report')), "w")
+    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.log')) )
+    f = open(str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.log')), "w")
     f.write("")
     f.close()
     LOGGING = {
@@ -406,7 +406,7 @@ else:
             'file': {
                 'level': 'DEBUG',
                 'class': 'logging.FileHandler',
-                'filename': os.path.join(BASE_DIR, 'stringkeeperlocaldebug.report'),
+                'filename': os.path.join(BASE_DIR, 'stringkeeperlocaldebug.log'),
             },
         },
         'loggers': {
