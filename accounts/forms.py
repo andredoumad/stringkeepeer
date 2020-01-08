@@ -53,28 +53,58 @@ class UserAdminCreationForm(forms.ModelForm):
 class RegisterForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    # password1 = forms.CharField(
-    #     widget=forms.PasswordInput(
-    #        attrs={
-    #             'label': 'Password',
-    #             'style': 'background-color:rgb(35, 39, 43); color: white;',
-    #             'class': 'form-control',
+    first_name = forms.CharField(
+        label= 'First Name',
+        widget=forms.TextInput(
+           attrs={
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                'class': 'form-control',
 
-    #         }
-    #     )
-    # )
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
-    # password2 = forms.CharField(
-    #     widget=forms.PasswordInput(
-    #        attrs={
-    #             'label': 'Password confirmation',
-    #             'style': 'background-color:rgb(35, 39, 43); color: white;',
-    #             'class': 'form-control',
+            }
+        )
+    )
+    last_name = forms.CharField(
+        label= 'Last Name',
+        widget=forms.TextInput(
+           attrs={
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                'class': 'form-control',
 
-    #         }
-    #     )
-    # )
+            }
+        )
+    )
+    email = forms.EmailField(
+        label= 'Email',
+        widget=forms.TextInput(
+           attrs={
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                'class': 'form-control',
+
+            }
+        )
+    )
+    # password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password1 = forms.CharField(
+        label= 'Password',
+        widget=forms.PasswordInput(
+           attrs={
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                'class': 'form-control',
+
+            }
+        )
+    )
+    # password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label= 'Password confirmation',
+        widget=forms.PasswordInput(
+           attrs={
+                'style': 'background-color:rgb(35, 39, 43); color: white;',
+                'class': 'form-control',
+
+            }
+        )
+    )
 
     
 

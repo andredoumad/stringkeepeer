@@ -43,7 +43,7 @@ class SubscriptionListView(ListView):
         cart_obj, new_obj = Cart.objects.new_or_get(self.request)
         context['cart'] = cart_obj
         context['ascii_art'] = get_ascii_art()
-        eventlog(context)
+        # eventlog(context)
         return context
 
     def get_queryset(self, *args, **kwargs):
@@ -99,7 +99,7 @@ class SubscriptionDetailView(ObjectViewedMixin, DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(SubscriptionDetailView, self).get_context_data(*args, **kwargs)
-        eventlog(context)
+        # eventlog(context)
         return context
 
     def get_object(self, *args, **kwargs):
