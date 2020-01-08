@@ -346,8 +346,8 @@ if socket.gethostname()=="www.stringkeeper.com":
     SESSION_COOKIE_HTTPONLY=True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
     SECURE_SSL_REDIRECT = True
-    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperlivedebug.log')) )
-    f = open(str(os.path.join(BASE_DIR, 'stringkeeperlivedebug.log')), "w")
+    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperlivedebug.report')) )
+    f = open(str(os.path.join(BASE_DIR, 'stringkeeperlivedebug.report')), "w")
     f.write("")
     f.close()
     LOGGING = {
@@ -357,7 +357,7 @@ if socket.gethostname()=="www.stringkeeper.com":
             'file': {
                 'level': 'DEBUG',
                 'class': 'logging.FileHandler',
-                'filename': os.path.join(BASE_DIR, 'stringkeeperlivedebug.log'),
+                'filename': os.path.join(BASE_DIR, 'stringkeeperlivedebug.report'),
             },
         },
         'loggers': {
@@ -394,8 +394,8 @@ else:
     SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
     SECURE_FRAME_DENY               = False
     '''
-    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.log')) )
-    f = open(str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.log')), "w")
+    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.report')) )
+    f = open(str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.report')), "w")
     f.write("")
     f.close()
     LOGGING = {
@@ -405,7 +405,7 @@ else:
             'file': {
                 'level': 'DEBUG',
                 'class': 'logging.FileHandler',
-                'filename': os.path.join(BASE_DIR, 'stringkeeperlocaldebug.log'),
+                'filename': os.path.join(BASE_DIR, 'stringkeeperlocaldebug.report'),
             },
         },
         'loggers': {
