@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.sessions.models import Session
 from django.db import models
 from django.db.models.signals import pre_save, post_save
-
+from stringkeeper.standalone_tools import *
 from accounts.signals import user_logged_in
 from .signals import object_viewed_signal
 from .utils import get_client_ip
@@ -96,6 +96,7 @@ if FORCE_SESSION_TO_ONE:
 def post_save_user_changed_receiver(sender, instance, created, *args, **kwargs):
     if not created:
         if instance.is_active == False:
+            eventlog('INSTANCE: ' + str(instance))
             qs = UserSession.objects.filter(user=instance.user, ended=False, active=True)
             for i in qs:
                 i.end_session()

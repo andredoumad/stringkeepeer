@@ -22,7 +22,7 @@ DEFAULT_ACTIVATION_DAYS = getattr(settings, 'DEFAULT_ACTIVATION_DAYS', 7)
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, password=None, last_name=None, first_name=None, full_name=None, is_staff=False, is_admin=False):
+    def create_user(self, email, password=None, is_active=True, last_name=None, first_name=None, full_name=None, is_staff=False, is_admin=False):
         
         if not email:
             raise ValueError("users must have a valid email address")
@@ -46,8 +46,9 @@ class UserManager(BaseUserManager):
         user_obj.set_password(password)
         user_obj.staff = is_staff
         user_obj.admin = is_admin
-
+        user_obj.is_active = is_active
         user_obj.save(using=self._db)
+
         return user_obj
 
     def create_staffuser(self, email, password=None, last_name=None, first_name=None):

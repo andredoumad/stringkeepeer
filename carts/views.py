@@ -12,6 +12,7 @@ from billing.models import BillingProfile
 from addresses.models import Address
 import stripe
 
+
 STRIPE_SECRET_KEY = getattr(settings, 'STRIPE_SECRET_KEY', 'sk_test_UQ6hFgP5OZ9KXeSWvO39jgTb0099ffMFNJ')
 STRIPE_PUB_KEY =  getattr(settings, 'STRIPE_PUB_KEY',  'pk_test_k8LAxPXmWxonT6ZUDVxjsuzL00LCGJ2rLX')
 
@@ -44,7 +45,11 @@ def cart_detail_api_view(request):
 
 def cart_home(request):
     cart_obj, new_obj = Cart.objects.new_or_get(request)
-    return render(request, "carts/home.html", {'cart': cart_obj})
+    context = {
+        'cart': cart_obj, 
+        'ascii_art': get_ascii_art()
+    }
+    return render(request, "carts/home.html", context)
 
 
 def cart_update(request):
@@ -145,7 +150,8 @@ def checkout_home(request):
         'address_form': address_form,
         'address_qs': address_qs,
         "has_card": has_card,
-        'publish_key': STRIPE_PUB_KEY
+        'publish_key': STRIPE_PUB_KEY,
+        'ascii_art': get_ascii_art()
     }
     
     return render(request, 'carts/checkout.html', context)
@@ -153,8 +159,7 @@ def checkout_home(request):
 
 
 def checkout_done_view(request):
-    ascii_art = get_ascii_art()
     context = {
-        'ascii_art': ascii_art,
+        'ascii_art': get_ascii_art()
     }
     return render(request, 'carts/checkout-done.html', context)

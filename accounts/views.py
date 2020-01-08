@@ -127,7 +127,7 @@ class LoginView(ObjectViewedMixin, FormView):
     form_class = LoginForm
     success_url = '/'
     template_name = 'accounts/login.html'
-    ascii_art =  get_ascii_art()
+    # ascii_art =  get_ascii_art()
 
 
     def form_valid(self, form):
