@@ -71,7 +71,7 @@ class UserSession(models.Model):
         ended = self.ended
         try:
             Session.objects.get(pk=session_key).delete()
-            self.active = False
+            self.is_active = False
             self.ended = True
             self.save()
         except:
@@ -82,10 +82,10 @@ class UserSession(models.Model):
 
 def post_save_session_receiver(sender, instance, created, *args, **kwargs):
     if created:
-        qs = UserSession.objects.filter(user=instance.user, ended=False, active=True).exclude(id=instance.id)
+        qs = UserSession.objects.filter(user=instance.user, ended=False, is_active=True).exclude(id=instance.id)
         for i in qs:
             i.end_session()
-    if not instance.active and not instance.ended:
+    if not instance.is_active and not instance.ended:
         instance.end_session()
 
 
@@ -96,7 +96,7 @@ if FORCE_SESSION_TO_ONE:
 def post_save_user_changed_receiver(sender, instance, created, *args, **kwargs):
     if not created:
         if instance.is_active == False:
-            qs = UserSession.objects.filter(user=instance.user, ended=False, active=True)
+            qs = UserSession.objects.filter(user=instance.user, ended=False, is_active=True)
             for i in qs:
                 i.end_session()
 

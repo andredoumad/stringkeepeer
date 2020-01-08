@@ -168,8 +168,9 @@ EMAIL_HOST_USER = 'andre@stringkeeper.com' # gmail
 EMAIL_HOST_PASSWORD = '!Tufankji1124'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = 'Stringkeeper <andre@stringkeeper.com>'
+DEFAULT_FROM_EMAIL = 'Stringkeeper <andre@stringkeeper.com>'
 
+DEFAULT_ACTIVATION_DAYS = 7
 
 
 STATIC_URL = '/static/'
@@ -337,6 +338,7 @@ USE_TZ = True
 
 if socket.gethostname()=="www.stringkeeper.com":
     eventlog ('running production mode')
+    BASE_URL = 'https://www.stringkeeper.com'
     DEBUG = False
     # ssl
     CSRF_COOKIE_SECURE = True
@@ -371,6 +373,7 @@ else:
     eventlog(' running non-production settings')
     eventlog(' --- !! REMEMBER !! ---')
     eventlog('USE A PRIVATE WINDOW IN CHROME')
+    BASE_URL = 'http://127.0.0.1:8000'
     DEBUG = True
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE=False

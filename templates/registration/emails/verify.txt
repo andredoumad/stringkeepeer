@@ -1,15 +1,13 @@
-Hello,
+Thank you for registering with stringkeeper.
 
 Please activate your account for {{ email }} by clicking the link below:
 
 
-
 {{ path }}
-
 
 
 Once you activate, you can login!
 
 Thank you,
 
-Python eCommerce
+www.Stringkeeper.com

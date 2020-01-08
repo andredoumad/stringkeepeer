@@ -4,6 +4,23 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 User = get_user_model()
 
+from .models import EmailActivation
+
+
+class ReactivateEmailForm(forms.Form):
+    email       = forms.EmailField()
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        qs = EmailActivation.objects.email_exists(email) 
+        if not qs.exists():
+            register_link = reverse("register")
+            msg = """This email does not exists, would you like to <a href="{link}">register</a>?
+            """.format(link=register_link)
+            raise forms.ValidationError(mark_safe(msg))
+        return email
+
+
 class UserAdminCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
@@ -27,6 +44,7 @@ class UserAdminCreationForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(UserAdminCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        user.is_active = False # send confirmation email
         if commit:
             user.save()
         return user
@@ -57,6 +75,7 @@ class RegisterForm(forms.ModelForm):
             }
         )
     )
+
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email',) #'full_name',)
@@ -74,8 +93,7 @@ class RegisterForm(forms.ModelForm):
         user = super(RegisterForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         user.full_name = str(str(user.first_name) + ' ' + str(user.last_name))
-        # user.is_active = False # send confirmation email via signals
-        # obj = EmailActivation.objects.create(user=user)
+        # obj = EmailActivation.objects.create(user=user) # send confirmation email via signals
         # obj.send_activation_email()
         if commit:
             user.save()
@@ -109,7 +127,6 @@ class GuestForm(forms.Form):
             }
         )
     )
-
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
