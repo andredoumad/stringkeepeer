@@ -346,28 +346,29 @@ if socket.gethostname()=="www.stringkeeper.com":
     SESSION_COOKIE_HTTPONLY=True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
     SECURE_SSL_REDIRECT = True
-    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperlivedebug.report')) )
-    f = open(str(os.path.join(BASE_DIR, 'stringkeeperlivedebug.report')), "w")
-    f.write("")
-    f.close()
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'file': {
-                'level': 'DEBUG',
-                'class': 'logging.FileHandler',
-                'filename': os.path.join(BASE_DIR, 'stringkeeperlivedebug.report'),
-            },
-        },
-        'loggers': {
-            'django': {
-                'handlers': ['file'],
-                'level': 'DEBUG',
-                'propagate': True,
-            },
-        },
-    }
+
+    # eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperlivedebug.report')) )
+    # f = open(str(os.path.join(BASE_DIR, 'stringkeeperlivedebug.report')), "w")
+    # f.write("")
+    # f.close()
+    # LOGGING = {
+    #     'version': 1,
+    #     'disable_existing_loggers': False,
+    #     'handlers': {
+    #         'file': {
+    #             'level': 'DEBUG',
+    #             'class': 'logging.FileHandler',
+    #             'filename': os.path.join(BASE_DIR, 'stringkeeperlivedebug.report'),
+    #         },
+    #     },
+    #     'loggers': {
+    #         'django': {
+    #             'handlers': ['file'],
+    #             'level': 'DEBUG',
+    #             'propagate': True,
+    #         },
+    #     },
+    # }
 
 else:
     eventlog(' running non-production settings')
