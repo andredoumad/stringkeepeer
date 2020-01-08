@@ -44,7 +44,7 @@ class AccountEmailActivateView(FormMixin, View):
             if confirm_qs.count() == 1:
                 obj = confirm_qs.first()
                 obj.activate()
-                messages.success(request, "Your email has been confirmed. Please login.")
+                messages.success(request, "<hr/> Your email has been confirmed. Please login. <hr/>")
                 return redirect("auth_login")
             else:
                 activated_qs = qs.filter(activated=True)
