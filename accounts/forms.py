@@ -58,7 +58,7 @@ class RegisterForm(forms.ModelForm):
         widget=forms.TextInput(
            attrs={
                 'style': 'background-color:rgb(35, 39, 43); color: white;',
-                'class': 'form-control',
+                'class': 'form-control my-2',
 
             }
         )
@@ -68,7 +68,7 @@ class RegisterForm(forms.ModelForm):
         widget=forms.TextInput(
            attrs={
                 'style': 'background-color:rgb(35, 39, 43); color: white;',
-                'class': 'form-control',
+                'class': 'form-control my-2',
 
             }
         )
@@ -78,7 +78,7 @@ class RegisterForm(forms.ModelForm):
         widget=forms.TextInput(
            attrs={
                 'style': 'background-color:rgb(35, 39, 43); color: white;',
-                'class': 'form-control',
+                'class': 'form-control my-2',
 
             }
         )
@@ -89,7 +89,7 @@ class RegisterForm(forms.ModelForm):
         widget=forms.PasswordInput(
            attrs={
                 'style': 'background-color:rgb(35, 39, 43); color: white;',
-                'class': 'form-control',
+                'class': 'form-control my-2',
 
             }
         )
@@ -100,7 +100,7 @@ class RegisterForm(forms.ModelForm):
         widget=forms.PasswordInput(
            attrs={
                 'style': 'background-color:rgb(35, 39, 43); color: white;',
-                'class': 'form-control',
+                'class': 'form-control my-2',
 
             }
         )
@@ -171,7 +171,7 @@ class LoginForm(forms.Form):
             
            attrs={
                 'style': 'background-color:rgb(35, 39, 43); color: white;',
-                'class': 'form-control',
+                'class': 'form-control my-2',
             }
         )
     )
@@ -179,7 +179,7 @@ class LoginForm(forms.Form):
         widget=forms.PasswordInput(
            attrs={
                 'style': 'background-color:rgb(35, 39, 43); color: white;',
-                'class': 'form-control',
+                'class': 'form-control my-2',
 
             }
         )
