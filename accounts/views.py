@@ -45,7 +45,7 @@ class AccountEmailActivateView(FormMixin, View):
                 obj = confirm_qs.first()
                 obj.activate()
                 messages.success(request, "Your email has been confirmed. Please login.")
-                return redirect("auth_login")
+                return redirect("login")
             else:
                 activated_qs = qs.filter(activated=True)
                 if activated_qs.exists():
@@ -54,7 +54,7 @@ class AccountEmailActivateView(FormMixin, View):
                     Do you need to <a href="{link}">reset your password</a>?
                     """.format(link=reset_link)
                     messages.success(request, mark_safe(msg))
-                    return redirect("auth_login") 
+                    return redirect("login") 
         context = {'form': self.get_form(),'key': key}
         return render(request, 'registration/activation-error.html', context)
 
@@ -111,36 +111,32 @@ class LoginView(FormView):
     form_class = LoginForm
     success_url = '/'
     template_name = 'accounts/login.html'
-    default_next = '/'
+
 
     def form_valid(self, form):
-        next_path = self.get_next_url()
-        return redirect(next_path)
-
-    # def form_valid(self, form):
-    #     request = self.request
-    #     next_ = request.GET.get('next')
-    #     next_post = request.POST.get('next')
-    #     redirect_path = next_ or next_post or None
-    #     email = form.cleaned_data.get('email')
-    #     password = form.cleaned_data.get('password')
-    #     user = authenticate(request, username=email, password=password)
+        request = self.request
+        next_ = request.GET.get('next')
+        next_post = request.POST.get('next')
+        redirect_path = next_ or next_post or None
+        email = form.cleaned_data.get('email')
+        password = form.cleaned_data.get('password')
+        user = authenticate(request, username=email, password=password)
         
-    #     if user is not None:
-    #         if not user.is_active:
-    #             messages.error(request, str(str(user.email) + " is inactive"))
-    #             return super(LoginView, self).form_invalid(form)
-    #         login(request, user)
-    #         user_logged_in.send(user.__class__, instance=user, request=request)
-    #         try:
-    #             del request.session['guest_email_id']
-    #         except:
-    #             pass
-    #         if is_safe_url(redirect_path, request.get_host()):
-    #             return redirect(redirect_path)
-    #         else:
-    #             return redirect('/')
-    #     return super(LoginView, self).form_invalid(form)
+        if user is not None:
+            if not user.is_active:
+                messages.error(request, str(str(user.email) + " is inactive"))
+                return super(LoginView, self).form_invalid(form)
+            login(request, user)
+            user_logged_in.send(user.__class__, instance=user, request=request)
+            try:
+                del request.session['guest_email_id']
+            except:
+                pass
+            if is_safe_url(redirect_path, request.get_host()):
+                return redirect(redirect_path)
+            else:
+                return redirect('/')
+        return super(LoginView, self).form_invalid(form)
 
 
 
