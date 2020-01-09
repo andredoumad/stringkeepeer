@@ -166,6 +166,7 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
         context['title'] = 'Change Your Account Details'
         return context
 
+    # GOOD EXAMPLE OF HOW TO UPDATE THE USER DATA :) !! ^.^
     def get_success_url(self):
         eventlog('self.request.user: ' + str(self.request.user))
         eventlog('self.request.user.full_name: ' + str(self.request.user.full_name))
