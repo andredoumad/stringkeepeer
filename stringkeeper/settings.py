@@ -135,7 +135,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 # from django.contrib.auth.models import User
 # SECRET_KEY

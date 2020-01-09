@@ -11,7 +11,7 @@ from stringkeeper.standalone_tools import *
 from django.utils.http import is_safe_url
 from django.utils.safestring import mark_safe
 
-from .forms import LoginForm, RegisterForm, GuestForm, ReactivateEmailForm
+from .forms import LoginForm, RegisterForm, GuestForm, ReactivateEmailForm, UserDetailChangeForm
 from .models import GuestEmail, EmailActivation
 from .signals import user_logged_in
 
@@ -152,6 +152,21 @@ class RegisterView(ObjectViewedMixin, CreateView):
     success_url = '/login/'
 
 
+
+class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = UserDetailChangeForm
+    template_name = 'accounts/detail-update-view.html'
+
+    def get_object(self):
+        return self.request.user
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserDetailUpdateView, self).get_context_data(*args, **kwargs)
+        context['title'] = 'Change Your Account Details'
+        return context
+
+    def get_success_url(self):
+        return reverse("account:home")
 
 
 # def login_page(request):

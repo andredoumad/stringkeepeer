@@ -3,14 +3,15 @@ from django.urls import path, re_path, include
 
 from .views import(
     AccountHomeView,
-    AccountEmailActivateView
+    AccountEmailActivateView,
+    UserDetailUpdateView
 )
 
 
 app_name='accounts'
 urlpatterns = [
     path('', AccountHomeView.as_view(), name='home'),
-    # path('details/', UserDetailUpdateView.as_view(), name='user-update'),
+    path('details/', UserDetailUpdateView.as_view(), name='user-update'),
     # path('history/products/', UserProductHistoryView.as_view(), name='user-product-history'),
     re_path(r'^email/confirm/(?P<key>[0-9A-Za-z]+)/$', 
             AccountEmailActivateView.as_view(), 
