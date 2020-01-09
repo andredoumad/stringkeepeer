@@ -110,8 +110,6 @@ class RegisterForm(forms.ModelForm):
         )
     )
 
-    
-
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email',) #'full_name',)
@@ -201,6 +199,21 @@ class LoginForm(forms.Form):
         data = self.cleaned_data
         email = data.get('email')
         password = data.get('password')
+        qs = User.objects.filter(email=email)
+        if qs.exists():
+            # user email is registered check active or email activation
+            not_active = qs.filter(is_active=False)
+            if not_active.exists():
+                confirm_email = EmailActivation.objects.filter(email=email).confirmable()
+                is_confirmable = confirm_email.confirmable().exists()
+                if is_confirmable:
+                    raise forms.ValidationError("Please check your email to validate your account. Would you like us to email you another verification link?")
+                email_confirm_exists = EmailActivation.objects.email_exists(email).exists()
+                if email_confirm_exists:
+                    raise forms.ValidationError("You need to confirm your email. Please go here to resend a confirmation email.")                    
+                if not is_confirmable or not email_confirm_exists:
+                    raise forms.ValidationError("This user is inactive.")
+
         user = authenticate(request, username=email, password=password)
         if user is None:
             raise forms.ValidationError("Invalid credentials")

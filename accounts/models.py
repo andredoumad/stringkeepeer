@@ -22,7 +22,7 @@ DEFAULT_ACTIVATION_DAYS = getattr(settings, 'DEFAULT_ACTIVATION_DAYS', 7)
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, password=None, is_active=True, last_name=None, first_name=None, full_name=None, is_staff=False, is_admin=False):
+    def create_user(self, email, password=None, is_active=False, last_name=None, first_name=None, full_name=None, is_staff=False, is_admin=False):
         
         if not email:
             raise ValueError("users must have a valid email address")
@@ -59,6 +59,7 @@ class UserManager(BaseUserManager):
             last_name = last_name,
             full_name = str(str(first_name) + ' ' + str(last_name)),
             is_staff = True
+
         )
         return user
 
@@ -71,7 +72,8 @@ class UserManager(BaseUserManager):
             last_name = last_name,
             full_name = str(str(first_name) + ' ' + str(last_name)),
             is_staff = True,
-            is_admin = True
+            is_admin = True,
+            is_active = True
         )
         return user
 
@@ -83,7 +85,7 @@ class User(AbstractBaseUser):
     first_name = models.CharField(max_length=127, blank=True, null=True)
     last_name = models.CharField(max_length=127, blank=True, null=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     staff   = models.BooleanField(default=False)
     admin   = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
