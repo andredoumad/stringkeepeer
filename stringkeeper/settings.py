@@ -183,6 +183,8 @@ AWS_DEFAULT_ACL = 'private'
 #         smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
 #         smtp.send_message(msg)
 
+
+#Amazon SES
 EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
 EMAIL_HOST_USER = 'AKIAYZ2XE524ITIKU2R2' # gmail
 EMAIL_HOST_PASSWORD = 'BOdXu8OSHD16twbYZZLElgtFh/3QH/aadSIp6y9oQiSI'
