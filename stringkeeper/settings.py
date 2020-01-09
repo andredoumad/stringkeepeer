@@ -163,12 +163,41 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 #https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl
 AWS_DEFAULT_ACL = 'private'
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'andre@stringkeeper.com' # gmail
-EMAIL_HOST_PASSWORD = '!Tufankji1124'
+
+
+
+# def test_stringkeeper(self):
+#     #blackmesanetwork.com
+#     to_email = 'andredoumad@gmail.com'
+#     EMAIL_ADDRESS = 'AKIAYZ2XE524ITIKU2R2'
+#     EMAIL_PASSWORD = 'BOdXu8OSHD16twbYZZLElgtFh/3QH/aadSIp6y9oQiSI'
+
+#     msg = EmailMessage()
+#     msg['Subject'] = 'Test subject line'
+#     msg['From'] = 'andre@stringkeeper.com'
+#     msg['To'] = to_email
+#     msg.set_content('test msg content')
+
+#     with smtplib.SMTP('email-smtp.us-west-2.amazonaws.com', 587) as smtp:
+#         smtp.starttls()
+#         smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+#         smtp.send_message(msg)
+
+EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
+EMAIL_HOST_USER = 'AKIAYZ2XE524ITIKU2R2' # gmail
+EMAIL_HOST_PASSWORD = 'BOdXu8OSHD16twbYZZLElgtFh/3QH/aadSIp6y9oQiSI'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Stringkeeper <andre@stringkeeper.com>'
+
+
+# GMAIL
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'andre@stringkeeper.com' # gmail
+# EMAIL_HOST_PASSWORD = '!Tufankji1124'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = 'Stringkeeper <andre@stringkeeper.com>'
 
 DEFAULT_ACTIVATION_DAYS = 7
 

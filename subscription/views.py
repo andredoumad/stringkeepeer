@@ -1,8 +1,11 @@
 #from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render, get_object_or_404
 from stringkeeper.standalone_tools import *
+
+
 import stringkeeper.standalone_tools
 
 from analytics.mixins import ObjectViewedMixin
@@ -28,6 +31,28 @@ class SubscriptionFeaturedDetailView(ObjectViewedMixin, DetailView):
     #     return Subscription.objects.featured()
 
 
+
+class UserSubscriptionHistoryView(LoginRequiredMixin, ListView):
+    template_name = "subscription/user-history.html"
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserSubscriptionHistoryView, self).get_context_data(*args, **kwargs)
+        cart_obj, new_obj = Cart.objects.new_or_get(self.request)
+        context['cart'] = cart_obj
+        return context
+
+    def get_queryset(self, *args, **kwargs):
+        request = self.request
+        views = request.user.objectviewed_set.by_model(Subscription, model_queryset=False) #.all()filter(content_type__name='subscription')
+        # another way to do it
+        #viewed_ids = [x.object_id for x in views]
+        #print(viewed_ids)
+        # Subscription.objects.filter(pk__in=viewed_ids)
+        return views
+
+
+
+
+
 class SubscriptionListView(ListView):
     #everything in the database
     #queryset = Subscription.objects.all()
@@ -49,6 +74,8 @@ class SubscriptionListView(ListView):
     def get_queryset(self, *args, **kwargs):
         request = self.request
         return Subscription.objects.all()
+
+
 
 def subscription_list_view(request):
     queryset = Subscription.objects.all()
