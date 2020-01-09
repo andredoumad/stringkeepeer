@@ -198,7 +198,12 @@ class EmailActivation(models.Model):
             # think about adding:
             # pre activation user signal
             user = self.user
+            email = self.email
+            print('self.user: ' + str(user))
+            print('self.email: ' + str(email))
+            # print('self.is_active: ' + str(self.is_active))
             user.is_active = True
+            #   print('self.is_active: ' + str(self.is_active))
             user.save()
             # think about adding:
             # post activation signal for user
@@ -231,7 +236,7 @@ class EmailActivation(models.Model):
                 key = random_string_generator(size=45)
                 txt_ = get_template("registration/emails/verify.txt").render(context)
                 html_ = get_template("registration/emails/verify.html").render(context)
-                subject = '1-Click Email Verification'
+                subject = 'Verify your email with stringkeeper to activate your account.'
                 from_email = settings.DEFAULT_FROM_EMAIL
                 recipient_list = [self.email]
 

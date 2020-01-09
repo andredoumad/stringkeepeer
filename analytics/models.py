@@ -56,7 +56,7 @@ object_viewed_signal.connect(object_viewed_receiver)
 
 
 class UserSession(models.Model):
-    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL) # user instance.id
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL) # user instance.id
     ip_address = models.CharField(max_length=220, blank=True, null=True) # IP field
     session_key = models.CharField(max_length=100, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -83,7 +83,7 @@ class UserSession(models.Model):
 def post_save_session_receiver(sender, instance, created, *args, **kwargs):
     print('post_save_session_receiver INSTANCE: ' + str(instance))
     if created:
-        qs = UserSession.objects.filter(user=instance, ended=False, active=True).exclude(id=instance.id)
+        qs = UserSession.objects.filter(user=instance.user, ended=False, active=True).exclude(id=instance.id)
         for i in qs:
             i.end_session()
     if not instance.active and not instance.ended:
@@ -100,7 +100,7 @@ def post_save_user_changed_receiver(sender, instance, created, *args, **kwargs):
     if not created:
         if instance.is_active == False:
             
-            qs = UserSession.objects.filter(user=instance, ended=False, active=True)
+            qs = UserSession.objects.filter(user=instance.id, ended=False, active=True)
             for i in qs:
                 i.end_session()
 

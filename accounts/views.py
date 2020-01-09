@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate, login, get_user_model
 from django.http import HttpResponse
-from django.views.generic import CreateView, FormView, DetailView
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -17,6 +16,7 @@ from .models import GuestEmail, EmailActivation
 from .signals import user_logged_in
 
 from accounts.mixins import ObjectViewedMixin
+from stringkeeper.mixins import NextUrlMixin, RequestFormAttachMixin
 
 # User = get_user_model()
 
@@ -45,6 +45,7 @@ class AccountEmailActivateView(FormMixin, View):
             confirm_qs = qs.confirmable()
             if confirm_qs.count() == 1:
                 obj = confirm_qs.first()
+                eventlog('obj: ' + str(obj))
                 obj.activate()
                 messages.success(request, "Your email has been confirmed. Please login.")
                 eventlog('confirm_qs.count() == 1')
@@ -61,7 +62,7 @@ class AccountEmailActivateView(FormMixin, View):
                     return redirect("auth_login") 
         context = {
                 'form': self.get_form(),
-                'key': key,
+                'key': self.key,
                 'ascii_art': get_ascii_art()
             }
         return render(request, 'registration/activation-error.html', context)
@@ -77,16 +78,17 @@ class AccountEmailActivateView(FormMixin, View):
             return self.form_invalid(form)
 
     def form_valid(self, form):
+        eventlog('form_valid')
         msg = """Activation link sent, please check your email."""
         request = self.request
         messages.success(request, msg)
         email = form.cleaned_data.get("email")
         obj = EmailActivation.objects.email_exists(email).first()
-        user = obj.user 
+        user = obj.user
         new_activation = EmailActivation.objects.create(user=user, email=email)
         new_activation.send_activation()
-        eventlog('form_valid')
         return super(AccountEmailActivateView, self).form_valid(form)
+
 
     def form_invalid(self, form):
     
@@ -99,7 +101,7 @@ class AccountEmailActivateView(FormMixin, View):
 
 
 
-def guest_register_view(request):
+def guest_register_view(NextUrlMixin, request):
     eventlog('LOGIN_PAGE -- ACCOUNTS')
     form = GuestForm(request.POST or None)
     context = {
@@ -122,46 +124,24 @@ def guest_register_view(request):
 
     return redirect('/register/')
 
-class LoginView(ObjectViewedMixin, FormView):
+
+
+
+class LoginView(NextUrlMixin, RequestFormAttachMixin, ObjectViewedMixin, FormView):
     eventlog('LoginView')
     form_class = LoginForm
     success_url = '/'
     template_name = 'accounts/login.html'
+    default_next = '/'
     # ascii_art =  get_ascii_art()
 
 
+
     def form_valid(self, form):
-        eventlog('def form_valid')
-        request = self.request
-        next_ = request.GET.get('next')
-        next_post = request.POST.get('next')
-        redirect_path = next_ or next_post or None
-        email = form.cleaned_data.get('email')
-        password = form.cleaned_data.get('password')
-        user = authenticate(request, username=email, password=password)
+        eventlog(str(form.user))
+        next_path = self.get_next_url()
+        return redirect(next_path)
 
-        if user is not None:
-            eventlog('if user is not None')
-            if not user.is_active:
-                messages.error(request, str(str(user.email) + " is inactive"))
-                return super(LoginView, self).form_invalid(form, {'ascii_art': 'ascii_art'})
-
-            login(request, user)
-            user_logged_in.send(user.__class__, instance=user, request=request)
-            try:
-                eventlog('try')
-                del request.session['guest_email_id']
-            except:
-                eventlog('except')
-                pass
-            if is_safe_url(redirect_path, request.get_host()):
-                eventlog('is_safe_url')
-                return redirect(redirect_path)
-            else:
-                eventlog('is_safe_url else')
-                return redirect('/')
-
-        return super(LoginView, self).form_invalid(form)
 
 
 
@@ -183,7 +163,7 @@ class RegisterView(ObjectViewedMixin, CreateView):
 #         'form': form,
 #         'ascii_art': ascii_art
 #     }
-#     #print('request.user.is_authenticated: ' + 
+#     #eventlog('request.user.is_authenticated: ' + 
 #     #str(request.user.is_authenticated))
 #     next_ = request.GET.get('next')
 #     next_post = request.POST.get('next')
@@ -195,11 +175,11 @@ class RegisterView(ObjectViewedMixin, CreateView):
 #         password = form.cleaned_data.get('password')
 #         user = authenticate(request, username=username, password=password)
 #         eventlog(str(user))
-#         #print(str(request.user.is_authenticated))
+#         #eventlog(str(request.user.is_authenticated))
 #         if user is not None:
 #             eventlog('user is none')
 #             #redirect to success page
-#             #print(str(request.user.is_authenticated))
+#             #eventlog(str(request.user.is_authenticated))
 #             login(request, user)
 #             try:
 #                 del request.session['guest_email_id']
