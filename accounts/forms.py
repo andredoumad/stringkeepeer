@@ -137,11 +137,13 @@ class RegisterForm(forms.ModelForm):
 
 
 class UserDetailChangeForm(forms.ModelForm):
-    full_name = forms.CharField(label='Name', required=False, widget=forms.TextInput(attrs={"class": 'form-control'}))
+    first_name = forms.CharField(label='First Name', required=False, widget=forms.TextInput(attrs={"class": 'form-control'}))
+    last_name = forms.CharField(label='Last Name', required=False, widget=forms.TextInput(attrs={"class": 'form-control'}))
 
     class Meta:
         model = User
-        fields = ['full_name']
+        fields = ['first_name', 'last_name']
+        # model.full_name = str(str(first_name) + ' ' + str(last_name))
 
 
 class UserAdminChangeForm(forms.ModelForm):

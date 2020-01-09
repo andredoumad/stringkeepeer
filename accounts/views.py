@@ -14,7 +14,7 @@ from django.utils.safestring import mark_safe
 from .forms import LoginForm, RegisterForm, GuestForm, ReactivateEmailForm, UserDetailChangeForm
 from .models import GuestEmail, EmailActivation
 from .signals import user_logged_in
-
+from django.urls import reverse
 from accounts.mixins import ObjectViewedMixin
 from stringkeeper.mixins import NextUrlMixin, RequestFormAttachMixin
 
@@ -24,6 +24,7 @@ from stringkeeper.mixins import NextUrlMixin, RequestFormAttachMixin
 # def account_home_view(request):
 #     return render(request, "accounts/home.html", {})
 
+User = get_user_model()
 
 #LoginRequiredMixin,
 class AccountHomeView(LoginRequiredMixin, DetailView):
@@ -166,6 +167,14 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
     def get_success_url(self):
+        eventlog('self.request.user: ' + str(self.request.user))
+        eventlog('self.request.user.full_name: ' + str(self.request.user.full_name))
+        eventlog('self.request.user.first_name: ' + str(self.request.user.first_name))
+        eventlog('self.request.user.last_name: ' + str(self.request.user.last_name))
+        self.request.user.full_name = str(str(self.request.user.first_name) + ' ' + str(self.request.user.last_name))
+        eventlog('self.request.user.full_name: ' + str(self.request.user.full_name))
+        User.full_name = self.request.user.full_name
+        self.request.user.save()
         return reverse("account:home")
 
 
