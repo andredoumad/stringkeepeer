@@ -94,7 +94,7 @@ def checkout_home(request):
     if cart_created or cart_obj.subscriptions.count() == 0:
         return redirect("cart:home")  
     
-    login_form = LoginForm()
+    login_form = LoginForm(request)
     guest_form = GuestForm(request=request)
     address_form = AddressCheckoutForm()
     billing_address_id = request.session.get("billing_address_id", None)

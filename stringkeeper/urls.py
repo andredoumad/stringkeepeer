@@ -72,6 +72,7 @@ urlpatterns = [
     path('billing/payment-method/create/', payment_method_createview, name='billing-payment-method-endpoint'),
     path('register/', RegisterView.as_view(), name='register'),
     path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),
+    path('orders/', include('orders.urls', namespace='orders'), name='orders'),
     path('subscriptions/', include('subscription.urls', namespace='subscription'), name='subscription'),
     path('search/', include('search.urls', namespace='search'), name='search'),
     path('settings/', RedirectView.as_view(url='/account')),
