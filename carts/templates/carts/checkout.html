@@ -20,15 +20,6 @@
     </div>
 
 {% else %}
-test
-<br>
-object.shipping_address: {{ object.shipping_address }}
-<br>
-shipping_address_required: {{ shipping_address_required }}
-<br>
-object.billing_address: {{ object.billing_address }}
-<br>
-has_card: {{ has_card }}
         {% if not object.shipping_address and shipping_address_required %}
         
          <div class='row'>
