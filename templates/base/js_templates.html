@@ -2,7 +2,7 @@
 <!-- _STRIPE_ form-->
 {% verbatim %}
 <script id='stripeTemplate' type='text/x-jsrender'>
-    <form class='stripe-payment-form' action="/charge" method="post" id="stripe-payment-form" data-token='{{:publishKey}}' data-next-url='{{:nextUrl}}'>
+    <form class='payment-form' action="/charge" method="post" id="payment-form" data-token='{{:publishKey}}' data-next-url='{{:nextUrl}}'>
         <div class="form-row">
           <!-- <label for="card-element">
             Credit or debit card
