@@ -45,6 +45,7 @@ def cart_detail_api_view(request):
 
 def cart_home(request):
     cart_obj, new_obj = Cart.objects.new_or_get(request)
+    eventlog(cart_obj.is_digital)
     context = {
         'cart': cart_obj, 
         'ascii_art': get_ascii_art()
@@ -99,8 +100,7 @@ def checkout_home(request):
     address_form = AddressCheckoutForm()
     billing_address_id = request.session.get("billing_address_id", None)
 
-    # shipping_address_required = not cart_obj.is_digital
-
+    shipping_address_required = not cart_obj.is_digital
 
     shipping_address_id = request.session.get("shipping_address_id", None)
 
@@ -151,7 +151,8 @@ def checkout_home(request):
         'address_qs': address_qs,
         "has_card": has_card,
         'publish_key': STRIPE_PUB_KEY,
-        'ascii_art': get_ascii_art()
+        'ascii_art': get_ascii_art(),
+        'shipping_address_required': shipping_address_required
     }
     
     return render(request, 'carts/checkout.html', context)

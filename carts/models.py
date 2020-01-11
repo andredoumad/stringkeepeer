@@ -50,6 +50,14 @@ class Cart(models.Model):
     def name(self):
         return self.title
 
+    @property
+    def is_digital(self):
+        qs = self.subscriptions.all() #every subscription
+        new_qs = qs.filter(is_digital=False) # every subscription that is not digial
+        if new_qs.exists():
+            return False
+        return True
+
     # @property
     # def is_digital(self):
     #     qs = self.subscriptions.all() #every subscription
