@@ -135,7 +135,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 import logging
 
-# logging.basicConfig(level=logging.ERROR)
+logging.basicConfig(level=logging.ERROR)
 
 # from django.contrib.auth.models import User
 # SECRET_KEY
@@ -163,6 +163,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 #https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl
 AWS_DEFAULT_ACL = 'private'
 
+from stringkeeper.aws.conf import *
 
 
 

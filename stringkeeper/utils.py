@@ -7,6 +7,9 @@ def random_string_generator(size=10, chars=string.ascii_lowercase + string.digit
     return ''.join(random.choice(chars) for _ in range(size))
 
 
+def get_filename(path): #/abc/filename.mp4
+    return os.path.basename(path)
+
 def unique_key_generator(instance):
     """
     This is for Django project with an order_id field
