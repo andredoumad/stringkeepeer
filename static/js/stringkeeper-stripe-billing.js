@@ -17,7 +17,7 @@ stripeFormModule.html(stripeTemplateHtml)
 
 // https secure site when live
 
-var paymentForm = $(".stripe-payment-form")
+var paymentForm = $(".payment-form")
 
 
 if (paymentForm.length > 1){
@@ -98,7 +98,7 @@ card.addEventListener('change', function(event) {
 
 // Handle form submission.
 // converted to jQuery
-var form = $('#stripe-payment-form');
+var form = $('#payment-form');
 var btnLoad = form.find(".btn-load");
 var btnLoadDefaultHtml = btnLoad.html()
 var btnLoadDefaultClasses = btnLoad.attr("class")
