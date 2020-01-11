@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 
 // Stripe Form START 
-var stripeFormModule = $(".stripe-payment-form-module")
+var stripeFormModule = $(".stripe-payment-form")
 var stripeModuleToken = stripeFormModule.attr("data-token")
 var stripeModuleNextUrl = stripeFormModule.attr("data-next-url")
 var stripeModuleBtnTitle = stripeFormModule.attr('data-btn-title') || 'Add card'

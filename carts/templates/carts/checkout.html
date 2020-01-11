@@ -2,7 +2,9 @@
 
 
 {% block content %}
+
 {% if not billing_profile %}
+
     <div class='row text-center'>
     <div class='col-12 col-md-6'>
         <p class='lead'>Login</p>
@@ -18,9 +20,17 @@
     </div>
 
 {% else %}
-            
+test
+<br>
+object.shipping_address: {{ object.shipping_address }}
+<br>
+shipping_address_required: {{ shipping_address_required }}
+<br>
+object.billing_address: {{ object.billing_address }}
+<br>
+has_card: {{ has_card }}
         {% if not object.shipping_address and shipping_address_required %}
-
+        
          <div class='row'>
             <div class='col-12'>
                 <p class='lead'>Shipping Address</p>
@@ -45,6 +55,7 @@
 
 
         {% elif not object.billing_address %}
+        
         <div class='row'>
             <div class='col-12'>
                  <p class='lead'>Billing Address</p>
@@ -70,7 +81,9 @@
             {% else %}
                 <h1>Finalize Checkout</h1>
                 <p>Cart Items: {% for subscription in object.cart.subscriptions.all %}{{ subscription }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+                {% if object.shipping_address_final is not None %}
                 <p>Shipping Address: {{ object.shipping_address_final }}</p>
+                {% endif %}
                 <p>Billing Address: {{ object.billing_address_final }}</p>
                 <p>Payment Method: {{ billing_profile.default_card }} (<a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}">Change</a>)</p>
                 <p>Cart Total: {{ object.cart.total }}</p>

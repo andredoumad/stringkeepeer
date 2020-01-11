@@ -6,6 +6,8 @@ from addresses.models import Address
 from billing.models import BillingProfile
 from carts.models import Cart
 from stringkeeper.utils import unique_order_id_generator
+from subscription.models import Subscription
+
 ORDER_STATUS_CHOICES = (
     ('created', 'Created'),
     ('paid', 'Paid'),
@@ -118,9 +120,11 @@ class Order(models.Model):
 
 
     def mark_paid(self):
-        if self.check_done():
-            self.status = 'paid'
-            self.save()
+        if self.status != 'paid':
+            if self.check_done():
+                self.status = "paid"
+                self.save()
+                self.update_purchases()
         return self.status
         
 #generate order id
@@ -163,8 +167,55 @@ def post_save_order(sender, instance, created, *args, **kwargs):
 post_save.connect(post_save_order, sender=Order)
 
 
+class SubscriptionPurchaseQuerySet(models.query.QuerySet):
+    def active(self):
+        return self.filter(refunded=False)
+
+    def digital(self):
+        return self.filter(subscription__is_digital=True)
+
+    def by_request(self, request):
+        billing_profile, created = BillingProfile.objects.new_or_get(request)
+        return self.filter(billing_profile=billing_profile)
 
 
+class SubscriptionPurchaseManager(models.Manager):
+    def get_queryset(self):
+        return SubscriptionPurchaseQuerySet(self.model, using=self._db)
+
+    def all(self):
+        return self.get_queryset().active()
+
+    def digital(self):
+        return self.get_queryset().active().digital()
+
+    def by_request(self, request):
+        return self.get_queryset().by_request(request)
+
+    def subscriptions_by_id(self, request):
+        qs = self.by_request(request).digital()
+        ids_ = [x.subscription.id for x in qs]
+        return ids_
+
+    def subscriptions_by_request(self, request):
+        ids_ = self.subscriptions_by_id(request)
+        subscriptions_qs = Subscription.objects.filter(id__in=ids_).distinct()
+        return subscriptions_qs
+
+
+
+class SubscriptionPurchase(models.Model):
+    order_id            = models.CharField(max_length=120)
+    billing_profile     = models.ForeignKey(BillingProfile, null=True, blank=True, on_delete=models.SET_NULL) # billingprofile.subscriptionpurchase_set.all()
+    subscription        = models.ForeignKey(Subscription, null=True, blank=True, on_delete=models.SET_NULL) # subscription.subscriptionpurchase_set.count()
+    refunded            = models.BooleanField(default=False)
+    updated             = models.DateTimeField(auto_now=True)
+    timestamp           = models.DateTimeField(auto_now_add=True)
+
+    objects = SubscriptionPurchaseManager()
+
+    def __str__(self):
+        return self.subscription.title
 
 
 
