@@ -129,6 +129,8 @@ class User(AbstractBaseUser):
 
     @property
     def is_staff(self):
+        if self.is_admin:
+            return True
         return self.staff
 
     @property
