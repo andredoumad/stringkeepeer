@@ -1,7 +1,7 @@
 #from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404
-from django.views.generic import ListView, DetailView
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.views.generic import ListView, DetailView, View
 from django.shortcuts import render, get_object_or_404
 from stringkeeper.standalone_tools import *
 
@@ -11,7 +11,7 @@ import stringkeeper.standalone_tools
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 
-from .models import Subscription
+from .models import Subscription, SubscriptionFile
 
 
 
@@ -119,6 +119,56 @@ class SubscriptionDetailSlugView(ObjectViewedMixin, DetailView):
         return instance
 
 
+
+class SubscriptionDownloadView(View):
+    def get(self, request, *args, **kwargs):
+        slug = kwargs.get('slug')
+        pk = kwargs.get('pk')
+        downloads_qs = SubscriptionFile.objects.filter(pk=pk, subscription__slug=slug)
+        if downloads_qs.count() != 1:
+            raise Http404("Download not found")
+        download_obj = downloads_qs.first()
+        # permission checks
+        
+        can_download = False
+        user_ready  = True
+        if download_obj.user_required:
+            if not request.user.is_authenticated:
+                user_ready = False
+
+        purchased_subscriptions = Subscription.objects.none()
+        if download_obj.free:
+            can_download = True
+            user_ready = True
+        else:
+            # not free
+            purchased_subscriptions = SubscriptionPurchase.objects.subscriptions_by_request(request)
+            if download_obj.subscription in purchased_subscriptions:
+                can_download = True
+        if not can_download or not user_ready:
+            messages.error(request, "You do not have access to download this item")
+            return redirect(download_obj.get_default_url())
+
+        aws_filepath = download_obj.generate_download_url()
+        print(aws_filepath)
+        return HttpResponseRedirect(aws_filepath)
+        # file_root = settings.PROTECTED_ROOT
+        # filepath = download_obj.file.path # .url /media/
+        # final_filepath = os.path.join(file_root, filepath) # where the file is stored
+        # with open(final_filepath, 'rb') as f:
+        #     wrapper = FileWrapper(f)
+        #     mimetype = 'application/force-download'
+        #     gussed_mimetype = guess_type(filepath)[0] # filename.mp4
+        #     if gussed_mimetype:
+        #         mimetype = gussed_mimetype
+        #     response = HttpResponse(wrapper, content_type=mimetype)
+        #     response['Content-Disposition'] = "attachment;filename=%s" %(download_obj.name)
+        #     response["X-SendFile"] = str(download_obj.name)
+        #     return response
+        #return redirect(download_obj.get_default_url())
+
+
+
 class SubscriptionDetailView(ObjectViewedMixin, DetailView):
     #everything in the database
     #queryset = Subscription.objects.all()
@@ -184,3 +234,6 @@ def subscription_detail_view(request, pk=None, *args, **kwargs):
         'ascii_art': ascii_art
     }
     return render(request, "subscription/detail.html", context)
+
+
+

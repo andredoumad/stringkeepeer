@@ -94,6 +94,13 @@ class Subscription(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def name(self):
+        return self.title
+
+    def get_downloads(self):
+        qs = self.subscriptionfile_set.all()
+        return qs
 
 def subscription_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
@@ -160,6 +167,6 @@ class SubscriptionFile(models.Model):
         return file_url
 
     def get_download_url(self): # detail view
-        return reverse("subscriptions:download", 
+        return reverse("subscription:download", 
                     kwargs={"slug": self.subscription.slug, "pk": self.pk}
                 )

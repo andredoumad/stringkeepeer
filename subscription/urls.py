@@ -9,8 +9,8 @@ from subscription.views import (
 
     #SubscriptionFeaturedListView,    
     #SubscriptionFeaturedDetailView,
-    SubscriptionDetailSlugView
-
+    SubscriptionDetailSlugView,
+    SubscriptionDownloadView
 )
 
 app_name = 'subscription'
@@ -22,5 +22,6 @@ urlpatterns = [
     #re_path(r'^subscription/(?P<pk>\d+)/$', SubscriptionDetailView.as_view()), # as view means callable 
     #re_path(r'^subscription/(?P<slug>[\w-]+)/$', SubscriptionDetailSlugView.as_view()),
     path('<str:slug>/', SubscriptionDetailSlugView.as_view(), name='detail'), 
+    re_path(r'^(?P<slug>[\w-]+)/(?P<pk>\d+)/$', SubscriptionDownloadView.as_view(), name='download'),
     # re_path(r'^subscription-fbv/(?P<pk>\d+)/$', subscription_detail_view),
 ]
