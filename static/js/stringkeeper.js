@@ -69,45 +69,55 @@ $(document).ready(function(){
 
 
 
-  // //auto search
-  // var searchForm = $(".search-form")
-  // var searchInput = searchForm.find("[name='q']") // input name = 'q'
-  // var typingTimer;
-  // var typingInterval = 333
-  // var searchBtn = searchForm.find("[type='submit']")
-
-  // searchInput.keyup(function(event){
-  //   console.log(searchInput.val())
-  //   clearTimeout(typingTimer)
-  //   typingTimer = setTimeout(performSearch, typingInterval)
-  // })
-
-  // searchInput.keydown(function(event){
-  //   console.log(searchInput.val())
-  //   clearTimeout(typingTimer)
-  // })
 
 
-  // function displaySearching(){
-  //   searchBtn.addClass("disabled")
-  //   searchBtn.html("<i class='fa fa-spin fa-spinner'></i> Searching...")
-  // }
+  // Cart + Add Subscriptions 
+  var subscriptionForm = $(".form-subscription-ajax") // #form-subscription-ajax
 
-  // function performSearch(){
-  //   displaySearching()
+  function getOwnedSubscription(subscriptionId, submitSpan){
+    var actionEndpoint = '/orders/endpoint/verify/ownership/'
+    var httpMethod = 'GET'
+    var data = {
+      subscription_id: subscriptionId
+    }
 
-  //   var query = searchInput.val()
+    var isOwner;
+    $.ajax({
+        url: actionEndpoint,
+        method: httpMethod,
+        data: data,
+        success: function(data){
+          console.log(data)
+          console.log(data.owner)
+          if (data.owner){
+            isOwner = true
+            submitSpan.html("<a class='btn btn-warning' href='/library/'>In Library</a>")
+          } else {
+            isOwner = false
+          }
+        },
+        error: function(erorr){
+          console.log(error)
 
-  //   setTimeout(function(){
-  //     window.location.href='/search/?q=' + query
-  //   }, 200)
+        }
+    })
+    return isOwner
+    
+  }
 
+  $.each(subscriptionForm, function(index, object){
+    var $this = $(this)
+    var isUser = $this.attr("data-user")
+    var submitSpan = $this.find(".submit-span")
+    var subscriptionInput = $this.find("[name='subscription_id']")
+    var subscriptionId = subscriptionInput.attr("value")
+    var subscriptionIsDigital = subscriptionInput.attr("data-is-digital")
+    
+    if (subscriptionIsDigital && isUser){
+      var isOwned = getOwnedSubscription(subscriptionId, submitSpan)
+    }
+  })  
 
-  // }
-
-  //cart = add products
-
-  var subscriptionForm = $(".form-subscription-ajax")
 
   subscriptionForm.submit(function(event){
     event.preventDefault();

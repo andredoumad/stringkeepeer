@@ -1,23 +1,15 @@
-<div class="card mx-3 my-3 bg-secondary text-white" style="width: 28rem;">
+<div class="card bg-secondary text-white" style="width: 20rem;">
   {% if instance.image %}
-    {% load static %}
-    <!-- <img src={{instance.image.url}}> -->
-     
-    <!-- <!-- instance get absolute url {{ instance.get_absolute_url }} <br> -->
-    <!-- <hr>
-    instance  image url is 
-    <hr>
-    {{ instance.image.url }}
-    <hr> -->
-    <a href="{{ instance.get_absolute_url }}" > <img class="card-img-top" src="{{ instance.image.url }}" alt="{{ instance.title }}"></a>
-  {% endif %}
-    <div class="card-body">
-      <h4 class="card-title">{{ instance.title }}</h4>
-      <p class="card-text">{{ instance.description|truncatewords:60 }}</p>
-      <a href="{{ instance.get_absolute_url }}" class="btn btn-info">Subscription details</a>
-      <hr>
-      {% include 'subscription/snippets/update-cart.html' with subscription=instance cart=cart %}
-      <hr>
-      <!-- <a href="{% url 'subscription:detail' slug=instance.slug %}" class="btn btn-warning">URL SHORTCUT</a> -->
+    <a href="{{ instance.get_absolute_url }}"><img class="card-img-top" src="{{ instance.image.url }}" alt="{{ instance.title}} logo"></a>
+    {% endif %}
+  <div class="card-body">
+    <h4 class="card-title">{{ instance.title }}</h4>
+    <p class="card-text">{{ instance.description|linebreaks|truncatewords:14 }}</p>
+    
+    <div class='text-center'>
+        <a href="{{ instance.get_absolute_url }}" class="btn btn-primary my-2">View</a>
+        {% include 'subscription/snippets/update-cart.html' with subscription=instance cart=cart %}
     </div>
+   <!--  <a href="{% url 'subscription:detail' slug=instance.slug  %}" class="btn btn-warning">URL shortcut</a> -->
   </div>
+</div>
