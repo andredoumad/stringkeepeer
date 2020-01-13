@@ -29,7 +29,7 @@ from searches.views import search_view
 from carts.views import cart_home
 
 from accounts.views import LoginView, RegisterView, guest_register_view
-from billing.views import payment_method_view, payment_method_createview
+from billing.views import payment_method_view, payment_method_createview, payment
 from addresses.views import (
     AddressCreateView,
     AddressListView,
@@ -83,6 +83,7 @@ urlpatterns = [
     path('checkout/address/reuse/', checkout_address_reuse_view, name='checkout_address_reuse'),
     path('cart/', include('carts.urls', namespace='cart'), name='cart'),
     path('billing/payment-method/', payment_method_view, name='billing-payment-method'),
+    path('billing/payment/', payment, name='payment'),
     path('billing/payment-method/create/', payment_method_createview, name='billing-payment-method-endpoint'),
     path('register/', RegisterView.as_view(), name='register'),
     path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),

@@ -3,6 +3,13 @@
 
 {% block content %}
 
+<button>Click Here to Toggle</button>
+
+<div class="textLine" style="background-color:yellow;">
+ This is a yellow line.....
+</div>
+
+
 {% if payment_company == 'stripe' %}
 <!-- _Stripe_ Form START -->
 <div class='col-10 col-md-6 mx-auto'>
@@ -13,5 +20,25 @@
 {% endif %}
 
 
+
+{% if payment_company != 'stripe' %}
+
+<div id="dropin-container"></div>
+<button id="submit-button">Request payment method</button>
+<script>
+  var button = document.querySelector('#submit-button');
+
+  braintree.dropin.create({
+    authorization: 'CLIENT_AUTHORIZATION',
+    container: '#dropin-container'
+  }, function (createErr, instance) {
+    button.addEventListener('click', function () {
+      instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+        // Submit payload.nonce to your server
+      });
+    });
+  });
+</script>
+{% endif %}
 
 {% endblock %}

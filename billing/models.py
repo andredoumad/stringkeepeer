@@ -12,12 +12,16 @@ from accounts.models import GuestEmail
 
 
 User = settings.AUTH_USER_MODEL
+
 STRIPE_BILLING_SERVICE = getattr(settings, 'STRIPE_BILLING_SERVICE', False)
 
 # _STRIPE_
 import stripe
 stripe.api_key = 'sk_test_UQ6hFgP5OZ9KXeSWvO39jgTb0099ffMFNJ'
 
+
+
+BRAINTREE_BILLING_SERVICE = getattr(settings, 'BRAINTREE_BILLING_SERVICE', False)
 
 class BillingProfileManager(models.Manager):
     def new_or_get(self, request):
@@ -46,6 +50,7 @@ class BillingProfile(models.Model):
     update = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     stripe_customer_id = models.CharField(max_length=255, null=True, blank=True)
+    braintree_customer_id = models.CharField(max_length=255, null=True, blank=True)
 
     # customer_id in Stripe or Braintree 
     objects = BillingProfileManager()
@@ -104,8 +109,113 @@ if STRIPE_BILLING_SERVICE:
 
     pre_save.connect(stripe_billing_profile_created_receiver, sender=BillingProfile)
 
+    class CardManager(models.Manager):
+        def all(self, *args, **kwargs):
+            return self.get_queryset().filter(active=True)
+        def add_new(self, billing_profile, token):
+            if token:
+                customer = stripe.Customer.retrieve(billing_profile.stripe_customer_id)
+                stripe_card_response = customer.sources.create(source=token)
+                new_card = self.model(
+                    billing_profile=billing_profile,
+                    stripe_id = stripe_card_response.id,
+                    brand = stripe_card_response.brand,
+                    country = stripe_card_response.country,
+                    exp_month = stripe_card_response.exp_month,
+                    exp_year = stripe_card_response.exp_year,
+                    last4 = stripe_card_response.last4
+                ) 
+                new_card.save()
+                return new_card
+            return None
 
-if STRIPE_BILLING_SERVICE:
+    class Card(models.Model):
+        billing_profile         = models.ForeignKey(BillingProfile, null=True, on_delete=models.SET_NULL)
+        stripe_id               = models.CharField(max_length=120)
+        brand                   = models.CharField(max_length=120, null=True, blank=True)
+        country                 = models.CharField(max_length=20, null=True, blank=True)
+        exp_month               = models.IntegerField(null=True, blank=True)
+        exp_year                = models.IntegerField(null=True, blank=True)
+        last4                   = models.CharField(max_length=4, null=True, blank=True)
+        default                 = models.BooleanField(default=True)
+        active                  = models.BooleanField(default=True)
+        timestamp               = models.DateTimeField(auto_now_add=True)
+
+        objects = CardManager()
+
+        def __str__(self):
+            return "{} {}".format(self.brand, self.last4)
+
+
+    def new_card_post_save_receiver(sender, instance, created, *args, **kwargs):
+        if instance.default:
+            billing_profile = instance.billing_profile
+            qs = Card.objects.filter(billing_profile=billing_profile).exclude(pk=instance.pk)
+            qs.update(default=False)
+
+    post_save.connect(new_card_post_save_receiver, sender=Card)
+
+    class ChargeManager(models.Manager):
+        def do(self, billing_profile, order_obj, card=None): # Charge.objects.do()
+            card_obj = card
+            if card_obj is None:
+                cards = billing_profile.card_set.filter(default=True) # card_obj.billing_profile
+                if cards.exists():
+                    card_obj = cards.first()
+            if card_obj is None:
+                return False, "No cards available"
+            c = stripe.Charge.create(
+                amount = int(order_obj.total * 100), # 39.19 --> 3919
+                currency = "usd",
+                customer =  billing_profile.stripe_customer_id,
+                source = card_obj.stripe_id,
+                metadata={"order_id":order_obj.order_id},
+                )
+            new_charge_obj = self.model(
+                    billing_profile = billing_profile,
+                    stripe_id = c.id,
+                    paid = c.paid,
+                    refunded = c.refunded,
+                    outcome = c.outcome,
+                    outcome_type = c.outcome['type'],
+                    seller_message = c.outcome.get('seller_message'),
+                    risk_level = c.outcome.get('risk_level'),
+            )
+            new_charge_obj.save()
+            return new_charge_obj.paid, new_charge_obj.seller_message
+
+
+    class Charge(models.Model):
+        billing_profile         = models.ForeignKey(BillingProfile, null=True, on_delete=models.SET_NULL)
+        stripe_id               = models.CharField(max_length=120)
+        paid                    = models.BooleanField(default=False)
+        refunded                = models.BooleanField(default=False)
+        outcome                 = models.TextField(null=True, blank=True)
+        outcome_type            = models.CharField(max_length=120, null=True, blank=True)
+        seller_message          = models.CharField(max_length=120, null=True, blank=True)
+        risk_level              = models.CharField(max_length=120, null=True, blank=True)
+
+        objects = ChargeManager()
+
+
+
+
+if BRAINTREE_BILLING_SERVICE:
+    eventlog('BRAINTREE BILLING SERVICE IS ACTIVE')
+
+    def braintree_billing_profile_created_receiver(sender, instance, *args, **kwargs):
+        if not instance.stripe_customer_id and instance.email:
+            # https://stripe.com/docs/api/customers/create
+            customer = stripe.Customer.create(
+                email = instance.email
+
+            )
+            eventlog(customer)
+            instance.braintree_customer_id = customer.id
+
+
+    pre_save.connect(braintree_billing_profile_created_receiver, sender=BillingProfile)
+    
     class CardManager(models.Manager):
         def all(self, *args, **kwargs):
             return self.get_queryset().filter(active=True)

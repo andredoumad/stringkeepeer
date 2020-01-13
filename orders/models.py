@@ -10,6 +10,7 @@ from django.utils import timezone
 from addresses.models import Address
 from billing.models import BillingProfile
 from carts.models import Cart
+from stringkeeper.standalone_tools import *
 from stringkeeper.utils import unique_order_id_generator
 from subscription.models import Subscription
 
