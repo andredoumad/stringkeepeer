@@ -1,5 +1,7 @@
 import random
 import datetime
+from datetime import timedelta
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count, Sum, Avg
 from django.http import HttpResponse, JsonResponse
@@ -8,10 +10,7 @@ from django.shortcuts import render
 from stringkeeper.standalone_tools import *
 from django.utils import  timezone
 
-
 from orders.models import Order
-
-# Create your views here.
 
 class SalesAjaxView(View):
     def get(self, request, *args, **kwargs):
@@ -20,12 +19,12 @@ class SalesAjaxView(View):
             qs = Order.objects.all().by_weeks_range(weeks_ago=5, number_of_weeks=5)
             if request.GET.get('type') == 'week':
                 days = 7
-                start_date = timezone.now().today() - datetime.timedelta(days=days-1)
+                start_date = timezone.now().today() - timedelta(days=days-1)
                 datetime_list = []
                 labels = []
                 salesItems = []
                 for x in range(0, days):
-                    new_time = start_date + datetime.timedelta(days=x)
+                    new_time = start_date + timedelta(days=x)
                     datetime_list.append(
                             new_time
                         )
@@ -54,7 +53,7 @@ class SalesAjaxView(View):
 
 
 
-class SalesView(TemplateView):
+class SalesView(LoginRequiredMixin, TemplateView):
     template_name = 'analytics/sales.html'
 
     def dispatch(self, *args, **kwargs):
@@ -64,9 +63,17 @@ class SalesView(TemplateView):
             'ascii_art': get_ascii_art()
             }
         if not user.is_staff:
-            # return HttpResponse("Staff members need to login before viewing this page.", status=401)
-            return render(self.request, "home.html", context )
+            return render(self.request, "home.html", context)
         return super(SalesView, self).dispatch(*args, **kwargs)
 
+
     def get_context_data(self, *args, **kwargs):
-        return super(SalesView, self).get_context_data(*args, **kwargs)
+        context = super(SalesView, self).get_context_data(*args, **kwargs)
+        qs = Order.objects.all().by_weeks_range(weeks_ago=10, number_of_weeks=10)
+        start_date = timezone.now().date() - timedelta(hours=24)
+        end_date = timezone.now().date() + timedelta(hours=12)
+        today_data = qs.by_range(start_date=start_date, end_date=end_date).get_sales_breakdown()
+        context['today'] = today_data
+        context['this_week'] = qs.by_weeks_range(weeks_ago=1, number_of_weeks=1).get_sales_breakdown()
+        context['last_four_weeks'] = qs.by_weeks_range(weeks_ago=5, number_of_weeks=4).get_sales_breakdown()
+        return context
