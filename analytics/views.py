@@ -49,6 +49,9 @@ class SalesAjaxView(View):
                     sales_total = new_qs.totals_data()['total__sum'] or 0
                     data['data'].append(sales_total)
                     current -= 1
+        else:
+            user_is_staff = request.user.is_staff
+            data = {'user_is_staff': user_is_staff}
         return JsonResponse(data)
 
 
@@ -73,7 +76,9 @@ class SalesView(LoginRequiredMixin, TemplateView):
         start_date = timezone.now().date() - timedelta(hours=24)
         end_date = timezone.now().date() + timedelta(hours=12)
         today_data = qs.by_range(start_date=start_date, end_date=end_date).get_sales_breakdown()
+        eventlog('today_data: ' + str(today_data) + ' |_-_| ')
         context['today'] = today_data
         context['this_week'] = qs.by_weeks_range(weeks_ago=1, number_of_weeks=1).get_sales_breakdown()
         context['last_four_weeks'] = qs.by_weeks_range(weeks_ago=5, number_of_weeks=4).get_sales_breakdown()
+        context['ascii_art'] = get_ascii_art()
         return context

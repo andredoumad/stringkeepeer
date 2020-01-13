@@ -52,9 +52,9 @@ from .views import (
     #register_page
 )
 
-admin.site.site_header = 'Administration'                    # default: "Django Administration"
-admin.site.index_title = 'Administration'                 # default: "Site administration"
-admin.site.site_title = 'Administration' # default: "Django site admin"
+admin.site.site_header = 'Stringkeeper Admin'                    # default: "Django Administration"
+admin.site.index_title = 'Stringkeeper Admin'                 # default: "Site administration"
+admin.site.site_title = 'Stringkeeper Admin' # default: "Django site admin"
 
 
 urlpatterns = [
