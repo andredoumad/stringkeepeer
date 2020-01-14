@@ -2,12 +2,12 @@
 
 
 {% block content %}
-
+<!-- 
 <button>Click Here to Toggle</button>
 
 <div class="textLine" style="background-color:yellow;">
  This is a yellow line.....
-</div>
+</div> -->
 
 
 {% if payment_company == 'stripe' %}
@@ -19,22 +19,73 @@
 <!-- _Stripe_ Form END -->
 {% endif %}
 
-
-
+======= DEBUG ==========
+<hr/>
+user_first_name: {{ user_first_name }}
+<hr/>
+user_last_name: {{ user_last_name }}
+<hr/>
+user_email: {{ user_email }}
+<hr/>
+billing_profile: {{ billing_profile }}
+<hr/>
+billing_profile_created: {{ billing_profile_created }}
+<hr/>
+braintree_customer_id: {{ braintree_customer_id }}
+<hr/>
+collection: {{ collection }}
+<hr/>
+braintree_customer_first_name: {{ braintree_customer_first_name }}
+<hr/>
+braintree_customer_last_name: {{ braintree_customer_last_name }}
+<hr/>
+braintree_customer_email: {{ braintree_customer_email }}
+<hr/>
+cart: {{ cart }}
+<hr/>
+cart_created: {{ cart_created }}
+<hr/>
+order_profile: {{ order_profile }}
+<hr/>
+order_profile_created: {{ order_profile_created }}
+<hr/>
+order_billing_address: {{ order_billing_address }}
+<hr/>
+client token: {{ client_token }}
+<hr/>
+======= DEBUG ==========
+<hr/>
 {% if payment_company != 'stripe' %}
 
-<div id="dropin-container"></div>
-<button id="submit-button">Request payment method</button>
+<meta charset="utf-8">
+
+<script src="https://js.braintreegateway.com/web/dropin/1.21.0/js/dropin.min.js"></script>
+<form action="." method="post" id="payment-form">
+  {% csrf_token %}
+  <div id="checkoutMethods">
+    <div style="margin: 10px;">
+      <h2>Checkout with Braintree</h2>
+      <div id="dropin-container"></div>
+
+      <input type="hidden" id="nonce" name="payment_method_nonce" />
+    </div>
+  </div>
+  <button>Submit Payment</button>
+</form>
 <script>
   var button = document.querySelector('#submit-button');
 
   braintree.dropin.create({
-    authorization: 'CLIENT_AUTHORIZATION',
+    authorization: '{{ client_token }}',
     container: '#dropin-container'
   }, function (createErr, instance) {
     button.addEventListener('click', function () {
       instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
         // Submit payload.nonce to your server
+        // Add the nonce to the form and submit
+        console.log('payment method nonce is: ' + str(payload.nonce))
+        document.querySelector('#nonce').value = payload.nonce;
+        form.submit();
       });
     });
   });
