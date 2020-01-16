@@ -6,6 +6,7 @@ from django.utils.http import is_safe_url
 from .models import BillingProfile, Card
 from orders.models import Order
 from carts.models import Cart
+from .forms import PaymentMethodForm
 
 import braintree
 from .extras import generate_order_id, transact, generate_client_token
@@ -105,9 +106,18 @@ if BRAINTREE_BILLING_SERVICE:
         billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
         eventlog('billing_profile: ' + str(billing_profile))
         eventlog('billing_profile_created: ' + str(billing_profile_created))
+
+        billing_profile_first_name = str(billing_profile.first_name)
+        eventlog('billing_profile_first_name: ' + billing_profile_first_name)
+        billing_profile_last_name = str(billing_profile.last_name)
+        eventlog('billing_profile_last_name: ' + billing_profile_last_name)
+        billing_profile_street = str(billing_profile.street)
+        eventlog('billing_profile_street: ' + billing_profile_street)
+        billing_profile_postal_code = str(billing_profile.postal_code)
+        eventlog('billing_profile_postal_code: ' + billing_profile_postal_code)
+
         braintree_customer_id = billing_profile.braintree_customer_id
         eventlog('braintree_customer_id: ' + str(braintree_customer_id))
-
 
 
         if braintree_customer_id == None:
@@ -132,6 +142,7 @@ if BRAINTREE_BILLING_SERVICE:
         )
         i = 0
         for customer in collection.items:
+            eventlog('customer: ' + str(customer))
             eventlog('braintree_customer ' + str(i) + ' first_name: ' + str(customer.first_name))
             braintree_customer_first_name = str(customer.first_name)
             eventlog('braintree_customer ' + str(i) + ' last_name: ' + str(customer.last_name))
@@ -168,32 +179,118 @@ if BRAINTREE_BILLING_SERVICE:
             "customer_id": braintree_customer_id
         })
         eventlog('client_token: ' + str(client_token))
+        
+        payment_method_nonce = ''
+        # payment_method_nonce = str(request.form['payment_method_nonce'])
+        # eventlog('request.form[payment_method_nonce]: ' + payment_method_nonce)
 
         success_token = ''
+        # paymentform = PaymentMethodForm( request.POST or None, initial={
+        #         'first_name': billing_profile_first_name,
+        #         'last_name': billing_profile_last_name,
+        #         'street': billing_profile_street,
+                
+        #         })
+
+        paymentform = PaymentMethodForm( request.POST or None, initial={
+                'first_name': billing_profile_first_name,
+                'last_name': billing_profile_last_name,
+                'street': billing_profile_street,
+                'postal_code': billing_profile_postal_code
+                
+                })
+        # form.fields["first_name"] = user_first_name 
+
         if request.method == 'POST':
+            testvariable = request.POST.get('testvariable')
+            eventlog('testvariable: ' + str(testvariable))
+
+            payload = request.POST.get('payload')
+            eventlog('payload: ' + str(payload))
+
+            nonce = request.POST.get('nonce')
+            eventlog('nonce: ' + str(nonce))
+
             eventlog('request.method: ' + str(request.method))
-            result = gateway.payment_method.create({
-                "customer_id": braintree_customer_id,
-                "payment_method_nonce": nonce_from_the_client
+
+            eventlog('paymentform.first_name: ' + str(request.POST.get('first_name', None)))
+            billing_profile.first_name = request.POST.get('first_name', None)
+            eventlog('paymentform.last_name: ' + str(request.POST.get('last_name', None)))
+            billing_profile.last_name = request.POST.get('last_name', None)
+            eventlog('paymentform.street: ' + str(request.POST.get('street', None)))
+            billing_profile.street = request.POST.get('street', None)
+            eventlog('paymentform.postal_code: ' + str(request.POST.get('postal_code', None)))
+            billing_profile.postal_code = request.POST.get('postal_code', None)
+            billing_profile.save(
+                update_fields=[
+                    "first_name",
+                    "last_name",
+                    "street",
+                    "postal_code"
+                    ])
+            
+            # result = gateway.payment_method_nonce.create("A_PAYMENT_METHOD_TOKEN")
+            # nonce = result.payment_method_nonce.nonce
+            
+            payment_method_nonce = request.POST.get('payment_method_nonce')
+            eventlog('payment_method_nonce: ' + str(payment_method_nonce))
+            result = gateway.customer.update(braintree_customer_id, {
+                "payment_method_nonce": payment_method_nonce,
+                "email": request.user.email,
+                # fake credit card 4012000077777777
+                # another fake 4111111111111111
+                "credit_card": {
+                    "options": {
+                        "update_existing_token": client_token,
+                    },
+                    "billing_address": {
+                        "street_address": billing_profile.street,
+                        "postal_code": billing_profile.postal_code,
+                        "options": {
+                            "update_existing": True
+                        }
+                    }
+                }
             })
 
+            eventlog('result: ' + str(result))
 
-            if result.is_success or result.transaction:
-                eventlog('success_token: ' + str(success_token))
-                # return redirect(reverse('shopping_cart:update_records',
-                #         kwargs={
-                #             'token': result.transaction.id
-                #         })
-                #     )
+
+
+            # payment_method_token = result.payment_method.token
+            # eventlog('result.payment_method.token: ' + str(payment_method_token))
+
+            # payment_method_token = result.customer.payment_methods[0].token
+            # eventlog('result.customer.payment_methods[0].token: ' + str(payment_method_token))
+
+            # nonce = result.payment_method_nonce.nonce
+
+            # eventlog('nonce: ' + str(nonce))
+
+            # collection = gateway.customer.search(
+            #     braintree.CustomerSearch.id == braintree_customer_id
+            # )
+
+            # for customer in collection.items:
+            #     payment_method_token = customer.payment_method_token 
+            #     eventlog('payment_method_token: ' + str(payment_method_token))
+
+
+
 
         context = {
-
+            'paymentform': paymentform,
+            
             'user_first_name': user_first_name,
             'user_last_name': user_last_name,
             'user_email': user_email,
 
             'billing_profile': str(billing_profile),
-            'billing_profile_created': str(billing_profile_created),   
+            'billing_profile_created': str(billing_profile_created),
+            'billing_profile_first_name': str(billing_profile_first_name),
+            'billing_profile_last_name': str(billing_profile_last_name),
+            'billing_profile_street': str(billing_profile_street),
+            'billing_profile_postal_code': str(billing_profile_postal_code),
             'braintree_customer_id': str(braintree_customer_id),
 
             'collection': str(collection),
@@ -220,6 +317,11 @@ if BRAINTREE_BILLING_SERVICE:
     # def update_transaction_records(request, token):
     #     eventlog('token: ' + str(token))
     #     pass
+
+
+
+
+
 
     def payment(request):
         nonce_from_the_client = request.POST['paymentMethodNonce']

@@ -51,6 +51,10 @@ class BillingProfile(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     stripe_customer_id = models.CharField(max_length=255, null=True, blank=True)
     braintree_customer_id = models.CharField(max_length=255, null=True, blank=True)
+    first_name = models.CharField(max_length=255, null=True, blank=True)
+    last_name = models.CharField(max_length=255, null=True, blank=True)
+    street = models.CharField(max_length=255, null=True, blank=True)
+    postal_code = models.CharField(max_length=255, null=True, blank=True)
 
     # customer_id in Stripe or Braintree 
     objects = BillingProfileManager()

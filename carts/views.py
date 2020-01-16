@@ -93,7 +93,7 @@ def checkout_home(request):
     cart_obj, cart_created = Cart.objects.new_or_get(request)
     order_obj = None
     if cart_created or cart_obj.subscriptions.count() == 0:
-        return redirect("cart:home")  
+        return redirect("cart:home")
     
     login_form = LoginForm(request)
     guest_form = GuestForm(request=request)
