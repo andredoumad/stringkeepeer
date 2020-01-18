@@ -23,6 +23,9 @@ stripe.api_key = 'sk_test_UQ6hFgP5OZ9KXeSWvO39jgTb0099ffMFNJ'
 
 BRAINTREE_BILLING_SERVICE = getattr(settings, 'BRAINTREE_BILLING_SERVICE', False)
 
+
+
+
 class BillingProfileManager(models.Manager):
     def new_or_get(self, request):
         user = request.user
@@ -55,7 +58,12 @@ class BillingProfile(models.Model):
     last_name = models.CharField(max_length=255, null=True, blank=True)
     street = models.CharField(max_length=255, null=True, blank=True)
     postal_code = models.CharField(max_length=255, null=True, blank=True)
-
+    braintree_payment_method_token = models.CharField(max_length=255, null=True, blank=True)
+    braintree_cardholder_name = models.CharField(max_length=255, null=True, blank=True)
+    braintree_masked_number = models.CharField(max_length=255, null=True, blank=True)
+    braintree_expiration_date = models.CharField(max_length=255, null=True, blank=True)
+    braintree_subscription_id = models.CharField(max_length=255, null=True, blank=True)
+    
     # customer_id in Stripe or Braintree 
     objects = BillingProfileManager()
 

@@ -16,121 +16,14 @@
     <h1>Add Payment Method</h1>
     <div class='stripe-payment-form' data-token='{{ publish_key }}' data-next-url='{% if next_url %}{{ next_url }}{% endif %}' data-btn-title='Add New Card'></div>
 </div>
-
-
 <!-- _Stripe_ Form END -->
 {% endif %}
 
 ======= DEBUG ==========
 
-
-<script
-  src="https://code.jquery.com/jquery-3.4.1.slim.js"
-  integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
-  crossorigin="anonymous"></script>
-
-<hr/>
-ACTIIVE SUBSCRIPTIONS:
-<hr/>
-{% for subscription in customer_active_subscriptions %}
-Active subscription: {{ subscription.id }}
-<hr/>
-{% endfor %}
-<form method="POST" action='.' id="textValueField-form-ajax" name="textValueField-form-ajax">
-  {% csrf_token %}
-
-  <input type="hidden" id="inputFValue" name="inputFValue" />
-  <input type='text' id='inputF' name='inputF'/>
-  <button id="submit">test-ajax</button>
-</form>
-
-<script type="text/javascript">
-var inputF = document.getElementById("inputF");
-var inputFValue = 'Hello from javascript';
-var form = document.querySelector('#textValueField-form-ajax');
-
-$(document).ready(function() {
-    $('#textValueField-form-ajax').submit(function() { // catch the form's submit even
-        $.ajax({ // create an AJAX call...
-            data: $(this).serialize(), // get the form data
-            type: $(this).attr('method'), // GET or POST
-            url: $(this).attr('action'), // the file to call
-            success: function(response) { // on success..
-              console.log('SUCCESS !!')
-              console.log('inputF: 0: ' +  inputF)
-              console.log('inputFValue: 0: ' +  inputFValue)
-              document.getElementById("inputF").value = 'success!'
-              inputFValue = document.getElementById("inputF").value
-              console.log('inputFValue: 1: ' +  inputFValue)
-              document.querySelector('#inputFValue').value = 'hello'
-              console.log("document.querySelector('#inputFValue').value: " +  document.querySelector('#inputFValue').value )
-              
-              // update the DIV
-              //$('#success_div).html(response); 
-            },
-            error: function(e, x, r) { // on error..
-              console.log('ERROR !!')
-              // update the DIV
-              //$('#error_div).html(e)'); 
-            }
-
-        });
-        return false;
-    });
-});
-</script>
-
-
-
-
-<form method="POST" id="textValueField-form" name="textValueField-form">
-<input type='text' id='id1' name='textValueField'/> 
-
-</form>
-
-<br> 
-<br> 
-<button onclick="gfg_Run()"> 
-    click to set 
-</button> 
-<p id="GFG_DOWN" style="color:green;  
-                        font-size: 20px; 
-                        font-weight: bold;"> 
-</p> 
-<script> 
-    var form = document.querySelector('#textValueField-form');
-    var el_down = document.getElementById("GFG_DOWN"); 
-    var inputF = document.getElementById("id1");
-
-    function gfg_Run() { 
-        inputF.value = "textValue"; 
-        el_down.innerHTML =  
-               "Value = " + "'" + inputF.value + "'";
-        form.submit()
-    } 
-</script> 
-
-
-
-<input id="remove-subscription-button-id" type="submit" name="remove-subscription-button-name" onclick="removeSubscription();" value="enter"/>
-
-<script>
-
-function removeSubscription(){
-    alert("remove button was pressed")
-    document.querySelector("#remove-subscription-field-id").value = 'yes'
-    document.querySelector("#remove-subscription-field-name").value = 'yes'
-    console.log("document.querySelector('#remove-subscription-field-id').value: " + document.querySelector('#remove-subscription-field-id'))
-    console.log("document.querySelector('#remove-subscription-field-name').value: " + document.querySelector('#remove-subscription-field-name'))
-    $.ajax({
-        type: 'POST',
-        data: {'removeSubscription': 'yes'}
-      })
-  };
-</script>
-
 <hr/>
 braintree_payment_method_token: {{ braintree_payment_method_token }}
+
 <hr/>
 gordon: {{ gordon }}
 <hr/>
@@ -157,6 +50,8 @@ billing_profile_street: {{ billing_profile_street }}
 billing_profile_postal_code: {{ billing_profile_postal_code }}
 <hr/>
 braintree_customer_id: {{ braintree_customer_id }}
+<hr/>
+collection: {{ collection }}
 <hr/>
 braintree_customer_first_name: {{ braintree_customer_first_name }}
 <hr/>
@@ -197,7 +92,6 @@ client token: {{ client_token }}
   <!-- <div id="checkoutMethods"> -->
     <div style="margin: 10px;">
       <div id="dropin-container"></div>
-      <input type="hidden" id="remove-subscription-field-id" name="remove-subscription-field-name" />
       <input type="hidden" id="nonce" name="nonce" />
       <input type="hidden" id="testvariable" name="testvariable" />
       <input type="hidden" id="gordon" name="gordon" />
@@ -206,10 +100,6 @@ client token: {{ client_token }}
   <button id="submit-button">Save</button>
 </form>
 <script>
-
-
-
-
   var button = document.querySelector('#submit-button');
   var form = document.querySelector('#payment-form');
   var testvariable = 'emptytestvariable';
@@ -285,18 +175,61 @@ client token: {{ client_token }}
           payload_nonce = gordon
           console.log('payload_nonce A: ' + payload_nonce)
           document.querySelector('#testvariable').value = payload_nonce
-
-          console.log("document.querySelector('#remove-subscription-field-id').value: " + document.querySelector('#remove-subscription-field-id'))
-          console.log("document.querySelector('#remove-subscription-field-name').value: " + document.querySelector('#remove-subscription-field-name'))
           form.submit()
         })
-
       })
     })
   })
 </script>
 
 
+<!-- 
+<div id="dropin-wrapper">
+  <div id="checkout-message"></div>
+  <div id="dropin-container"></div>
+  <button id="submit-button">Submit payment</button>
+</div>
+<script>
+  var button = document.querySelector('#submit-button');
+
+  braintree.dropin.create({
+    // Insert your tokenization key here
+    authorization: '{{ client_token }}',
+    container: '#dropin-container'
+  }, function (createErr, instance) {
+    button.addEventListener('click', function () {
+      instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+        // When the user clicks on the 'Submit payment' button this code will send the
+        // encrypted payment information in a variable called a payment method nonce
+        console.log('HELLO')
+        $.ajax({
+          type: 'POST',
+          url: '/cart/checkout/success/',
+          data: {'paymentMethodNonce': payload.nonce}
+        }).done(function(result) {
+          // Tear down the Drop-in UI
+          instance.teardown(function (teardownErr) {
+            if (teardownErr) {
+              console.error('Could not tear down Drop-in UI!');
+            } else {
+              console.info('Drop-in UI has been torn down!');
+              // Remove the 'Submit payment' button
+              $('#submit-button').remove();
+            }
+          });
+
+          if (result.success) {
+            $('#checkout-message').html('<h1>Success</h1><p>Your Drop-in UI is working! Check your <a href="https://sandbox.braintreegateway.com/login">sandbox Control Panel</a> for your test transactions.</p><p>Refresh to try another transaction.</p>');
+          } else {
+            console.log(result);
+            $('#checkout-message').html('<h1>Error</h1><p>Check your console.</p>');
+          }
+        });
+        
+      });
+    });
+  });
+</script> -->
 {% endif %}
 
 {% endblock %}
