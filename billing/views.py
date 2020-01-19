@@ -264,32 +264,25 @@ if BRAINTREE_BILLING_SERVICE:
 
         # PROCESS AJAX STUFF
         if request.is_ajax():
-            eventlog('THE REQUEST IS AJAX')
-            dolce = request.POST.get('dolce')
-            eventlog('dolce: ' + str(dolce))
-            dolce = request.POST['the_post']
-            eventlog('dolce: ' + str(dolce))
-            # json_response = {'the_post': {'some_property': ' dolcemia love '}}
-            return JsonResponse({'the_post':'dolcemia love'})
-            # return HttpResponse(json.dumps(json_response),
-                # content_type='application/json')
+            eventlog('REQUEST IS AJAX')
+            eventlog('request.POST: ' + str(request.POST))
+            if 'dolce' in request.POST:
+                data = request.POST['dolce']
+                eventlog('dolce: ' + str(data))
+                return JsonResponse({'dolce':'dolcemia love'})
+
+
+            if 'removeSubscription' in request.POST:
+                data = request.POST['removeSubscription']
+                eventlog('RemoveSubscription: ' + str(data))
+                result = gateway.subscription.cancel(str(data))
+                return JsonResponse({'data': 'The server has removed subscription: ' + str(data)})
 
 
         # PROCESS THE BRAINTREE DROPIN
         if request.method == 'POST' and request.is_ajax() == False:
-            dolce = request.POST.get('dolce', None)
-            eventlog('dolce: ' + str(dolce))
-
-            inputFValue = request.POST.get('inputFValue', None)
-            eventlog('inputFValue: ' + str(inputFValue))
-
-            inputF = request.POST.get('inputF', None)
-            eventlog('inputF: ' + str(inputF))
-
-            dante = request.POST.get('dante', None)
-            eventlog('dante: ' + str(dante))
-
-            eventlog('request.method: ' + str(request.method))
+            eventlog('REQUEST IS POST AND NOT AJAX')
+            eventlog('request.POST: ' + str(request.POST))
 
             # === we take the data from the fields and update our billing profile
             eventlog('paymentform.first_name: ' + str(request.POST.get('first_name', None)))
@@ -308,27 +301,6 @@ if BRAINTREE_BILLING_SERVICE:
                     "postal_code",
                     ])
             
-            # result = gateway.payment_method_nonce.create("A_PAYMENT_METHOD_TOKEN")
-            # nonce = result.payment_method_nonce.nonce
-            
-            # result = gateway.customer.update(braintree_customer_id, {
-            #     "payment_method_nonce": payment_method_nonce,
-            #     "email": request.user.email,
-            #     # fake credit card 4012000077777777
-            #     # another fake 4111111111111111
-            #     "credit_card": {
-            #         "options": {
-            #             "update_existing_token": client_token,
-            #         },
-            #         "billing_address": {
-            #             "street_address": billing_profile.street,
-            #             "postal_code": billing_profile.postal_code,
-            #             "options": {
-            #                 "update_existing": True
-            #             }
-            #         }
-            #     }
-            # })
             nonce = str(request.POST.get('nonce'))
             eventlog('nonce: ' + str(nonce))
 
@@ -410,10 +382,6 @@ if BRAINTREE_BILLING_SERVICE:
                     "plan_id": "data-mining"
                 })
 
-            remove_subscription = request.POST.get('remove-subscription-field-id', 'not set by javascript')
-            eventlog('remove_subscription: ' + str(remove_subscription))
-            if remove_subscription == 'yes':
-                eventlog('REMOVING SUBSCRIPTION!')
 
         context = {
             'gordon': gordon,

@@ -2,228 +2,7 @@
 
 
 {% block content %}
-<!-- 
-<button>Click Here to Toggle</button>
 
-<div class="textLine" style="background-color:yellow;">
- This is a yellow line.....
-</div> -->
-
-
-{% if payment_company == 'stripe' %}
-<!-- _Stripe_ Form START -->
-<div class='col-10 col-md-6 mx-auto'>
-    <h1>Add Payment Method</h1>
-    <div class='stripe-payment-form' data-token='{{ publish_key }}' data-next-url='{% if next_url %}{{ next_url }}{% endif %}' data-btn-title='Add New Card'></div>
-</div>
-
-
-<!-- _Stripe_ Form END -->
-{% endif %}
-
-======= DEBUG ==========
-
-
-<script
-  src="https://code.jquery.com/jquery-3.4.1.slim.js"
-  integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
-  crossorigin="anonymous"></script>
-
-<hr/>
-ACTIIVE SUBSCRIPTIONS:
-<hr/>
-{% for subscription in customer_active_subscriptions %}
-Active subscription: {{ subscription.id }}
-<hr/>
-{% endfor %}
-
-
-<a onclick="AjaxFormSubmit()" href="#">AJAX SUBMIT</a>
-<input type="hidden" id="dolce" name="dolce" value='tinie tiniest' />
-<hr/>
-
-<script>
-function AjaxFormSubmit() {
-  console.log('AJAX SUBMIT')
-  console.log('document.getElementById("dolce").value : ' + document.getElementById("dolce").value )
-    $.ajax({
-        url : '.',
-        type : "POST",
-        // data : { the_post : $('#id-of-your-field').val() }
-        data : { the_post : $('#dolce').val() }
-    }).done(function(returned_data){
-      console.log('document.getElementById("dolce").value : ' + document.getElementById("dolce").value )
-      console.log('returned_data: ' + returned_data)
-      console.log('returned_data: ' + JSON.stringify(returned_data))
-        // This is the ajax.done() method, where you can fire events after the ajax method is complete 
-
-        // For instance, you could hide/display your add/remove button here
-
-    });
-}
-
-</script>
-
-
-
-<form method="POST" id="textValueField-form-ajax" name="textValueField-form-ajax">
-  {% csrf_token %}
-  <input type="hidden" id="dante" name="dante" />
-  <input type="hidden" id="inputFValue" name="inputFValue" />
-  <input type='text' id='inputF' name='inputF'/>
-  <button id="submit">test-ajax</button>
-</form>
-
-<script type="text/javascript">
-var dante = 'buddy'
-var inputF = document.getElementById("inputF");
-var inputFValue = 'Hello from javascript';
-var form = document.querySelector('#textValueField-form-ajax');
-
-$(document).ready(function() {
-    $('#textValueField-form-ajax').submit(function() { // catch the form's submit even
-        $.ajax({ // create an AJAX call...
-            data: $(this).serialize(), // get the form data
-            type: $(this).attr('method'), // GET or POST
-            url: $(this).attr('action'), // the file to call
-            success: function(response) { // on success..
-              console.log('SUCCESS !!')
-              console.log('inputF: 0: ' +  inputF)
-              console.log('inputFValue: 0: ' +  inputFValue)
-              document.getElementById("inputF").value = 'success!'
-              inputFValue = document.getElementById("inputF").value
-              console.log('inputFValue: 1: ' +  inputFValue)
-              document.querySelector('#inputFValue').value = 'hello'
-              document.querySelector('#dante').value = dante
-              console.log('dante: ' + dante)
-              console.log("document.querySelector('#dante').value: " + document.querySelector('#dante').value)
-              console.log("document.querySelector('#inputFValue').value: " +  document.querySelector('#inputFValue').value )
-              
-              // update the DIV
-              //$('#success_div).html(response); 
-              // form.submit()
-            },
-            error: function(e, x, r) { // on error..
-              console.log('ERROR !!')
-              // update the DIV
-              //$('#error_div).html(e)'); 
-            }
-
-        });
-        return false;
-    });
-});
-</script>
-
-
-
-
-
-
-
-
-
-
-<!-- <form method="POST" action='.' id="textValueField-form-ajax" name="textValueField-form-ajax">
-  {% csrf_token %}
-  <input type="hidden" id="dante" name="dante" />
-  <input type="hidden" id="inputFValue" name="inputFValue" />
-  <input type='text' id='inputF' name='inputF'/>
-  <button id="submit">test-ajax</button>
-</form>
-
-<script type="text/javascript">
-var dante = 'buddy'
-var inputF = document.getElementById("inputF");
-var inputFValue = 'Hello from javascript';
-var form = document.querySelector('#textValueField-form-ajax');
-
-$(document).ready(function() {
-    $('#textValueField-form-ajax').submit(function() { // catch the form's submit even
-        $.ajax({ // create an AJAX call...
-            data: $(this).serialize(), // get the form data
-            type: $(this).attr('method'), // GET or POST
-            url: $(this).attr('action'), // the file to call
-            success: function(response) { // on success..
-              console.log('SUCCESS !!')
-              console.log('inputF: 0: ' +  inputF)
-              console.log('inputFValue: 0: ' +  inputFValue)
-              document.getElementById("inputF").value = 'success!'
-              inputFValue = document.getElementById("inputF").value
-              console.log('inputFValue: 1: ' +  inputFValue)
-              document.querySelector('#inputFValue').value = 'hello'
-              document.querySelector('#dante').value = dante
-              console.log('dante: ' + dante)
-              console.log("document.querySelector('#dante').value: " + document.querySelector('#dante').value)
-              console.log("document.querySelector('#inputFValue').value: " +  document.querySelector('#inputFValue').value )
-              
-              // update the DIV
-              //$('#success_div).html(response); 
-              // form.submit()
-            },
-            error: function(e, x, r) { // on error..
-              console.log('ERROR !!')
-              // update the DIV
-              //$('#error_div).html(e)'); 
-            }
-
-        });
-        return false;
-    });
-});
-</script> -->
-
-<hr/>
-braintree_payment_method_token: {{ braintree_payment_method_token }}
-<hr/>
-gordon: {{ gordon }}
-<hr/>
-testvariable: {{ testvariable }}
-<hr/>
-nonce: {{ nonce }}
-<hr/>
-user_first_name: {{ user_first_name }}
-<hr/>
-user_last_name: {{ user_last_name }}
-<hr/>
-user_email: {{ user_email }}
-<hr/>
-billing_profile: {{ billing_profile }}
-<hr/>
-billing_profile_created: {{ billing_profile_created }}
-<hr/>
-billing_profile_first_name: {{ billing_profile_first_name }}
-<hr/>
-billing_profile_last_name: {{ billing_profile_last_name }}
-<hr/>
-billing_profile_street: {{ billing_profile_street }}
-<hr/>
-billing_profile_postal_code: {{ billing_profile_postal_code }}
-<hr/>
-braintree_customer_id: {{ braintree_customer_id }}
-<hr/>
-braintree_customer_first_name: {{ braintree_customer_first_name }}
-<hr/>
-braintree_customer_last_name: {{ braintree_customer_last_name }}
-<hr/>
-braintree_customer_email: {{ braintree_customer_email }}
-<hr/>
-cart: {{ cart }}
-<hr/>
-cart_created: {{ cart_created }}
-<hr/>
-order_profile: {{ order_profile }}
-<hr/>
-order_profile_created: {{ order_profile_created }}
-<hr/>
-order_billing_address: {{ order_billing_address }}
-<hr/>
-client token: {{ client_token }}
-<hr/>
-======= DEBUG ==========
-<hr/>
-
-{% if payment_company != 'stripe' %}
 
 <meta charset="utf-8">
 
@@ -231,28 +10,39 @@ client token: {{ client_token }}
 <script src="https://js.braintreegateway.com/web/dropin/1.21.0/js/dropin.min.js"></script>
 
 <!-- includes jQuery -->
-<script src="http://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+<!-- <script src="http://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script> -->
+<script
+src="https://code.jquery.com/jquery-3.4.1.slim.js"
+integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
+crossorigin="anonymous"></script>
 
+
+  <!-- Load the required client component. -->
+  <script src="https://js.braintreegateway.com/web/3.57.0/js/client.min.js"></script>
+
+  <!-- Load Hosted Fields component. -->
+  <script src="https://js.braintreegateway.com/web/3.57.0/js/hosted-fields.min.js"></script>
+
+
+<div class="card bg-light my-3"">
 <form action="." method="POST" id="payment-form" name="payment-form">
   {% csrf_token %}
-
-  {{ paymentform.as_p }}
-
-  <!-- <div id="checkoutMethods"> -->
-    <div style="margin: 10px;">
+    <div style="margin: 40px;">
       <div id="dropin-container"></div>
       <input type="hidden" id="remove-subscription-field-id" name="remove-subscription-field-name" />
       <input type="hidden" id="nonce" name="nonce" />
       <input type="hidden" id="testvariable" name="testvariable" />
       <input type="hidden" id="gordon" name="gordon" />
     </div>
-  <!-- </div> -->
-  <button id="submit-button">Save</button>
-</form>
+</div>  
+  <div class="card bg-dark my-3"">
+    <button type='button' id="submit-button" class='btn btn-info btn-lg btn-block'>Save</button>
+  </div>
+</form> 
+
+
+<!-- BRAINTREE DROPIN -->
 <script>
-
-
-
 
   var button = document.querySelector('#submit-button');
   var form = document.querySelector('#payment-form');
@@ -262,9 +52,29 @@ client token: {{ client_token }}
   var payload_nonce;
 
   braintree.dropin.create({
+
     authorization: '{{ client_token }}',
-    container: '#dropin-container'
-  }, function (createErr, instance) {
+    container: '#dropin-container',
+    card: {
+    cardholderName: { required: true },
+    overrides: {
+      styles: {
+
+        input: {
+          color: 'blue',
+          'font-size': '18px'
+        },
+        '.number': {
+          'font-family': 'monospace'
+          // Custom web fonts are not supported. Only use system installed fonts.
+        },
+        '.invalid': {
+          color: 'red'
+        }
+      }
+    }
+  }
+}, function (createErr, instance) {
     button.addEventListener('click', function () {
       document.querySelector('#testvariable').value = 'hello from javascript'
       console.log("document.querySelector('#testvariable').value: " + document.querySelector('#testvariable').value)
@@ -341,6 +151,112 @@ client token: {{ client_token }}
 </script>
 
 
-{% endif %}
+<hr/>
+
+<!-- Active Subscriptions -->
+<!-- <div class="card bg-dark text-white my-6 text-center">
+  <div class="card-body">
+    <h4 class="card-title">ACTIIVE SUBSCRIPTIONS</h4>
+</div>
+</div> -->
+
+{% for subscription in customer_active_subscriptions %}
+<hr/>
+<div class="card bg-secondary text-white mx-2 my-2">
+  
+  <div class="card bg-dark text-white text-center mx-2 my-2" >
+    <div class="card bg-dark text-white text-center mx-2 my-2" >
+    Subscription: {{ subscription.plan_id }} 
+    </div>
+    <div class="card bg-dark text-white text-center mx-2 my-2" >
+    Status: {{ subscription.status }} 
+    </div>
+    <div class="card bg-dark text-white text-center mx-2 my-2" >
+    Billing Date: {{ subscription.next_billing_date }} 
+    </div>
+    <div class="card bg-dark text-white text-center mx-2 my-2" >
+    Billing Amount: {{ subscription.next_bill_amount }} 
+    </div>
+    <div class="card bg-dark text-white text-center mx-2 my-2" >
+    <a class='btn btn-link mx-2 btn-sm' onclick="RemoveSubscription('{{ subscription.id }}')" href="#"> cancel </a>
+    </div>
+  </div>
+  <input type="hidden" id="{{ subscription.id }}" name="{{ subscription.id }}" value='{{ subscription.id }}' />
+</div>
+<hr/>
+{% endfor %}
+
+<script>
+  function RemoveSubscription(subscription) {
+    console.log('RemoveSubscription')
+      $.ajax({
+          url : '.',
+          type : "POST",
+          data : { removeSubscription : subscription }
+      }).done(function(returned_data){
+        console.log('returned_data: ' + JSON.stringify(returned_data))
+          // This is the ajax.done() method, where you can fire events after the ajax method is complete 
+  
+          // For instance, you could hide/display your add/remove button here
+  
+      });
+  }
+</script>
+
+
 
 {% endblock %}
+
+
+
+
+======= DEBUG ==========
+<hr/>
+braintree_payment_method_token: {{ braintree_payment_method_token }}
+<hr/>
+gordon: {{ gordon }}
+<hr/>
+testvariable: {{ testvariable }}
+<hr/>
+nonce: {{ nonce }}
+<hr/>
+user_first_name: {{ user_first_name }}
+<hr/>
+user_last_name: {{ user_last_name }}
+<hr/>
+user_email: {{ user_email }}
+<hr/>
+billing_profile: {{ billing_profile }}
+<hr/>
+billing_profile_created: {{ billing_profile_created }}
+<hr/>
+billing_profile_first_name: {{ billing_profile_first_name }}
+<hr/>
+billing_profile_last_name: {{ billing_profile_last_name }}
+<hr/>
+billing_profile_street: {{ billing_profile_street }}
+<hr/>
+billing_profile_postal_code: {{ billing_profile_postal_code }}
+<hr/>
+braintree_customer_id: {{ braintree_customer_id }}
+<hr/>
+braintree_customer_first_name: {{ braintree_customer_first_name }}
+<hr/>
+braintree_customer_last_name: {{ braintree_customer_last_name }}
+<hr/>
+braintree_customer_email: {{ braintree_customer_email }}
+<hr/>
+cart: {{ cart }}
+<hr/>
+cart_created: {{ cart_created }}
+<hr/>
+order_profile: {{ order_profile }}
+<hr/>
+order_profile_created: {{ order_profile_created }}
+<hr/>
+order_billing_address: {{ order_billing_address }}
+<hr/>
+client token: {{ client_token }}
+<hr/>
+======= DEBUG ==========
+<hr/>
