@@ -260,10 +260,34 @@ if BRAINTREE_BILLING_SERVICE:
         testvariable = 'nonce before post'
         nonce = 'nonce before post'
         gordon = 'gordon before post'
-        if request.method == 'POST':
-            inputFValue = request.POST.get('inputFValue', None)
 
+
+        # PROCESS AJAX STUFF
+        if request.is_ajax():
+            eventlog('THE REQUEST IS AJAX')
+            dolce = request.POST.get('dolce')
+            eventlog('dolce: ' + str(dolce))
+            dolce = request.POST['the_post']
+            eventlog('dolce: ' + str(dolce))
+            # json_response = {'the_post': {'some_property': ' dolcemia love '}}
+            return JsonResponse({'the_post':'dolcemia love'})
+            # return HttpResponse(json.dumps(json_response),
+                # content_type='application/json')
+
+
+        # PROCESS THE BRAINTREE DROPIN
+        if request.method == 'POST' and request.is_ajax() == False:
+            dolce = request.POST.get('dolce', None)
+            eventlog('dolce: ' + str(dolce))
+
+            inputFValue = request.POST.get('inputFValue', None)
             eventlog('inputFValue: ' + str(inputFValue))
+
+            inputF = request.POST.get('inputF', None)
+            eventlog('inputF: ' + str(inputF))
+
+            dante = request.POST.get('dante', None)
+            eventlog('dante: ' + str(dante))
 
             eventlog('request.method: ' + str(request.method))
 

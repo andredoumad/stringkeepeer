@@ -36,15 +36,46 @@ ACTIIVE SUBSCRIPTIONS:
 Active subscription: {{ subscription.id }}
 <hr/>
 {% endfor %}
-<form method="POST" action='.' id="textValueField-form-ajax" name="textValueField-form-ajax">
-  {% csrf_token %}
 
+
+<a onclick="AjaxFormSubmit()" href="#">AJAX SUBMIT</a>
+<input type="hidden" id="dolce" name="dolce" value='tinie tiniest' />
+<hr/>
+
+<script>
+function AjaxFormSubmit() {
+  console.log('AJAX SUBMIT')
+  console.log('document.getElementById("dolce").value : ' + document.getElementById("dolce").value )
+    $.ajax({
+        url : '.',
+        type : "POST",
+        // data : { the_post : $('#id-of-your-field').val() }
+        data : { the_post : $('#dolce').val() }
+    }).done(function(returned_data){
+      console.log('document.getElementById("dolce").value : ' + document.getElementById("dolce").value )
+      console.log('returned_data: ' + returned_data)
+      console.log('returned_data: ' + JSON.stringify(returned_data))
+        // This is the ajax.done() method, where you can fire events after the ajax method is complete 
+
+        // For instance, you could hide/display your add/remove button here
+
+    });
+}
+
+</script>
+
+
+
+<form method="POST" id="textValueField-form-ajax" name="textValueField-form-ajax">
+  {% csrf_token %}
+  <input type="hidden" id="dante" name="dante" />
   <input type="hidden" id="inputFValue" name="inputFValue" />
   <input type='text' id='inputF' name='inputF'/>
   <button id="submit">test-ajax</button>
 </form>
 
 <script type="text/javascript">
+var dante = 'buddy'
 var inputF = document.getElementById("inputF");
 var inputFValue = 'Hello from javascript';
 var form = document.querySelector('#textValueField-form-ajax');
@@ -63,10 +94,14 @@ $(document).ready(function() {
               inputFValue = document.getElementById("inputF").value
               console.log('inputFValue: 1: ' +  inputFValue)
               document.querySelector('#inputFValue').value = 'hello'
+              document.querySelector('#dante').value = dante
+              console.log('dante: ' + dante)
+              console.log("document.querySelector('#dante').value: " + document.querySelector('#dante').value)
               console.log("document.querySelector('#inputFValue').value: " +  document.querySelector('#inputFValue').value )
               
               // update the DIV
               //$('#success_div).html(response); 
+              // form.submit()
             },
             error: function(e, x, r) { // on error..
               console.log('ERROR !!')
@@ -83,51 +118,60 @@ $(document).ready(function() {
 
 
 
-<form method="POST" id="textValueField-form" name="textValueField-form">
-<input type='text' id='id1' name='textValueField'/> 
 
+
+
+
+
+
+<!-- <form method="POST" action='.' id="textValueField-form-ajax" name="textValueField-form-ajax">
+  {% csrf_token %}
+  <input type="hidden" id="dante" name="dante" />
+  <input type="hidden" id="inputFValue" name="inputFValue" />
+  <input type='text' id='inputF' name='inputF'/>
+  <button id="submit">test-ajax</button>
 </form>
 
-<br> 
-<br> 
-<button onclick="gfg_Run()"> 
-    click to set 
-</button> 
-<p id="GFG_DOWN" style="color:green;  
-                        font-size: 20px; 
-                        font-weight: bold;"> 
-</p> 
-<script> 
-    var form = document.querySelector('#textValueField-form');
-    var el_down = document.getElementById("GFG_DOWN"); 
-    var inputF = document.getElementById("id1");
+<script type="text/javascript">
+var dante = 'buddy'
+var inputF = document.getElementById("inputF");
+var inputFValue = 'Hello from javascript';
+var form = document.querySelector('#textValueField-form-ajax');
 
-    function gfg_Run() { 
-        inputF.value = "textValue"; 
-        el_down.innerHTML =  
-               "Value = " + "'" + inputF.value + "'";
-        form.submit()
-    } 
-</script> 
+$(document).ready(function() {
+    $('#textValueField-form-ajax').submit(function() { // catch the form's submit even
+        $.ajax({ // create an AJAX call...
+            data: $(this).serialize(), // get the form data
+            type: $(this).attr('method'), // GET or POST
+            url: $(this).attr('action'), // the file to call
+            success: function(response) { // on success..
+              console.log('SUCCESS !!')
+              console.log('inputF: 0: ' +  inputF)
+              console.log('inputFValue: 0: ' +  inputFValue)
+              document.getElementById("inputF").value = 'success!'
+              inputFValue = document.getElementById("inputF").value
+              console.log('inputFValue: 1: ' +  inputFValue)
+              document.querySelector('#inputFValue').value = 'hello'
+              document.querySelector('#dante').value = dante
+              console.log('dante: ' + dante)
+              console.log("document.querySelector('#dante').value: " + document.querySelector('#dante').value)
+              console.log("document.querySelector('#inputFValue').value: " +  document.querySelector('#inputFValue').value )
+              
+              // update the DIV
+              //$('#success_div).html(response); 
+              // form.submit()
+            },
+            error: function(e, x, r) { // on error..
+              console.log('ERROR !!')
+              // update the DIV
+              //$('#error_div).html(e)'); 
+            }
 
-
-
-<input id="remove-subscription-button-id" type="submit" name="remove-subscription-button-name" onclick="removeSubscription();" value="enter"/>
-
-<script>
-
-function removeSubscription(){
-    alert("remove button was pressed")
-    document.querySelector("#remove-subscription-field-id").value = 'yes'
-    document.querySelector("#remove-subscription-field-name").value = 'yes'
-    console.log("document.querySelector('#remove-subscription-field-id').value: " + document.querySelector('#remove-subscription-field-id'))
-    console.log("document.querySelector('#remove-subscription-field-name').value: " + document.querySelector('#remove-subscription-field-name'))
-    $.ajax({
-        type: 'POST',
-        data: {'removeSubscription': 'yes'}
-      })
-  };
-</script>
+        });
+        return false;
+    });
+});
+</script> -->
 
 <hr/>
 braintree_payment_method_token: {{ braintree_payment_method_token }}
