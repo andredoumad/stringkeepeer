@@ -167,8 +167,14 @@ class Order(models.Model):
         else:
             shipping_done = True
         billing_profile = self.billing_profile
-        billing_address = self.billing_address
+        # billing_address = self.billing_address
+        billing_address = True
         total   = self.total
+        eventlog('billing_profile: ' + str(billing_profile))
+        eventlog('shipping_done: ' + str(shipping_done))
+        eventlog('billing_address: ' + str(billing_address))
+        eventlog('total: ' + str(total))
+        
         if billing_profile and shipping_done and billing_address and total > 0:
             return True
         return False

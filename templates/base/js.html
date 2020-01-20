@@ -2,44 +2,40 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script
+			  src="https://code.jquery.com/jquery-3.4.1.js"
+			  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+			  crossorigin="anonymous"></script>
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.js" integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI=" crossorigin="anonymous"></script> -->
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/1fa1fc778c.js" crossorigin="anonymous"></script>
-
-<!-- _braintree_ js -->
-<!-- <script src="https://js.braintreegateway.com/web/dropin/1.21.0/js/dropin.min.js"></script> -->
-<!-- <script src='{% static "js/stringkeeper-braintree-billing.js" %}'></script> -->
-
-<!-- test -->
-<!-- <script src='{% static "js/test.js" %}'></script> -->
-
-
-
-<!-- _stripe_ js-->
-<script src="https://js.stripe.com/v3/"></script>
-<script src='{% static "js/stringkeeper-stripe-billing.js" %}'></script>
-
 
 <!-- jquery confirm -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
 <!-- js Render https://cdnjs.com/libraries/jsrender -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.5/jsrender.min.js"></script>
-{% include 'base/js_templates.html' %}
 
 <!-- chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
-<!-- stringkeeper sales chart -->
-<script src='{% static "js/stringkeeper.sales.js" %}'></script>
+<!-- Load the required client component. -->
+<script src="https://js.braintreegateway.com/web/3.57.0/js/client.min.js"></script>
 
+<!-- Load Hosted Fields component. -->
+<script src="https://js.braintreegateway.com/web/3.57.0/js/hosted-fields.min.js"></script>
 
-
+<!-- includes the Braintree JS client SDK -->
+<script src="https://js.braintreegateway.com/web/dropin/1.21.0/js/dropin.min.js"></script>
 
 <!-- Django Secure AJAX JS -->
 <script src='{% static "js/csrf.ajax.js" %}'></script>
+
+<!-- stringkeeper sales chart -->
+<script src='{% static "js/stringkeeper.sales.js" %}'></script>
 
 <!-- stringkeeper custom JS -->
 <script src='{% static "js/stringkeeper.js" %}'></script>

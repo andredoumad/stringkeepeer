@@ -82,8 +82,9 @@ BRAINTREE_PRIVATE_KEY = getattr(settings, 'BRAINTREE_PRIVATE_KEY', '888ebe7f9170
 BRAINTREE_BILLING_SERVICE = getattr(settings, 'BRAINTREE_BILLING_SERVICE', False)
 
 if BRAINTREE_BILLING_SERVICE:
-    eventlog('BRAINTREE BILLING SERVICE IS ACTIVE')
-    def payment_method_view(request):
+
+
+    def get_braintree_customer(request):
         eventlog('BRAINTREE - payment_method_view')
 
         # === we prime our braintree server gateway here
@@ -96,60 +97,40 @@ if BRAINTREE_BILLING_SERVICE:
             )
         )
 
-        # == We grab the data about the user profile from stringkeeper server
-        user_first_name = str(request.user.first_name)
-        user_last_name = str(request.user.last_name)
-        user_email = str(request.user.email)
-        eventlog('user first name: ' + user_first_name)
-        eventlog('user last name: ' + user_last_name)
-        eventlog('user email: ' + user_email)
+        eventlog('user first name: ' + request.user.first_name)
+        eventlog('user last name: ' + request.user.last_name)
+        eventlog('user email: ' + request.user.email)
 
         # == We grab the data about the billing profile from stringkeeper server
         billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
-        eventlog('billing_profile: ' + str(billing_profile))
-        eventlog('billing_profile_created: ' + str(billing_profile_created))
 
-        billing_profile_first_name = str(billing_profile.first_name)
-        eventlog('billing_profile_first_name: ' + billing_profile_first_name)
-        billing_profile_last_name = str(billing_profile.last_name)
-        eventlog('billing_profile_last_name: ' + billing_profile_last_name)
-        billing_profile_street = str(billing_profile.street)
-        eventlog('billing_profile_street: ' + billing_profile_street)
-        billing_profile_postal_code = str(billing_profile.postal_code)
-        eventlog('billing_profile_postal_code: ' + billing_profile_postal_code)
-
-        braintree_customer_id = billing_profile.braintree_customer_id
-        eventlog('braintree_customer_id: ' + str(braintree_customer_id))
-
-        braintree_payment_method_token = billing_profile.braintree_payment_method_token
-        eventlog('braintree_payment_method_token: ' + str(braintree_payment_method_token))
 
         # === Here we make sure that the customer ID matches braintree records
         # === if it does not, we attempt to locate the user and update our records or create a new customer
         customer = None
-        if braintree_customer_id == None:
+        if billing_profile.braintree_customer_id == None:
             eventlog("customer email was NOT found on braintree server!")
             eventlog("Creating customer: ")
             
             result = gateway.customer.create({
-                "first_name": user_first_name,
-                "last_name": user_last_name,
-                "email": user_email
+                "first_name": request.user.first_name,
+                "last_name": request.user.last_name,
+                "email": request.user.email
             })
 
             if result.is_success:
-                eventlog('braintree_customer_id created.')
+                eventlog('billing_profile.braintree_customer_id created.')
                 customer_id = result.customer.id
-                eventlog('braintree_customer_id changed from: ' + str(billing_profile.braintree_customer_id))
-                billing_profile.braintree_customer_id = customer_id
+                eventlog('billing_profile.braintree_customer_id changed from: ' + str(billing_profile.braintree_customer_id))
+                billing_profile.billing_profile.braintree_customer_id = customer_id
                 eventlog('to: ' + str(billing_profile.braintree_customer_id))
-                braintree_customer_id = customer_id
+                billing_profile.braintree_customer_id = customer_id
                 billing_profile.save(update_fields=["braintree_customer_id"])
-                customer = gateway.customer.find(braintree_customer_id)
+                customer = gateway.customer.find(billing_profile.braintree_customer_id)
         
-        if braintree_customer_id != None:
-            eventlog("stringkeeper braintree_customer_id exists: " + str(braintree_customer_id))
-            customer = gateway.customer.find(braintree_customer_id)
+        if billing_profile.braintree_customer_id != None:
+            eventlog("stringkeeper billing_profile.braintree_customer_id exists: " + str(billing_profile.braintree_customer_id))
+            customer = gateway.customer.find(billing_profile.braintree_customer_id)
 
             found_customer_id = None 
             found_customer_id = customer.id
@@ -159,11 +140,11 @@ if BRAINTREE_BILLING_SERVICE:
                 eventlog("customer id was found on braintree server.")
             else:
                 eventlog("customer id was not found on braintree server - setting it to None: ")
-                braintree_customer_id = None      
+                billing_profile.braintree_customer_id = None      
 
-                eventlog('braintree_customer_id is None, searching by email')
+                eventlog('billing_profile.braintree_customer_id is None, searching by email')
 
-                customer = gateway.customer.find(user_email)
+                customer = gateway.customer.find(request.user.email)
 
                 customer_email = None 
                 customer_email = customer.email
@@ -172,31 +153,49 @@ if BRAINTREE_BILLING_SERVICE:
                     eventlog(str(customer.email))
                     eventlog("customer email was found on braintree server.")
                     eventlog("Found customer by email -- updating customer ID to match braintree records: ")
-                    braintree_customer_id = customer.id
-                    eventlog("customer ID: " + str(braintree_customer_id))
-                    billing_profile.braintree_customer_id = customer_id
+                    billing_profile.braintree_customer_id = customer.id
+                    eventlog("customer ID: " + str(billing_profile.braintree_customer_id))
+                    billing_profile.billing_profile.braintree_customer_id = customer_id
                     billing_profile.save(update_fields=["braintree_customer_id"])
                 else:
                     eventlog("customer email was NOT found on braintree server!")
                     eventlog("Creating customer: ")
                     
                     result = gateway.customer.create({
-                        "first_name": user_first_name,
-                        "last_name": user_last_name,
-                        "email": user_email
+                        "first_name": request.user.first_name,
+                        "last_name": request.user.last_name,
+                        "email": request.user.email
                     })
 
                     if result.is_success:
-                        eventlog('braintree_customer_id created.')
+                        eventlog('billing_profile.braintree_customer_id created.')
                         customer_id = result.customer.id
-                        eventlog('braintree_customer_id changed from: ' + str(billing_profile.braintree_customer_id))
-                        billing_profile.braintree_customer_id = customer_id
+                        eventlog('billing_profile.braintree_customer_id changed from: ' + str(billing_profile.braintree_customer_id))
+                        billing_profile.billing_profile.braintree_customer_id = customer_id
                         eventlog('to: ' + str(billing_profile.braintree_customer_id))
-                        braintree_customer_id = customer_id
+                        billing_profile.braintree_customer_id = customer_id
                         billing_profile.save(update_fields=["braintree_customer_id"]) 
-                        customer = gateway.customer.find(braintree_customer_id)
+                        customer = gateway.customer.find(billing_profile.braintree_customer_id)
+        
+        return customer
 
 
+
+    eventlog('BRAINTREE BILLING SERVICE IS ACTIVE')
+    def payment_method_view(request):
+
+        # === we prime our braintree server gateway here
+        gateway = braintree.BraintreeGateway(
+            braintree.Configuration(
+                environment=settings.BRAINTREE_ENVIRONMENT,
+                merchant_id=settings.BRAINTREE_MERCHANT_ID,
+                public_key=settings.BRAINTREE_PUBLIC_KEY,
+                private_key=settings.BRAINTREE_PRIVATE_KEY
+            )
+        )
+
+        customer = get_braintree_customer(request)
+        billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
         eventlog('braintree_customer first_name: ' + str(customer.first_name))
         braintree_customer_first_name = str(customer.first_name)
         eventlog('braintree_customer last_name: ' + str(customer.last_name))
@@ -208,17 +207,39 @@ if BRAINTREE_BILLING_SERVICE:
         eventlog('braintree_customer_last_name: ' + braintree_customer_last_name)
         eventlog('braintree_customer_email: ' + braintree_customer_email)
 
+        # customer_subscriptions = customer.credit_cards[0].subscriptions
+
+        eventlog('len(customer.credit_cards): ' + str(len(customer.credit_cards)))
+        if len(customer.credit_cards) > 0:
+            # we need to transfer subscriptions on credit card 1 to credit card 0
+            for i in range(0, len(customer.credit_cards)):
+                customer_subscriptions = customer.credit_cards[i].subscriptions
+                for subscription in customer_subscriptions:
+                    result = gateway.subscription.update(subscription.id, {
+                        # "id": "new_id",
+                        "payment_method_token": customer.credit_cards[0].token,
+                        # "price": "14.00",
+                        # "plan_id": "new_plan",
+                        # "merchant_account_id": "new_merchant_account"
+                    })
+
+            for i in range(1, len(customer.credit_cards)):
+                result = gateway.payment_method.delete(customer.credit_cards[i].token)
+
+
+        # customer_subscriptions = customer.subscriptions
         customer_subscriptions = customer.credit_cards[0].subscriptions
         customer_active_subscriptions = []
         active_subscription = False
         if len(customer_subscriptions) > 0:
-            
             for subscription in customer_subscriptions:
                 eventlog('subscription id for customer: ' + str(subscription.id))
                 if subscription.status == 'Active':
                     active_subscription = True
-                    customer_active_subscriptions.append(subscription)            
+                    customer_active_subscriptions.append(subscription)
+        
 
+        
         # == We grab the data about the cart from stringkeeper
         cart, cart_created = Cart.objects.new_or_get(request)
         eventlog('cart: ' + str(cart))
@@ -240,7 +261,7 @@ if BRAINTREE_BILLING_SERVICE:
             next_url = next_
 
         client_token = gateway.client_token.generate({
-            "customer_id": braintree_customer_id
+            "customer_id": billing_profile.braintree_customer_id
         })
         eventlog('client_token: ' + str(client_token))
         
@@ -249,13 +270,13 @@ if BRAINTREE_BILLING_SERVICE:
 
         # we setup the payment form with known data for customer to review
         paymentform = PaymentMethodForm( request.POST or None, initial={
-                'first_name': billing_profile_first_name,
-                'last_name': billing_profile_last_name,
-                'street': billing_profile_street,
-                'postal_code': billing_profile_postal_code
+                'first_name': billing_profile.first_name,
+                'last_name': billing_profile.last_name,
+                'street': billing_profile.street,
+                'postal_code': billing_profile.postal_code
                 
                 })
-        # form.fields["first_name"] = user_first_name 
+        # form.fields["first_name"] = request.user.first_name 
 
         testvariable = 'nonce before post'
         nonce = 'nonce before post'
@@ -284,34 +305,15 @@ if BRAINTREE_BILLING_SERVICE:
             eventlog('REQUEST IS POST AND NOT AJAX')
             eventlog('request.POST: ' + str(request.POST))
 
-            # === we take the data from the fields and update our billing profile
-            eventlog('paymentform.first_name: ' + str(request.POST.get('first_name', None)))
-            billing_profile.first_name = request.POST.get('first_name', None)
-            eventlog('paymentform.last_name: ' + str(request.POST.get('last_name', None)))
-            billing_profile.last_name = request.POST.get('last_name', None)
-            eventlog('paymentform.street: ' + str(request.POST.get('street', None)))
-            billing_profile.street = request.POST.get('street', None)
-            eventlog('paymentform.postal_code: ' + str(request.POST.get('postal_code', None)))
-            billing_profile.postal_code = request.POST.get('postal_code', None)
-            billing_profile.save(
-                update_fields=[
-                    "first_name",
-                    "last_name",
-                    "street",
-                    "postal_code",
-                    ])
-            
             nonce = str(request.POST.get('nonce'))
             eventlog('nonce: ' + str(nonce))
 
-            # eventlog('result: ' + str(result))
 
             testvariable = request.POST.get('testvariable')
             eventlog('testvariable: ' + str(testvariable))
 
             gordon = request.POST.get('gordon')
             eventlog('gordon: ' + str(gordon))
-
 
             def debug_result(result):
                 eventlog('result.is_success: ' + str(result.is_success))
@@ -349,38 +351,48 @@ if BRAINTREE_BILLING_SERVICE:
                 except:
                     pass
 
-
-            customer = gateway.customer.find(braintree_customer_id)
+            customer = gateway.customer.find(billing_profile.braintree_customer_id)
             eventlog("UPDATING CUSTOMER")
             eventlog("len(customer.credit_cards): " + str(len(customer.credit_cards)))
-            braintree_payment_method_token = customer.credit_cards[0].token
-            billing_profile.braintree_payment_method_token = braintree_payment_method_token
+            billing_profile.braintree_payment_method_token = customer.credit_cards[0].token
             billing_profile.save(update_fields=["braintree_payment_method_token"])
-            eventlog("PAYMENT METHOD TOKEN: " + braintree_payment_method_token)
-            result = gateway.customer.update(braintree_customer_id, {
+            result = gateway.customer.update(billing_profile.braintree_customer_id, {
                 "payment_method_nonce": nonce,
-                "email": user_email,
+                "email": request.user.email,
                 "credit_card": {
                     "options": {
-                        "update_existing_token": braintree_payment_method_token,
+                        "make_default": True,
+                        "update_existing_token": billing_profile.braintree_payment_method_token,
                     },
-                    "billing_address": {
-                        "street_address": billing_profile_street,
-                        "postal_code": billing_profile_postal_code,
-                        "options": {
-                            "update_existing": True
-                        }
-                    }
                 }
             })
             debug_result(result)
 
-            if active_subscription == False:
-                eventlog('CREATING SUBSCRIPTION! ')
-                result = gateway.subscription.create({
-                    "payment_method_token": braintree_payment_method_token,
-                    "plan_id": "data-mining"
-                })
+        new_billing_profile_subscriptions_array = []
+        for braintree_subscription in customer_active_subscriptions:
+            eventlog('CHECKING BILLING FOR ACTIVE SUBSCRIPTION: ' + str(braintree_subscription.id))
+            searching = True
+            found_match = False
+            while searching == True:
+                for billing_subscription in billing_profile.braintree_subscriptions:
+                    if str(billing_subscription) == str(braintree_subscription.id):
+                        eventlog('BILLING ACTIVE SUBSCRIPTION MATCH ' + str(billing_subscription))
+                        new_billing_profile_subscriptions_array.append(braintree_subscription.id)
+                        found_match = True
+                        searching = False
+                searching = False
+            eventlog('found match = ' + str(found_match))
+            if found_match == False:
+                eventlog('Adding ' + str(braintree_subscription.id) + ' to billing braintree_subscriptions.' )
+                new_billing_profile_subscriptions_array.append(braintree_subscription.id)
+        
+        for i in range(0, len(billing_profile.braintree_subscriptions)):
+            billing_profile.braintree_subscriptions[i] = None
+            billing_profile.save(update_fields=["braintree_subscriptions"])
+
+        for i in range(0, len(new_billing_profile_subscriptions_array)):
+            billing_profile.braintree_subscriptions[i] = new_billing_profile_subscriptions_array[i]
+            billing_profile.save(update_fields=["braintree_subscriptions"])
 
 
         context = {
@@ -388,20 +400,20 @@ if BRAINTREE_BILLING_SERVICE:
             'testvariable': testvariable,
             'nonce': nonce,
             'paymentform': paymentform,
-            'braintree_payment_method_token': braintree_payment_method_token,
+            'braintree_payment_method_token': billing_profile.braintree_payment_method_token,
             'customer_active_subscriptions': customer_active_subscriptions,
             
-            'user_first_name': user_first_name,
-            'user_last_name': user_last_name,
-            'user_email': user_email,
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+            'email': request.user.email,
 
             'billing_profile': str(billing_profile),
             'billing_profile_created': str(billing_profile_created),
-            'billing_profile_first_name': str(billing_profile_first_name),
-            'billing_profile_last_name': str(billing_profile_last_name),
-            'billing_profile_street': str(billing_profile_street),
-            'billing_profile_postal_code': str(billing_profile_postal_code),
-            'braintree_customer_id': str(braintree_customer_id),
+            'billing_profile.first_name': str(billing_profile.first_name),
+            'billing_profile.last_name': str(billing_profile.last_name),
+            'billing_profile.street': str(billing_profile.street),
+            'billing_profile.postal_code': str(billing_profile.postal_code),
+            'braintree_customer_id': str(billing_profile.braintree_customer_id),
 
 
             'braintree_customer_first_name': braintree_customer_first_name,

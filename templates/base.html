@@ -7,13 +7,13 @@
       <!-- Required meta tags -->
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      
+      {% include 'base/js.html' %}
       {% include 'base/css.html' %}
       <title>{% block title %} Hello {% endblock %}</title>
   </head>
-
   {% include 'base/navbar.html' %}
-  <body style="background-color:rgb(61, 70, 78);">
-    
+  <body style="background-color:rgb(61, 70, 78);">    
     <div class='container'>
       {% if messages %}
       <div class="alert alert-success messages">
@@ -25,16 +25,8 @@
         {% endfor %}
     </div>
         {% endif %}
-
-
-            {% block content %}
-            {% endblock %}
-  </div>
-
-            {% include 'base/js.html' %}
-            {% block javascript %}
-            
-            {% endblock %}
+            {% block content %}{% endblock %}
+            {% block javascript %}{% endblock %}
             <footer class="container">
                 <font color = '#FFFFFF'>
                 {% if ascii_art %}
@@ -51,9 +43,6 @@
                 </script>
                 <hr/>
               </footer>
-        <!-- </div> -->
-      <!-- </div> -->
     </div>
-
   </body>
 </html>
