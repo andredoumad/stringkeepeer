@@ -27,10 +27,10 @@ class OrderManagerQuerySet(models.query.QuerySet):
         return self.order_by("-updated", "-timestamp")
 
     def get_sales_breakdown(self):
-        recent = self.recent().not_refunded()
+        recent = self.recent().not_is_canceled()
         recent_data = recent.totals_data()
         recent_cart_data = recent.cart_data()
-        shipped = recent.not_refunded().by_status(status='shipped')
+        shipped = recent.not_is_canceled().by_status(status='shipped')
         shipped_data = shipped.totals_data()
         paid = recent.by_status(status='paid')
         paid_data = paid.totals_data()
@@ -76,8 +76,8 @@ class OrderManagerQuerySet(models.query.QuerySet):
     def by_status(self, status="shipped"):
         return self.filter(status=status)
 
-    def not_refunded(self):
-        return self.exclude(status='refunded')
+    def not_is_canceled(self):
+        return self.exclude(status='is_canceled')
 
     def by_request(self, request):
         billing_profile, created = BillingProfile.objects.new_or_get(request)
@@ -240,7 +240,7 @@ post_save.connect(post_save_order, sender=Order)
 
 class SubscriptionPurchaseQuerySet(models.query.QuerySet):
     def active(self):
-        return self.filter(refunded=False)
+        return self.filter(is_canceled=False)
 
     def digital(self):
         return self.filter(subscription__is_digital=True)
@@ -279,14 +279,18 @@ class SubscriptionPurchase(models.Model):
     order_id            = models.CharField(max_length=120)
     billing_profile     = models.ForeignKey(BillingProfile, null=True, blank=True, on_delete=models.SET_NULL) # billingprofile.subscriptionpurchase_set.all()
     subscription        = models.ForeignKey(Subscription, null=True, blank=True, on_delete=models.SET_NULL) # subscription.subscriptionpurchase_set.count()
-    refunded            = models.BooleanField(default=False)
+    is_canceled            = models.BooleanField(default=False)
     updated             = models.DateTimeField(auto_now=True)
     timestamp           = models.DateTimeField(auto_now_add=True)
 
     objects = SubscriptionPurchaseManager()
 
     def __str__(self):
-        return self.subscription.title
+        try:
+            if self.subscription.title != None:
+                return self.subscription.title
+        except:
+            return str('subscription was deleted')
 
 
 

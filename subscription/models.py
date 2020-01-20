@@ -92,7 +92,10 @@ class Subscription(models.Model):
 
     #this will show the overriding the 'class name' by the title string
     def __str__(self):
-        return self.title
+        if self.title != None:
+            return self.title
+        else:
+            return str('deleted subscription')
 
     @property
     def name(self):

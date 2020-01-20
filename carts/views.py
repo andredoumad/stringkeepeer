@@ -192,11 +192,12 @@ def checkout_home(request):
 
     if request.method == "POST":
         eventlog('CHECKOUT POST METHOD')
-        nonce = None
+        nonce = 'NA'
+        eventlog('CHECKOUT nonce initial: ' + str(nonce))
         nonce = str(request.POST.get('nonce'))
-        eventlog('CHECKOUT nonce: ' + str(nonce))
+        eventlog("request.POST.get('nonce'): " + str(nonce))
 
-        if nonce != None:
+        if nonce != 'None':
             eventlog('nonce: ' + str(nonce))
             eventlog('attempting to get the payment method token from the POST data')
 
@@ -219,7 +220,10 @@ def checkout_home(request):
                     },
                 }
             })
+            
             debug_result(result)
+            if result.is_success == False:
+                return redirect("cart:checkout")
 
             eventlog('len(customer.credit_cards): ' + str(len(customer.credit_cards)))
             if len(customer.credit_cards) > 0:
@@ -234,14 +238,16 @@ def checkout_home(request):
                             # "plan_id": "new_plan",
                             # "merchant_account_id": "new_merchant_account"
                         })
+                        eventlog('subscription: ' + str(subscription.id) + ' success =  ' + str(result.is_success))
                         debug_result(result)
-
+                        if result.is_success == False:
+                            return redirect("cart:checkout")
                 for i in range(1, len(customer.credit_cards)):
                     result = gateway.payment_method.delete(customer.credit_cards[i].token)
                 
             order_obj.mark_paid()
             return redirect("cart:success")
-        elif billing_profile.payment_method_token != None:
+        elif billing_profile.braintree_payment_method_token != None:
             eventlog('Billing profile payment method token is NOT NONE')
             eventlog('Creating subscriptions with the payment method token')
             for subscription in order_obj.cart.subscriptions.all():
@@ -249,9 +255,14 @@ def checkout_home(request):
 
                 #create subscriptions with braintree payment token
                 result = gateway.subscription.create({
-                    "payment_method_token": braintree_payment_method_token,
+                    "payment_method_token": billing_profile.braintree_payment_method_token,
                     "plan_id": subscription.slug
                 })
+                eventlog('subscription: ' + str(subscription.id) + ' success =  ' + str(result.is_success))
+                debug_result(result)
+                if result.is_success == False:
+                    return redirect("cart:checkout")
+                    
             order_obj.mark_paid()
             return redirect("cart:success")
         else:

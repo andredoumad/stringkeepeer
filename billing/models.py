@@ -187,7 +187,7 @@ if BRAINTREE_BILLING_SERVICE:
                     billing_profile = billing_profile,
                     stripe_id = c.id,
                     paid = c.paid,
-                    refunded = c.refunded,
+                    is_canceled = c.is_canceled,
                     outcome = c.outcome,
                     outcome_type = c.outcome['type'],
                     seller_message = c.outcome.get('seller_message'),
@@ -201,7 +201,7 @@ if BRAINTREE_BILLING_SERVICE:
         billing_profile         = models.ForeignKey(BillingProfile, null=True, on_delete=models.SET_NULL)
         stripe_id               = models.CharField(max_length=120)
         paid                    = models.BooleanField(default=False)
-        refunded                = models.BooleanField(default=False)
+        is_canceled                = models.BooleanField(default=False)
         outcome                 = models.TextField(null=True, blank=True)
         outcome_type            = models.CharField(max_length=120, null=True, blank=True)
         seller_message          = models.CharField(max_length=120, null=True, blank=True)
