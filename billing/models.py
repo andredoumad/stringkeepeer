@@ -11,6 +11,7 @@ from accounts.models import GuestEmail
 from django.contrib.postgres.fields import ArrayField
 
 
+import braintree
 User = settings.AUTH_USER_MODEL
 
 STRIPE_BILLING_SERVICE = getattr(settings, 'STRIPE_BILLING_SERVICE', False)
@@ -24,6 +25,11 @@ stripe.api_key = 'sk_test_UQ6hFgP5OZ9KXeSWvO39jgTb0099ffMFNJ'
 BRAINTREE_BILLING_SERVICE = getattr(settings, 'BRAINTREE_BILLING_SERVICE', False)
 
 
+BRAINTREE_PRODUCTION = getattr(settings, 'BRAINTREE_PRODUCTION', False)
+BRAINTREE_MERCHANT_ID = getattr(settings, 'BRAINTREE_MERCHANT_ID', 's7s9hk3y2frmyq6n')
+BRAINTREE_PUBLIC_KEY = getattr(settings, 'BRAINTREE_PUBLIC_KEY', 'hnzpmswf3hqpzwtj')
+BRAINTREE_PRIVATE_KEY = getattr(settings, 'BRAINTREE_PRIVATE_KEY', '888ebe7f91701688efdc1f9c52471b8f')
+BRAINTREE_BILLING_SERVICE = getattr(settings, 'BRAINTREE_BILLING_SERVICE', False)
 
 
 class BillingProfileManager(models.Manager):
@@ -34,7 +40,7 @@ class BillingProfileManager(models.Manager):
         obj = None
         if user.is_authenticated:
             eventlog('logged in user checkout remembers payment stuff')
-            obj, created = self.model.objects.get_or_create(user=user, email=user.email)
+            obj, created = self.model.objects.get_or_create(user=user, email=user.email, first_name=user.first_name, last_name=user.last_name)
         elif guest_email_id is not None:
             eventlog('guest user checkout auto reloads payment')
             guest_email_obj = GuestEmail.objects.get(id=guest_email_id)
@@ -52,7 +58,6 @@ class BillingProfile(models.Model):
     active = models.BooleanField(default=True)
     update = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-    stripe_customer_id = models.CharField(max_length=255, null=True, blank=True)
     braintree_customer_id = models.CharField(max_length=255, null=True, blank=True)
     first_name = models.CharField(max_length=255, null=True, blank=True)
     last_name = models.CharField(max_length=255, null=True, blank=True)
@@ -109,14 +114,35 @@ if BRAINTREE_BILLING_SERVICE:
     eventlog('BRAINTREE BILLING SERVICE IS ACTIVE')
 
     def braintree_billing_profile_created_receiver(sender, instance, *args, **kwargs):
-        if not instance.stripe_customer_id and instance.email:
-            # https://stripe.com/docs/api/customers/create
-            customer = stripe.Customer.create(
-                email = instance.email
 
+        # === we prime our braintree server gateway here
+        gateway = braintree.BraintreeGateway(
+            braintree.Configuration(
+                environment=settings.BRAINTREE_ENVIRONMENT,
+                merchant_id=settings.BRAINTREE_MERCHANT_ID,
+                public_key=settings.BRAINTREE_PUBLIC_KEY,
+                private_key=settings.BRAINTREE_PRIVATE_KEY
             )
-            eventlog(customer)
-            instance.braintree_customer_id = customer.id
+        )
+        # get customer
+        if not instance.braintree_customer_id and instance.email:
+            # https://stripe.com/docs/api/customers/create
+
+            eventlog('instance.first_name: ' + str(instance.first_name)) # correct because it's passed by obj, created = self.model.objects.get_or_create(user=user, email=user.email, first_name=user.first_name, last_name=user.last_name)
+            eventlog('instance.last_name: ' + str(instance.last_name)) # correct
+            # eventlog('sender.first_name: ' + str(sender.first_name)) # <django.db.models.query_utils.DeferredAttribute object at 0x7f46f6959d30>
+            # eventlog('sender.last_name: ' + str(sender.last_name)) # <django.db.models.query_utils.DeferredAttribute object at 0x7f46f6959d90>
+            # eventlog('request.first_name: ' + str(request.first_name)) # <django.db.models.query_utils.DeferredAttribute object at 0x7f46f6959d30>
+            # eventlog('request.last_name: ' + str(request.last_name)) # <django.db.models.query_utils.DeferredAttribute object at 0x7f46f6959d90>
+            eventlog('instance.email: ' + str(instance.email))
+            # exit()
+            result = gateway.customer.create({
+                "first_name": instance.first_name,
+                "last_name": instance.last_name,
+                "email": instance.email
+            })
+            eventlog(result)
+            instance.braintree_customer_id = result.customer.id
 
 
     pre_save.connect(braintree_billing_profile_created_receiver, sender=BillingProfile)
@@ -126,7 +152,7 @@ if BRAINTREE_BILLING_SERVICE:
             return self.get_queryset().filter(active=True)
         def add_new(self, billing_profile, token):
             if token:
-                customer = stripe.Customer.retrieve(billing_profile.stripe_customer_id)
+                customer = stripe.Customer.retrieve(billing_profile.braintree_customer_id)
                 stripe_card_response = customer.sources.create(source=token)
                 new_card = self.model(
                     billing_profile=billing_profile,

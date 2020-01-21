@@ -36,7 +36,11 @@
 
         <tr>
             <th colspan="2"></th>
+            {% if user.is_authenticated %}
             <td><a class='btn btn-block btn-success' href='{% url "cart:checkout" %}'>Checkout</a></td>
+            {% else %}
+            <td><a class='btn btn-block btn-success' href='{% url "auth_login" %}'>Login</a></td>
+            {% endif %}
         </tr>
         
         </tbody>

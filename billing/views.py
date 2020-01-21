@@ -63,11 +63,14 @@ def get_braintree_customer(request):
     
     if billing_profile.braintree_customer_id != None:
         eventlog("stringkeeper billing_profile.braintree_customer_id exists: " + str(billing_profile.braintree_customer_id))
-        customer = gateway.customer.find(billing_profile.braintree_customer_id)
+        found_customer_id = None
+        try:
+            customer = gateway.customer.find(billing_profile.braintree_customer_id)
+            found_customer_id = customer.id
+            eventlog(str(found_customer_id))
+        except:
+            found_customer_id = None
 
-        found_customer_id = None 
-        found_customer_id = customer.id
-        eventlog(str(found_customer_id))
 
         if found_customer_id != None:
             eventlog("customer id was found on braintree server.")
@@ -76,11 +79,12 @@ def get_braintree_customer(request):
             billing_profile.braintree_customer_id = None      
 
             eventlog('billing_profile.braintree_customer_id is None, searching by email')
-
-            customer = gateway.customer.find(request.user.email)
-
-            customer_email = None 
-            customer_email = customer.email
+            customer_email = None
+            try:
+                customer = gateway.customer.find(request.user.email)
+                customer_email = customer.email
+            except:
+                pass
 
             if customer_email != None:
                 eventlog(str(customer.email))
@@ -100,10 +104,26 @@ def get_braintree_customer(request):
                 })
 
                 if result.is_success:
-                    eventlog('billing_profile.braintree_customer_id created.')
-                    billing_profile.braintree_customer_id = result.customer.id
+                    search_results = gateway.customer.search(
+                        braintree.CustomerSearch.email == request.user.email,
+                    )
+                    search_result_id = ''
+                    for search_result in search_results:
+                        eventlog('search_result: ' + str(search_result))
+                        eventlog('billing_profile.braintree_customer_id created: ' + str(search_result.id))
+                        eventlog('billing_profile.braintree_customer_id: ' + str(billing_profile.braintree_customer_id))
+                        search_result_id = search_result.id
+
+                    eventlog('billing_profile.braintree_customer_id: ' + str(billing_profile.braintree_customer_id))
+                    billing_profile.braintree_customer_id = search_result_id
+                    billing_profile.braintree_subscriptions = ['None']
+                    eventlog('billing_profile.braintree_customer_id: ' + str(billing_profile.braintree_customer_id))
+                    billing_profile.save()                    
+                    # exit()
+
                     eventlog('billing_profile.braintree_customer_id changed to: ' + str(billing_profile.braintree_customer_id))
-                    billing_profile.save(update_fields=["braintree_customer_id"]) 
+                     
+                    
                     customer = gateway.customer.find(billing_profile.braintree_customer_id)
     
     return customer
@@ -265,7 +285,11 @@ def payment_method_view(request):
             result = gateway.payment_method.delete(customer.credit_cards[i].token)
 
     # get list of customer subscriptions given the one new payment card.
-    customer_subscriptions = customer.credit_cards[0].subscriptions
+    customer_subscriptions = []
+    try:
+        customer_subscriptions = customer.credit_cards[0].subscriptions
+    except:
+        pass
     customer_active_subscriptions = []
     active_subscription = False
     if len(customer_subscriptions) > 0:
