@@ -148,7 +148,7 @@ $(document).ready(function(){
             // submitSpan.html("<button type='submit' class='btn btn-danger'>Remove</button>")
             //<div class='btn-group'> <a class='btn btn-link' href='/cart/'>In cart</a> <button type='submit' class='btn btn-link'>Remove?</button></div>
 
-            submitSpan.html("<div class='btn-group'> <a class='btn btn-link' href='/cart/'>In cart</a> <button type='submit' class='btn btn-link'>Remove?</button></div>")
+            submitSpan.html("<div class='btn-group'> <a class='btn btn-link' href='/cart/'>In cart</a>")
           }else{
             submitSpan.html("<button type='submit' class='btn btn-success'>Add</button>")
           }

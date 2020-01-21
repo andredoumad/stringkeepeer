@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, JsonResponse
 from django.views.generic import View, ListView, DetailView
 from django.shortcuts import render
-
+from stringkeeper.standalone_tools import *
 # Create your views here.
 
 from billing.models import BillingProfile
@@ -32,12 +32,39 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
     #     my_profile = BillingProfile.objects.new_or_get(self.request)
     #     return Order.objects.by_request(self.request)
 
+def LibraryView(request):
+
+    billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
+    my_subscriptions, subscriptionPurchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(request, billing_profile)
 
 
-class LibraryView(LoginRequiredMixin, ListView):
-    template_name = 'orders/library.html'
-    def get_queryset(self):
-        return SubscriptionPurchase.objects.subscriptions_by_request(self.request) #.by_request(self.request).digital()
+    eventlog('billing_profile: ' + str(billing_profile))
+    
+
+    eventlog('subscriptionPurchases: ' + str(subscriptionPurchases))
+
+    # eventlog('object_list: ' + str(object_list))
+    context = {
+        "testing": 'testing',
+        "subscriptionPurchases": subscriptionPurchases,
+        "billing_profile": billing_profile,
+        # "object_list": object_list,
+    }
+
+    return render(request, 'orders/library.html', context)
+
+
+
+# class LibraryView(LoginRequiredMixin, ListView):
+#     template_name = 'orders/library.html'
+#     def get_queryset(self):
+#         display_library(self.request)
+
+
+# class LibraryView(LoginRequiredMixin, ListView):
+#     template_name = 'orders/library.html'
+#     def get_queryset(self):
+#         return SubscriptionPurchase.objects.subscriptions_by_request(self.request) #.by_request(self.request).digital()
 
 class VerifyOwnership(View):
     def get(self, request, *args, **kwargs):

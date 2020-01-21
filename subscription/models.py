@@ -83,6 +83,7 @@ class Subscription(models.Model):
     active          = models.BooleanField(default=True)
     timestamp       = models.DateTimeField(auto_now_add=True)
     is_digital      = models.BooleanField(default=True) # User Library
+    # braintree_id    = models.CharField(max_length=120, null=True)
 
     objects = SubscriptionManager()
     

@@ -118,7 +118,12 @@ class SubscriptionDetailSlugView(ObjectViewedMixin, DetailView):
         eventlog('instance: ' + str(instance))
         return instance
 
+import os
+from wsgiref.util import FileWrapper # this used in django
+from mimetypes import guess_type
 
+from django.conf import settings
+from orders.models import SubscriptionPurchase
 
 class SubscriptionDownloadView(View):
     def get(self, request, *args, **kwargs):

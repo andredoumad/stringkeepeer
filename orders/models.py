@@ -273,15 +273,36 @@ class SubscriptionPurchaseManager(models.Manager):
         subscriptions_qs = Subscription.objects.filter(id__in=ids_).distinct()
         return subscriptions_qs
 
+    def subscriptions_by_request_and_billing_profile(self, request, billing_profile):
+        ids_ = self.subscriptions_by_id(request)
+        subscriptions_qs = Subscription.objects.filter(id__in=ids_).distinct()
+        eventlog('subscriptionPurchases for: ' + str(billing_profile))
+        subscriptionPurchases_qs = SubscriptionPurchase.objects
+        eventlog('subscriptionPurchases_qs: ' + str(subscriptionPurchases_qs))
+
+        for subscriptionPurchase in subscriptionPurchases_qs.all():
+            eventlog('subscriptionPurchases_qs.all(): ' + str(subscriptionPurchase))        
+
+        for subscriptionPurchase in subscriptionPurchases_qs.by_request(request):
+            eventlog('subscriptionPurchases_qs.by_request(): ' + str(billing_profile) + ' owns ' + str(subscriptionPurchase))
+            eventlog(str(billing_profile) + ' order_id is: ' + str(subscriptionPurchase.order_id))
+        
+        subscriptionPurchases_qs = subscriptionPurchases_qs.by_request(request)
+        return subscriptions_qs, subscriptionPurchases_qs
+
 
 
 class SubscriptionPurchase(models.Model):
     order_id            = models.CharField(max_length=120)
     billing_profile     = models.ForeignKey(BillingProfile, null=True, blank=True, on_delete=models.SET_NULL) # billingprofile.subscriptionpurchase_set.all()
     subscription        = models.ForeignKey(Subscription, null=True, blank=True, on_delete=models.SET_NULL) # subscription.subscriptionpurchase_set.count()
-    is_canceled            = models.BooleanField(default=False)
+    is_canceled         = models.BooleanField(default=False)
     updated             = models.DateTimeField(auto_now=True)
     timestamp           = models.DateTimeField(auto_now_add=True)
+    is_canceled_initial_date      = models.DateTimeField(null=True, blank=True) 
+    is_canceled_final_date      = models.DateTimeField(null=True, blank=True)
+    braintree_subscription_id = models.CharField(max_length=120, null=True, blank=True)
+
 
     objects = SubscriptionPurchaseManager()
 

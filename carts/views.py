@@ -246,6 +246,7 @@ def checkout_home(request):
                     result = gateway.payment_method.delete(customer.credit_cards[i].token)
                 
             order_obj.mark_paid()
+            del request.session['cart_id']
             return redirect("cart:success")
         elif billing_profile.braintree_payment_method_token != None:
             eventlog('Billing profile payment method token is NOT NONE')
@@ -264,6 +265,7 @@ def checkout_home(request):
                     return redirect("cart:checkout")
                     
             order_obj.mark_paid()
+            del request.session['cart_id']
             return redirect("cart:success")
         else:
             return redirect("cart:checkout")

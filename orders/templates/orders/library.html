@@ -1,9 +1,41 @@
 {% extends "base.html" %}
 
-
 {% block content %}
 
+<div class='row'>
+    <div class='col-12'>
+        <h5> {{ request.user.first_name }}'s library</h1>
+        <!-- <h3>{{ billing_profile }}</h3>
+        <h3>{{ subscriptionPurchases }}</h3> -->
+    </div>
+</div>
+<div class='row'>
+    <div class='col'>
+        <table class='table'>
+            <thead><th><font color = 'white'>Subscription</font></th><th><font color = 'white'>Download</font></th></thead>
 
+            <tbody>
+                <!-- {{ subscriptionPurchases }} -->
+                <hr/>
+                {% for object in subscriptionPurchases %}
+                    <tr>
+                        <td><a href='{{ object.subscription.get_absolute_url }}'>{{ object.subscription.title }}</a></td>
+                        <td>{% for download in object.subscription.get_downloads %}
+                                <a href='{{ download.get_download_url }}'>{{ download.display_name }}</a><br/>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% empty %}
+                <tr><td colspan="3"><p class='lead'><font color = 'orange'>No Active Subscriptions.</font></td></tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+<!-- 
 <div class='row'>
     <div class='col-12'>
         <h1>Library</h1>
@@ -30,7 +62,7 @@
 
         </table>
     </div>
-</div>
+</div> -->
 
 
 

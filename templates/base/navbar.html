@@ -51,7 +51,7 @@
             Account
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item {% if request.path == accounts_url  %}active{% endif %}" href="{{ accounts_url }}">Home</a>
+            <a class="dropdown-item {% if request.path == accounts_url  %}active{% endif %}" href="{{ accounts_url }}">Manage</a>
             <a class="dropdown-item {% if request.path == library  %}active{% endif %}" href="{% url 'library' %}">Library</a>
             <div class="dropdown-divider"></div>
             <a class='dropdown-item' href="{{ logout_url }}">Logout</a>
