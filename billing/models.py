@@ -40,7 +40,7 @@ class BillingProfileManager(models.Manager):
         obj = None
         if user.is_authenticated:
             eventlog('logged in user checkout remembers payment stuff')
-            obj, created = self.model.objects.get_or_create(user=user, email=user.email, first_name=user.first_name, last_name=user.last_name)
+            obj, created = self.model.objects.get_or_create(user=user, email=user.email)
         elif guest_email_id is not None:
             eventlog('guest user checkout auto reloads payment')
             guest_email_obj = GuestEmail.objects.get(id=guest_email_id)
@@ -128,17 +128,10 @@ if BRAINTREE_BILLING_SERVICE:
         if not instance.braintree_customer_id and instance.email:
             # https://stripe.com/docs/api/customers/create
 
-            eventlog('instance.first_name: ' + str(instance.first_name)) # correct because it's passed by obj, created = self.model.objects.get_or_create(user=user, email=user.email, first_name=user.first_name, last_name=user.last_name)
-            eventlog('instance.last_name: ' + str(instance.last_name)) # correct
-            # eventlog('sender.first_name: ' + str(sender.first_name)) # <django.db.models.query_utils.DeferredAttribute object at 0x7f46f6959d30>
-            # eventlog('sender.last_name: ' + str(sender.last_name)) # <django.db.models.query_utils.DeferredAttribute object at 0x7f46f6959d90>
-            # eventlog('request.first_name: ' + str(request.first_name)) # <django.db.models.query_utils.DeferredAttribute object at 0x7f46f6959d30>
-            # eventlog('request.last_name: ' + str(request.last_name)) # <django.db.models.query_utils.DeferredAttribute object at 0x7f46f6959d90>
+
             eventlog('instance.email: ' + str(instance.email))
             # exit()
             result = gateway.customer.create({
-                "first_name": instance.first_name,
-                "last_name": instance.last_name,
                 "email": instance.email
             })
             eventlog(result)

@@ -74,6 +74,11 @@ def get_braintree_customer(request):
 
         if found_customer_id != None:
             eventlog("customer id was found on braintree server.")
+            if customer.first_name != request.user.first_name:
+                result = gateway.customer.update(found_customer_id, {
+                    "first_name": request.user.first_name,
+                    "last_name": request.user.last_name
+                })
         else:
             eventlog("customer id was not found on braintree server - setting it to None: ")
             billing_profile.braintree_customer_id = None      
