@@ -109,6 +109,42 @@ def get_braintree_customer(request):
     return customer
 
 
+def debug_result(result):
+    eventlog('result.is_success: ' + str(result.is_success))
+    try:
+        for error in result.errors.deep_errors:
+            eventlog(error.attribute)
+            eventlog(error.code)
+            eventlog(error.message)
+    except:
+        pass
+
+    try:
+        for error in result.errors.for_object("customer"):
+            peventlogrint(error.attribute)
+            eventlog(error.code)
+            eventlog(error.message)
+    except:
+        pass
+
+    try:
+        for error in result.errors.for_object("customer").for_object("credit_card"):
+            eventlog(error.attribute)
+            eventlog(error.code)
+            eventlog(error.message)
+    except:
+        pass
+    
+    try:
+        eventlog(result.token)
+    except:
+        pass
+
+    try:
+        eventlog(result.params)
+    except:
+        pass
+
 
 eventlog('BRAINTREE BILLING SERVICE IS ACTIVE')
 def payment_method_view(request):
@@ -138,6 +174,78 @@ def payment_method_view(request):
     eventlog('braintree_customer_last_name: ' + braintree_customer_last_name)
     eventlog('braintree_customer_email: ' + braintree_customer_email)
 
+
+
+    # PROCESS AJAX STUFF
+    if request.is_ajax():
+        eventlog('REQUEST IS AJAX')
+        eventlog('request.POST: ' + str(request.POST))
+
+        # detected removed subscription
+        if 'subscriptionPurchase_order_id' in request.POST:
+            data = request.POST['subscriptionPurchase_order_id']
+            my_subscriptions, subscriptionPurchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(request, billing_profile)
+            subscription_purchase = None
+            for subPurchase in subscriptionPurchases:
+                if str(subPurchase.order_id) == str(data):
+                    subscription_purchase = subPurchase
+
+            first_billing_date = subscription_purchase.is_canceled_final_date
+
+            # braintree_subscription = gateway.subscription.find(subscription_purchase.)
+            # update canceled subscription
+            #create subscriptions with braintree payment token
+            result = gateway.subscription.create({
+                "payment_method_token": billing_profile.braintree_payment_method_token,
+                "plan_id": subscription_purchase.subscription.slug,
+                'first_billing_date': first_billing_date
+            })
+            eventlog('subscription: ' + str(subscription_purchase.subscription.slug) + ' success =  ' + str(result.is_success))
+            debug_result(result)
+
+            if result.is_success:
+                subscription_purchase.is_canceled = False
+                subscription_purchase.is_canceled_final_date = None
+                subscription_purchase.is_canceled_initial_date = None
+                subscription_purchase.braintree_customer_id = result.subscription.id
+                subscription_purchase.save()
+
+            url = request.META['HTTP_REFERER']
+            eventlog("request.META['HTTP_REFERER'] : " + str(url))
+            return JsonResponse({'href': str(url)})
+
+
+
+        # detected removed subscription
+        if 'removeSubscription' in request.POST:
+            data = request.POST['removeSubscription']
+            eventlog('RemoveSubscription: ' + str(data))
+            braintree_subscription = gateway.subscription.find(data)
+            slug_to_delete = braintree_subscription.plan_id
+            #tell braintree to cancel
+            result = gateway.subscription.cancel(str(data))
+            
+
+            my_subscriptions, subscriptionPurchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(request, billing_profile)
+            eventlog('my_subscriptions: ' + str(my_subscriptions))
+            eventlog('my_subscription_purchases: ' + str(subscriptionPurchases))
+
+            #then we need to find the relationship between the subscription and the subscription purpose
+            for subscriptionPurchase in subscriptionPurchases:
+                eventlog('looking for ' + str(slug_to_delete) + ' in subscriptionPurchase subscription slug: ' + str(subscriptionPurchase.subscription.slug))
+                if str(subscriptionPurchase.subscription.slug) == str(slug_to_delete):
+                    eventlog('setting subscriptionPurchase.subscription.slug is_canceled to true.')
+                    subscriptionPurchase.is_canceled = True
+                    subscriptionPurchase.braintree_subscription_id = braintree_subscription.id
+                    subscriptionPurchase.is_canceled_initial_date = timezone.now()
+                    subscriptionPurchase.is_canceled_final_date = braintree_subscription.next_billing_date
+                    subscriptionPurchase.save()
+            url = request.META['HTTP_REFERER']
+            eventlog("request.META['HTTP_REFERER'] : " + str(url))
+            return JsonResponse({'href': str(url)})
+
+
+
     # Remove any extra credit cards, consilidate into one card.
     eventlog('len(customer.credit_cards): ' + str(len(customer.credit_cards)))
     if len(customer.credit_cards) > 0:
@@ -163,7 +271,7 @@ def payment_method_view(request):
     if len(customer_subscriptions) > 0:
         for subscription in customer_subscriptions:
             eventlog('SUBCRIPTION id: ' + str(subscription.id) + ' for ' + str(customer.credit_cards[0].token))
-            if subscription.status == 'Active':
+            if subscription.status == 'Active' or subscription.status == 'Pending':
                 active_subscription = True
                 customer_active_subscriptions.append(subscription)
     
@@ -214,38 +322,6 @@ def payment_method_view(request):
     # gordon = 'gordon before post'
 
 
-    # PROCESS AJAX STUFF
-    if request.is_ajax():
-        eventlog('REQUEST IS AJAX')
-        eventlog('request.POST: ' + str(request.POST))
-        # detected removed subscription
-        if 'removeSubscription' in request.POST:
-            data = request.POST['removeSubscription']
-            eventlog('RemoveSubscription: ' + str(data))
-            braintree_subscription = gateway.subscription.find(data)
-            slug_to_delete = braintree_subscription.plan_id
-            #tell braintree to cancel
-            result = gateway.subscription.cancel(str(data))
-            
-
-            my_subscriptions, subscriptionPurchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(request, billing_profile)
-            eventlog('my_subscriptions: ' + str(my_subscriptions))
-            eventlog('my_subscription_purchases: ' + str(subscriptionPurchases))
-
-            #then we need to find the relationship between the subscription and the subscription purpose
-            for subscriptionPurchase in subscriptionPurchases:
-                eventlog('looking for ' + str(slug_to_delete) + ' in subscriptionPurchase subscription slug: ' + str(subscriptionPurchase.subscription.slug))
-                if str(subscriptionPurchase.subscription.slug) == str(slug_to_delete):
-                    eventlog('setting subscriptionPurchase.subscription.slug is_canceled to true.')
-                    subscriptionPurchase.is_canceled = True
-                    subscriptionPurchase.braintree_subscription_id = braintree_subscription.id
-                    subscriptionPurchase.is_canceled_initial_date = timezone.now()
-                    subscriptionPurchase.is_canceled_final_date = braintree_subscription.next_billing_date
-                    subscriptionPurchase.save()
-            url = request.META['HTTP_REFERER']
-            eventlog("request.META['HTTP_REFERER'] : " + str(url))
-            return JsonResponse({'href': str(url)})
-
     customer_canceled_subscriptionPurchases = []
 
     my_subscriptions, subscriptionPurchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(request, billing_profile)
@@ -284,42 +360,6 @@ def payment_method_view(request):
 
         # gordon = request.POST.get('gordon')
         # eventlog('gordon: ' + str(gordon))
-
-        def debug_result(result):
-            eventlog('result.is_success: ' + str(result.is_success))
-            try:
-                for error in result.errors.deep_errors:
-                    eventlog(error.attribute)
-                    eventlog(error.code)
-                    eventlog(error.message)
-            except:
-                pass
-
-            try:
-                for error in result.errors.for_object("customer"):
-                    peventlogrint(error.attribute)
-                    eventlog(error.code)
-                    eventlog(error.message)
-            except:
-                pass
-
-            try:
-                for error in result.errors.for_object("customer").for_object("credit_card"):
-                    eventlog(error.attribute)
-                    eventlog(error.code)
-                    eventlog(error.message)
-            except:
-                pass
-            
-            try:
-                eventlog(result.token)
-            except:
-                pass
-
-            try:
-                eventlog(result.params)
-            except:
-                pass
 
         customer = gateway.customer.find(billing_profile.braintree_customer_id)
         eventlog("UPDATING CUSTOMER")

@@ -182,11 +182,38 @@
     <div class="card bg-dark text-white text-center mx-2 my-2" >
     Deactivates on: {{ subscriptionPurchase.is_canceled_final_date }}  
     </div>
+    <div class="card bg-dark text-white text-center mx-2 my-2" >
+      <a class='btn btn-link mx-2 btn-sm' onclick="ReactivateSubscription('{{ subscriptionPurchase.order_id }}')" href="#"> Activate </a>
+    </div>
   </div>
 </div>
 <hr/>
 {% endfor %}
 
+
+<script>
+
+
+  function ReactivateSubscription(subscriptionPurchase_order_id) {
+    console.log('ReactivateSubscription')
+
+    if (confirm('Your subscription will be re-activated.')) {
+      $.ajax({
+          url : '.',
+          type : "POST",
+          data : { subscriptionPurchase_order_id : subscriptionPurchase_order_id }
+      }).done(function(returned_data){
+        console.log('returned_data: ' + JSON.stringify(returned_data))
+
+        location.href = returned_data.href
+        // $('#{{ subscription.id }}-table').html(returned_data);
+          // This is the ajax.done() method, where you can fire events after the ajax method is complete 
+  
+          // For instance, you could hide/display your add/remove button here
+      });
+    }
+  }
+</script>
 
 {% endblock %}
 

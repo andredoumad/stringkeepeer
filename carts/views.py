@@ -246,14 +246,14 @@ def checkout_home(request):
                     result = gateway.payment_method.delete(customer.credit_cards[i].token)
                 
             order_obj.mark_paid()
-            del request.session['cart_id']
-            return redirect("cart:success")
+            #del request.session['cart_id']
+            #return redirect("cart:success")
         elif billing_profile.braintree_payment_method_token != None:
             eventlog('Billing profile payment method token is NOT NONE')
             eventlog('Creating subscriptions with the payment method token')
             for subscription in order_obj.cart.subscriptions.all():
                 eventlog('Subscription to be ADDED SLUG: ' + str(subscription.slug))
-
+                
                 #create subscriptions with braintree payment token
                 result = gateway.subscription.create({
                     "payment_method_token": billing_profile.braintree_payment_method_token,
