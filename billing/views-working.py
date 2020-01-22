@@ -458,7 +458,7 @@ if BRAINTREE_BILLING_SERVICE:
                 "submit_for_settlement": True
             }
         })
-        print(result)
+        eventlog(result)
         return HttpResponse('Ok')
 
 

@@ -24,7 +24,7 @@ class MarketingPreference(models.Model):
 def marketing_pref_create_receiver(sender, instance, created, *args, **kwargs):
     if created:
         status_code, response_data = Mailchimp().subscribe(instance.user.email)
-        print(status_code, response_data)
+        eventlog(status_code, response_data)
 
 
 post_save.connect(marketing_pref_create_receiver, sender=MarketingPreference)

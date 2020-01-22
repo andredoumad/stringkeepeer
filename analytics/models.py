@@ -59,10 +59,10 @@ def object_viewed_receiver(sender, instance, request, *args, **kwargs):
     user = None
     if request.user.is_authenticated:
         user = request.user
-    # print(sender)
-    # print(instance)
-    # print(request)
-    # print(request.user)
+    # eventlog(sender)
+    # eventlog(instance)
+    # eventlog(request)
+    # eventlog(request.user)
     new_view_obj = ObjectViewed.objects.create(
         user = user,
         content_type = c_type,
@@ -100,7 +100,7 @@ class UserSession(models.Model):
 
 
 def post_save_session_receiver(sender, instance, created, *args, **kwargs):
-    print('post_save_session_receiver INSTANCE: ' + str(instance))
+    eventlog('post_save_session_receiver INSTANCE: ' + str(instance))
     if created:
         qs = UserSession.objects.filter(user=instance.user, ended=False, active=True).exclude(id=instance.id)
         for i in qs:
@@ -114,8 +114,8 @@ if FORCE_SESSION_TO_ONE:
 
 
 def post_save_user_changed_receiver(sender, instance, created, *args, **kwargs):
-    print('post_save_user_changed_receiver INSTANCE: ' + str(instance))
-    # print('post_save_user_changed_receiver instance.full_name: ' + str(instance.full_name))
+    eventlog('post_save_user_changed_receiver INSTANCE: ' + str(instance))
+    # eventlog('post_save_user_changed_receiver instance.full_name: ' + str(instance.full_name))
     if not created:
         if instance.is_active == False:
             
@@ -129,7 +129,7 @@ if FORCE_INACTIVE_USER_ENDSESSION:
 
 
 def user_logged_in_receiver(sender, instance, request, *args, **kwargs):
-    print(instance)
+    eventlog(instance)
     user = instance
     ip_address = get_client_ip(request)
     session_key = request.session.session_key # Django 1.11

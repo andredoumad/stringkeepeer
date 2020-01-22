@@ -203,11 +203,11 @@ class EmailActivation(models.Model):
             # pre activation user signal
             user = self.user
             email = self.email
-            print('self.user: ' + str(user))
-            print('self.email: ' + str(email))
-            # print('self.is_active: ' + str(self.is_active))
+            eventlog('self.user: ' + str(user))
+            eventlog('self.email: ' + str(email))
+            # eventlog('self.is_active: ' + str(self.is_active))
             user.is_active = True
-            #   print('self.is_active: ' + str(self.is_active))
+            #   eventlog('self.is_active: ' + str(self.is_active))
             user.save()
             # think about adding:
             # post activation signal for user

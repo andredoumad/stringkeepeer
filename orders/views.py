@@ -14,7 +14,6 @@ class OrderListView(LoginRequiredMixin, ListView):
         my_profile = BillingProfile.objects.new_or_get(self.request)
         return Order.objects.by_request(self.request)
 
-
 class OrderDetailView(LoginRequiredMixin, DetailView):
 
     def get_object(self):
@@ -27,44 +26,25 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
             return qs.first()
         return Http404
 
+class LibraryView(LoginRequiredMixin, ListView):
+    template_name = 'orders/library.html'
 
-    # def get_queryset(self):
-    #     my_profile = BillingProfile.objects.new_or_get(self.request)
-    #     return Order.objects.by_request(self.request)
+    def get_context_data(self, *args, **kwargs):
 
-def LibraryView(request):
+        billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(self.request)
+        my_subscriptions, subscriptionPurchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(self.request, billing_profile)
+        eventlog('billing_profile: ' + str(billing_profile))
+        eventlog('subscriptionPurchases: ' + str(subscriptionPurchases))
+        context = super(LibraryView, self).get_context_data(*args, **kwargs)
+        context['title'] = 'Update Email'
+        context['ascii_art'] = get_ascii_art()
+        context['subscriptionPurchases'] = subscriptionPurchases
+        context['billing_profile'] = billing_profile
+        context['testing'] = 'testing'
+        return context
 
-    billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
-    my_subscriptions, subscriptionPurchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(request, billing_profile)
-
-
-    eventlog('billing_profile: ' + str(billing_profile))
-    
-
-    eventlog('subscriptionPurchases: ' + str(subscriptionPurchases))
-
-    # eventlog('object_list: ' + str(object_list))
-    context = {
-        "testing": 'testing',
-        "subscriptionPurchases": subscriptionPurchases,
-        "billing_profile": billing_profile,
-        # "object_list": object_list,
-    }
-
-    return render(request, 'orders/library.html', context)
-
-
-
-# class LibraryView(LoginRequiredMixin, ListView):
-#     template_name = 'orders/library.html'
-#     def get_queryset(self):
-#         display_library(self.request)
-
-
-# class LibraryView(LoginRequiredMixin, ListView):
-#     template_name = 'orders/library.html'
-#     def get_queryset(self):
-#         return SubscriptionPurchase.objects.subscriptions_by_request(self.request) #.by_request(self.request).digital()
+    def get_queryset(self):
+        return SubscriptionPurchase.objects.subscriptions_by_request(self.request) #.by_request(self.request).digital()
 
 class VerifyOwnership(View):
     def get(self, request, *args, **kwargs):

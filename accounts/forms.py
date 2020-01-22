@@ -242,7 +242,7 @@ class LoginForm(forms.Form):
 
 
     # def form_valid(self, form):
-    #     print('def form_valid')
+    #     eventlog('def form_valid')
     #     request = self.request
     #     next_ = request.GET.get('next')
     #     next_post = request.POST.get('next')
@@ -252,7 +252,7 @@ class LoginForm(forms.Form):
     #     user = authenticate(request, username=email, password=password)
 
     #     if user is not None:
-    #         print('if user is not None')
+    #         eventlog('if user is not None')
     #         if not user.is_active:
     #             messages.error(request, str(str(user.email) + " is inactive"))
     #             return super(LoginView, self).form_invalid(form, {'ascii_art': 'ascii_art'})
@@ -260,16 +260,16 @@ class LoginForm(forms.Form):
     #         login(request, user)
     #         user_logged_in.send(user.__class__, instance=user, request=request)
     #         try:
-    #             print('try')
+    #             eventlog('try')
     #             del request.session['guest_email_id']
     #         except:
-    #             print('except')
+    #             eventlog('except')
     #             pass
     #         if is_safe_url(redirect_path, request.get_host()):
-    #             print('is_safe_url')
+    #             eventlog('is_safe_url')
     #             return redirect(redirect_path)
     #         else:
-    #             print('is_safe_url else')
+    #             eventlog('is_safe_url else')
     #             return redirect('/')
 
     #     return super(LoginView, self).form_invalid(form)

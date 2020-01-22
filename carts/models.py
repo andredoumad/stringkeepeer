@@ -34,7 +34,6 @@ class CartManager(models.Manager):
 # Create your models here.
 class Cart(models.Model):
     user            = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
-    eventlog(user)
     subscriptions   = models.ManyToManyField(Subscription, blank=True)
     subtotal        = models.DecimalField(default=0.00, max_digits=100, decimal_places=2)
     total           = models.DecimalField(default=0.00, max_digits=100, decimal_places=2)
@@ -48,7 +47,7 @@ class Cart(models.Model):
 
     @property
     def name(self):
-        return self.title
+        return self.user
 
     @property
     def is_digital(self):

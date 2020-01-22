@@ -46,7 +46,7 @@ def get_list_from_file(filepath):
         while working == True:
             for line in fh:
                 line = ftfy.fix_encoding(str(line))
-                #print('get_list_from_file: ' + str(line.rstrip()))
+                #eventlog('get_list_from_file: ' + str(line.rstrip()))
                 listFromFile.append(line.rstrip())
             working = False
             
@@ -69,11 +69,11 @@ def get_list_files_folders_in_path(path):
     b_dp = False
     for i in os.scandir(path):
         if i.is_file():
-            #print('File: ' + i.path)
+            #eventlog('File: ' + i.path)
             list_fp.append(i.path)
             b_fp = True
         elif i.is_dir():
-            #print('Folder: ' + i.path)
+            #eventlog('Folder: ' + i.path)
             list_dp.append(i.path + '/')
             b_dp = True
     return b_dp, b_fp, list_dp, list_fp
@@ -88,7 +88,7 @@ def get_ascii_art():
     art_string = '\n'
     for line in list_of_ascii_art_strings:
         art_string += str(line)
-        art_string += '\n'
+        art_string += str('\n')
     return str(art_string)
 
 
@@ -117,11 +117,11 @@ def get_list_files_folders_in_path(path):
     b_dp = False
     for i in os.scandir(path):
         if i.is_file():
-            #print('File: ' + i.path)
+            #eventlog('File: ' + i.path)
             list_fp.append(i.path)
             b_fp = True
         elif i.is_dir():
-            #print('Folder: ' + i.path)
+            #eventlog('Folder: ' + i.path)
             list_dp.append(i.path + '/')
             b_dp = True
     return b_dp, b_fp, list_dp, list_fp
@@ -173,7 +173,7 @@ def eventlog(logstring):
     print('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
     print('|==| ' + str(debug_line_number) + ' |==| ')
     log_filepath = str(str(log_directory_path) + '/' + str(caller_filename))
-    #print('log_filepath: ' + str(log_filepath))
+    #eventlog('log_filepath: ' + str(log_filepath))
     #with open(log_filepath, 'a+') as f:
     #    timestamp = str(datetime.today().strftime('%H:%M:%S'))
     #    f.write(str(timestamp + ' || ' + logstring))

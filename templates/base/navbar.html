@@ -7,6 +7,7 @@
 {% url 'logout' as logout_url %}
 {% url 'register' as register_url %}
 {% url 'auth_login' as auth_login_url %}
+{% url 'library' as library_url %}
 
 <nav class="navbar sticky-top navbar-expand-md navbar-dark bg-dark mb-3">
   <div class='container'>
@@ -52,7 +53,7 @@
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item {% if request.path == accounts_url  %}active{% endif %}" href="{{ accounts_url }}">Manage</a>
-            <a class="dropdown-item {% if request.path == library  %}active{% endif %}" href="{% url 'library' %}">Library</a>
+            <a class="dropdown-item {% if request.path == library_url  %}active{% endif %}" href="{{ library_url }}">Library</a>
             <div class="dropdown-divider"></div>
             <a class='dropdown-item' href="{{ logout_url }}">Logout</a>
           </div>

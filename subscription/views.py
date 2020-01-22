@@ -45,7 +45,7 @@ class UserSubscriptionHistoryView(LoginRequiredMixin, ListView):
         views = request.user.objectviewed_set.by_model(Subscription, model_queryset=False) #.all()filter(content_type__name='subscription')
         # another way to do it
         #viewed_ids = [x.object_id for x in views]
-        #print(viewed_ids)
+        #eventlog(viewed_ids)
         # Subscription.objects.filter(pk__in=viewed_ids)
         return views
 
@@ -60,7 +60,7 @@ class SubscriptionListView(ListView):
 
     # def get_context_data(self, *args, **kwargs):
     #     context = super(SubscriptionListView, self).get_context_data(*args, **kwargs)
-    #     print(context)
+    #     eventlog(context)
     #     return context
 
     def get_context_data(self, *args, **kwargs):
@@ -155,7 +155,7 @@ class SubscriptionDownloadView(View):
             return redirect(download_obj.get_default_url())
 
         aws_filepath = download_obj.generate_download_url()
-        print(aws_filepath)
+        eventlog(aws_filepath)
         return HttpResponseRedirect(aws_filepath)
         # file_root = settings.PROTECTED_ROOT
         # filepath = download_obj.file.path # .url /media/
@@ -213,10 +213,10 @@ def subscription_detail_view(request, pk=None, *args, **kwargs):
     # try:
     #     instance = Subscription.objects.get(id=pk)
     # except Subscription.DoesNotExist:
-    #     print('no subscription found')
+    #     eventlog('no subscription found')
     #     raise Http404("subscription doesn't exist")
     # except:
-    #     print('huh?')
+    #     eventlog('huh?')
 
     instance = Subscription.objects.get_by_id(pk)
     eventlog('instance: ' + str(instance))
@@ -225,7 +225,7 @@ def subscription_detail_view(request, pk=None, *args, **kwargs):
 
     # qs = Subscription.objects.filter(id=pk)
 
-    # #print(qs)
+    # #eventlog(qs)
     # #count is more efficient than len 
     # if qs.exists() and qs.count() == 1: #len(qs)
     #     instance = qs.first()

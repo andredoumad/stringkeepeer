@@ -24,7 +24,6 @@ from blog.views import (
 
 from django.views.generic.base import TemplateView # new
 
-from searches.views import search_view
 
 from carts.views import cart_home
 
@@ -86,9 +85,9 @@ urlpatterns = [
     path('billing/payment/', payment, name='payment'),
     path('billing/payment-method/create/', payment_method_createview, name='billing-payment-method-endpoint'),
     path('register/', RegisterView.as_view(), name='register'),
-    path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),
-    # path('library/', LibraryView.as_view(), name='library'),
-    path('library/', LibraryView, name='library'),
+    # path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),
+    path('library/', LibraryView.as_view(), name='library'),
+    # path('library/', LibraryView, name='library'),
     path('orders/', include('orders.urls', namespace='orders'), name='orders'),
     path('subscriptions/', include('subscription.urls', namespace='subscription'), name='subscription'),
     path('search/', include('search.urls', namespace='search'), name='search'),

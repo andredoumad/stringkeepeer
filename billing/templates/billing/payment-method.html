@@ -164,8 +164,6 @@
   }
 </script>
 
-
-
 {% for subscriptionPurchase in customer_canceled_subscriptionPurchases %}
 <hr/>
 <div class="card bg-secondary text-white mx-2 my-2">
@@ -190,10 +188,7 @@
 <hr/>
 {% endfor %}
 
-
 <script>
-
-
   function ReactivateSubscription(subscriptionPurchase_order_id) {
     console.log('ReactivateSubscription')
 
@@ -216,57 +211,3 @@
 </script>
 
 {% endblock %}
-
-
-
-
-======= DEBUG ==========
-<hr/>
-braintree_payment_method_token: {{ braintree_payment_method_token }}
-<hr/>
-gordon: {{ gordon }}
-<hr/>
-testvariable: {{ testvariable }}
-<hr/>
-nonce: {{ nonce }}
-<hr/>
-user_first_name: {{ user_first_name }}
-<hr/>
-user_last_name: {{ user_last_name }}
-<hr/>
-user_email: {{ user_email }}
-<hr/>
-billing_profile: {{ billing_profile }}
-<hr/>
-billing_profile_created: {{ billing_profile_created }}
-<hr/>
-billing_profile_first_name: {{ billing_profile_first_name }}
-<hr/>
-billing_profile_last_name: {{ billing_profile_last_name }}
-<hr/>
-billing_profile_street: {{ billing_profile_street }}
-<hr/>
-billing_profile_postal_code: {{ billing_profile_postal_code }}
-<hr/>
-braintree_customer_id: {{ braintree_customer_id }}
-<hr/>
-braintree_customer_first_name: {{ braintree_customer_first_name }}
-<hr/>
-braintree_customer_last_name: {{ braintree_customer_last_name }}
-<hr/>
-braintree_customer_email: {{ braintree_customer_email }}
-<hr/>
-<!-- cart: {{ cart }} -->
-<hr/>
-cart_created: {{ cart_created }}
-<hr/>
-order_profile: {{ order_profile }}
-<hr/>
-order_profile_created: {{ order_profile_created }}
-<hr/>
-order_billing_address: {{ order_billing_address }}
-<hr/>
-client token: {{ client_token }}
-<hr/>
-======= DEBUG ==========
-<hr/>

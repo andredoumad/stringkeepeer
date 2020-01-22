@@ -39,7 +39,6 @@ def get_braintree_customer(request):
     # == We grab the data about the billing profile from stringkeeper server
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
 
-
     # === Here we make sure that the customer ID matches braintree records
     # === if it does not, we attempt to locate the user and update our records or create a new customer
     customer = None
@@ -195,11 +194,6 @@ def payment_method_view(request):
     eventlog('braintree_customer email: ' + str(customer.email))
     braintree_customer_email = str(customer.email)
 
-    eventlog('braintree_customer_first_name: ' + braintree_customer_first_name)        
-    eventlog('braintree_customer_last_name: ' + braintree_customer_last_name)
-    eventlog('braintree_customer_email: ' + braintree_customer_email)
-
-
 
     # PROCESS AJAX STUFF
     if request.is_ajax():
@@ -217,7 +211,6 @@ def payment_method_view(request):
 
             first_billing_date = subscription_purchase.is_canceled_final_date
 
-            # braintree_subscription = gateway.subscription.find(subscription_purchase.)
             # update canceled subscription
             #create subscriptions with braintree payment token
             result = gateway.subscription.create({
@@ -303,22 +296,6 @@ def payment_method_view(request):
             if subscription.status == 'Active' or subscription.status == 'Pending':
                 active_subscription = True
                 customer_active_subscriptions.append(subscription)
-    
-
-
-    
-
-    # # == We grab the data about the cart from stringkeeper
-    # cart, cart_created = Cart.objects.new_or_get(request)
-    # eventlog('cart: ' + str(cart))
-    # eventlog('cart_created: ' + str(cart_created))
-
-    # == We grab the data about the order from stringkeeper
-    # order_profile, order_profile_created = Order.objects.new_or_get(billing_profile, cart)
-    # eventlog('order_profile: ' + str(order_profile))
-    # order_billing_address = order_profile.billing_address
-    # eventlog('order_billing_address: ' + str(order_billing_address))
-    # eventlog('order_profile_created: ' + str(order_profile_created))
 
     if not billing_profile:
         return redirect("/cart")
@@ -344,12 +321,8 @@ def payment_method_view(request):
             'postal_code': billing_profile.postal_code
             
             })
-    # form.fields["first_name"] = request.user.first_name 
 
-    # testvariable = 'nonce before post'
     nonce = 'nonce before post'
-    # gordon = 'gordon before post'
-
 
     customer_canceled_subscriptionPurchases = []
 
@@ -359,9 +332,6 @@ def payment_method_view(request):
     for subscriptionPurchase in subscriptionPurchases:
         if subscriptionPurchase.is_canceled == True:
             customer_canceled_subscriptionPurchases.append(subscriptionPurchase)
-
-        #also -- if the stringkeeper braintree subscription ID in the subscriptionPurchase object 
-        # does not match the braintree subscription id -- set the id accordingly.        
         subscription_slug = subscriptionPurchase.subscription.slug
         eventlog('Checking subscriptionPurchase.subscription.slug: ' + str(subscription_slug))
         for customer_subscription in customer_subscriptions:
@@ -383,12 +353,6 @@ def payment_method_view(request):
 
         nonce = str(request.POST.get('nonce'))
         eventlog('nonce: ' + str(nonce))
-
-        # testvariable = request.POST.get('testvariable')
-        # eventlog('testvariable: ' + str(testvariable))
-
-        # gordon = request.POST.get('gordon')
-        # eventlog('gordon: ' + str(gordon))
 
         customer = gateway.customer.find(billing_profile.braintree_customer_id)
         eventlog("UPDATING CUSTOMER")
@@ -441,8 +405,6 @@ def payment_method_view(request):
 
 
     context = {
-        # 'gordon': gordon,
-        # 'testvariable': testvariable,
         'nonce': nonce,
         'paymentform': paymentform,
         'braintree_payment_method_token': billing_profile.braintree_payment_method_token,
@@ -466,29 +428,12 @@ def payment_method_view(request):
         'braintree_customer_last_name': braintree_customer_last_name,
         'braintree_customer_email': braintree_customer_email,
 
-        # 'cart': str(cart),
-        # 'cart_created': str(cart_created),
-
-        # 'order_profile': str(order_profile),
-        # 'order_profile_created': str(order_profile_created), 
-        # 'order_billing_address': str(order_billing_address),   
-
-
         'payment_company': 'braintree',
         'client_token': str(client_token),
         'ascii_art': get_ascii_art()
         }
     eventlog(' ABOUT TO HIT LINE 94 ')
     return render(request, 'billing/payment-method.html', context)
-
-
-# def update_transaction_records(request, token):
-#     eventlog('token: ' + str(token))
-#     pass
-
-
-
-
 
 
 def payment(request):
@@ -507,7 +452,7 @@ def payment(request):
             "submit_for_settlement": True
         }
     })
-    print(result)
+    eventlog(result)
     return HttpResponse('Ok')
 
 
