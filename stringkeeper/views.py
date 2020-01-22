@@ -51,6 +51,16 @@ def about_page(request):
     return render(request, "about.html", context)
     #return HttpResponse("<h1>about.</h1>")
 
+
+def preview_page(request):
+    context = {
+        'title': 'preview',
+        'ascii_art': get_ascii_art()  
+
+    }
+    return render(request, "preview.html", context)
+    #return HttpResponse("<h1>about.</h1>")
+
 def contact_page(request):
     ascii_art = get_ascii_art()
     contact_form = ContactForm(request.POST or None)

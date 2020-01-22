@@ -46,6 +46,7 @@ from .views import (
     home_page,
     about_page,
     contact_page,
+    preview_page,
     #example_page,
     #login_page,
     #register_page
@@ -71,6 +72,7 @@ urlpatterns = [
     re_path(r'^analytics/sales/$', SalesView.as_view(), name='sales-analytics'),
     re_path(r'^analytics/sales/data/$', SalesAjaxView.as_view(), name='sales-analytics-data'),
     path('contact/', contact_page, name='contact'),
+    path('preview/', preview_page, name='preview'),
     path('login/', LoginView.as_view(), name='auth_login'),
     path('register/guest/', guest_register_view, name='guest_register'),
     path('logout/', LogoutView.as_view(), name='logout'),
