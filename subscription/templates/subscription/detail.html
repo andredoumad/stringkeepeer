@@ -10,7 +10,8 @@
         <div class='col-12 mr-auto'>
             <h4>{{object.title}}</h4><br/>
             <!-- <h2>Updated {{ object.timestamp |timesince}} ago.</h2><br/> -->
-            {{object.description|safe|escape}}<br/>
+            {{object.description|linebreaks}}<br/> 
+            <!-- {{object.description|safe|escape}}<br/> for HTML-->
             {% if object.image %}
                 <!-- {{ object.image.url}}<br/> -->
                 <img src='{{ object.image.url }}' class='img-fluid' />
