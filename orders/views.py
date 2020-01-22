@@ -36,7 +36,7 @@ class LibraryView(LoginRequiredMixin, ListView):
         eventlog('billing_profile: ' + str(billing_profile))
         eventlog('subscriptionPurchases: ' + str(subscriptionPurchases))
         context = super(LibraryView, self).get_context_data(*args, **kwargs)
-        context['title'] = 'Update Email'
+        context['title'] = 'some title !'
         context['ascii_art'] = get_ascii_art()
         context['subscriptionPurchases'] = subscriptionPurchases
         context['billing_profile'] = billing_profile

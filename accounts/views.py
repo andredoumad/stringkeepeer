@@ -17,6 +17,7 @@ from .signals import user_logged_in
 from django.urls import reverse
 from accounts.mixins import ObjectViewedMixin
 from stringkeeper.mixins import NextUrlMixin, RequestFormAttachMixin
+from stringkeeper.braintree_tools import get_braintree_customer
 
 # User = get_user_model()
 
@@ -164,6 +165,7 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, *args, **kwargs):
         context = super(UserDetailUpdateView, self).get_context_data(*args, **kwargs)
         context['title'] = 'Change Your Account Details'
+        context['ascii_art'] = get_ascii_art()
         return context
 
     # GOOD EXAMPLE OF HOW TO UPDATE THE USER DATA :) !! ^.^
@@ -176,6 +178,7 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
         eventlog('self.request.user.full_name: ' + str(self.request.user.full_name))
         User.full_name = self.request.user.full_name
         self.request.user.save()
+        customer = get_braintree_customer(self.request)
         return reverse("account:home")
 
 

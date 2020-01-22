@@ -71,9 +71,6 @@ urlpatterns = [
     re_path(r'^analytics/sales/$', SalesView.as_view(), name='sales-analytics'),
     re_path(r'^analytics/sales/data/$', SalesAjaxView.as_view(), name='sales-analytics-data'),
     path('contact/', contact_page, name='contact'),
-    # path('login/', login_page, name='login'),
-    #how come i cant use anything beyond auth_login - everytime i try just login it breaks
-    #even if i change the navbar template, its not right...
     path('login/', LoginView.as_view(), name='auth_login'),
     path('register/guest/', guest_register_view, name='guest_register'),
     path('logout/', LogoutView.as_view(), name='logout'),
@@ -85,9 +82,7 @@ urlpatterns = [
     path('billing/payment/', payment, name='payment'),
     path('billing/payment-method/create/', payment_method_createview, name='billing-payment-method-endpoint'),
     path('register/', RegisterView.as_view(), name='register'),
-    # path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),
     path('library/', LibraryView.as_view(), name='library'),
-    # path('library/', LibraryView, name='library'),
     path('orders/', include('orders.urls', namespace='orders'), name='orders'),
     path('subscriptions/', include('subscription.urls', namespace='subscription'), name='subscription'),
     path('search/', include('search.urls', namespace='search'), name='search'),
@@ -98,8 +93,3 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='site_admin'),
 
 ]
-
-#if settings.DEBUG:
-    #from django.conf.urls.static import static
-    #urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

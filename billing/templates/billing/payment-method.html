@@ -3,7 +3,6 @@
 {% load static %}
 
 {% block content %}
-<h4>{{ email }}</h4>
 <meta charset="utf-8">
 
 <!-- includes the Braintree JS client SDK -->
@@ -35,20 +34,15 @@
 
   var button = document.querySelector('#submit-button');
   var form = document.querySelector('#payment-form');
-  // var testvariable = 'emptytestvariable';
   var nonce = 'emptynonce';
-  // var gordon = 'emptygordon';
-  // var payload_nonce;
 
   braintree.dropin.create({
-
     authorization: '{{ client_token }}',
     container: '#dropin-container',
     card: {
     cardholderName: { required: true },
     overrides: {
       styles: {
-
         input: {
           color: 'blue',
           'font-size': '18px'
@@ -114,23 +108,29 @@
     Subscription: {{ subscription }} 
   </div>   -->
   <div class="card bg-dark text-white text-center mx-2 my-2" >
-    <div class="card bg-dark text-white text-center mx-2 my-2" >
-    Subscription: {{ subscription.plan_id }}  
-    </div>
-    <div class="card bg-dark text-white text-center mx-2 my-2" >
-    Subscription ID: {{ subscription.id }}  
-    </div>
-    <div class="card bg-dark text-white text-center mx-2 my-2" >
-    current_billing_cycle {{ subscription.current_billing_cycle }}
-    </div>
-    <div class="card bg-dark text-white text-center mx-2 my-2" >
-    Status: {{ subscription.status }} 
-    </div>
-    <div class="card bg-dark text-white text-center mx-2 my-2" >
-    Next Billing Date: {{ subscription.next_billing_date }} 
-    </div>
-    <div class="card bg-dark text-white text-center mx-2 my-2" >
-    Next Billing Amount: {{ subscription.next_bill_amount }} 
+      <div class="card bg-dark text-white text-center mx-2 my-2" >
+      Subscription: {{ subscription.plan_id }}  
+      </div>
+      <div class="card bg-dark text-white text-center mx-2 my-2" >
+      Subscription ID: {{ subscription.id }}  
+      </div>
+      <div class="card bg-dark text-white text-center mx-2 my-2" >
+      Billing Cycle: {{ subscription.current_billing_cycle }}
+      </div>
+      <div class="card bg-dark text-white text-center mx-2 my-2" >
+      Status: {{ subscription.status }} 
+      </div>
+      <div class="card bg-dark text-white text-center mx-2 my-2" >
+      Next Billing Date: {{ subscription.next_billing_date }} 
+      </div>
+      <div class="card bg-dark text-white text-center mx-2 my-2" >
+      Next Billing Amount: {{ subscription.next_bill_amount }} 
+      <div class="card bg-dark text-white text-center mx-2 my-2" >
+        Email: {{ email }}  
+      </div>
+      <div class="card bg-dark text-white text-center mx-2 my-2" >
+        Customer ID: {{ braintree_customer_id }}
+      </div>
     </div>
     <div class="card bg-dark text-white text-center mx-2 my-2" >
     <a class='btn btn-link mx-2 btn-sm' onclick="RemoveSubscription('{{ subscription.id }}')" href="#"> cancel </a>
@@ -179,6 +179,12 @@
     </div>
     <div class="card bg-dark text-white text-center mx-2 my-2" >
     Deactivates on: {{ subscriptionPurchase.is_canceled_final_date }}  
+    </div>
+    <div class="card bg-dark text-white text-center mx-2 my-2" >
+    Email: {{ email }}  
+    </div>
+    <div class="card bg-dark text-white text-center mx-2 my-2" >
+    Customer ID: {{ braintree_customer_id }}
     </div>
     <div class="card bg-dark text-white text-center mx-2 my-2" >
       <a class='btn btn-link mx-2 btn-sm' onclick="ReactivateSubscription('{{ subscriptionPurchase.order_id }}')" href="#"> Activate </a>
