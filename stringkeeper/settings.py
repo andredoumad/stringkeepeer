@@ -130,6 +130,7 @@ r00tp0strgr3sqlstr1ngk33p3r
 
 import os
 import socket
+import debug_toolbar
 from .standalone_tools import *
 from django.core.exceptions import ImproperlyConfigured
 
@@ -241,6 +242,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'blog',
     'storages',
     'subscription',
@@ -292,6 +294,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'stringkeeper.urls'
@@ -385,6 +388,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]
 
 if socket.gethostname()=="www.stringkeeper.com":
     eventlog ('running production mode')
@@ -467,9 +475,7 @@ else:
             },
         },
     }
-
-
-
-
+    #https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+    
 
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'

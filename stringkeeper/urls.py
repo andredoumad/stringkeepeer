@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import debug_toolbar
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
@@ -58,6 +59,7 @@ admin.site.site_title = 'Stringkeeper Admin' # default: "Django site admin"
 
 
 urlpatterns = [
+    path('__debug__/', include(debug_toolbar.urls)),
     path('', home_page, name='home'),
     path('blog-new/', blog_post_create_view),
     path('blog/', include('blog.urls', namespace='blog'), name='blog'),

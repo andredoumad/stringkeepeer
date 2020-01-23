@@ -8,14 +8,14 @@
 <div class='col'>
     <div class='row'>
         <div class='col-12 mr-auto'>
-            <h4>{{object.title}}</h4><br/>
+            <!-- <h4>{{object.title}}</h4><br/> -->
             <!-- <h2>Updated {{ object.timestamp |timesince}} ago.</h2><br/> -->
             <!-- {{object.description}}<br/> -->
             {% include detail_url %}
             
             {% if object.image %}
                 <!-- {{ object.image.url}}<br/> -->
-                <img src='{{ object.image.url }}' class='img-fluid' />
+                <!-- <img src='{{ object.image.url }}' class='img-fluid' /> -->
             {% endif %}
         </div>
         <div class='ml-auto fixed-bottom' style='min-height:50px;background-color:rgba(0, 115, 100, 0.8);'>

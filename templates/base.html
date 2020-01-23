@@ -11,10 +11,14 @@
       {% include 'base/js.html' %}
       {% include 'base/css.html' %}
       <title>{% block title %} Hello {% endblock %}</title>
+
   </head>
+
   {% include 'base/navbar.html' %}
+
   <body style="background-color:rgb(61, 70, 78);">    
     <div class='container'>
+      <h6 class='text-center'><font color = 'white'>This site is under active development and is for <font color = 'orange'> demonstration purposes only.</font></h6>
       {% if messages %}
       <div class="alert alert-success messages">
           {% for message in messages %}
@@ -30,13 +34,18 @@
             <footer class="container">
                 <font color = '#FFFFFF'>
                 {% if ascii_art %}
-                <pre>
-                  <p style="font-size:2px">
-                  <font color = '#85C1E9'> {{ascii_art}}
-                </pre>
+
+                  <div class="container-md">
+                      <pre>
+                        <p class='text-monospace' style="font-size:2px">
+                        <font color = '#85C1E9'> {{ascii_art}}
+                      </pre>
+                  </div>
+
+
                 {% endif %}
                 <hr/>
-                <h6><font color = 'white'>This site is under active development and is for <font color = 'orange'> demonstration purposes only.</font></h6>
+                <h6 class='text-center'><font color = 'white'>This site is under active development and is for <font color = 'orange'> demonstration purposes only.</font></h6 class='text-center'>
                 <script type="text/javascript">
                   var d = new Date()
                   document.write("<font color = 'grey'><p style='font-size:80%;'>Stringkeeper &copy; " + d.getFullYear() + "</p></font>")
