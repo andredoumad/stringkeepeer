@@ -41,7 +41,7 @@ class BlogPostManager(models.Manager):
 class BlogPost(models.Model): # blogpost_set -> queryset
     # id = models.IntegerField() # pk
     user = models.ForeignKey(User, default=1, null=True, on_delete=models.SET_NULL)
-    image = models.ImageField(upload_to='static/image/', blank=True, null=True)
+    image = models.ImageField(upload_to='static/images/', blank=True, null=True)
     title = models.CharField(max_length=120)
     slug = models.SlugField(unique=True) # url encoded value so hello world -> hello-world
     content = models.TextField(null=True, blank=True)
