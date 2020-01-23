@@ -1,3 +1,15 @@
 body {
     color: #ccc;
 }
+
+.panel-transparent {
+    background: none;
+}
+
+.panel-transparent .panel-heading{
+    background: rgba(0, 0, 0, 0.33)!important;
+}
+
+.panel-transparent .panel-body{
+    background: rgba(0, 128, 255, 0.33)!important;
+}

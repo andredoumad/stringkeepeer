@@ -96,6 +96,10 @@ class SubscriptionDetailSlugView(ObjectViewedMixin, DetailView):
         context = super(SubscriptionDetailSlugView, self).get_context_data(*args, **kwargs)
         cart_obj, new_obj = Cart.objects.new_or_get(self.request)
         context['cart'] = cart_obj
+        context['subscription_slug'] = self.kwargs.get('slug')
+        detail_url = 'subscription/snippets/' + self.kwargs.get('slug') + '.html'
+        context['detail_url'] = detail_url
+        eventlog('SubscriptionDetailSlugView context: ' + str(context))
         return context
 
     def get_object(self, *args, **kwargs):
