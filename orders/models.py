@@ -288,7 +288,16 @@ class SubscriptionPurchaseManager(models.Manager):
             eventlog(str(billing_profile) + ' order_id is: ' + str(subscriptionPurchase.order_id))
         
         subscriptionPurchases_qs = subscriptionPurchases_qs.by_request(request)
-        return subscriptions_qs, subscriptionPurchases_qs
+        eventlog('subscriptionPurchase active')
+        live_subscription_purchases = []
+        for subscriptionPurchase in subscriptionPurchases_qs:
+            if subscriptionPurchase.is_canceled == True:
+                if subscriptionPurchase.is_canceled_final_date > timezone.now():
+                    live_subscription_purchases.append(subscriptionPurchase)
+            else:
+                live_subscription_purchases.append(subscriptionPurchase)
+
+        return subscriptions_qs, subscriptionPurchases_qs, live_subscription_purchases
 
 
 

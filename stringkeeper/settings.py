@@ -254,7 +254,8 @@ INSTALLED_APPS = [
     'accounts',
     'analytics',
     'billing',
-    'addresses'
+    'addresses',
+    'webharvest',
     
 ]
 

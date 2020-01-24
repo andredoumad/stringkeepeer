@@ -42,7 +42,7 @@ from analytics.views import SalesView, SalesAjaxView
 from carts.views import cart_detail_api_view
 from marketing.views import MarketingPreferenceUpdateView, MailchimpWebhookView
 from orders.views import LibraryView
-
+from webharvest.views import WebHarvestHomeView
 from .views import (
     home_page,
     about_page,
@@ -95,5 +95,7 @@ urlpatterns = [
     path('webhooks/mailchimp/', MailchimpWebhookView.as_view(), name='webhooks-mailchimp'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls, name='site_admin'),
+    path('webharvest/', include('webharvest.urls', namespace='webharvest'), name='webharvest'),
+
 
 ]

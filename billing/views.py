@@ -54,7 +54,7 @@ def payment_method_view(request):
         # detected removed subscription
         if 'subscriptionPurchase_order_id' in request.POST:
             data = request.POST['subscriptionPurchase_order_id']
-            my_subscriptions, subscriptionPurchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(request, billing_profile)
+            my_subscriptions, subscriptionPurchases,  live_subscription_purchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(request, billing_profile)
             subscription_purchase = None
             for subPurchase in subscriptionPurchases:
                 if str(subPurchase.order_id) == str(data):
@@ -95,7 +95,7 @@ def payment_method_view(request):
             result = gateway.subscription.cancel(str(data))
             
 
-            my_subscriptions, subscriptionPurchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(request, billing_profile)
+            my_subscriptions, subscriptionPurchases,  live_subscription_purchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(request, billing_profile)
             eventlog('my_subscriptions: ' + str(my_subscriptions))
             eventlog('my_subscription_purchases: ' + str(subscriptionPurchases))
 
@@ -177,7 +177,7 @@ def payment_method_view(request):
 
     customer_canceled_subscriptionPurchases = []
 
-    my_subscriptions, subscriptionPurchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(request, billing_profile)
+    my_subscriptions, subscriptionPurchases,  live_subscription_purchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(request, billing_profile)
     
     # make a list of canceled subscriptions
     for subscriptionPurchase in subscriptionPurchases:

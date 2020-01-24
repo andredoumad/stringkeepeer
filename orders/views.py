@@ -32,7 +32,7 @@ class LibraryView(LoginRequiredMixin, ListView):
     def get_context_data(self, *args, **kwargs):
 
         billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(self.request)
-        my_subscriptions, subscriptionPurchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(self.request, billing_profile)
+        my_subscriptions, subscriptionPurchases,  live_subscription_purchases = SubscriptionPurchase.objects.subscriptions_by_request_and_billing_profile(self.request, billing_profile)
         eventlog('billing_profile: ' + str(billing_profile))
         eventlog('subscriptionPurchases: ' + str(subscriptionPurchases))
         context = super(LibraryView, self).get_context_data(*args, **kwargs)

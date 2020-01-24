@@ -30,6 +30,12 @@ User = get_user_model()
 #LoginRequiredMixin,
 class AccountHomeView(LoginRequiredMixin, DetailView):
     template_name = 'accounts/home.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AccountHomeView, self).get_context_data(*args, **kwargs)
+        context['ascii_art'] = get_ascii_art()
+        return context
+
     def get_object(self):
         return self.request.user
 

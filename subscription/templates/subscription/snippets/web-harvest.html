@@ -1,4 +1,5 @@
 {% load static %}
+{% url 'webharvest:home' as home_url %}
 
 <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
 
@@ -47,7 +48,8 @@
         <hr/>
         Fill out a few forms to describe what phrases, keywords and categories of data you seek and let the service build your database for you.
         <hr/>
-        <a class="btn btn-info btn-block text-center" href="#" role="button"><h1>Try the demo!</h1></a>
+        
+        <a class="btn btn-info btn-block text-center" href="{{ home_url }}" role="button"><h1>Try the demo!</h1></a>
         <hr/>
       </h3>
         <h3 class='text-center'><font color = 'SpringGreen'>Mine data from thousands of pages each day!</font></h3>
