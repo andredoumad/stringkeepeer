@@ -2,9 +2,11 @@
     <input type='hidden' name='subscription_id' value='{{ subscription.id }}' {% if  subscription.is_digital %}data-is-digital='true'{% endif%}/>
       <span class='submit-span'>
     {% if subscription in cart.subscriptions.all %}
-        <div class='btn-group'> <a class='btn btn-link' href='/cart/'>In cart</a> <button type='submit' class='btn btn-link'>Remove?</button></div>
+        <div class='btn-group'> <a class='btn btn-block btn-info' href='/cart/'>In Cart</a>
+             <!-- <button type='submit' class='btn btn-warning'>Remove?</button> -->
+            </div>
     {% else %}
-        <button type='submit'  class='btn btn-success'>Add to cart</button>
+        <button type='submit'  class='btn btn-success'>Subscribe</button>
     {% endif %}
     </span>
 </form>

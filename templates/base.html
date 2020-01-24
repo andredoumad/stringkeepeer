@@ -33,17 +33,7 @@
             {% block javascript %}{% endblock %}
             <footer class="container">
                 <font color = '#FFFFFF'>
-                {% if ascii_art %}
 
-                  <div class="container-md">
-                      <pre>
-                        <p class='text-monospace' style="font-size:2px">
-                        <font color = '#85C1E9'> {{ascii_art}}
-                      </pre>
-                  </div>
-
-
-                {% endif %}
                 <hr/>
                 <h6 class='text-center'><font color = 'white'>This site is under active development and is for <font color = 'orange'> demonstration purposes only.</font></h6 class='text-center'>
                 <script type="text/javascript">
@@ -51,6 +41,17 @@
                   document.write("<font color = 'grey'><p style='font-size:80%;'>Stringkeeper &copy; " + d.getFullYear() + "</p></font>")
                 </script>
                 <hr/>
+                {% if ascii_art %}
+                
+                <div class="container-md">
+                    <pre>
+                      <p class='text-monospace' style="font-size:2px">
+                      <font color = '#85C1E9'> {{ascii_art}}
+                    </pre>
+                </div>
+                
+                
+                {% endif %}
               </footer>
     </div>
   </body>

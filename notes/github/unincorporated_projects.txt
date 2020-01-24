@@ -1,0 +1,11 @@
+https://github.com/django-ses/django-ses
+
+https://github.com/mher/chartkick.py
+
+https://github.com/dancaron/djangogo
+
+https://github.com/lamiru/aws-django
+
+https://github.com/marcelo-melo/bash_ec2_config
+
+https://github.com/jromich/django-aws-manager

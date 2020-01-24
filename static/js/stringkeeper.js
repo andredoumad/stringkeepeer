@@ -148,9 +148,9 @@ $(document).ready(function(){
             // submitSpan.html("<button type='submit' class='btn btn-danger'>Remove</button>")
             //<div class='btn-group'> <a class='btn btn-link' href='/cart/'>In cart</a> <button type='submit' class='btn btn-link'>Remove?</button></div>
 
-            submitSpan.html("<div class='btn-group'> <a class='btn btn-link' href='/cart/'>In cart</a>")
+            submitSpan.html("<div class='btn-group'> <a class='btn btn-info btn-block' href='/cart/'>In Cart</a>")
           }else{
-            submitSpan.html("<button type='submit' class='btn btn-success'>Add</button>")
+            submitSpan.html("<button type='submit' class='btn btn-success btn-block'>Subscribe</button>")
           }
           var navbarCount = $(".navbar-cart-count")
           navbarCount.text(data.cartItemCount)
