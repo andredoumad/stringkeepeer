@@ -5,9 +5,9 @@ from django.views.generic import CreateView, FormView, DetailView, View, UpdateV
 from billing.models import BillingProfile
 from orders.models import Order, SubscriptionPurchase
 # Create your views here.
-
-
-
+from .mixins import CsrfExemptMixin
+from django.http import HttpResponse
+import json
 
 #LoginRequiredMixin,
 class WebHarvestHomeView(DetailView):
@@ -38,4 +38,31 @@ class WebHarvestHomeView(DetailView):
 
     def get_object(self):
         return self.request.user
+
+
+class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF?????
+    def get(self, request, *args, **kwargs):
+        return HttpResponse("Thank you", status=200)
+
+    def post(self, request, *args, **kwargs):
+
+        eventlog('WebHarvestWebhookView POST request: ' + str(request))
+        eventlog('WebHarvestWebhookView POST args: ' + str(*args))
+        eventlog('WebHarvestWebhookView POST kwargs: ' + str(**kwargs))
+        data = request.POST
+        eventlog('WebHarvestWebhookView POST data: ' + str(data))
+        json.dumps(data)
+        eventlog('WebHarvestWebhookView POST json.dumps(data): ' + str(data))
+        # t_id = request.POST.json['id']
+        # eventlog('WebHarvestWebhookView POST t_id: ' + str(t_id))
+        # t_name = request.POST.json['name']
+        # eventlog('WebHarvestWebhookView POST t_name: ' + str(t_name))
+        # created_on = request.POST.json['created_on']
+        # eventlog('WebHarvestWebhookView POST created_on: ' + str(created_on))
+        # modified_on = request.POST.json['modified_on']
+        # eventlog('WebHarvestWebhookView POST modified_on: ' + str(modified_on))
+        # desc = request.POST.json['desc']
+        # eventlog('WebHarvestWebhookView POST desc: ' + str(desc))
+
+        return HttpResponse("Thank you", status=200)
 
