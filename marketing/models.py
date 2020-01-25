@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save, pre_save
+from stringkeeper.standalone_tools import *
 
 from .utils import Mailchimp
 
@@ -24,7 +25,7 @@ class MarketingPreference(models.Model):
 def marketing_pref_create_receiver(sender, instance, created, *args, **kwargs):
     if created:
         status_code, response_data = Mailchimp().subscribe(instance.user.email)
-        eventlog(status_code, response_data)
+        eventlog(str(status_code + ' ' +response_data))
 
 
 post_save.connect(marketing_pref_create_receiver, sender=MarketingPreference)
