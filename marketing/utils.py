@@ -3,7 +3,8 @@ import json
 import re
 import requests
 from django.conf import settings
-
+from stringkeeper.standalone_tools import *
+from mailchimp3 import MailChimp
 
 MAILCHIMP_API_KEY = getattr(settings, "MAILCHIMP_API_KEY", None)
 MAILCHIMP_DATA_CENTER = getattr(settings, "MAILCHIMP_DATA_CENTER", None)
@@ -36,18 +37,23 @@ class Mailchimp(object):
                                     api_url = self.api_url,
                                     list_id=self.list_id
                         )
+        eventlog('MAILCHIMP POST self.list_endpoint: ' + str(self.list_endpoint))
 
     
     def get_members_endpoint(self):
+        eventlog('MAILCHIMP get_members_endpoint: ' + str(self.list_endpoint) + "/members")
         return self.list_endpoint + "/members"
 
     def change_subcription_status(self, email, status='unsubscribed'):
         hashed_email = get_subscriber_hash(email)
         endpoint = self.get_members_endpoint() + "/" +  hashed_email
         data = {
+            'email_address': email,
             "status": self.check_valid_status(status)
         }
         r = requests.put(endpoint, auth=("", self.key), data=json.dumps(data))
+        eventlog('change_subcription_status request.json(): ' + str(r.json()))
+
         return r.status_code, r.json()
 
 
@@ -64,6 +70,8 @@ class Mailchimp(object):
         return status
 
     def add_email(self, email):
+        eventlog('add_email is activated')
+        eventlog('email: ' + str(email) )
         # status = "subscribed"
         # self.check_valid_status(status)
         # data = {

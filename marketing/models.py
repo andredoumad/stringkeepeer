@@ -17,7 +17,7 @@ class MarketingPreference(models.Model):
         if self.user == None:
             return 'user is missing'
         else:
-            return self.user
+            return self.user.email
 
 
 
@@ -25,19 +25,30 @@ class MarketingPreference(models.Model):
 def marketing_pref_create_receiver(sender, instance, created, *args, **kwargs):
     if created:
         status_code, response_data = Mailchimp().subscribe(instance.user.email)
-        eventlog(str(status_code) + ' ' +str(response_data))
+        eventlog('marketing_pref_create_receiver: ' + str(status_code) + ' ' +str(response_data))
 
 
 post_save.connect(marketing_pref_create_receiver, sender=MarketingPreference)
 
 def marketing_pref_update_receiver(sender, instance, *args, **kwargs):
+    eventlog('marketing_pref_update_receiver triggered')
     if instance.subscribed != instance.mailchimp_subscribed:
         if instance.subscribed:
             # subscribing user
             status_code, response_data = Mailchimp().subscribe(instance.user.email)
+            eventlog('marketing_pref_update_receiver triggered subscribe status_code: ' + str(status_code))
+            eventlog('instance.user.email: ' + str(instance.user.email))
+            Mailchimp().add_email(instance.user.email)
+            status_code, response_data = Mailchimp().subscribe(instance.user.email)
+            eventlog('marketing_pref_update_receiver triggered subscribe status_code: ' + str(status_code))
         else:
             # unsubscribing user
             status_code, response_data = Mailchimp().unsubscribe(instance.user.email)
+            eventlog('marketing_pref_update_receiver triggered unsubscribe status_code: ' + str(status_code))
+            eventlog('instance.user.email: ' + str(instance.user.email))
+            Mailchimp().add_email(instance.user.email)
+            status_code, response_data = Mailchimp().unsubscribe(instance.user.email)
+            eventlog('marketing_pref_update_receiver triggered unsubscribe status_code: ' + str(status_code))
 
         if response_data['status'] == 'subscribed':
             instance.subscribed = True
