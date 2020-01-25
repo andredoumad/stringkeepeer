@@ -4,7 +4,7 @@ from django.views.generic import View, ListView, DetailView
 from django.shortcuts import render
 from stringkeeper.standalone_tools import *
 # Create your views here.
-
+from stringkeeper import settings
 from billing.models import BillingProfile
 from .models import Order, SubscriptionPurchase
 
@@ -41,6 +41,8 @@ class LibraryView(LoginRequiredMixin, ListView):
         context['subscriptionPurchases'] = subscriptionPurchases
         context['billing_profile'] = billing_profile
         context['testing'] = 'testing'
+        context['base_url'] = settings.BASE_URL
+
         return context
 
     def get_queryset(self):

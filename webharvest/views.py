@@ -28,6 +28,12 @@ class WebHarvestHomeView(DetailView):
             if str(live_subscription_purchase.subscription.slug) == 'web-harvest':
                 subscribed = True
         context['subscribed'] = subscribed
+        title = ''
+        if not subscribed:
+            title = 'Web Harvest Demo'
+
+        context['title'] = title
+
         return context
 
     def get_object(self):

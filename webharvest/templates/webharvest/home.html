@@ -1,16 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<hr/>
+{% if not subscribed %}
+    <hr/>
+        <h3 class='text-center'> {{ title }} </h3>
+    <hr/>
+{% endif %}
 
-<h2 class='text-center'> Web Harvest </h2>
-<hr/>
+
+
+{% endblock %}
+
+
+
+
 <h3 class='text-center'> Billing Profile: {{ billing_profile }} </h3>
-<h3 class='text-center'> Subscribed: {{ subscribed }} </h3>
-<hr/>
-
-
-
 
 <h5 class='text-left'> subscription purchases </h5>
 
@@ -38,6 +42,3 @@
 
 
 
-
-
-{% endblock %}
