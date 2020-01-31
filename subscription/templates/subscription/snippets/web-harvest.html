@@ -35,23 +35,28 @@
 
 <div class="jumbotron bg-dark">
     <!-- <h2 class="display-4 text-center"><font color = 'white'>Web Harvest</font></h2> -->
-
+    {% if not authenticated %}
+    <a class="btn btn-info btn-block text-center" href="{{ home_url }}" role="button"><h1> Try For Free </h1></a>
+    {% else %}
+    <a class="btn btn-info btn-block text-center" href="{{ home_url }}" role="button"><h1> Launch Web Harvest </h1></a>
+    {% endif %}
+    <hr/>
     <blockquote class="blockquote text-center">
         <p class="mb-0"><font color = 'orange'><h4> Search engines can't store web content; they simply link you to a web page. </h4></font><font color = 'SpringGreen'> <h3> <font color = 'white'>Web Harvest</font> visits the pages for you and extracts the data you need. </h3></font></p>
 
       </blockquote>
 
 
-      <h3 class="text-left">
+      <h5 class="text-left">
 
 
         <hr/>
-        Fill out a few forms to describe what phrases, keywords and categories of data you seek and let the service build your database for you.
+        Fill out a few forms to describe what phrases, keywords and categories of data you seek and let the AI service build your database for you.
         <hr/>
         
-        <a class="btn btn-info btn-block text-center" href="{{ home_url }}" role="button"><h1> Launch Web Harvest </h1></a>
-        <hr/>
-      </h3>
+
+
+      </h5>
         <h3 class='text-center'><font color = 'SpringGreen'>Mine data from thousands of pages each day!</font></h3>
         
     </h3>

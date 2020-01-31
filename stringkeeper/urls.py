@@ -43,6 +43,8 @@ from carts.views import cart_detail_api_view
 from marketing.views import MarketingPreferenceUpdateView, MailchimpWebhookView
 from orders.views import LibraryView
 from webharvest.views import WebHarvestHomeView, WebHarvestWebhookView
+
+
 from .views import (
     home_page,
     about_page,
@@ -97,9 +99,12 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls, name='site_admin'),
     path('webharvest/', include('webharvest.urls', namespace='webharvest'), name='webharvest'),
-    path('web-harvest/', include('webharvest.urls', namespace='webharvest'), name='webharvest'),
+    path('web-harvest/', include('webharvest.urls', namespace='webharvest'), name='web-harvest'),
     # path('data-mining/', LibraryView.as_view(), name='library'),
     # path('email-automation/', LibraryView.as_view(), name='library'),
 
 
+    path('webharvest/', include('core.urls', namespace='chat'), name='chat'),
+
+    # path('', include('core.urls', namespace='chat'), name='chat'),
 ]

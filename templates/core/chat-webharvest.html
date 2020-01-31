@@ -1,19 +1,14 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
 
-{% if not subscribed %}
-    <hr/>
-        <h3 class='text-center'> {{ title }} </h3>
-    <hr/>
-
-
     <div class="container">
-        <!-- <div class="page-header">
+        <div class="page-header">
             {{ request.session.session_key }}
-        </div> -->
+        </div>
         <div class="row">
-            <div class="col-md-12">
+            <div style='background-color:rgb(61, 70, 78);' class="col-md-4">
                 <!-- <div id="user-list" class="list-group">
                     <a href="" class="list-group-item disabled">
                         <h4 class="list-group-item-heading">Users</h4>
@@ -21,11 +16,11 @@
                     </a>
                 </div> -->
             </div>
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="panel panel-info">
-                    <!-- <div class="panel-heading">
+                    <div class="panel-heading">
                         <h4 class="panel-title">Chat</h4>
-                    </div> -->
+                    </div>
                     <div>
                         <ul id="messages" class="messages">
                             {# Messages go here #}
@@ -38,7 +33,7 @@
                                    placeholder="Type your message here ..."
                                    maxlength="500">
                             <span class="input-group-btn">
-                            <button class="btn btn-block btn-info btn"
+                            <button class="btn btn-info btn"
                                     id="btn-send">
                                 Send</button>
                         </span>
@@ -95,20 +90,12 @@ function drawMessage(message) {
     let position = 'left';
     const date = new Date(message.timestamp);
     if (message.user === currentUser) position = 'right';
-    // original
-    // `
-    //         <li class="message ${position}">
-    //             <div class="avatar">${message.user}</div>
-    //                 <div class="text_wrapper">
-    //                     <div class="text">${message.body}<br>
-    //                         <span class="small">${date}</span>
-    //                 </div>
-    //             </div>
-    //         </li>`
     const messageItem = `
             <li class="message ${position}">
+                <div class="avatar">${message.user}</div>
                     <div class="text_wrapper">
                         <div class="text">${message.body}<br>
+                            <span class="small">${date}</span>
                     </div>
                 </div>
             </li>`;
@@ -212,49 +199,6 @@ $(document).ready(function () {
 
     </script>
 
-
-<!-- 
-    <script src="{% static 'js/app.js' %}"></script> -->
-
-    <script>
-
-    </script>
-
-
-{% endif %}
-
-
+    <!-- <script src="{% static 'js/app.js' %}"></script> -->
 
 {% endblock %}
-
-
-
-
-<h3 class='text-center'> Billing Profile: {{ billing_profile }} </h3>
-
-<h5 class='text-left'> subscription purchases </h5>
-
-{% for subscription_purchase in subscription_purchases %}
-<hr/>
-<h6 class='text-center'>{{ subscription_purchase.subscription }}</h6>
-<hr/>
-{% endfor %}
-
-<h5 class='text-left'> my subscriptions </h5>
-
-{% for my_subscription in my_subscriptions %}
-<hr/>
-<h6 class='text-center'> {{ my_subscription }} </h6>
-<hr/>
-{% endfor %}
-
-<h5 class='text-left'> live subscription purchases </h5>
-
-{% for live_subscription_purchase in live_subscription_purchases %}
-<hr/>
-<h6 class='text-center'> {{ live_subscription_purchase }} </h6>
-<hr/>
-{% endfor %}
-
-
-

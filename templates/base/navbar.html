@@ -48,9 +48,7 @@
         {% if user.is_authenticated %}
 
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle mx-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Account
-          </button>
+          <button class="btn btn-secondary dropdown-toggle mx-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item {% if request.path == accounts_url  %}active{% endif %}" href="{{ accounts_url }}">Manage</a>
             <a class="dropdown-item {% if request.path == library_url  %}active{% endif %}" href="{{ library_url }}">Library</a>

@@ -152,6 +152,7 @@ logging.basicConfig(level=logging.CRITICAL)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 eventlog('BASE_DIR: ' + str(BASE_DIR))
+BASE_URL = ''
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -256,7 +257,10 @@ INSTALLED_APPS = [
     'billing',
     'addresses',
     'webharvest',
-    
+    'chat',
+    'core',
+    'rest_framework',
+    'channels',
 ]
 
 
@@ -375,6 +379,36 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+
+ASGI_APPLICATION = 'chat.routing.application'
+
+AUTH_PASSWORD_VALIDATORS = []
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+        # 'rest_framework.permissions.IsAuthenticated'
+    ],
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100
+}
+
+
+MESSAGES_TO_LOAD = 15
+
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            # "hosts": [('www.stringkeeper.com', 6379)],
+            "hosts": [('127.0.0.1', 6379)],
+            # "hosts": [('127.0.0.1', 5432)],
+        },
+    },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

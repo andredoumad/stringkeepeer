@@ -1,0 +1,99 @@
+
+============================ by clicking this is the sql and last line 
+|==| 00018 |==| 
+|==| 00018 |==| eeper/core/serializers.py | MessageModelSerializer |==|
+|==| 00018 |==| 
+|==| 00020 |==| 
+|==| 00020 |==| eeper/core/serializers.py | user: andre@blackmesanetwork.com |==|
+|==| 00020 |==| 
+DEBUG:django.db.backends:(0.051) SELECT "accounts_user"."id", "accounts_user"."password", "accounts_user"."last_login", "accounts_user"."email", "accounts_user"."first_name", "accounts_user"."last_name", "accounts_user"."full_name", "accounts_user"."is_active", "accounts_user"."staff", "accounts_user"."admin", "accounts_user"."timestamp" FROM "accounts_user" WHERE "accounts_user"."email" = 'andre@stringkeeper.com'; args=('andre@stringkeeper.com',)
+|==| 00025 |==| 
+|==| 00025 |==| eeper/core/serializers.py | user: andre@blackmesanetwork.com |==|
+|==| 00025 |==| 
+|==| 00034 |==| 
+|==| 00034 |==| eeper/core/serializers.py | user: andre@blackmesanetwork.com |==|
+|==| 00034 |==| 
+|==| 00035 |==| 
+|==| 00035 |==| eeper/core/serializers.py | user_id: 46 |==|
+|==| 00035 |==| 
+|==| 00037 |==| 
+|==| 00037 |==| eeper/core/serializers.py | Recipient: andre@stringkeeper.com |==|
+|==| 00037 |==| 
+|==| 00038 |==| 
+|==| 00038 |==| eeper/core/serializers.py | validated_data[body] testing |==|
+|==| 00038 |==| 
+DEBUG:django.db.backends:(0.041) INSERT INTO "core_messagemodel" ("user_id", "recipient_id", "timestamp", "body") VALUES (46, 1, '2020-01-31T01:06:09.195920+00:00'::timestamptz, 'testing') RETURNING "core_messagemodel"."id"; args=(46, 1, datetime.datetime(2020, 1, 31, 1, 6, 9, 195920, tzinfo=<UTC>), 'testing')
+|==| 00045 |==| 
+|==| 00045 |==| ringkeeper/core/models.py | user.id 46 |==|
+|==| 00045 |==| 
+|==| 00046 |==| 
+|==| 00046 |==| ringkeeper/core/models.py | recipient.id 1 |==|
+|==| 00046 |==| 
+INFO:django.channels.server:HTTP POST /webharvest/api/v1/message/ 201 [0.50, 127.0.0.1:47470]
+DEBUG:django.db.backends:(0.052) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2020-01-31T01:06:09.246937+00:00'::timestamptz AND "django_session"."session_key" = '78b3b1oipom1y6rpiurzvyehj62l2ggz'); args=(datetime.datetime(2020, 1, 31, 1, 6, 9, 246937, tzinfo=<UTC>), '78b3b1oipom1y6rpiurzvyehj62l2ggz')
+DEBUG:django.db.backends:(0.037) SELECT "accounts_user"."id", "accounts_user"."password", "accounts_user"."last_login", "accounts_user"."email", "accounts_user"."first_name", "accounts_user"."last_name", "accounts_user"."full_name", "accounts_user"."is_active", "accounts_user"."staff", "accounts_user"."admin", "accounts_user"."timestamp" FROM "accounts_user" WHERE "accounts_user"."id" = 46; args=(46,)
+|==| 00062 |==| 
+|==| 00062 |==| /stringkeeper/core/api.py | MessageModelViewSet retrieve |==|
+|==| 00062 |==| 
+DEBUG:django.db.backends:(0.046) SELECT "core_messagemodel"."id", "core_messagemodel"."user_id", "core_messagemodel"."recipient_id", "core_messagemodel"."timestamp", "core_messagemodel"."body" FROM "core_messagemodel" WHERE (("core_messagemodel"."recipient_id" = 46 OR "core_messagemodel"."user_id" = 46) AND "core_messagemodel"."id" = 52); args=(46, 46, 52)
+|==| 00067 |==| 
+|==| 00067 |==| /stringkeeper/core/api.py | msg = get_object_or_404: 52 |==|
+|==| 00067 |==| 
+DEBUG:django.db.backends:(0.036) SELECT "core_messagemodel"."id", "core_messagemodel"."user_id", "core_messagemodel"."recipient_id", "core_messagemodel"."timestamp", "core_messagemodel"."body" FROM "core_messagemodel" WHERE (("core_messagemodel"."recipient_id" = 46 OR "core_messagemodel"."user_id" = 46) AND "core_messagemodel"."id" = 52) ORDER BY "core_messagemodel"."timestamp" DESC  LIMIT 21; args=(46, 46, 52)
+|==| 00071 |==| 
+|==| 00071 |==| /stringkeeper/core/api.py | debug_query: <QuerySet [<MessageModel: 52>]> |==|
+|==| 00071 |==| 
+DEBUG:django.db.backends:(0.046) SELECT "accounts_user"."id", "accounts_user"."password", "accounts_user"."last_login", "accounts_user"."email", "accounts_user"."first_name", "accounts_user"."last_name", "accounts_user"."full_name", "accounts_user"."is_active", "accounts_user"."staff", "accounts_user"."admin", "accounts_user"."timestamp" FROM "accounts_user" WHERE "accounts_user"."id" = 46; args=(46,)
+DEBUG:django.db.backends:(0.037) SELECT "accounts_user"."id", "accounts_user"."password", "accounts_user"."last_login", "accounts_user"."email", "accounts_user"."first_name", "accounts_user"."last_name", "accounts_user"."full_name", "accounts_user"."is_active", "accounts_user"."staff", "accounts_user"."admin", "accounts_user"."timestamp" FROM "accounts_user" WHERE "accounts_user"."id" = 1; args=(1,)
+INFO:django.channels.server:HTTP GET /webharvest/api/v1/message/52/ 200 [0.53, 127.0.0.1:47506]
+
+
+
+============================ by api 
+|==| 00018 |==| 
+|==| 00018 |==| eeper/core/serializers.py | MessageModelSerializer |==|
+|==| 00018 |==| 
+|==| 00020 |==| 
+|==| 00020 |==| eeper/core/serializers.py | user: AnonymousUser |==|
+|==| 00020 |==| 
+DEBUG:django.db.backends:(0.051) SELECT "accounts_user"."id", "accounts_user"."password", "accounts_user"."last_login", "accounts_user"."email", "accounts_user"."first_name", "accounts_user"."last_name", "accounts_user"."full_name", "accounts_user"."is_active", "accounts_user"."staff", "accounts_user"."admin", "accounts_user"."timestamp" FROM "accounts_user" WHERE "accounts_user"."email" = 'andre@blackmesanetwork.com'; args=('andre@blackmesanetwork.com',)
+|==| 00025 |==| 
+|==| 00025 |==| eeper/core/serializers.py | user: AnonymousUser |==|
+|==| 00025 |==| 
+|==| 00030 |==| 
+|==| 00030 |==| eeper/core/serializers.py | detected anonymous user!: AnonymousUser |==|
+|==| 00030 |==| 
+DEBUG:django.db.backends:(0.036) SELECT "accounts_user"."id", "accounts_user"."password", "accounts_user"."last_login", "accounts_user"."email", "accounts_user"."first_name", "accounts_user"."last_name", "accounts_user"."full_name", "accounts_user"."is_active", "accounts_user"."staff", "accounts_user"."admin", "accounts_user"."timestamp" FROM "accounts_user" WHERE "accounts_user"."email" = 'andre@blackmesanetwork.com'; args=('andre@blackmesanetwork.com',)
+|==| 00034 |==| 
+|==| 00034 |==| eeper/core/serializers.py | user: andre@blackmesanetwork.com |==|
+|==| 00034 |==| 
+|==| 00035 |==| 
+|==| 00035 |==| eeper/core/serializers.py | user_id: 46 |==|
+|==| 00035 |==| 
+|==| 00037 |==| 
+|==| 00037 |==| eeper/core/serializers.py | Recipient: andre@blackmesanetwork.com |==|
+|==| 00037 |==| 
+|==| 00038 |==| 
+|==| 00038 |==| eeper/core/serializers.py | validated_data[body] hello from worker |==|
+|==| 00038 |==| 
+DEBUG:django.db.backends:(0.073) INSERT INTO "core_messagemodel" ("user_id", "recipient_id", "timestamp", "body") VALUES (46, 46, '2020-01-31T01:16:36.914035+00:00'::timestamptz, 'hello from worker') RETURNING "core_messagemodel"."id"; args=(46, 46, datetime.datetime(2020, 1, 31, 1, 16, 36, 914035, tzinfo=<UTC>), 'hello from worker')
+|==| 00045 |==| 
+|==| 00045 |==| ringkeeper/core/models.py | user.id 46 |==|
+|==| 00045 |==| 
+|==| 00046 |==| 
+|==| 00046 |==| ringkeeper/core/models.py | recipient.id 46 |==|
+|==| 00046 |==| 
+|==| 00044 |==| 
+|==| 00044 |==| eeper/core/serializers.py | AnonymousUser == True:  |==|
+|==| 00044 |==| 
+|==| 00045 |==| 
+|==| 00045 |==| ringkeeper/core/models.py | user.id 46 |==|
+|==| 00045 |==| 
+|==| 00046 |==| 
+|==| 00046 |==| ringkeeper/core/models.py | recipient.id 46 |==|
+|==| 00046 |==| 
+|==| 00046 |==| 
+|==| 00046 |==| eeper/core/serializers.py | note: ran notify_ws_clients |==|
+|==| 00046 |==| 
+INFO:django.channels.server:HTTP POST /webharvest/api/v1/message/ 201 [0.58, 127.0.0.1:47580]
+INFO:django.channels.server:HTTP POST /webhooks/webharvest/ 200 [0.58, 127.0.0.1:47578]
