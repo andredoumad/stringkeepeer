@@ -46,7 +46,11 @@ class WebHarvestHomeView(DetailView):
 
         context['title'] = title
 
-
+        if BASE_URL == 'http://127.0.0.1:8000':
+            context['websocketURL'] = 'ws://' + window.location.host + '/ws?session_key=${sessionKey}' 
+        else
+            context['websocketURL'] = 'wss://' + window.location.host + '/ws?session_key=${sessionKey}'
+        
         return context
 
     def get_object(self):
