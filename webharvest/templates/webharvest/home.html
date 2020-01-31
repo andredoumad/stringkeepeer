@@ -55,6 +55,8 @@
         let sessionKey = '{{ request.session.session_key }}';
         let currentUser = '{{ request.user }}';
         let websocketURL = '{{ websocketURL }}';
+        console.log('websocketURL: ' + websocketURL)
+
 
 
     
@@ -184,7 +186,19 @@ $(document).ready(function () {
     enableInput();
 
 
-    var socket = new WebSocket(websocketURL)
+    // var socket = new WebSocket('ws://' + '127.0.0.1:8000/webharvest' + '/ws?session_key=${sessionKey}')
+    console.log('window.location.host: ' + window.location.host)
+    if (window.location.host == '127.0.0.1:8000'){
+        var socket = new WebSocket(
+        'ws://' + '127.0.0.1:8000' +
+            '/ws?session_key=${sessionKey}'
+        )
+    } else {
+        var socket = new WebSocket(
+        'wss://' + 'stringkeeper.com' +
+            '/ws?session_key=${sessionKey}'
+        )
+    }
 
 
     chatInput.keypress(function (e) {
@@ -208,14 +222,6 @@ $(document).ready(function () {
         getMessageById(e.data);
     };
 });
-
-    </script>
-
-
-<!-- 
-    <script src="{% static 'js/app.js' %}"></script> -->
-
-    <script>
 
     </script>
 
