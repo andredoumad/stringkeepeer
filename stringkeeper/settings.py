@@ -459,7 +459,7 @@ if socket.gethostname()=="www.stringkeeper.com":
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
                 # "hosts": [('www.stringkeeper.com', 6379)],
-                "hosts": [('54.203.44.104', 6379)],
+                "hosts": [('44.225.82.162', 6379)],
                 # "hosts": [('127.0.0.1', 5432)],
             },
         },
@@ -518,7 +518,7 @@ else:
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
                 # "hosts": [('www.stringkeeper.com', 6379)],
-                "hosts": [('127.0.0.1', 6379)],
+                "hosts": [('44.225.82.162', 6379)],
                 # "hosts": [('127.0.0.1', 5432)],
             },
         },
