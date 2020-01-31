@@ -185,7 +185,8 @@ $(document).ready(function () {
     getConversation('andre@stringkeeper.com');
     enableInput();
 
-
+//        'ws://' + '127.0.0.1:8000' +
+//        '/ws?session_key=${sessionKey}'
     // var socket = new WebSocket('ws://' + '127.0.0.1:8000/webharvest' + '/ws?session_key=${sessionKey}')
     console.log('window.location.host: ' + window.location.host)
     if (window.location.host == '127.0.0.1:8000'){
@@ -195,7 +196,8 @@ $(document).ready(function () {
         )
     } else {
         var socket = new WebSocket(
-        'wss://' + window.location.host
+        'wss://' + window.location.host +
+            '/ws?session_key=${sessionKey}'
         )
     }
 
