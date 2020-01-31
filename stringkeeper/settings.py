@@ -399,16 +399,7 @@ REST_FRAMEWORK = {
 MESSAGES_TO_LOAD = 15
 
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            # "hosts": [('www.stringkeeper.com', 6379)],
-            "hosts": [('127.0.0.1', 6379)],
-            # "hosts": [('127.0.0.1', 5432)],
-        },
-    },
-}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -439,29 +430,16 @@ if socket.gethostname()=="www.stringkeeper.com":
     SESSION_COOKIE_HTTPONLY=True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
     SECURE_SSL_REDIRECT = True
-
-    # eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperlivedebug.report')) )
-    # f = open(str(os.path.join(BASE_DIR, 'stringkeeperlivedebug.report')), "w")
-    # f.write("")
-    # f.close()
-    # LOGGING = {
-    #     'version': 1,
-    #     'disable_existing_loggers': False,
-    #     'handlers': {
-    #         'file': {
-    #             'level': 'DEBUG',
-    #             'class': 'logging.FileHandler',
-    #             'filename': os.path.join(BASE_DIR, 'stringkeeperlivedebug.report'),
-    #         },
-    #     },
-    #     'loggers': {
-    #         'django': {
-    #             'handlers': ['file'],
-    #             'level': 'DEBUG',
-    #             'propagate': True,
-    #         },
-    #     },
-    # }
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                # "hosts": [('www.stringkeeper.com', 6379)],
+                "hosts": [('https://www.stringkeeper.com', 6379)],
+                # "hosts": [('127.0.0.1', 5432)],
+            },
+        },
+    }
 
 else:
     eventlog(' running non-production settings')
@@ -507,6 +485,17 @@ else:
                 'handlers': ['file'],
                 'level': 'DEBUG',
                 'propagate': True,
+            },
+        },
+    }
+
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                # "hosts": [('www.stringkeeper.com', 6379)],
+                "hosts": [('127.0.0.1', 6379)],
+                # "hosts": [('127.0.0.1', 5432)],
             },
         },
     }
