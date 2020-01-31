@@ -196,7 +196,7 @@ $(document).ready(function () {
     } else {
         var socket = new WebSocket(
         'wss://' + window.location.host +
-            '/wss?session_key=${sessionKey}'
+            '/ws?session_key=${sessionKey}'
         )
     }
 
