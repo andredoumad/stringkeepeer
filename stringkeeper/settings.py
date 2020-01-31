@@ -431,8 +431,8 @@ if socket.gethostname()=="www.stringkeeper.com":
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
     SECURE_SSL_REDIRECT = True
 
-    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.log')) )
-    f = open(str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.log')), "w")
+    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.txt')) )
+    f = open(str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.txt')), "w")
     f.write("")
     f.close()
     LOGGING = {
@@ -442,7 +442,7 @@ if socket.gethostname()=="www.stringkeeper.com":
             'file': {
                 'level': 'DEBUG',
                 'class': 'logging.FileHandler',
-                'filename': os.path.join(BASE_DIR, 'stringkeeperremotedebug.log'),
+                'filename': os.path.join(BASE_DIR, 'stringkeeperremotedebug.txt'),
             },
         },
         'loggers': {
