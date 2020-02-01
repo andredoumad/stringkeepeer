@@ -195,7 +195,7 @@ $(document).ready(function () {
     //     )
     // }
 
-    var socket = new WebSocket((window.location.protocol == 'http') ? 'ws://' : 'wss://' +  window.location.host + '/')
+    var socket = new WebSocket((window.location.protocol == 'http') ? 'ws://' : 'wss://' +  window.location.host + '/ws?session_key=${sessionKey}')
 
     chatInput.keypress(function (e) {
         console.log('chatInput.keypress')
