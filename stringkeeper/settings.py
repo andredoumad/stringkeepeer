@@ -426,10 +426,10 @@ if socket.gethostname()=="www.stringkeeper.com":
     DEBUG = False
     # ssl
     CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE=True
-    SESSION_COOKIE_HTTPONLY=True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
-    SECURE_SSL_REDIRECT = True
+    # SESSION_COOKIE_SECURE=True
+    # SESSION_COOKIE_HTTPONLY=True
+    # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
+    # SECURE_SSL_REDIRECT = True
 
     eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.txt')) )
     f = open(str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.txt')), "w")
@@ -518,8 +518,8 @@ else:
         'default': {
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
-                # "hosts": [('www.stringkeeper.com', 6379)],
-                "hosts": [('44.225.82.162', 6379)],
+                "hosts": [('www.stringkeeper.com', 6379)],
+                # "hosts": [('44.225.82.162', 6379)],
                 # "hosts": [('127.0.0.1', 5432)],
             },
         },
