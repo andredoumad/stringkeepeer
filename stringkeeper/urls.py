@@ -103,8 +103,9 @@ urlpatterns = [
     # path('data-mining/', LibraryView.as_view(), name='library'),
     # path('email-automation/', LibraryView.as_view(), name='library'),
 
-
-    path('webharvest/', include('core.urls', namespace='chat'), name='chat'),
+    path('securesockets/', include('webharvest.urls', namespace='webharvest'), name='webharvest'),
+    # path('webharvest/', include('core.urls', namespace='chat'), name='chat'),
 
     path('wss/', include('core.urls', namespace='chat'), name='chat'),
+    
 ]
