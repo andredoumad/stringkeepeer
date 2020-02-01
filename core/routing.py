@@ -7,7 +7,7 @@ from django.urls import path, re_path
 websocket_urlpatterns = [
     # url(r'^ws$', consumers.ChatConsumer),
     url(r'^ws$', consumers.ChatConsumer),
-    url(r'^wss$', consumers.ChatConsumer),
+    url(r'^wss$', consumers.test_consumer('hello from wss')),
     url(r'^securesockets$', consumers.ChatConsumer),
 ]
 
