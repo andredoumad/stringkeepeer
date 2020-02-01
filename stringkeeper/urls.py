@@ -107,7 +107,7 @@ urlpatterns = [
 
     # path('ws', consumers.ChatConsumer)    
     # path('wss', consumers.ChatConsumer)
-    path('chat/', include('core.urls', namespace='chat'), name='chat'),
+    path('webharvest/', include('core.urls', namespace='chat'), name='chat'),
     # path('webharvest/', include('core.urls', namespace='chat'), name='chat'),
 
     # path('', include('core.urls', namespace='chat'), name='chat'),
