@@ -33,68 +33,32 @@ Traceback (most recent call last):
   File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
     raise VariableDoesNotExist("Failed lookup for key "
 django.template.base.VariableDoesNotExist: Failed lookup for key [q] in <QueryDict: {}>
-Internal Server Error: /webharvest/api/v1/message/
+Exception while resolving variable 'websocketURL' in template 'webharvest/home.html'.
 Traceback (most recent call last):
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/core/handlers/exception.py", line 34, in inner
-    response = get_response(request)
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/core/handlers/base.py", line 115, in _get_response
-    response = self.process_exception_by_middleware(e, request)
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/core/handlers/base.py", line 113, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
-    return view_func(*args, **kwargs)
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/rest_framework/viewsets.py", line 114, in view
-    return self.dispatch(request, *args, **kwargs)
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/rest_framework/views.py", line 505, in dispatch
-    response = self.handle_exception(exc)
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/rest_framework/views.py", line 465, in handle_exception
-    self.raise_uncaught_exception(exc)
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/rest_framework/views.py", line 476, in raise_uncaught_exception
-    raise exc
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/rest_framework/views.py", line 502, in dispatch
-    response = handler(request, *args, **kwargs)
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/rest_framework/mixins.py", line 19, in create
-    self.perform_create(serializer)
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/rest_framework/mixins.py", line 24, in perform_create
-    serializer.save()
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/rest_framework/serializers.py", line 212, in save
-    self.instance = self.create(validated_data)
-  File "/home/ubuntu/stringkeeper/core/serializers.py", line 43, in create
-    msg.save()
-  File "/home/ubuntu/stringkeeper/core/models.py", line 61, in save
-    self.notify_ws_clients()
-  File "/home/ubuntu/stringkeeper/core/models.py", line 48, in notify_ws_clients
-    async_to_sync(channel_layer.group_send)("{}".format(self.user.id), notification)
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/asgiref/sync.py", line 116, in __call__
-    return call_result.result()
-  File "/usr/lib/python3.8/concurrent/futures/_base.py", line 432, in result
-    return self.__get_result()
-  File "/usr/lib/python3.8/concurrent/futures/_base.py", line 388, in __get_result
-    raise self._exception
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/asgiref/sync.py", line 156, in main_wrap
-    result = await self.awaitable(*args, **kwargs)
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/channels_redis/core.py", line 608, in group_send
-    async with self.connection(self.consistent_hash(group)) as connection:
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/channels_redis/core.py", line 820, in __aenter__
-    self.conn = await self.pool.pop()
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/channels_redis/core.py", line 70, in pop
-    conns.append(await aioredis.create_redis(**self.host, loop=loop))
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/aioredis/commands/__init__.py", line 168, in create_redis
-    conn = await create_connection(address, db=db,
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/aioredis/connection.py", line 111, in create_connection
-    reader, writer = await asyncio.wait_for(open_connection(
-  File "/usr/lib/python3.8/asyncio/tasks.py", line 455, in wait_for
-    return await fut
-  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/aioredis/stream.py", line 23, in open_connection
-    transport, _ = await get_event_loop().create_connection(
-  File "/usr/lib/python3.8/asyncio/base_events.py", line 1021, in create_connection
-    raise exceptions[0]
-  File "/usr/lib/python3.8/asyncio/base_events.py", line 1006, in create_connection
-    sock = await self._connect_sock(
-  File "/usr/lib/python3.8/asyncio/base_events.py", line 920, in _connect_sock
-    await self.sock_connect(sock, address)
-  File "/usr/lib/python3.8/asyncio/selector_events.py", line 494, in sock_connect
-    return await fut
-  File "/usr/lib/python3.8/asyncio/selector_events.py", line 526, in _sock_connect_cb
-    raise OSError(err, f'Connect call failed {address}')
-ConnectionRefusedError: [Errno 111] Connect call failed ('54.203.44.104', 6379)
+  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 829, in _resolve_lookup
+    current = current[bit]
+  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/context.py", line 83, in __getitem__
+    raise KeyError(key)
+KeyError: 'websocketURL'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 835, in _resolve_lookup
+    if isinstance(current, BaseContext) and getattr(type(current), bit):
+AttributeError: type object 'RequestContext' has no attribute 'websocketURL'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 843, in _resolve_lookup
+    current = current[int(bit)]
+ValueError: invalid literal for int() with base 10: 'websocketURL'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/stringkeeper/lib/python3.8/site-packages/django/template/base.py", line 848, in _resolve_lookup
+    raise VariableDoesNotExist("Failed lookup for key "
+django.template.base.VariableDoesNotExist: Failed lookup for key [websocketURL] in [{'True': True, 'False': False, 'None': None}, {'csrf_token': <SimpleLazyObject: <function csrf.<locals>._get_val at 0x7f194e1b59d0>>, 'request': <WSGIRequest: GET '/webharvest/'>, 'user': <SimpleLazyObject: <User: andre@blackmesanetwork.com>>, 'perms': <django.contrib.auth.context_processors.PermWrapper object at 0x7f194e18d130>, 'messages': <django.contrib.messages.storage.fallback.FallbackStorage object at 0x7f194f2b1e50>, 'DEFAULT_MESSAGE_LEVELS': {'DEBUG': 10, 'INFO': 20, 'SUCCESS': 25, 'WARNING': 30, 'ERROR': 40}}, {}, {'object': <SimpleLazyObject: <User: andre@blackmesanetwork.com>>, 'user': <SimpleLazyObject: <User: andre@blackmesanetwork.com>>, 'view': <webharvest.views.WebHarvestHomeView object at 0x7f194f2b1e20>, 'ascii_art': '\n   ``-/:    ``.`       :-    `-:.``  .-`   `. `.        ``./-     ``     `   :o: `  .`.`  --.    -:       ``   ``     .. ..    --      .`       ` - `-`   ```` -:`      `.. `      /`-  -`   `  //.` `\n   -.-/:    -```      `oo    `-:-..  `.`   .: -:` `     `` .``-    `    -+-  `/.``  ```   `:` -.`--     `.``  `+:    `.` ``    --   --`::   `` `.:/-`--     `` --`       `` .`    :/-  `:.  ````/:`` -\n     -/:     ```.      `.     .-``.  `.`   .- `.  `       -+:`-   `.`   .-`  `-``` `- `   `.  `` :-     `-..  `/:    `.` ``    ..   -:-yy`  ..```:/-`-.   -.`.`..      `.``       :+-   `   `.` ::`` .\n     `--      ```      .:    `/o:``   `.   -:    ``     ``-/-.-`  ```   .:`  -.`    .``   :/` .``/+`      ``  `/:    ``  ..    ..   `-.oo   `` ``-:.`-.   -.`.`-:`     `.``       :/-.      ````o+.` `\n   `.`-.    -```.      --    `````.  ``    -:`.. ``       .:- .   ``    -:.  -:.    ```   /o- .` ``       ``  `/-    `.` ``    ..   `-`//   `` `.:/.     `:-``  `      `-   .`    :/-`  .`  ``` `.   -\n   ``-+:    ``.`.      ::    `/o-..  .-.   ++`-- `.`    `.-/:.:`  ```    ``  :+-`. `-``   .+. ```/:     .-``  `+/    `.` ``    --   `.`      ` ``.-`     `--`` `.      ```` ``    .:-.  -`   `` .:\n   .` ``    .`  `      //    `+s:``  `-.   ::`-:``.     ```--`.    `    `.`  ..```  .``   .:` .``//     .-``  `:-    `.. `.    .-   ``         ``.:` .`  `:. ` `.       .`` ``    .:.  `:.   `  --.`\n     -+:    ...`      `ss`  `.sh:    `..  `:: --```     ```-.`-   ``    `:`  .:-``  .``   .:. ```+/     .-``   .`     ``       -.   -:.     ``  `:/. -.   -.`.`.-`     ..`` .     /o-`  .   `.` ::```-`\n     -/-    .`.``     `+/   `..` ``  `.`   -. --  `       -/:.:`  ```   ./.  -/-`` `-``   `.` `` --     `.``  `/:    `..            .-`     ``   ``` :.  `:-`` .-`     ```` `     ``.-  -.      //.` `\n   .`-+-    -..``     `/:    ``  `.  `.    `  .-          ```.:.   `    .:.  :+:   ````   /+. .``::     .-.`  ./:    ``  ``     `   ```          :+. -.  `-.```-:`      ... .`    +s-.  .`  `.``oo.` .`\n   ```+-    .`.`.      :.    `   ..  ``   `:- --```     ``-/:.:`  `.`   -/-  `.`   `.     /+. ```+/`    `..`  `:.    ``  ``    ..   `.`     ``  `:/` :.   `````--      `..`       /o-.  -`  `.``//`` .\n   `````    .`  `      `     `    `       `/: --`..     ``-+-`-   `.`   :+.  -: ``   ``   `.` ```/:     .-..  .+/    `.. ..    ..   .-`     ``  `:/` .`     `.`..      `.``       +s-. `-.  `.``/:.` .\n   .`--`    -.` `     `:.   ```      ``   `:: `. ``     ``./.     ``    --`  :o-``   ``   -/` .``/:     --``  `..     ``       ..   -:`     .` ``./``:.     `` .`       .`  `     :h-. `:-   .` :.```.`\n   ``-/-    `.``.     .+/   `.`  `.  ``    -:    ``     ```+- `   ``    .-`  +y:`. `-``   :/`   `-:     ..``  `.-     ``       ``   .-`     ``  ```  -.   -- ` ``      `.`  ``    `... `:-      ` ``\n   .`-:-    ..```     `::    ``  ``  ..    .-    ``       ````-`        `.      ``  .``   +o.    --            :.    ``. ..    --   ..`     ``  `:-``--   -.`  -.       .`` ``      `. `-.  `` `:-.`   `\n   .``..    ..` `     `:-    ``  `.  ``    `` .-  `       --` `   ``    ::`     `` `.     :+` ```+/     `.``  `:-    ``` ``    ``   `.         `./+. ``   :-```:-       `.` .`      ``      ```.+/`` . `\n   ``./-    .````     `.-    ``   `  `.   `/: .-`.`     ``:+:     `.`   //.     `` `.     :/` `` .`     -:.`  `/:    `.. `.    ..    `          `-:. .`   -.```.-       ```         `-  ``  ````/:`` .\n   `../-    -.```      ``    `   ``       `:- -: ``     ``.--`.`  ``    ./`     ``  .     ..  .``//     ````  .+/    ...  .    ::`  `-      ``  `.-` -.   -. ` .-      `.``         `. `-`   ` `::.``-`\n   .`-+/     ```      .+:   `.`  `.       `-- .-        ```-..-`   `    .:      `` `-     `.    `/:       ``  ./:    ..` ``    .:   .-`     ``  `::. -.   ..`` ..      `.`` ``      `.  ``   ```.-`` .`\n   ````         `     ./-   ```  `.  ..    .` .- ``     ``./-`-`  ```   .:`     `.        `:    .o/     .-.`  ./-    `.. ..    --   ::`     ..  `:/.`:.  `:-`````      ```  ``      `-      ``` ..`` `\n   -`./`    ..```     `..         `  ``   `:- .. ``     ``-+:``   ``    ``      ``  `     /+. .. /:     .-.`  `:`    ``` .`    ``   ..`     `` ``/+. ``   --```:-       `.` .`      `.  ``  `.`.+:``   `\n   ``:o-    ...`.     `-.   ``   `.  `.   ./: -:`.`     ``-/:.:.  ``    //`     `` `.     oo.  ` ..     ::.`   `      `` ``                      `        ..  `-.      `.`` ``      `. `:-     ./-```.``\n   .`/o-    .````     .:-   ```  ``  `.   `:- .-```     ```` ```        ::`        `.     .-` ```-.     .-`   -:`    `.. ..    `.   .:      ``   :/  .`   .``` ``      `.   `           -.  `` .--   .\n     +o-     `` `     :o:   `.`  `.  ``   `:. .-```     ``-+`.-.  ``    .`         `.      `  ```/-     `-``  -/-   `.`` ``    ..   .-      `` `.os. -`   .````..       .``          `  ``  ````-.```-`\n   `        `  `.     .:-   ```  `.  `.   `-. ``        ..+y:.-`  `.    -:      `` `.     :o` ``.//     `..`  ./.    ``` `.         --      ``  `os``-.   :-```-.       .`` `       `. `-.  `` `/-`` . `\n   ..       .   `     ./.   ``   ``  `.       `.        ``/s..-`  ``    ::`     ``        -/` ..`..     -:``  ./.    `.` `.         -:      `` `.oo` .`   ..``.:-      `-.` ``      `.  ``  `` :o/`` ` `\n   ``       .         `-`        `.   `    .- -:  `     ``::.     `    `+/`     ``        //` .``::           `.-    ``` ``    --   .-      `` `.    -`  `:.   ..      `-`` .`       ` `--     .:-`  .``\n   ``       `   `       `    `            `:- .. ``     ``              ::      `` `-     :+` ```/:            ``        ..    -.   ``      ``  `    .`       `-.      `.`  `          `-.     `+-`` ` `\n   .`       .   `      -.    `       ``   ./: --`..          .:`        :-      ``  `     -/` -.`++     ..    :+-   `..`       --   .-`     ``  `    -`        .`      ..`  .`       . `:.     `:`   .`\n   ``       .  `.     `/:   `.`  .-   `   .:-           ``   `.`        ..      `` `-     -:` ``        `-    -/.   ````       ``   --`     `.      `-`   -`    `      `.   .`       `\n   .`       .`  `     :+:   `.`  ``  ..                 ``              `.      ``  .     :/` ```/.     .-    .-.    ``. `.    --`   `              `:-   -`   `.      `.`  ``       -          -..`\n            -```.     --.        `.   `   `:- .. ``     ``   `.`        .-      ``  `     +o- ..-s+      `    .-`    ``` ``    `.   -.      ``  `   `--   -.   --      `-.` .`       ` `:-     `/:`` . `\n   ``       ````                 `.  ``   `-. .. ``          .-`        //`     `` `-     ``  ``:y+     .-    .:`    ``` ``    .-   .-      `` ``   `:.   ``  `:-      `..` ``       .  ..     -+:`` . `\n   ``       `..``     `+-   `.   ``  ..   `:- --```     ``   .:.       `++`     ``  .     o+` ..:o/     `.    /+-   `.`        --   --`     `` ``         :.  `.`      `.`  ``      `-         -:-.` . `\n   ..       -```.     .:-   ``   `.  ``   ./- `` ``     ``   .-.        ..       `  .     oo`    ``     `.    .:`    ```  `    ..   `-      ``        `   ``           .-   .`      `.  .`        `` .\n   ``       .```.     .:.   `.       `.   `:- -- ``     ``   `-         ``                ss`           .-    -/`   ```. ``         ..      ``  `    -`   .`   -.       `   ``       . `:-     `+-`` . `\n   ..       ...``     -+-   ``       ``   `.` `. ``     ``    .         ::      ``  `     -+  `.        ``    .-     ``. `.    ``   :-`     .`  `    ``  `:-  `..           ``      `. `-.     .:-`` .\n            .```.     `:.    `   `.  ``   `/- `. ``     ``   .:`        -:      ``  .     +o` .`        `.     `      `` ``    -:   --`     `` `.         --  `-.      `.   ``      `` `:-     ./-`` . `\n            ````      `-`   ``   ``  ..   .:- --```          ``        `::      `` `.    `ss. ``        ..    `:     ``. ``    ``   ..`     `` ``    ``  `:-  `-.      `.   `       `.  -`     -+-`` ` `\n   ..        ```      ./.   ``   ..  ``   `.. .:`                      `::      ``  .                   ::`   .:.    ``` ``         .-`     `` `.   `-.   .`   ..      `.   .`      `.  .      `/-`  .\n   ``       .```.     -/:   ```  `.  ``   ... -:```     ``   ``         .-      ``  .         ``        ``    :/.   `..` ``    --   `.      ``      `-.        .`                   ``  -.     `-.`  .\n   .`       ...``     `.`    `    `  ..   `:- .. ``     ``   `-`        --      `` `.         ``              -:.   ```. `.    --   --      .`       .`   ``  `-.                   `.  .`     .+-   . `\n   .`       .````     --.   ``       ``   -+:    ``     ``   .-`       `::         `.         .`                      `` ``   `::`  ``         `.   `-.   -.  `--      `.   .`       `         -/:`  . `\n   ``       ````.     ./-   `.`  ..  `.   `+. `` ``     ``    `        `::`        `.         ``              ./`    `.. `.    ..   .-      `` ``    .`    `   ``      ``   ``          `      `..`  .\n   ..       .`.``     :+:   `.   ``       `-. ..```     ``   `-         ``       `  `         ``              -:`    ``` `.    ..   --      `` ``    -.       `..      `.   ``      `. `-.     --..``.``\n   ``       ...`.     `+`    `   ..       /s+  ``.`     ``   `.        `:-      ``  .         .`              -:`   ```  ``    ``   ::      .`  `   `-.   ..  `-.      `.   ``      `` `-.     ./-`  .``\n   ``       ``.``     `-`   ``   `.       :o/    ``     ``   `-`       `/:      `` `.         .`              :+`   `.`  ..    --   --      ``      `:.  `-.  `-.      ``   `       `.  ``     :o:`  ` `\n              ```     /o:   `.`   `       -/- ..```     ``   `.        `/:          .         ``              .:`    ``` `.         ..               ``   -.   -`      `.           `.  .`     `o.``   `\n   ``       .```.     -/-   ```  `.       :o+ --```     ``   `-         --          .         ``              ..`    ``` ``        `:-      `             ``  `.`      `.   `       `.  .`     `:.``   `\n   ``       `````     -:.   ``   ``       .+/ .- ``     ``    `        `--      `` `.         ``              :+.   ``..       ..  `/:      ``       -.  `:-  .:-       `   ``      `-  :.     +h+`    `\n   .`      `-.```     -:-   ``   `.           ```.`          `.        `/:       ` `.         .`              -/.   ```` ``    .-   --              `-.   ``  .-.      `.   .`          .`     +y+`    `\n   ``       ````.     .:.    `                --`            -:.       `/:      `. `-         ``              .-`     `` `.    ..                         --  `..      ``   `           -.     .-.`    `\n   .`       .````     -/.   `.`               `````     ``   ..        `--      ``            .`              ::`   ```. `.     `                    ``   -.  `..      `.   ``      `.            ``   `\n   .`        ```.     .-.        `.           --```     `              `.:      ``            .`              /+.   ```` ``    .-                   `:-   -.  `..      ..   .`       `  -`\n   ``       ``.``     .:.   `.   ``           .-`.`     ``              ..                    ``              yh-   `.`` `.    ..                   `-.       `:.      ``   `       .- `--             `\n   .`       -`  `     :/.   ``   ``           -- ``     `              `+/      ``                            /h`    ``` `.    ..                   .::   ``  ```      `.   ``      `. `:`        ``\n   ``       .``       +y:   `.   `.                     ``              ``      ``            .`               `     `   ``    ..                    .`  `:-  `-.           .`       `            `    `\n', 'billing_profile': <BillingProfile: andre@blackmesanetwork.com>, 'subscription_purchases': <SubscriptionPurchaseQuerySet []>, 'my_subscriptions': <SubscriptionQuerySet []>, 'live_subscription_purchases': [], 'subscribed': False, 'authenticated': True, 'title': 'Web Harvest Demo'}, {'block': <Block Node: content. Contents: [<TextNode: '\n\n'>, <IfNode>, <TextNode: '\n\n\n\n'>]>}]
+Not Found: /wss
