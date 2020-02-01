@@ -4,6 +4,7 @@ from django.conf.urls import url
 # from django.urls import re_path
 websocket_urlpatterns = [
     url(r'^ws$', consumers.ChatConsumer),
+    url(r'^wss$', consumers.ChatConsumer),
 ]
 
 
