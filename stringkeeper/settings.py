@@ -456,7 +456,9 @@ if socket.gethostname()=="www.stringkeeper.com":
 
     CHANNEL_LAYERS = {
         'default': {
-            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'BACKEND': 'asgiref.inmemory.ChannelLayer',
+            'ROUTING': 'stringkeeper.routing.channel_routing',
             'CONFIG': {
                 "hosts": [('www.stringkeeper.com', 6379)],
                 # "hosts": [('44.225.82.162', 6379)],
