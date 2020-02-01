@@ -8,7 +8,7 @@ websocket_urlpatterns = [
     # url(r'^ws$', consumers.ChatConsumer),
     url(r'^ws$', consumers.ChatConsumer),
     url(r'^wss$', consumers.test_consumer('hello from wss')),
-    url(r'^securesockets$', consumers.ChatConsumer),
+    url(r'^securesockets$', consumers.test_consumer('hello from wss')),
 ]
 
 

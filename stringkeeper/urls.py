@@ -105,7 +105,7 @@ urlpatterns = [
 
 
     path('chat/', include('core.urls', namespace='chat'), name='chat'),
-
+    path('securesockets/', include('webharvest.urls', namespace='webharvest'), name='webharvest'),
     # path('webharvest/', include('core.urls', namespace='chat'), name='chat'),
 
     # path('', include('core.urls', namespace='chat'), name='chat'),
