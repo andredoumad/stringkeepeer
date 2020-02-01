@@ -184,15 +184,18 @@ $(document).ready(function () {
 //        '/ws?session_key=${sessionKey}'
     // var socket = new WebSocket('ws://' + '127.0.0.1:8000/webharvest' + '/ws?session_key=${sessionKey}')
     console.log('window.location.host: ' + window.location.host)
-    if (window.location.host == '127.0.0.1:8000'){
-        var socket = new WebSocket(
-        'ws://127.0.0.1:8000/ws?session_key=${sessionKey}'
-        )
-    } else {
-        var socket = new WebSocket(
-        'wss://' + window.location.host + '/wss?session_key=${sessionKey}'
-        )
-    }
+
+    // if (window.location.host == '127.0.0.1:8000'){
+    //     var socket = new WebSocket(
+    //     'ws://127.0.0.1:8000/ws?session_key=${sessionKey}'
+    //     )
+    // } else {
+    //     var socket = new WebSocket(
+    //     'wss://' + window.location.host + '/wss?session_key=${sessionKey}'
+    //     )
+    // }
+
+    var socket = new WebSocket((window.location.protocol == 'http') ? 'ws://' : 'wss://' +  window.location.host + '/')
 
     chatInput.keypress(function (e) {
         console.log('chatInput.keypress')
