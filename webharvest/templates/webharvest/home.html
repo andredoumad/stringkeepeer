@@ -52,14 +52,9 @@
     </div>
 
     <script>
-        let sessionKey = '{{ request.session.session_key }}';
-        let currentUser = '{{ request.user }}';
-        let websocketURL = '{{ websocketURL }}';
-        console.log('websocketURL: ' + websocketURL)
+let sessionKey = '{{ request.session.session_key }}';
+let currentUser = '{{ request.user }}';
 
-
-
-    
 let currentRecipient = 'andre@stringkeeper.com';
 let chatInput = $('#chat-input');
 let chatButton = $('#btn-send');
@@ -191,7 +186,7 @@ $(document).ready(function () {
     console.log('window.location.host: ' + window.location.host)
     if (window.location.host == '127.0.0.1:8000'){
         var socket = new WebSocket(
-        'wss://127.0.0.1:8000/wss?session_key=${sessionKey}'
+        'ws://127.0.0.1:8000/ws?session_key=${sessionKey}'
         )
     } else {
         var socket = new WebSocket(

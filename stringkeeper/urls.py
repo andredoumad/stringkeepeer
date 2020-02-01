@@ -106,5 +106,5 @@ urlpatterns = [
 
     path('webharvest/', include('core.urls', namespace='chat'), name='chat'),
 
-    # path('', include('core.urls', namespace='chat'), name='chat'),
+    path('wss/', include('core.urls', namespace='chat'), name='chat'),
 ]
