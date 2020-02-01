@@ -381,7 +381,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 
-ASGI_APPLICATION = 'chat.routing.application'
+ASGI_APPLICATION = 'stringkeeper.routing.application'
 
 AUTH_PASSWORD_VALIDATORS = []
 
