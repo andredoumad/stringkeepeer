@@ -3,10 +3,18 @@
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
+from stringkeeper.braintree_tools import * 
 
+#works then breaks system
+def test_consumer(message):
+    eventlog('test_consumer: ' + message)
+    # message.reply_channel.send({
+    #     'text': message.content['text'],
+    # })
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        eventlog('async def connect')
         user_id = self.scope["session"]["_auth_user_id"]
         self.group_name = "{}".format(user_id)
         # Join room group
@@ -19,6 +27,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
+        eventlog('async def disconnect: ' + str(close_code))
         # Leave room group
         await self.channel_layer.group_discard(
             self.group_name,
@@ -27,7 +36,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data=None,bytes_data = None):
-
+        eventlog('async def receive: ' + str(text_data))
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         # Send message to room group
@@ -40,8 +49,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     async def recieve_group_message(self, event):
+        eventlog('async def recieve_group_message event: ' + str(event))
         message = event['message']
-
+        eventlog('async def recieve_group_message message: ' + str(message))
         # Send message to WebSocket
         await self.send(
              text_data=json.dumps({
