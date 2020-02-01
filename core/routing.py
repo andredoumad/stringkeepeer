@@ -8,6 +8,7 @@ websocket_urlpatterns = [
     # url(r'^ws$', consumers.ChatConsumer),
     url(r'^ws$', consumers.ChatConsumer),
     url(r'^wss$', consumers.ChatConsumer),
+    url(r'^securesockets$', consumers.ChatConsumer),
 ]
 
 
