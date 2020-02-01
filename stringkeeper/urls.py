@@ -59,6 +59,8 @@ admin.site.site_header = 'Stringkeeper Admin'                    # default: "Dja
 admin.site.index_title = 'Stringkeeper Admin'                 # default: "Site administration"
 admin.site.site_title = 'Stringkeeper Admin' # default: "Django site admin"
 
+from django.conf.urls import url
+from core import consumers
 
 urlpatterns = [
     path('__debug__/', include(debug_toolbar.urls)),
@@ -103,9 +105,9 @@ urlpatterns = [
     # path('data-mining/', LibraryView.as_view(), name='library'),
     # path('email-automation/', LibraryView.as_view(), name='library'),
 
-
+    # path('ws', consumers.ChatConsumer)    
+    # path('wss', consumers.ChatConsumer)
     path('chat/', include('core.urls', namespace='chat'), name='chat'),
-    path('securesockets/', include('webharvest.urls', namespace='webharvest'), name='webharvest'),
     # path('webharvest/', include('core.urls', namespace='chat'), name='chat'),
 
     # path('', include('core.urls', namespace='chat'), name='chat'),
