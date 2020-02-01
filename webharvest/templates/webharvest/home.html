@@ -191,11 +191,11 @@ $(document).ready(function () {
     console.log('window.location.host: ' + window.location.host)
     if (window.location.host == '127.0.0.1:8000'){
         var socket = new WebSocket(
-        'ws://' + '127.0.0.1:8000'
+        'ws://127.0.0.1:8000/ws?session_key=${sessionKey}'
         )
     } else {
         var socket = new WebSocket(
-        'wss://' + window.location.host
+        'wss://' + '54.203.44.104' + '/ws?session_key=${sessionKey}'
         )
     }
 
