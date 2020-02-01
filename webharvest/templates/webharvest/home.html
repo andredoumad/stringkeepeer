@@ -115,7 +115,7 @@ function drawMessage(message) {
 function getConversation(recipient) {
     console.log('getConversation')
     console.log('getConversation recipient: ' + recipient)
-    $.getJSON(`/webharvest/api/v1/message/?target=${recipient}`, function (data) {
+    $.getJSON(`/chat/api/v1/message/?target=${recipient}`, function (data) {
         messageList.children('.message').remove();
         for (let i = data['results'].length - 1; i >= 0; i--) {
             drawMessage(data['results'][i]);
@@ -128,7 +128,7 @@ function getConversation(recipient) {
 function getMessageById(message) {
     console.log('getMessageById')
     id = JSON.parse(message).message
-    $.getJSON(`/webharvest/api/v1/message/${id}/`, function (data) {
+    $.getJSON(`/chat/api/v1/message/${id}/`, function (data) {
         if (data.user === currentRecipient ||
             (data.recipient === currentRecipient && data.user == currentUser)) {
             drawMessage(data);
@@ -141,7 +141,7 @@ function sendMessage(recipient, body) {
     console.log('sendMessage')
     console.log('recipient: ' + recipient )
     console.log('body: ' + body )
-    $.post('/webharvest/api/v1/message/', {
+    $.post('/chat/api/v1/message/', {
         recipient: recipient,
         body: body
     }).fail(function () {

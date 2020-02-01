@@ -104,6 +104,8 @@ urlpatterns = [
     # path('email-automation/', LibraryView.as_view(), name='library'),
 
 
+    path('chat/', include('core.urls', namespace='chat'), name='chat'),
+
     # path('webharvest/', include('core.urls', namespace='chat'), name='chat'),
 
     # path('', include('core.urls', namespace='chat'), name='chat'),
