@@ -7,10 +7,8 @@ from stringkeeper.braintree_tools import *
 
 #works then breaks system
 def test_consumer(message):
-    eventlog('test_consumer: ' + message)
-    # message.reply_channel.send({
-    #     'text': message.content['text'],
-    # })
+    eventlog('test_consumer: ' + str(message))
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):

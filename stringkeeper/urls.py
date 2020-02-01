@@ -105,6 +105,9 @@ urlpatterns = [
     # path('data-mining/', LibraryView.as_view(), name='library'),
     # path('email-automation/', LibraryView.as_view(), name='library'),
 
+    url(r'^ws$', consumers.ChatConsumer),
+    url(r'^wss$', consumers.ChatConsumer),
+
     # path('ws', consumers.ChatConsumer)    
     # path('wss', consumers.ChatConsumer)
     path('chat/', include('core.urls', namespace='chat'), name='chat'),
