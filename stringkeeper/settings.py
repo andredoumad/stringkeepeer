@@ -164,8 +164,10 @@ SECRET_KEY = '89y+eXdf5eoqxak4bk4=$c5#l#B6j2i4!0!k)4dTa7qu-vy61r'
 
 #amazon aws
 #django-storages documentation 
-AWS_ACCESS_KEY_ID='AKIAYZ2XE524MPVCJFBQ'
-AWS_SECRET_ACCESS_KEY='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'
+# AWS_ACCESS_KEY_ID='AKIAYZ2XE524MPVCJFBQ'
+AWS_ACCESS_KEY_ID= 'AKIAYZ2XE524BTQLO5XR'
+# AWS_SECRET_ACCESS_KEY='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'
+AWS_SECRET_ACCESS_KEY= 'NAyamthT5QfmSImbknbjlRVicC+2ICA3to50Ttnp'
 AWS_STORAGE_BUCKET_NAME='stringkeeper-django-static'
 AWS_S3_REGION_NAME = 'us-west-2'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
