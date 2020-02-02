@@ -1,20 +1,20 @@
 
-[program:homet_dj]
-command=/home/urban/bin/gunicorn_start
-user=urban
+[program:stringkeeper]
+command=/usr/local/bin/gunicorn
+user=ubuntu
 autostart=true
 autorestart=true
 redirect_stderr=true
-stdout_logfile=/home/urban/logs/gunicorn-error.log
+stdout_logfile=/var/log/nginx-stringkeeper-error.log
 
 [program:serverinterface]
-command= daphne -b 0.0.0.0 -p 8001 homet_dj.asgi:application
-directory=/home/urban/homet_dj/
+command= daphne -b 0.0.0.0 -p 8001 stringkeeper.asgi:application
+directory=/home/ubuntu/stringkeeper/
 autostart=true
 autorestart=true
 stopasgroup=true
-user=urban
-stdout_logfile = /home/urban/logs/gunicorn-error.log
+user=ubuntu
+stdout_logfile = /var/log/nginx-serverinterface-error.log
 
 
 https://www.youtube.com/watch?v=EdK15Qcc3Zs
