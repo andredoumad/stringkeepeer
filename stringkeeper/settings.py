@@ -354,7 +354,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'stringkeeper',
         'USER': 'root',
-        'PASSWORD': 'r00tp0strgr3sqlstr1ngk33p3r',
+        # 'PASSWORD': 'r00tp0strgr3sqlstr1ngk33p3r',
+        'PASSWORD': 'r42tp0strgr2sqlstr1ngk47p365r',
         'HOST': 'stringkeeper.c23mwd8ntiyq.us-west-2.rds.amazonaws.com',
         'PORT': '5432',
 
