@@ -38,24 +38,6 @@ from stringkeeper.aws.conf import *
 
 
 
-# def test_stringkeeper(self):
-#     #blackmesanetwork.com
-#     to_email = 'andredoumad@gmail.com'
-#     EMAIL_ADDRESS = 'AKIAYZ2XE524ITIKU2R2'
-#     EMAIL_PASSWORD = 'BOdXu8OSHD16twbYZZLElgtFh/3QH/aadSIp6y9oQiSI'
-
-#     msg = EmailMessage()
-#     msg['Subject'] = 'Test subject line'
-#     msg['From'] = 'andre@stringkeeper.com'
-#     msg['To'] = to_email
-#     msg.set_content('test msg content')
-
-#     with smtplib.SMTP('email-smtp.us-west-2.amazonaws.com', 587) as smtp:
-#         smtp.starttls()
-#         smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-#         smtp.send_message(msg)
-
-
 #Amazon SES
 EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
 EMAIL_HOST_USER = 'AKIAYZ2XE524ITIKU2R2' # gmail
@@ -64,14 +46,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Stringkeeper <andre@stringkeeper.com>'
 
-
-# GMAIL
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'andre@stringkeeper.com' # gmail
-# EMAIL_HOST_PASSWORD = '!Tufankji1124'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = 'Stringkeeper <andre@stringkeeper.com>'
 
 DEFAULT_ACTIVATION_DAYS = 7
 
@@ -190,23 +164,6 @@ WSGI_APPLICATION = 'stringkeeper.wsgi.application'
 DATABASES = {
     'default': {
         
-        #standard localhost settings
-        #'ENGINE': 'django.db.backends.mysql',
-        #'NAME': 'stringkeeper',
-        #'USER': 'root',
-        #'PASSWORD': 'r00t@str1ngk33p3r',
-        #'HOST': 'localhost',
-        #'PORT': '',
-        
-        
-        #local postgre settings
-        #'ENGINE': 'django.db.backends.postgresql',
-        #'NAME': 'stringkeeper',
-        #'USER': 'root',
-        #'PASSWORD': 'r00tp0strgr3sqlstr1ngk33p3r',
-        #'HOST': 'localhost',
-        #'PORT': '5432',
-        
 
         #amazon rds postgre settings
         'ENGINE': 'django.db.backends.postgresql',
@@ -217,8 +174,7 @@ DATABASES = {
         'HOST': 'stringkeeper.c23mwd8ntiyq.us-west-2.rds.amazonaws.com',
         'PORT': '5432',
 
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
     }
 }
 
@@ -260,11 +216,6 @@ REST_FRAMEWORK = {
 
 MESSAGES_TO_LOAD = 15
 
-
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -367,9 +318,7 @@ else:
         'default': {
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
-                # "hosts": [('www.stringkeeper.com', 6379)],
                 "hosts": [('44.232.251.35', 6379)],
-                # "hosts": [('localhost', 6729)],
             },
         },
     }
