@@ -1,7 +1,7 @@
 import os
 
 import socket
-import debug_toolbar
+# import debug_toolbar
 from .standalone_tools import *
 from django.core.exceptions import ImproperlyConfigured
 
@@ -134,7 +134,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'stringkeeper.urls'
