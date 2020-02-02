@@ -23,4 +23,4 @@ serverinterface log
 
 
 stringkeeper django
-tail -f /home/ubuntu/stringkeeper/stringkeeperremotedebug.log
+tail -f /home/ubuntu/stringkeeper/stringkeeperremotedebug.txt
