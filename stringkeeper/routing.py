@@ -1,10 +1,11 @@
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.auth import AuthMiddlewareStack
+from core import routing as core_routing
 
-
-
-## is this channels 2 ?
-# routing.py
-# from channels.routing import route
-
-# channel_routing = [
-#     route('websocket.receive', 'chat.consumers.ws_echo'),
-# ]
+application = ProtocolTypeRouter({
+    "websocket": AuthMiddlewareStack(
+        URLRouter(
+            core_routing.websocket_urlpatterns
+        )
+    ),
+})
