@@ -20,3 +20,7 @@ sudo supervisorctl status all
 
 serverinterface log
 /var/log/supervisor.serverinterface.out.log tail -f
+
+
+stringkeeper django
+tail -f /home/ubuntu/stringkeeper/stringkeeperremotedebug.log
