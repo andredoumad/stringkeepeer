@@ -1,0 +1,21 @@
+restart the services
+sudo systemctl daemon-reload
+sudo systemctl restart gunicorn.socket gunicorn.service nginx.service ; systemctl status gunicorn.socket gunicorn.service nginx.service
+
+
+nginx configuration
+sudo nano /etc/nginx/sites-available/stringkeeper
+
+gunicorn service
+sudo nano /etc/systemd/system/gunicorn.service
+
+gunicorn socket
+sudo nano /etc/systemd/system/gunicorn.socket
+
+nginx supervisor configuration
+sudo nano /etc/supervisor/conf.d/stringkeeper.conf
+sudo supervisorctl reread
+sudo supervisorctl update
+
+serverinterface log
+/var/log/supervisor.serverinterface.out.log tail -f
