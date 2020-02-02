@@ -175,9 +175,28 @@ $(document).ready(function () {
         'ws://127.0.0.1:8000/ws?session_key=${sessionKey}'
         )
     } else {
-        var socket = new WebSocket(
-        'wss://' + window.location.host + '/wss?session_key=${sessionKey}'
-        )
+        // var socket = new WebSocket(
+        // 'wss://' + window.location.host + '/wss?session_key=${sessionKey}'
+        // )
+        var socket = new WebSocket("wss://stringkeeper.com/ws/notify")
+
+        socket.onopen = function() {
+            console.log('connected');
+            console.log('connected');
+        }
+        socket.onmessage = function(data) {
+            console.log('onmaeesge');
+            console.log(data);
+        }
+        socket.onclose = function(data) {
+            console.log('onclose');
+            console.log(data);
+
+        socket.onerror = function(data) {
+            console.log('error');
+            console.log(data);
+        }
+
     }
 
     //var socket = new WebSocket((window.location.protocol == 'http') ? 'ws://' : 'wss://' +  window.location.host + '/ws?session_key=${sessionKey}')

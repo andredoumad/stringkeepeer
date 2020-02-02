@@ -1,0 +1,22 @@
+var socket = new WebSocket("wss://YOUR_IP.com/ws/notify")
+
+socket.onopen = function() {
+    console.log('connected');
+    console.log('connected');
+}
+socket.onmessage = function(data) {
+    console.log('onmaeesge');
+    console.log(data);
+}
+socket.onclose = function(data) {
+    console.log('onclose');
+    console.log(data);
+
+socket.onerror = function(data) {
+    console.log('error');
+    console.log(data);
+}
+
+
+
+https://www.youtube.com/watch?v=EdK15Qcc3Zs
