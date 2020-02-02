@@ -19,3 +19,8 @@ sudo supervisorctl update
 
 serverinterface log
 /var/log/supervisor.serverinterface.out.log tail -f
+
+
+0 0 * * * root rm -rf /var/log/clamav/freshclam.log
+1 0 * * * root freshclam
+22 0 * * * root clamscan -r -i / | grep FOUND >> /home/ubuntu/virus-scan-reports/virus-scan-report-`date +"\%d-\%m-\%Y"`.txt
