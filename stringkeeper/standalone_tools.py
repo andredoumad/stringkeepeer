@@ -13,7 +13,7 @@ from datetime import date
 import calendar
 import datetime
 from django.utils import timezone
-
+from stringkeeper import settings
 import inspect
 import os.path
 import socket
@@ -127,7 +127,7 @@ def get_list_files_folders_in_path(path):
     return b_dp, b_fp, list_dp, list_fp
 
 log_files = []
-b_dp, b_fp, list_dp, list_fp = get_list_files_folders_in_path(log_directory_path)
+# b_dp, b_fp, list_dp, list_fp = get_list_files_folders_in_path(log_directory_path)
 
 '''
 if b_fp == True:
@@ -171,11 +171,16 @@ def eventlog(logstring):
         debug_line_number = str('0' + str(line_number))
     print('|==| ' + str(debug_line_number) + ' |==| ')
     print('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
-    f = open(LOGGING_FILEPATH, "a")
-    f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
-    f.close()
+    if socket.gethostname()=="www.stringkeeper.com":
+        f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.txt', "a")
+        f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
+        f.close()
+    else:
+        f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.txt', "a")
+        f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
+        f.close()
     print('|==| ' + str(debug_line_number) + ' |==| ')
-    log_filepath = str(str(log_directory_path) + '/' + str(caller_filename))
+    # log_filepath = str(str(log_directory_path) + '/' + str(caller_filename))
     #eventlog('log_filepath: ' + str(log_filepath))
     #with open(log_filepath, 'a+') as f:
     #    timestamp = str(datetime.today().strftime('%H:%M:%S'))
