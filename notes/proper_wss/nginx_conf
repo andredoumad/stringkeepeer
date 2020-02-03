@@ -1,74 +1,121 @@
 
-upstream app_server {
-    server unix:/home/urban/run/gunicorn.sock fail_timeout=0;
-}
+    upstream channels-backend {
+            server unix:/home/ubuntu/stringkeeper/gunicorn.sock;
+            }
 
-server {
+    server {
+            access_log  /var/log/nginx/http-nginx-access.log;
+            error_log  /var/log/nginx/http-nginx-error.log emerg;
+            listen 80;
+            client_max_body_size 20M;
+            server_name *stringkeeper.com, 54.203.44.104;
+            rewrite ^ https://stringkeeper.com$uri permanent;
 
-    # add here the ip address of your server
-    # or a domain pointing to that ip (like example.com or www.example.com)
-    server_name YOUR_IP;
-
-    keepalive_timeout 5;
-    client_max_body_size 4G;
-
-    access_log /home/urban/logs/nginx-access.log;
-    error_log /home/urban/logs/nginx-error.log;
-
-    location /static/ {
-        alias /home/urban/homet_dj/static/;
+            location /static/ {
+                    autoindex on;
+                    alias /home/ubuntu/stringkeeper/static/;
+            }
     }
 
-    # checks for static file, if not found proxy to app
-    location / {
-        try_files $uri @proxy_to_app;
+    server {
+        access_log /var/log/nginx/8001-nginx-access.log;
+        error_log  /var/log/nginx/8001-nginx-error.log emerg;
+        listen 8001 ssl; # managed by Certbot
+        server_name 54.203.44.104;
+        client_max_body_size 20M;
+        keepalive_timeout 5;
+        client_max_body_size 4G;
+
+        location /wss/ {
+            proxy_pass http://0.0.0.0:8001;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "Upgrade";
+            proxy_redirect off;
+            proxy_read_timeout 86400s;
+            proxy_send_timeout 86400s;
+            keepalive_timeout 86400s;
+            # prevents 502 bad gateway error
+            proxy_buffers 8 32k;
+            proxy_buffer_size 64k;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+            reset_timedout_connection on;
+        }
+
+
+        location / {
+            proxy_pass http://54.203.44.104:8001;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+
+            proxy_redirect off;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Host $server_name;
+        }
+
+        ssl_certificate /etc/letsencrypt/live/stringkeeper.com/fullchain.pem; # managed by Certbot
+        ssl_certificate_key /etc/letsencrypt/live/stringkeeper.com/privkey.pem; # managed by Certbot
+        include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
     }
 
 
-    location /wss/ {
-        proxy_pass http://0.0.0.0:8001;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-        proxy_redirect off;
-        proxy_read_timeout 86400s;
-        proxy_send_timeout 86400s;
-        keepalive_timeout 86400s;
-        # prevents 502 bad gateway error
-        proxy_buffers 8 32k;
-        proxy_buffer_size 64k;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto https;
-        reset_timedout_connection on;
+    server {
+        access_log /var/log/nginx/https-nginx-access.log;
+        error_log  /var/log/nginx/https-nginx-error.log emerg;
+        listen 443 ssl; # managed by Certbot
+        server_name *stringkeeper.com, 54.203.44.104;
+        client_max_body_size 20M;
+        keepalive_timeout 5;
+        client_max_body_size 4G;
+
+        location / {
+            try_files $uri @proxy_to_app;
+        }
+
+
+        location @proxy_to_app {
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $http_host;
+            proxy_redirect off;
+        }
+
+
+        location /ws/ {
+            try_files $uri @proxy_to_ws;
+        }
+
+        location @proxy_to_ws {
+            proxy_pass http://0.0.0.0:8001;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+
+            proxy_redirect off;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Host $server_name;
+        }
+
+        location /static/ {
+            autoindex on;
+            alias /home/ubuntu/stringkeeper/static/;
+        }
+
+        #listen 443 ssl; # managed by Certbot
+        ssl_certificate /etc/letsencrypt/live/stringkeeper.com/fullchain.pem; # managed by Certbot
+        ssl_certificate_key /etc/letsencrypt/live/stringkeeper.com/privkey.pem; # managed by Certbot
+        include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
     }
 
 
-    location /ws/ {
-        try_files $uri @proxy_to_ws;
-    }
-
-    location @proxy_to_ws {
-       proxy_pass http://0.0.0.0:8001;
-
-        proxy_http_version 1.1;
- proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-
-        proxy_redirect off;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Host $server_name;
-    }
-
-    location @proxy_to_app {
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header Host $http_host;
-      proxy_redirect off;
 
 
-}
 
-
-https://www.youtube.com/watch?v=EdK15Qcc3Zs
