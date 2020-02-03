@@ -1,30 +1,44 @@
-upstream app_server {
-    server unix:/tmp/daphne.sock fail_timeout=0;
+upstream channels-backend {
+    server localhost:8000;
 }
 
 server {
-    listen 443 ssl http2;
+    listen 80;
     server_name stringkeeper.com;
-    
-    client_max_body_size 20M; # this is optionally, I usually put it very big in nginx and do proper size checks in the application
-    
+
+    access_log /var/log/nginx/access.log;
+
     location /static/ {
-        sendfile on;
-        location ~* \.(?:ico|css|js|gif|jpe?g|png|svg|woff|bmp)$ {
-            expires 7d;
-        }
         alias /home/ubuntu/stringkeeper/static/;
     }
-    
-    
+
     location / {
-        proxy_pass http://app_server;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-Host $server_name;
-        proxy_set_header X-Real-IP $remote_addr;
+        try_files $uri @proxy_to_app;
+    }
+
+    location /wss {
+        try_files $uri @proxy_to_app;
+    }
+    
+    location /ws {
+        try_files $uri @proxy_to_app;
+    }
+    
+    location /webharvest {
+        try_files $uri @proxy_to_app;
+    }
+
+    location @proxy_to_app {
+        proxy_pass http://channels-backend;
+
+        proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header X-Forwarded-Proto "https";
         proxy_set_header Connection "upgrade";
-        add_header Referrer-Policy "no-referrer-when-downgrade";
+
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host $server_name;
     }
 }

@@ -1,0 +1,3 @@
+upstream app_server {
+    server unix:/home/ubuntu/stringkeeper/stringkeeper/daphne.sock fail_timeout=0;
+}
