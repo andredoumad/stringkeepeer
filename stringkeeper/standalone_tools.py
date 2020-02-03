@@ -174,10 +174,12 @@ def eventlog(logstring):
     if socket.gethostname()=="www.stringkeeper.com":
         f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.txt', "a")
         f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
+        f.write('\n')
         f.close()
     else:
         f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.txt', "a")
         f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
+        f.write('\n')
         f.close()
     print('|==| ' + str(debug_line_number) + ' |==| ')
     # log_filepath = str(str(log_directory_path) + '/' + str(caller_filename))
