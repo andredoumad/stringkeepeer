@@ -96,6 +96,7 @@ INSTALLED_APPS = [
     'core',
     'rest_framework',
     'channels',
+    'example',
 ]
 
 
@@ -265,6 +266,12 @@ if socket.gethostname()=="www.stringkeeper.com":
                 'level': 'DEBUG',
                 'propagate': True,
             },
+        # 'daphne': {
+        #     'handlers': [
+        #         'console',
+        #     ],
+        #     'level': 'DEBUG'
+        # },
         },
     }
 
@@ -313,6 +320,12 @@ else:
                 'level': 'DEBUG',
                 'propagate': True,
             },
+            # 'daphne': {
+            #     'handlers': [
+            #         'console',
+            #     ],
+            #     'level': 'DEBUG'
+            # },
         },
     }
 
