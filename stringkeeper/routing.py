@@ -9,8 +9,8 @@ from django.conf.urls import url
 application = ProtocolTypeRouter({
     "websocket": AuthMiddlewareStack(
         URLRouter(
-            example_routing.websocket_urlpatterns,
-            # core_routing.websocket_urlpatterns,
+            # example_routing.websocket_urlpatterns,
+            core_routing.websocket_urlpatterns,
             
         )
     ),

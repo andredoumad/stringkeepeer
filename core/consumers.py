@@ -12,6 +12,9 @@ def test_consumer(message):
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        eventlog('CONNECTED CONNECTED CONNECTED !!!!')
+        eventlog('CONNECTED CONNECTED CONNECTED !!!!')
+        eventlog('CONNECTED CONNECTED CONNECTED !!!!')
         eventlog('async def connect')
         user_id = self.scope["session"]["_auth_user_id"]
         self.group_name = "{}".format(user_id)
@@ -25,6 +28,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
+        eventlog('CONNECTED CONNECTED CONNECTED !!!!')
+        eventlog('CONNECTED CONNECTED CONNECTED !!!!')
+        eventlog('CONNECTED CONNECTED CONNECTED !!!!')
         eventlog('async def disconnect: ' + str(close_code))
         # Leave room group
         await self.channel_layer.group_discard(
@@ -34,6 +40,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data=None,bytes_data = None):
+        eventlog('CONNECTED CONNECTED CONNECTED !!!!')
+        eventlog('CONNECTED CONNECTED CONNECTED !!!!')
+        eventlog('CONNECTED CONNECTED CONNECTED !!!!')
         eventlog('async def receive: ' + str(text_data))
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
@@ -47,6 +56,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     async def recieve_group_message(self, event):
+        eventlog('CONNECTED CONNECTED CONNECTED !!!!')
+        eventlog('CONNECTED CONNECTED CONNECTED !!!!')
+        eventlog('CONNECTED CONNECTED CONNECTED !!!!')
         eventlog('async def recieve_group_message event: ' + str(event))
         message = event['message']
         eventlog('async def recieve_group_message message: ' + str(message))
