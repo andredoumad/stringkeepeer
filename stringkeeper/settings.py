@@ -248,6 +248,7 @@ if socket.gethostname()=="www.stringkeeper.com":
     f = open(str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.txt')), "w")
     f.write("")
     f.close()
+    LOGGING_FILEPATH = str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.txt'))
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
@@ -291,10 +292,11 @@ else:
     SECURE_PROXY_SSL_HEADER = None
     SECURE_SSL_REDIRECT = False
 
-    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.log')) )
-    f = open(str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.log')), "w")
+    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.txt')) )
+    f = open(str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.txt')), "w")
     f.write("")
     f.close()
+    LOGGING_FILEPATH = str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.txt'))
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
@@ -302,7 +304,7 @@ else:
             'file': {
                 'level': 'DEBUG',
                 'class': 'logging.FileHandler',
-                'filename': os.path.join(BASE_DIR, 'stringkeeperlocaldebug.log'),
+                'filename': os.path.join(BASE_DIR, 'stringkeeperlocaldebug.txt'),
             },
         },
         'loggers': {

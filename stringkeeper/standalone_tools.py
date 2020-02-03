@@ -105,10 +105,10 @@ for ch in filepath_hostname:
     if ch != '.':
         final_filepath_hostname += str(ch)
 
-log_directory_path = str(BASE_DIR + '/logs/' + str(datetime.today().strftime('%Y-%m-%d')) + '/' + final_filepath_hostname)
+# log_directory_path = str(BASE_DIR + '/logs/' + str(datetime.today().strftime('%Y-%m-%d')) + '/' + final_filepath_hostname)
 
-if not os.path.exists(log_directory_path):
-    os.makedirs(log_directory_path)
+# if not os.path.exists(log_directory_path):
+#     os.makedirs(log_directory_path)
 
 def get_list_files_folders_in_path(path):
     list_fp = []
@@ -137,7 +137,7 @@ if b_fp == True:
                 f.write('')
                 f.close()
 '''
-
+LOGGING_FILEPATH = getattr(settings, 'LOGGING_FILEPATH', False)
 def eventlog(logstring):
     # get the caller's stack frame and extract its file path
     #frame_info = inspect.stack()[1]
@@ -171,6 +171,9 @@ def eventlog(logstring):
         debug_line_number = str('0' + str(line_number))
     print('|==| ' + str(debug_line_number) + ' |==| ')
     print('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
+    f = open(LOGGING_FILEPATH, "a")
+    f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
+    f.close()
     print('|==| ' + str(debug_line_number) + ' |==| ')
     log_filepath = str(str(log_directory_path) + '/' + str(caller_filename))
     #eventlog('log_filepath: ' + str(log_filepath))
@@ -180,8 +183,8 @@ def eventlog(logstring):
     #    f.write('\n')
     #    f.close()
 
-eventlog('standalone logging BASE_DIR: ' + str(BASE_DIR) )
-eventlog('log_directory_path ' + log_directory_path)
+# eventlog('standalone logging BASE_DIR: ' + str(BASE_DIR) )
+# eventlog('log_directory_path ' + log_directory_path)
 
 
 

@@ -173,6 +173,7 @@ $(document).ready(function () {
     if (window.location.host == '127.0.0.1:8000'){
         var socket = new WebSocket(
         'ws://127.0.0.1:8000/ws?session_key=${sessionKey}'
+        // 'wss://54.203.44.104:8001/wss?session_key${sessionKey}'
         )
     } else {
         // var socket = new WebSocket(
