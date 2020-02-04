@@ -156,6 +156,10 @@ function disableInput() {
     chatButton.prop('disabled', true);
 }
 
+
+
+
+
 $(document).ready(function () {
     console.log('$(document).ready(function')
 
@@ -183,31 +187,41 @@ $(document).ready(function () {
         // var socket = new WebSocket("ws://stringkeeper.com/ws?session_key=${sessionKey}")
 
 
-        var socket = new WebSocket("wss://stringkeeper.com/wss?session_key=${sessionKey}")
-
+        // var socket = new WebSocket("wss://stringkeeper.com/wss?session_key=${sessionKey}")
+        startWebsocket("wss://stringkeeper.com/wss?session_key=${sessionKey}")
         // var socket = new WebSocket("wss://54.203.44.104:8001/ws/notify")
         
     }
 
-    socket.addEventListener('open', function (event) {
-        // Connection opened
-    });
+    function startWebsocket(websocketServerLocation){
+        socket = new WebSocket(websocketServerLocation);
+        socket.onmessage = function(evt) { alert('message received'); };
+        socket.onclose = function(){
+        // Try to reconnect in 5 seconds
+        setTimeout(function(){startWebsocket(websocketServerLocation)}, 5000);
+        };
+    }
 
-        socket.onopen = function() {
-            console.log('connected');
-            console.log('connected');
-            socket.send('Hello Server!');
-        }
+    // socket.addEventListener('open', function (event) {
+    //     // Connection opened
+    // });
 
-        socket.onclose = function(data) {
-            console.log('onclose');
-            console.log(data);
-        }
+    // socket.onopen = function() {
+    //     console.log('connected');
+    //     console.log('connected');
+    //     socket.send('Hello Server!');
+    // }
 
-        socket.onerror = function(data) {
-            console.log('error');
-            console.log(data);
-        }
+    // socket.onclose = function(data) {
+    //     console.log('onclose');
+    //     console.log(data);
+    // }
+    
+
+    socket.onerror = function(data) {
+        console.log('error');
+        console.log(data);
+    }
 
     //var socket = new WebSocket((window.location.protocol == 'http') ? 'ws://' : 'wss://' +  window.location.host + '/ws?session_key=${sessionKey}')
 
@@ -228,11 +242,11 @@ $(document).ready(function () {
         }
     });
 
-    socket.onmessage = function (e) {
-        socket.send('Browser socket received a message from socket!');
-        console.log('socket.onmessage')
-        getMessageById(e.data);
-    };
+    // socket.onmessage = function (e) {
+    //     socket.send('Browser socket received a message from socket!');
+    //     console.log('socket.onmessage')
+    //     getMessageById(e.data);
+    // };
 
 
 });
