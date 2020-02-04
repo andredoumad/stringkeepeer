@@ -1,0 +1,45 @@
+
+server {
+    listen 80;
+    server_name stringkeeper.com www.stringkeeper.com;
+
+    location / {
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+
+}
+
+
+
+server {
+    listen 443 ssl;
+    server_name stringkeeper.com www.stringkeeper.com;
+
+    ssl_certificate /etc/letsencrypt/live/stringkeeper.com/fullchain.pem; # managed by Ce$
+    ssl_certificate_key /etc/letsencrypt/live/stringkeeper.com/privkey.pem; # managed by $
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+    location / {
+        proxy_pass http://unix:/run/gunicorn.sock;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+    }
+
+    location /static {
+        alias /home/ubuntu/stringkeeper/static;
+    }
+
+    location  /favicon.ico {
+        alias /home/ubuntu/stringkeeper/static/favicon.ico;
+    }
+
+    location  /robots.txt {
+        alias /home/ubuntu/stringkeeper/static/robots.txt;
+    }
+
+}
+sudo certbot certonly --agree-tos --email andre@stringkeeper.com --webroot -w /var/lib/letsencrypt/ -d stringkeeper.com -d www.stringkeeper.com
