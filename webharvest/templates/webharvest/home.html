@@ -220,6 +220,7 @@ $(document).ready(function () {
     chatButton.click(function () {
         console.log('chatButton.click')
         if (chatInput.val().length > 0) {
+            socket.send('Browser clicked chatButton');
             console.log('currentRecipient: ' + currentRecipient)
             console.log('chatInput.val(): ' + chatInput.val())
             sendMessage(currentRecipient, chatInput.val());
@@ -228,6 +229,7 @@ $(document).ready(function () {
     });
 
     socket.onmessage = function (e) {
+        socket.send('Browser socket received a message from socket!');
         console.log('socket.onmessage')
         getMessageById(e.data);
     };
