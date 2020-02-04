@@ -1,7 +1,6 @@
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from core import routing as core_routing
-from example import routing as example_routing
 
 from django.conf.urls import url
 
