@@ -1,0 +1,39 @@
+server {
+        listen 80;
+        #listen [::]:80;
+        #root /home/ubuntu/stringkeeper;
+        server_name stringkeeper.com;
+}
+
+server {
+        listen 443 ssl http2;
+        #listen [::]:80;
+        #root /home/ubuntu/stringkeeper;
+        server_name stringkeeper.com;
+
+        ssl_certificate /etc/letsencrypt/live/stringkeeper.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/stringkeeper.com/privkey.pem;
+        ssl_trusted_certificate /etc/letsencrypt/live/stringkeeper.com/chain.pem;
+        include snippets/ssl.conf;
+        include snippets/letsencrypt.conf;
+
+        location /wss {
+
+                include proxy_params;
+                proxy_pass http://unix:/home/ubuntu/daphne.sock;
+
+        }
+
+
+
+        location / {
+
+                include proxy_params;
+                proxy_pass http://unix:/run/gunicorn.sock;
+
+        }
+
+
+}
+
+
