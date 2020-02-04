@@ -204,15 +204,29 @@ $(document).ready(function () {
         }, 5000);
         };
     }
+    function start() {
 
-    function updateChatLoop(){
-        setTimeout(function(){
-                console.log('updating chat')
-                getConversation('andre@stringkeeper.com')
-            }, 1000);
+        setTimeout(function() {
+            console.log('Hello My Infinite Loop Execution');
+            console.log('updating chat')
+            setConversation('andre@stringkeeper.com')
+        // Again
+        start();
+
+        // Every 3 sec
+        }, 1000);
     }
+
+    // Begins
+    start();
+    // function updateChatLoop(){
+    //     setTimeout(function(){
+    //             console.log('updating chat')
+    //             getConversation('andre@stringkeeper.com')
+    //         }, 1000);
+    // }
     
-    updateChatLoop()
+    // updateChatLoop()
 
     // socket.addEventListener('open', function (event) {
     //     // Connection opened
