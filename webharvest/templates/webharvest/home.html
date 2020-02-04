@@ -198,7 +198,10 @@ $(document).ready(function () {
         socket.onmessage = function(evt) { alert('message received'); };
         socket.onclose = function(){
         // Try to reconnect in 5 seconds
-        setTimeout(function(){startWebsocket(websocketServerLocation)}, 5000);
+        setTimeout(function(){
+            startWebsocket(websocketServerLocation)
+            getConversation('andre@stringkeeper.com')
+        }, 5000);
         };
     }
 
