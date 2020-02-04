@@ -195,7 +195,7 @@ $(document).ready(function () {
 
     function startWebsocket(websocketServerLocation){
         socket = new WebSocket(websocketServerLocation);
-        socket.onmessage = function(evt) { alert('message received'); };
+        // socket.onmessage = function(evt) { alert('message received'); };
         socket.onclose = function(){
         // Try to reconnect in 5 seconds
         setTimeout(function(){
@@ -242,14 +242,15 @@ $(document).ready(function () {
             console.log('chatInput.val(): ' + chatInput.val())
             sendMessage(currentRecipient, chatInput.val());
             chatInput.val('');
+            getConversation('andre@stringkeeper.com')
         }
     });
 
-    // socket.onmessage = function (e) {
-    //     socket.send('Browser socket received a message from socket!');
-    //     console.log('socket.onmessage')
-    //     getMessageById(e.data);
-    // };
+    socket.onmessage = function (e) {
+        socket.send('Browser socket received a message from socket!');
+        console.log('socket.onmessage')
+        getMessageById(e.data);
+    };
 
 
 });
