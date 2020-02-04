@@ -200,10 +200,19 @@ $(document).ready(function () {
         // Try to reconnect in 5 seconds
         setTimeout(function(){
             startWebsocket(websocketServerLocation)
-            getConversation('andre@stringkeeper.com')
+
         }, 5000);
         };
     }
+
+    function updateChatLoop(){
+        setTimeout(function(){
+                console.log('updating chat')
+                getConversation('andre@stringkeeper.com')
+            }, 1000);
+    }
+    
+    updateChatLoop()
 
     // socket.addEventListener('open', function (event) {
     //     // Connection opened
