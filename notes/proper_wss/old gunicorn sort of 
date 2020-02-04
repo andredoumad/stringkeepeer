@@ -1,0 +1,18 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/home/ubuntu/stringkeeper
+ExecStart=/home/ubuntu/stringkeeper/bin/gunicorn \
+    --access-logfile /home/ubuntu/stringkeeper/gunicorn.log \
+    --workers 3 \
+    --bind unix:/home/ubuntu/stringkeeper/gunicorn.sock \
+    stringkeeper.wsgi
+
+[Install]
+WantedBy=multi-user.target
+
