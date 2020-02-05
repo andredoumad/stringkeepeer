@@ -263,12 +263,12 @@ $(document).ready(function () {
     chatButton.click(function () {
         console.log('chatButton.click')
         if (chatInput.val().length > 0) {
-            socket.send('Browser clicked chatButton');
+            // socket.send('Browser clicked chatButton');
             console.log('currentRecipient: ' + currentRecipient)
             console.log('chatInput.val(): ' + chatInput.val())
             sendMessage(currentRecipient, chatInput.val());
             chatInput.val('');
-            // getConversation('andre@stringkeeper.com')
+            getConversation('andre@stringkeeper.com')
         }
     });
 
