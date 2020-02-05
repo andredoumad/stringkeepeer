@@ -244,11 +244,11 @@ if socket.gethostname()=="www.stringkeeper.com":
     # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
     # SECURE_SSL_REDIRECT = True
 
-    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.txt')) )
-    f = open(str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.txt')), "w")
+    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.log')) )
+    f = open(str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.log')), "w")
     f.write("")
     f.close()
-    LOGGING_FILEPATH = str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.txt'))
+    LOGGING_FILEPATH = str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.log'))
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
@@ -256,7 +256,7 @@ if socket.gethostname()=="www.stringkeeper.com":
             'file': {
                 'level': 'DEBUG',
                 'class': 'logging.FileHandler',
-                'filename': os.path.join(BASE_DIR, 'stringkeeperremotedebug.txt'),
+                'filename': os.path.join(BASE_DIR, 'stringkeeperremotedebug.log'),
             },
         },
         'loggers': {
@@ -298,11 +298,11 @@ else:
     SECURE_PROXY_SSL_HEADER = None
     SECURE_SSL_REDIRECT = False
 
-    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.txt')) )
-    f = open(str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.txt')), "w")
+    eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.log')) )
+    f = open(str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.log')), "w")
     f.write("")
     f.close()
-    LOGGING_FILEPATH = str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.txt'))
+    LOGGING_FILEPATH = str(os.path.join(BASE_DIR, 'stringkeeperlocaldebug.log'))
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
@@ -310,7 +310,7 @@ else:
             'file': {
                 'level': 'DEBUG',
                 'class': 'logging.FileHandler',
-                'filename': os.path.join(BASE_DIR, 'stringkeeperlocaldebug.txt'),
+                'filename': os.path.join(BASE_DIR, 'stringkeeperlocaldebug.log'),
             },
         },
         'loggers': {

@@ -172,11 +172,21 @@ def eventlog(logstring):
     print('|==| ' + str(debug_line_number) + ' |==| ')
     print('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
     if socket.gethostname()=="www.stringkeeper.com":
+        if os.path.getsize('/home/ubuntu/stringkeeper/stringkeeperremotedebug.txt') > 10000000:
+            f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.txt', "w")
+            f.write('')
+            f.close()
+
         f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.txt', "a")
         f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
         f.write('\n')
         f.close()
     else:
+        if os.path.getsize('/home/gordon/stringkeeper/stringkeeperlocaldebug.txt') > 10000000:
+            f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.txt', "w")
+            f.write('')
+            f.close()
+        
         f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.txt', "a")
         f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
         f.write('\n')
