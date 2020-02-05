@@ -179,7 +179,7 @@ $(document).ready(function () {
         var socket = new WebSocket(
         'ws://127.0.0.1:8000/ws?session_key=${sessionKey}'
         // 'wss://54.203.44.104:8001/wss?session_key${sessionKey}'
-        )
+        );
     } else {
         // var socket = new WebSocket(
         // 'wss://' + window.location.host + '/wss?session_key=${sessionKey}'
@@ -188,23 +188,23 @@ $(document).ready(function () {
         // var socket = new WebSocket("ws://stringkeeper.com/ws?session_key=${sessionKey}")
 
 
-        // var socket = new WebSocket("wss://stringkeeper.com/wss?session_key=${sessionKey}")
-        startWebsocket("wss://stringkeeper.com/wss?session_key=${sessionKey}")
+        var socket = new WebSocket("wss://stringkeeper.com/wss?session_key=${sessionKey}");
+        // startWebsocket("wss://stringkeeper.com/wss?session_key=${sessionKey}")
         // var socket = new WebSocket("wss://54.203.44.104:8001/ws/notify")
         
     }
 
-    function startWebsocket(websocketServerLocation){
-        socket = new WebSocket(websocketServerLocation);
-        // socket.onmessage = function(evt) { alert('message received'); };
-        socket.onclose = function(){
-        // Try to reconnect in 5 seconds
-        setTimeout(function(){
-            startWebsocket(websocketServerLocation)
+    // function startWebsocket(websocketServerLocation){
+    //     socket = new WebSocket(websocketServerLocation);
+    //     // socket.onmessage = function(evt) { alert('message received'); };
+    //     socket.onclose = function(){
+    //     // Try to reconnect in 5 seconds
+    //     setTimeout(function(){
+    //         startWebsocket(websocketServerLocation)
 
-        }, 5000);
-        };
-    }
+    //     }, 5000);
+    //     };
+    // }
 
     // function start() {
 
