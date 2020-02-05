@@ -42,12 +42,12 @@ class MessageModel(Model):
         }
 
         channel_layer = get_channel_layer()
-        eventlog("user.id {}".format(self.user.id))
-        eventlog("recipient.id {}".format(self.recipient.id))
+        eventlog("notify_ws_clients user.id {}".format(self.user.id))
+        eventlog("notify_ws_clients recipient.id {}".format(self.recipient.id))
 
         async_to_sync(channel_layer.group_send)("{}".format(self.user.id), notification)
         async_to_sync(channel_layer.group_send)("{}".format(self.recipient.id), notification)
-        return 'ran notify_ws_clients'
+        return 'notify_ws_clients ran notify_ws_clients'
 
     def save(self, *args, **kwargs):
         """

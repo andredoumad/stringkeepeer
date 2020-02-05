@@ -21,6 +21,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
         self.group_name = "{}".format(user_id)
         # Join room group
+        eventlog('self.group_name: ' + str(self.group_name))
 
         await self.channel_layer.group_add(
             self.group_name,
