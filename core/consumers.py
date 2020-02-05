@@ -15,6 +15,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         eventlog('CONNECTED CORE CONNECTED !!!!')
         eventlog('async def connect')
         user_id = self.scope["session"]["_auth_user_id"]
+        eventlog('user_id: ' + str(user_id))
+        eventlog('self.scope["session"]["_auth_user_id"]')
+        eventlog(str(self.scope["session"]["_auth_user_id"]))
+        
         self.group_name = "{}".format(user_id)
         # Join room group
 

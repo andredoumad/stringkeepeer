@@ -131,7 +131,8 @@ function sendMessage(recipient, body) {
         recipient: recipient,
         body: body
     }).fail(function () {
-        alert('Error! Check console!');
+        console.log('SEND MESSAGE FAILED.')
+        // alert('Error! Check console!');
     });
 
     // $.post('/webharvest/api/v1/message/', {
