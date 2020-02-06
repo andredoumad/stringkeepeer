@@ -10,6 +10,20 @@ def test_consumer(message):
     eventlog('test_consumer: ' + str(message))
 
 
+class EchoConsumer(SyncConsumer):
+
+    def websocket_connect(self, event):
+        self.send({
+            "type": "websocket.accept",
+        })
+
+    def websocket_receive(self, event):
+        self.send({
+            "type": "websocket.send",
+            "text": event["text"],
+        })
+
+
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         eventlog('CONNECTED CORE CONNECTED !!!!')
