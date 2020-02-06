@@ -1,7 +1,7 @@
 
 # chat/consumers.py
 
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer, SyncConsumer
 import json
 from stringkeeper.braintree_tools import * 
 
