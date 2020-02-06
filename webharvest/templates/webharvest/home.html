@@ -181,58 +181,41 @@ $(document).ready(function () {
         // 'wss://54.203.44.104:8001/wss?session_key${sessionKey}'
         );
     } else {
-        // var socket = new WebSocket(
-        // 'wss://' + window.location.host + '/wss?session_key=${sessionKey}'
-        // )
-
-        // var socket = new WebSocket("ws://stringkeeper.com/ws?session_key=${sessionKey}")
-
-
-        var socket = new WebSocket("wss://stringkeeper.com/wss?session_key=${sessionKey}");
-        // startWebsocket("wss://stringkeeper.com/wss?session_key=${sessionKey}")
-        // var socket = new WebSocket("wss://54.203.44.104:8001/ws/notify")
-        
+        startWebsocket("wss://stringkeeper.com/wss?session_key=${sessionKey}")
     }
 
-    // function startWebsocket(websocketServerLocation){
-    //     socket = new WebSocket(websocketServerLocation);
-    //     // socket.onmessage = function(evt) { alert('message received'); };
-    //     socket.onclose = function(){
-    //     // Try to reconnect in 5 seconds
-    //     setTimeout(function(){
-    //         startWebsocket(websocketServerLocation)
+    function startWebsocket(websocketServerLocation){
+        socket = new WebSocket(websocketServerLocation);
+        // socket.onmessage = function(evt) { alert('message received'); };
+        socket.onclose = function(){
+        // Try to reconnect in 5 seconds
+        setTimeout(function(){
+            startWebsocket(websocketServerLocation)
 
-    //     }, 5000);
-    //     };
-    // }
-
-    function start() {
-
-        setTimeout(function() {
-            console.log('Hello My Infinite Loop Execution');
-            console.log('updating chat')
-            getConversation('andre@stringkeeper.com')
-        // Again
-        start();
-
-        // Every 3 sec
-        }, 1000);
+        }, 5000);
+        };
     }
 
-    start();
-
-    // function updateChatLoop(){
-    //     setTimeout(function(){
-    //             console.log('updating chat')
-    //             getConversation('andre@stringkeeper.com')
-    //         }, 1000);
+    // // force update loop
+    // function start() {
+    //     setTimeout(function() {
+    //         console.log('Hello My Infinite Loop Execution');
+    //         console.log('updating chat')
+    //         getConversation('andre@stringkeeper.com')
+    //     // Again
+    //     start();
+    //     }, 1000);
     // }
-    
-    // updateChatLoop()
+    // start();
 
-    // socket.addEventListener('open', function (event) {
-    //     // Connection opened
-    // });
+
+    socket.addEventListener('open', function (event) {
+        console.log('opeaddEventListenerned open ')
+    });
+
+    socket.addEventListener('message', function (event) {
+        console.log('Message from server ', event.data);
+    });
 
     // socket.onopen = function() {
     //     console.log('connected');
