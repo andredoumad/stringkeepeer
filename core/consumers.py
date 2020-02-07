@@ -10,18 +10,18 @@ def test_consumer(message):
     eventlog('test_consumer: ' + str(message))
 
 
-class EchoConsumer(SyncConsumer):
+# class EchoConsumer(SyncConsumer):
 
-    def websocket_connect(self, event):
-        self.send({
-            "type": "websocket.accept",
-        })
+#     def websocket_connect(self, event):
+#         self.send({
+#             "type": "websocket.accept",
+#         })
 
-    def websocket_receive(self, event):
-        self.send({
-            "type": "websocket.send",
-            "text": event["text"],
-        })
+#     def websocket_receive(self, event):
+#         self.send({
+#             "type": "websocket.send",
+#             "text": event["text"],
+#         })
 
 
 # def send_channel_message(group_name, message):
@@ -36,19 +36,19 @@ class EchoConsumer(SyncConsumer):
 
 
 
-class ExampleConsumer(AsyncWebsocketConsumer):
+# class ExampleConsumer(AsyncWebsocketConsumer):
 
-    async def connect(self,msg):
-        # Called on connection.
-        # To accept the connection call:
-        await self.accept()
-        eventlog('EXAMPLE CONSUMER receive ' + 'Channel connected')
+#     async def connect(self,msg):
+#         # Called on connection.
+#         # To accept the connection call:
+#         await self.accept()
+#         eventlog('EXAMPLE CONSUMER receive ' + 'Channel connected')
 
-    async def receive(self, data):
-        # do something with data
-        eventlog('EXAMPLE CONSUMER receive ' +  data)
-        # send response back to connected client
-        await self.send('EXAMPLE CONSUMER We received your message')
+#     async def receive(self, data):
+#         # do something with data
+#         eventlog('EXAMPLE CONSUMER receive ' +  data)
+#         # send response back to connected client
+#         await self.send('EXAMPLE CONSUMER We received your message')
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -85,6 +85,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         eventlog('async def receive: ' + str(text_data))
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        eventlog("message = text_data_json['message']: " + str(message))
         # Send message to room group
         await self.channel_layer.group_send(
             self.chat_group_name,
