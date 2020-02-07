@@ -67,7 +67,7 @@ class EventConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-        eventlog(self.room_group_name)
+        eventlog('self.room_group_name: ' + str(self.room_group_name))
         self.accept()
         eventlog("#######CONNECTED############")
 
