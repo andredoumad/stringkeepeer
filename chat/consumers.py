@@ -19,7 +19,7 @@ class ChatConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
         eventlog('ChatConsumer connected, event: ' + str(event))
         await self.send({
-            "type": "websocket.accept"
+            "type": "websocket.accept",
         })
 
     async def websocket_receive(self, event):
