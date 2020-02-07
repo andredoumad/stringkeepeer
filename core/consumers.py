@@ -2,6 +2,7 @@
 # chat/consumers.py
 
 from channels.generic.websocket import AsyncWebsocketConsumer, SyncConsumer
+from channels.generic.websocket import WebsocketConsumer
 import json
 from stringkeeper.braintree_tools import * 
 from asgiref.sync import async_to_sync
