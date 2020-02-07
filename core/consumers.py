@@ -67,19 +67,19 @@ class EventConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-        print(self.room_group_name)
+        eventlog(self.room_group_name)
         self.accept()
-        print("#######CONNECTED############")
+        eventlog("#######CONNECTED############")
 
     def disconnect(self, code):
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
             self.channel_name
         )
-        print("DISCONNECED CODE: ",code)
+        eventlog("DISCONNECED CODE: ",code)
 
     def receive(self, text_data=None, bytes_data=None):
-        print(" MESSAGE RECEIVED")
+        eventlog(" MESSAGE RECEIVED")
         data = json.loads(text_data)
         message = data['message']
         async_to_sync(self.channel_layer.group_send)(
@@ -89,7 +89,7 @@ class EventConsumer(WebsocketConsumer):
             }
         )
     def send_message_to_frontend(self,event):
-        print("EVENT TRIGERED")
+        eventlog("EVENT TRIGERED")
         # Receive message from room group
         message = event['message']
         # Send message to WebSocket
