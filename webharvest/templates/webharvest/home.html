@@ -210,16 +210,19 @@ $(document).ready(function () {
 
 
     socket.addEventListener('open', function (event) {
-        console.log('opeaddEventListenerned open ')
-        socket.send('hello server')
+        console.log('addEventListener open ')
+        // socket.send('hello server')
     });
-
 
 
 
     socket.addEventListener('message', function (event) {
-        console.log('Message from server ', event.data);
+        console.log(' addEventListener Message');
     });
+
+    // socket.addEventListener('message', function (event) {
+    //     console.log('Message from server ', event.data);
+    // });
 
 
 
