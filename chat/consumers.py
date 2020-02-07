@@ -10,7 +10,12 @@ from channels.generic.websocket import WebsocketConsumer
 from stringkeeper.standalone_tools import * 
 from asgiref.sync import async_to_sync
 
+# def ChatConsumer():
+#     eventlog('ChatConsumer! ChatConsumer! ')        
+
+
 class ChatConsumer(AsyncConsumer):
+    eventlog('ChatConsumer! ChatConsumer! ')    
     async def websocket_connect(self, event):
         eventlog('ChatConsumer connected, event: ' + str(event))
         await self.send({
