@@ -193,7 +193,7 @@ $(document).ready(function () {
         socket.addEventListener('message', function (event) {
             console.log(' addEventListener Message');
         });
-        socket.send('hello server')
+        // socket.send('hello server')
         // socket.onmessage = function(evt) { alert('message received'); };
         socket.onclose = function(){
         // Try to reconnect in 5 seconds
