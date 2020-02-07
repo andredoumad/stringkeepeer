@@ -57,45 +57,45 @@ def test_consumer(message):
 
 
 
-class EventConsumer(WebsocketConsumer):
-    def connect(self):
-        # self.room_name = self.scope['url_route']['kwargs']['room_name']
-        # self.room_group_name = 'chat_%s' % self.room_name
-        self.room_name = 'event'
-        self.room_group_name = self.room_name+"_sharif"
-        async_to_sync(self.channel_layer.group_add)(
-            self.room_group_name,
-            self.channel_name
-        )
-        eventlog('self.room_group_name: ' + str(self.room_group_name))
-        self.accept()
-        eventlog("#######CONNECTED############")
+# class EventConsumer(WebsocketConsumer):
+#     def connect(self):
+#         # self.room_name = self.scope['url_route']['kwargs']['room_name']
+#         # self.room_group_name = 'chat_%s' % self.room_name
+#         self.room_name = 'event'
+#         self.room_group_name = self.room_name+"_sharif"
+#         async_to_sync(self.channel_layer.group_add)(
+#             self.room_group_name,
+#             self.channel_name
+#         )
+#         eventlog('self.room_group_name: ' + str(self.room_group_name))
+#         self.accept()
+#         eventlog("#######CONNECTED############")
 
-    def disconnect(self, code):
-        async_to_sync(self.channel_layer.group_discard)(
-            self.room_group_name,
-            self.channel_name
-        )
-        eventlog("DISCONNECED CODE: ",code)
+#     def disconnect(self, code):
+#         async_to_sync(self.channel_layer.group_discard)(
+#             self.room_group_name,
+#             self.channel_name
+#         )
+#         eventlog("DISCONNECED CODE: ",code)s
 
-    def receive(self, text_data=None, bytes_data=None):
-        eventlog(" MESSAGE RECEIVED")
-        data = json.loads(text_data)
-        message = data['message']
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name,{
-                "type": 'send_message_to_frontend',
-                "message": message
-            }
-        )
-    def send_message_to_frontend(self,event):
-        eventlog("EVENT TRIGERED")
-        # Receive message from room group
-        message = event['message']
-        # Send message to WebSocket
-        self.send(text_data=json.dumps({
-            'message': message
-        }))
+#     def receive(self, text_data=None, bytes_data=None):
+#         eventlog(" MESSAGE RECEIVED")
+#         data = json.loads(text_data)
+#         message = data['message']
+#         async_to_sync(self.channel_layer.group_send)(
+#             self.room_group_name,{
+#                 "type": 'send_message_to_frontend',
+#                 "message": message
+#             }
+#         )
+#     def send_message_to_frontend(self,event):
+#         eventlog("EVENT TRIGERED")
+#         # Receive message from room group
+#         message = event['message']
+#         # Send message to WebSocket
+#         self.send(text_data=json.dumps({
+#             'message': message
+#         }))
 
 
 
