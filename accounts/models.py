@@ -1,3 +1,12 @@
+
+import datetime 
+import os
+import random
+import string
+
+from django.utils import timezone
+from django.utils.text import slugify
+
 from datetime import timedelta
 from django.conf import settings
 from django.urls import reverse
@@ -12,7 +21,7 @@ from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.utils import timezone
 from stringkeeper.standalone_tools import * 
-from stringkeeper.utils import random_string_generator, unique_key_generator
+
 
 # sendmail(subject, message, from_email, recipient_list, html_message)
 
@@ -40,7 +49,8 @@ class UserManager(BaseUserManager):
             email = self.normalize_email(email),
             first_name = first_name,
             last_name = last_name,
-            full_name = str(str(first_name) + ' ' + str(last_name))
+            full_name = str(str(first_name) + ' ' + str(last_name)),
+            user_id = str(str(first_name) + random_string_generator() + str(last_name))
         )
 
         user_obj.set_password(password)
@@ -58,6 +68,7 @@ class UserManager(BaseUserManager):
             first_name = first_name,
             last_name = last_name,
             full_name = str(str(first_name) + ' ' + str(last_name)),
+            user_id = str(str(first_name) + generate_user_id() + str(last_name)),
             is_staff = True
 
         )
@@ -71,6 +82,7 @@ class UserManager(BaseUserManager):
             first_name = first_name,
             last_name = last_name,
             full_name = str(str(first_name) + ' ' + str(last_name)),
+            user_id = str(str(first_name) + generate_user_id() + str(last_name)),
             is_staff = True,
             is_admin = True,
             is_active = True
@@ -82,6 +94,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     #identity
     email   = models.EmailField(max_length=255, unique=True)
+    user_id = models.CharField(max_length=127, blank=True, null=True)
     first_name = models.CharField(max_length=127, blank=True, null=True)
     last_name = models.CharField(max_length=127, blank=True, null=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
@@ -117,6 +130,9 @@ class User(AbstractBaseUser):
 
     def get_full_name(self):
         return self.full_name
+
+    def get_user_id(self):
+        return self.user_id
 
     def get_short_name(self):
         return self.email
@@ -281,3 +297,32 @@ class GuestEmail(models.Model):
 
     def __str__(self):
         return self.email
+
+
+
+def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+
+
+def unique_key_generator(instance):
+    """
+    This is for a Django project with an key field
+    """
+    size = random.randint(30, 45)
+    key = random_string_generator(size=size)
+
+    Klass = instance.__class__
+    qs_exists = Klass.objects.filter(key=key).exists()
+    if qs_exists:
+        return unique_slug_generator(instance)
+    return key
+
+
+def generate_user_id():
+    user_id = random_string_generator(size=20)
+    matching_id = None
+    matching_id = User.objects.filter(user_id=user_id)
+    if matching_id != None:
+        return generate_user_id()
+    return user_id

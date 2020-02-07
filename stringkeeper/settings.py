@@ -40,8 +40,10 @@ from stringkeeper.aws.conf import *
 
 #Amazon SES
 EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
-EMAIL_HOST_USER = 'AKIAYZ2XE524ITIKU2R2' # gmail
-EMAIL_HOST_PASSWORD = 'BOdXu8OSHD16twbYZZLElgtFh/3QH/aadSIp6y9oQiSI'
+# EMAIL_HOST_USER = 'AKIAYZ2XE524ITIKU2R2' # gmail
+# EMAIL_HOST_PASSWORD = 'BOdXu8OSHD16twbYZZLElgtFh/3QH/aadSIp6y9oQiSI'
+EMAIL_HOST_USER = 'AKIAYZ2XE524B2NTG7DI'
+EMAIL_HOST_PASSWORD = 'BGJsy/NhlXE1x8HM8b6VGSuFXjwmfWmYYk5qntB0iwlw'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Stringkeeper <andre@stringkeeper.com>'
@@ -92,7 +94,7 @@ INSTALLED_APPS = [
     'billing',
     'addresses',
     'webharvest',
-    # 'chat',
+    'chat',
     'core',
     'rest_framework',
     'channels',

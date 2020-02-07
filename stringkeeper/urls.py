@@ -112,4 +112,6 @@ urlpatterns = [
     # path('webharvest/', include('core.urls', namespace='chat'), name='chat'),
     #url(r'^', include('example.urls', namespace='example')),
     # path('', include('core.urls', namespace='chat'), name='chat'),
+
+    path('messages/', include('chat.urls')),
 ]

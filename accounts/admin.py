@@ -26,6 +26,7 @@ class UserAdmin(BaseUserAdmin):
             'first_name',
             'last_name',
             'full_name',
+            'user_id'
             )}),
         ('Permissions', {'fields': ('admin', 'staff', 'is_active')}),
     )
@@ -42,6 +43,7 @@ class UserAdmin(BaseUserAdmin):
         'first_name', 
         'last_name', 
         'full_name',
+        'user_id'
     )
     ordering = ('email',)
     filter_horizontal = ()

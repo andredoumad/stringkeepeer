@@ -6,7 +6,9 @@ import string
 
 from django.utils import timezone
 from django.utils.text import slugify
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 
 def get_last_month_data(today):
@@ -64,6 +66,15 @@ def get_filename(path): #/abc/filename.mp4
 
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
+
+
+def generate_user_id():
+    user_id = random_string_generator(size=20)
+    matching_id = None
+    matching_id = User.objects.filter(user_id=user_id)
+    if matching_id != None:
+        return generate_user_id()
+    return user_id
 
 
 def unique_key_generator(instance):

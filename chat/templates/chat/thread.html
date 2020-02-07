@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+hello thread
+<h3>Thread for {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h3>
+<ul id='chat-items'>
+{% for chat in object.chatmessage_set.all %}
+
+<li>{{ chat.message }} via {{ chat.user }}</li>
+
+{% endfor %}
+</ul>
+
+<form id='form' method='POST'> {% csrf_token %}
+{{form.as_p }}
+<input type='submit' class='btn btn-primary'/>
+</form>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+// websocket scripts
+
+var endpoint = ''
+var socket = new WebSocket(endpoint)
+
+socket.onmessage = function(e){
+    console.log("onmessage: ", e)
+}
+socket.onopen = function(e){
+    console.log("onopen: ", e)
+}
+socket.onerror = function(e){
+    console.log("onerror: ", e)
+}
+socket.onclose = function(e){
+    console.log("onclose: ", e)
+}
+
+</script>
+{% endblock %}
