@@ -186,6 +186,14 @@ $(document).ready(function () {
 
     function startWebsocket(websocketServerLocation){
         socket = new WebSocket(websocketServerLocation);
+        socket.addEventListener('open', function (event) {
+            console.log('addEventListener open ')
+            // socket.send('hello server')
+        });
+        socket.addEventListener('message', function (event) {
+            console.log(' addEventListener Message');
+        });
+        socket.send('hello server')
         // socket.onmessage = function(evt) { alert('message received'); };
         socket.onclose = function(){
         // Try to reconnect in 5 seconds
@@ -208,17 +216,6 @@ $(document).ready(function () {
     // }
     // start();
 
-
-    socket.addEventListener('open', function (event) {
-        console.log('addEventListener open ')
-        // socket.send('hello server')
-    });
-
-
-
-    socket.addEventListener('message', function (event) {
-        console.log(' addEventListener Message');
-    });
 
     // socket.addEventListener('message', function (event) {
     //     console.log('Message from server ', event.data);
