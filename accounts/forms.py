@@ -1,3 +1,6 @@
+import os
+import random
+import string
 from django import forms
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
@@ -127,6 +130,7 @@ class RegisterForm(forms.ModelForm):
         user = super(RegisterForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         user.full_name = str(str(user.first_name) + ' ' + str(user.last_name))
+        user.user_id = str(str(user.first_name) + str(''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(15))) + str(user.last_name))
         # obj = EmailActivation.objects.create(user=user) # send confirmation email via signals
         # obj.send_activation_email()
         if commit:

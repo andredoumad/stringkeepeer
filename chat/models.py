@@ -5,6 +5,9 @@ from django.db import models
 from django.db.models import Q
 
 from stringkeeper.standalone_tools import *
+# from django.contrib.auth import get_user_model
+
+# User = get_user_model()
 
 class ThreadManager(models.Manager):
     def by_user(self, user):
@@ -16,20 +19,30 @@ class ThreadManager(models.Manager):
     def get_or_new(self, user, other_username): # get_or_create
         username = user
         if username == other_username:
+            eventlog('username == other_username! RETURNING NONE')            
             return None
         eventlog('get_or_new user: ' + str(user))
-        eventlog('get_or_new user: ' + str(other_username))
-        qlookup1 = Q(first__username=username) & Q(second__username=other_username)
-        qlookup2 = Q(first__username=other_username) & Q(second__username=username)
+        eventlog('get_or_new other_username: ' + str(other_username))
+        qlookup1 = Q(first__email=username) & Q(second__email=other_username)
+        qlookup2 = Q(first__email=other_username) & Q(second__email=username)
+        eventlog('qlookup1: ' + str(qlookup1))
+        eventlog('qlookup2: ' + str(qlookup2))
         qs = self.get_queryset().filter(qlookup1 | qlookup2).distinct()
+        eventlog('qs: ' + str(qlookup2))
         if qs.count() == 1:
+            eventlog('qs.count() == 1')            
             return qs.first(), False
         elif qs.count() > 1:
+            eventlog('qs.count() > 1:')            
             return qs.order_by('timestamp').first(), False
         else:
+            eventlog('qs count is not equal to 1 or greater than 1....')
             Klass = user.__class__
-            user2 = Klass.objects.get(username=other_username)
+            eventlog('Klass is: ' + str(Klass) )
+            user2 = Klass.objects.get(email=other_username)
+            eventlog('Klass.objects.get(email=other_username): ' + str(user2) )
             if user != user2:
+                eventlog('user != user2')
                 obj = self.model(
                         first=user, 
                         second=user2

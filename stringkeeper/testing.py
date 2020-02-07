@@ -35,3 +35,9 @@ def random_string_generator(size=10, chars=string.ascii_lowercase + string.digit
 random_string = random_string_generator(20)
 
 print(random_string)
+
+first_name = 'dante'
+last_name = 'doumad'
+user_id = str(str(first_name) + str(''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(15))) + str(last_name))
+
+print(user_id)

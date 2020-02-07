@@ -22,8 +22,14 @@ hello thread
 
 <script>
 // websocket scripts
-
-var endpoint = ''
+console.log('thread websocket connecting...')
+var wsStart = 'ws://' 
+var loc = window.location
+if (loc.protocol == 'https:'){
+    wsStart = 'wss://'
+}
+var endpoint = wsStart + loc.host + loc.pathname 
+console.log('endpoint: ' + str(endpoint))
 var socket = new WebSocket(endpoint)
 
 socket.onmessage = function(e){
