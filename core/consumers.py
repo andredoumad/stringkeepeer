@@ -24,6 +24,32 @@ class EchoConsumer(SyncConsumer):
         })
 
 
+# def send_channel_message(group_name, message):
+#     channel_layer = get_channel_layer()
+#     async_to_sync(channel_layer.group_send)(
+#         '{}'.format(group_name),
+#         {
+#             'type': 'channel_message',
+#             'message': message
+#         }
+#     )
+
+
+
+class ExampleConsumer(AsyncWebsocketConsumer):
+
+    async def connect(self,msg):
+        # Called on connection.
+        # To accept the connection call:
+        await self.accept()
+        eventlog('EXAMPLE CONSUMER receive ' + 'Channel connected')
+
+    async def receive(self, data):
+        # do something with data
+        eventlog('EXAMPLE CONSUMER receive ' +  data)
+        # send response back to connected client
+        await self.send('EXAMPLE CONSUMER We received your message')
+
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         eventlog('CONNECTED CORE CONNECTED !!!!')
