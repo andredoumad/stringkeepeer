@@ -92,7 +92,7 @@ INSTALLED_APPS = [
     'billing',
     'addresses',
     'webharvest',
-    'chat',
+    # 'chat',
     'core',
     'rest_framework',
     'channels',
