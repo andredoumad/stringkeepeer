@@ -26,7 +26,7 @@ if (loc.protocol == 'https:'){
     wsStart = 'wss://'
 }
 var endpoint = wsStart + loc.host + loc.pathname 
-console.log('endpoint: ' + str(endpoint))
+console.log('endpoint: ' + endpoint)
 var socket = new WebSocket(endpoint)
 
 socket.onmessage = function(e){
