@@ -50,7 +50,7 @@ class UserManager(BaseUserManager):
             first_name = first_name,
             last_name = last_name,
             full_name = str(str(first_name) + ' ' + str(last_name)),
-            user_id = str(str(first_name) + random_string_generator() + str(last_name))
+            user_id = str(str(first_name) + str(''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(15))) + str(last_name))
         )
 
         user_obj.set_password(password)
@@ -68,7 +68,7 @@ class UserManager(BaseUserManager):
             first_name = first_name,
             last_name = last_name,
             full_name = str(str(first_name) + ' ' + str(last_name)),
-            user_id = str(str(first_name) + generate_user_id() + str(last_name)),
+            user_id = str(str(first_name) + str(''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(15))) + str(last_name)),
             is_staff = True
 
         )
@@ -82,7 +82,7 @@ class UserManager(BaseUserManager):
             first_name = first_name,
             last_name = last_name,
             full_name = str(str(first_name) + ' ' + str(last_name)),
-            user_id = str(str(first_name) + generate_user_id() + str(last_name)),
+            user_id = str(str(first_name) + str(''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(15))) + str(last_name)),
             is_staff = True,
             is_admin = True,
             is_active = True
@@ -302,7 +302,6 @@ class GuestEmail(models.Model):
 
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
-
 
 
 def unique_key_generator(instance):
