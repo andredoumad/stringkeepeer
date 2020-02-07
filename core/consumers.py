@@ -4,6 +4,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer, SyncConsumer
 import json
 from stringkeeper.braintree_tools import * 
+from asgiref.sync import async_to_sync
 
 #works then breaks system
 def test_consumer(message):
@@ -50,10 +51,60 @@ def test_consumer(message):
 #         # send response back to connected client
 #         await self.send('EXAMPLE CONSUMER We received your message')
 
+
+
+
+
+
+class EventConsumer(WebsocketConsumer):
+    def connect(self):
+        # self.room_name = self.scope['url_route']['kwargs']['room_name']
+        # self.room_group_name = 'chat_%s' % self.room_name
+        self.room_name = 'event'
+        self.room_group_name = self.room_name+"_sharif"
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name
+        )
+        print(self.room_group_name)
+        self.accept()
+        print("#######CONNECTED############")
+
+    def disconnect(self, code):
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_group_name,
+            self.channel_name
+        )
+        print("DISCONNECED CODE: ",code)
+
+    def receive(self, text_data=None, bytes_data=None):
+        print(" MESSAGE RECEIVED")
+        data = json.loads(text_data)
+        message = data['message']
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,{
+                "type": 'send_message_to_frontend',
+                "message": message
+            }
+        )
+    def send_message_to_frontend(self,event):
+        print("EVENT TRIGERED")
+        # Receive message from room group
+        message = event['message']
+        # Send message to WebSocket
+        self.send(text_data=json.dumps({
+            'message': message
+        }))
+
+
+
+
+
+
+
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         eventlog('CONNECTED CORE CONNECTED !!!!')
-        eventlog('async def connect')
         user_id = self.scope["session"]["_auth_user_id"]
         eventlog('user_id: ' + str(user_id))
         # eventlog('self.scope["session"]["_auth_user_id"]')
