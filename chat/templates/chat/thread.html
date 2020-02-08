@@ -22,6 +22,8 @@ hello thread
 console.log('thread websocket connecting...')
 var wsStart = 'ws://' 
 var loc = window.location
+var formData = $("#form")
+
 if (loc.protocol == 'https:'){
     wsStart = 'wss://'
 }
@@ -34,6 +36,10 @@ socket.onmessage = function(e){
 }
 socket.onopen = function(e){
     console.log("onopen: ", e)
+    formData.submit(function(event){
+        event.preventDefault()
+        socket.send("hello world")
+    })
 }
 socket.onerror = function(e){
     console.log("onerror: ", e)

@@ -120,6 +120,10 @@ from asgiref.sync import async_to_sync
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         eventlog('CONNECTED CORE CONNECTED !!!!')
+        eventlog('ChatConsumer connected, event: ' + str(event))
+        await self.send({
+            "type": "websocket.accept",
+        })
         user_id = self.scope["session"]["_auth_user_id"]
         eventlog('user_id: ' + str(user_id))
         # eventlog('self.scope["session"]["_auth_user_id"]')
