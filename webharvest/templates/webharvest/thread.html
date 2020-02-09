@@ -7,7 +7,9 @@
 <hr/>
 
 <ul class='text-left' id='chat-items'>
-{% for chat in object.chatmessage_set.all %}
+
+
+{% for chat in object.webharvestchatmessage_set.all %}
 
 <li>{{ chat.message }} via {{ chat.user }}</li>
 

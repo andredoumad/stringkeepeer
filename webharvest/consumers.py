@@ -36,7 +36,7 @@ class WebharvestConsumer(AsyncConsumer):
         # params = urlparse.parse_qs(message.content['query_string'])
         # eventlog('params = urlparse.parse_qs: ' + str(params))
 
-        # does not work
+
         other_user = self.scope['url_route']['kwargs']['username']
         eventlog('other_user: ' + str(other_user) + ' me: ' + str(me))  
         thread_obj = await self.get_thread(me, other_user)

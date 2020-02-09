@@ -170,7 +170,7 @@ def eventlog(logstring):
     elif line_number < 10000:
         debug_line_number = str('0' + str(line_number))
     print('|==| ' + str(debug_line_number) + ' |==| ')
-    print('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
+    print('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(function_name) + ' | ' + str(logstring) + ' |==|')
     if socket.gethostname()=="www.stringkeeper.com":
         if os.path.getsize('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log') > 10000000:
             f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log', "w")
