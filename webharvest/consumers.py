@@ -9,13 +9,13 @@ from channels.generic.websocket import WebsocketConsumer
 
 from stringkeeper.standalone_tools import * 
 from asgiref.sync import async_to_sync
-from .models import Thread, ChatMessage
+from .models import WebharvestThread, WebharvestChatMessage
 
 # def ChatConsumer():
 #     eventlog('ChatConsumer! ChatConsumer! ')        
 
 
-class ChatConsumer(AsyncConsumer):
+class WebharvestConsumer(AsyncConsumer):
     eventlog('ChatConsumer! ChatConsumer! ')    
     async def websocket_connect(self, event):
         eventlog('ChatConsumer connected, event: ' + str(event))
@@ -111,7 +111,7 @@ class ChatConsumer(AsyncConsumer):
     #critical decorator -- keeps the database stable 
     @database_sync_to_async
     def get_thread(self, user, other_username):
-        return Thread.objects.get_or_new(user, other_username)[0]
+        return WebharvestThread.objects.get_or_new(user, other_username)[0]
 
 
     #critical decorator -- keeps the database stable 
@@ -119,4 +119,4 @@ class ChatConsumer(AsyncConsumer):
     def create_chat_message(self, msg):
         thread_obj   = self.thread_obj
         me           = self.scope['user']
-        return ChatMessage.objects.create(thread=thread_obj, user=me, message=msg)
+        return WebharvestChatMessage.objects.create(thread=thread_obj, user=me, message=msg)

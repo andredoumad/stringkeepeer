@@ -1,18 +1,26 @@
 from django.shortcuts import render
 from stringkeeper.standalone_tools import *
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, FormView, DetailView, View, UpdateView
+from django.views.generic import CreateView, FormView, DetailView, View, UpdateView, ListView
 from billing.models import BillingProfile
 from orders.models import Order, SubscriptionPurchase
 from rest_framework.test import APIRequestFactory
 # Create your views here.
 from .mixins import CsrfExemptMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404, HttpResponseForbidden
 import json, requests
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.conf import settings
+
+from .forms import ComposeForm
+from django.views.generic.edit import FormMixin
+from .models import WebharvestThread, WebharvestChatMessage
+
+
 BASE_URL = getattr(settings, 'BASE_URL', False)
+
+# OLD CORE SYSTEM
 #LoginRequiredMixin,
 class WebHarvestHomeView(DetailView):
     template_name = 'webharvest/home.html'
@@ -50,6 +58,65 @@ class WebHarvestHomeView(DetailView):
 
     def get_object(self):
         return self.request.user
+
+
+
+
+
+
+# NEW WEBHARVEST CONSUMERS 
+class InboxView(LoginRequiredMixin, ListView):
+    template_name = 'webharvest/inbox.html'
+    def get_queryset(self):
+        return WebharvestThread.objects.by_user(self.request.user)
+
+
+class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
+    template_name = 'webharvest/thread.html'
+    form_class = ComposeForm
+    success_url = './'
+
+    def get_queryset(self):
+        return WebharvestThread.objects.by_user(self.request.user)
+
+    def get_object(self):
+        other_username  = self.kwargs.get("username")
+        eventlog('get_object other_username: ' + str(other_username))
+
+        eventlog('self.request.user: ' + str(self.request.user))
+        obj, created    = WebharvestThread.objects.get_or_new(self.request.user, other_username)
+        if obj == None:
+            raise Http404
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.get_form()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden()
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        thread = self.get_object()
+        user = self.request.user
+        eventlog('form_valid user: ' + str(user))
+        message = form.cleaned_data.get("message")
+        WebharvestChatMessage.objects.create(user=user, thread=thread, message=message)
+        return super().form_valid(form)
+
+
+
+
+
+
 
 
 

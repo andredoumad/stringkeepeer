@@ -6,7 +6,7 @@ from django.conf.urls import url
 from chat.consumers import ChatConsumer
 from channels.security.websocket import AllowedHostsOriginValidator, OriginValidator
 
-
+from webharvest.consumers import WebharvestConsumer
 
 
 
@@ -19,7 +19,10 @@ application = ProtocolTypeRouter({
                 # core_routing.websocket_urlpatterns,
                 [
                     url(r"^messages/(?P<username>[\w.@+-]+)/$", ChatConsumer),
-                    url(r"^messages/(?P<username>[\w.@+-]+)$", ChatConsumer)
+                    url(r"^messages/(?P<username>[\w.@+-]+)$", ChatConsumer),
+                    url(r"^webharvest/(?P<username>[\w.@+-]+)/$", WebharvestConsumer),
+                    url(r"^webharvest/(?P<username>[\w.@+-]+)$", WebharvestConsumer)
+
                 ]
             )
         )

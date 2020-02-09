@@ -101,14 +101,14 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls, name='site_admin'),
     path('webharvest/', include('webharvest.urls', namespace='webharvest'), name='webharvest'),
-    path('web-harvest/', include('webharvest.urls', namespace='webharvest'), name='web-harvest'),
+    # path('web-harvest/', include('webharvest.urls', namespace='webharvest'), name='web-harvest'),
     # path('data-mining/', LibraryView.as_view(), name='library'),
     # path('email-automation/', LibraryView.as_view(), name='library'),
 
-    path('dante/', include('webharvest.urls', namespace='webharvest'), name='webharvest'),
+    # path('dante/', include('webharvest.urls', namespace='webharvest'), name='webharvest'),
     # path('ws', consumers.ChatConsumer)    
     # path('wss', consumers.ChatConsumer)
-    path('webharvest/', include('core.urls', namespace='chat'), name='chat'),
+    # path('webharvest/', include('core.urls', namespace='chat'), name='chat'),
     # path('webharvest/', include('core.urls', namespace='chat'), name='chat'),
     #url(r'^', include('example.urls', namespace='example')),
     # path('', include('core.urls', namespace='chat'), name='chat'),
