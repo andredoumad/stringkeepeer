@@ -18,5 +18,6 @@ urlpatterns = [
     # url(r'^wss$', consumers.ChatConsumer),
     # path('', WebHarvestHomeView.as_view(), name='home'),
     path("", InboxView.as_view()),
-    re_path(r"^(?P<username>[\w.@+-]+)", ThreadView.as_view()),
+    re_path(r"^(?P<username>[\w.@+-]+)", ThreadView.as_view())
+    
 ]

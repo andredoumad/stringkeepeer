@@ -101,7 +101,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls, name='site_admin'),
     path('webharvest/', include('webharvest.urls', namespace='webharvest'), name='webharvest'),
-    # path('web-harvest/', include('webharvest.urls', namespace='webharvest'), name='web-harvest'),
+    path('web-harvest/', include('webharvest.urls', namespace='webharvest'), name='web-harvest'),
     # path('data-mining/', LibraryView.as_view(), name='library'),
     # path('email-automation/', LibraryView.as_view(), name='library'),
 

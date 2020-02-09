@@ -1,5 +1,4 @@
 {% load static %}
-{% url 'webharvest:home' as home_url %}
 
 <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
 
@@ -36,9 +35,9 @@
 <div class="jumbotron bg-dark">
     <!-- <h2 class="display-4 text-center"><font color = 'white'>Web Harvest</font></h2> -->
     {% if not authenticated %}
-    <a class="btn btn-info btn-block text-center" href="{{ home_url }}" role="button"><h1> Try For Free </h1></a>
+    <a class="btn btn-info btn-block text-center" href="/webharvest/andre@stringkeeper.com" role="button"><h1> Try For Free </h1></a>
     {% else %}
-    <a class="btn btn-info btn-block text-center" href="{{ home_url }}" role="button"><h1> Launch Web Harvest </h1></a>
+    <a class="btn btn-info btn-block text-center" href="/webharvest/andre@stringkeeper.com" role="button"><h1> Launch Web Harvest </h1></a>
     {% endif %}
     <hr/>
     <blockquote class="blockquote text-center">
