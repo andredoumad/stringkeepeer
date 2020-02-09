@@ -95,7 +95,7 @@ INSTALLED_APPS = [
     'addresses',
     'webharvest',
     'chat',
-    'core',
+    # 'core',
     'rest_framework',
     'channels',
 ]

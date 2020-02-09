@@ -60,7 +60,6 @@ admin.site.index_title = 'Stringkeeper Admin'                 # default: "Site a
 admin.site.site_title = 'Stringkeeper Admin' # default: "Django site admin"
 
 from django.conf.urls import url
-from core import consumers
 
 urlpatterns = [
     # path('__debug__/', include(debug_toolbar.urls)),

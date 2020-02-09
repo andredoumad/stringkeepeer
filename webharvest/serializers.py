@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from core.models import MessageModel
+from webharvest.models import WebharvestMessageModel
 from rest_framework.serializers import ModelSerializer, CharField
 
 from django.contrib.auth import get_user_model
@@ -37,7 +37,7 @@ class MessageModelSerializer(ModelSerializer):
         # eventlog('Email: ' + str(email))
         eventlog('Recipient: ' + str(recipient))
         eventlog('validated_data[body] ' + validated_data['body'])
-        msg = MessageModel(recipient=recipient,
+        msg = WebharvestMessageModel(recipient=recipient,
                            body=validated_data['body'],
                            user=corrected_user)
         msg.save()
@@ -48,7 +48,7 @@ class MessageModelSerializer(ModelSerializer):
         return msg
 
     class Meta:
-        model = MessageModel
+        model = WebharvestMessageModel
         fields = ('id', 'user', 'recipient', 'timestamp', 'body')
 
 

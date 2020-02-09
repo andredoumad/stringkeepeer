@@ -7,8 +7,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.authentication import SessionAuthentication
 
 from stringkeeper import settings
-from core.serializers import MessageModelSerializer, UserModelSerializer
-from core.models import MessageModel
+from webharvest.serializers import MessageModelSerializer, UserModelSerializer
+from webharvest.models import WebharvestMessageModel
 
 from django.contrib.auth import get_user_model
 
@@ -35,9 +35,9 @@ class MessagePagination(PageNumberPagination):
     page_size = settings.MESSAGES_TO_LOAD
 
 
-class MessageModelViewSet(ModelViewSet):
+class WebharvestMessageModelViewSet(ModelViewSet):
     eventlog('MessageModelViewSet')
-    queryset = MessageModel.objects.all()
+    queryset = WebharvestMessageModel.objects.all()
     serializer_class = MessageModelSerializer
     eventlog('serializer_class: ' + str(serializer_class))
     allowed_methods = ('GET', 'POST', 'HEAD', 'OPTIONS')
@@ -56,7 +56,7 @@ class MessageModelViewSet(ModelViewSet):
                 Q(recipient=request.user, user__email=target) |
                 Q(recipient__email=target, user=request.user))
             eventlog('MessageModelViewSet self.queryset: ' + str(self.queryset))
-        return super(MessageModelViewSet, self).list(request, *args, **kwargs)
+        return super(WebharvestMessageModelViewSet, self).list(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
         eventlog('MessageModelViewSet retrieve')
@@ -73,7 +73,7 @@ class MessageModelViewSet(ModelViewSet):
         return Response(serializer.data)
 
 
-class UserModelViewSet(ModelViewSet):
+class WebharvestUserModelViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
     allowed_methods = ('GET', 'HEAD', 'OPTIONS')
@@ -84,4 +84,4 @@ class UserModelViewSet(ModelViewSet):
         eventlog('UserModelViewSet list' + str(self.queryset))
         self.queryset = self.queryset.exclude(id=request.user.id)
         eventlog('self.queryset ' + str(self.queryset))
-        return super(UserModelViewSet, self).list(request, *args, **kwargs)
+        return super(WebharvestUserModelViewSet, self).list(request, *args, **kwargs)
