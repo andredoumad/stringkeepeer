@@ -6,10 +6,14 @@
 <h5 class='text-center' >Chatting with {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h5class='text-center'>
 <hr/>
 
+
+{{ object.webharvestchatmessage_set.all }}
+
+
 <ul class='text-left' id='chat-items'>
 
 
-{% for chat in object.webharvestchatmessage_set.all %}
+{% for chat in object.webharvestchatmessage_set.all reversed %}
 
 <li>{{ chat.message }} via {{ chat.user }}</li>
 

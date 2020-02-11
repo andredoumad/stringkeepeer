@@ -79,12 +79,6 @@ class WebharvestConsumer(AsyncConsumer):
             if user.is_authenticated:
                 username = user.email
             
-            robot_name = loaded_dict_data.get('robot_name', None)
-            eventlog('robot_name: ' + str(robot_name))
-            if robot_name != None:
-                eventlog('robot_name sent the data')
-                eventlog('robot_name: ' + str(robot_name))
-                username = robot_name
 
             eventlog('websocket_receive: username: ' + str(username) )
             myResponse = {
@@ -95,7 +89,7 @@ class WebharvestConsumer(AsyncConsumer):
 
             # broadcasts message
             await self.channel_layer.group_send(
-                self.chat_room,
+                self.chat_room
                 # new_event
                 {
                     'type': 'chat_message',
@@ -105,8 +99,15 @@ class WebharvestConsumer(AsyncConsumer):
             # await self.send()
 
     async def chat_message(self, event):
-        eventlog('chat_message: ' + str(event))
-        #sends the actual message
+        # eventlog('chat_message: ' + str(event))
+        # #sends the actual message
+        # front_text = event.get('text', None)
+        # loaded_dict_data = json.loads(front_text)
+        # msg = loaded_dict_data.get('message')
+        # username = loaded_dict_data.get('username')
+        # eventlog('msg: ' + str(msg))
+        # eventlog('username ' + str(username))
+        # await self.create_chat_message(msg, username)
         await self.send({
             'type': 'websocket.send',
             'text': event['text']
@@ -114,18 +115,19 @@ class WebharvestConsumer(AsyncConsumer):
 
 
 
-    async def chat_message_from_robot(self, event):
-        front_text = event.get('text', None)
-        loaded_dict_data = json.loads(front_text)
-        msg = loaded_dict_data.get('message')
-        robot_name = loaded_dict_data.get('username', None)
-        await self.create_chat_message(msg, robot_name)
-        eventlog('chat_message: ' + str(event))
-        #sends the actual message
-        await self.send({
-            'type': 'websocket.send',
-            'text': event['text']
-        })
+
+    # async def chat_message_from_robot(self, event):
+    #     front_text = event.get('text', None)
+    #     loaded_dict_data = json.loads(front_text)
+    #     msg = loaded_dict_data.get('message')
+    #     robot_name = loaded_dict_data.get('username', None)
+    #     await self.create_chat_message(msg, robot_name)
+    #     eventlog('chat_message: ' + str(event))
+    #     #sends the actual message
+    #     await self.send({
+    #         'type': 'websocket.send',
+    #         'text': event['text']
+    #     })
 
 
 

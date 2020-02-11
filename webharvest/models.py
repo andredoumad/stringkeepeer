@@ -153,11 +153,11 @@ class WebharvestThread(models.Model):
         return str(human.user_id)
         # return f'chat_{self.id}'
 
-    def broadcast(self, msg=None):
-        if msg is not None:
-            broadcast_msg_to_chat(msg, group_name=self.room_group_name, user='admin')
-            return True
-        return False
+    # def broadcast(self, msg=None):
+    #     if msg is not None:
+    #         broadcast_msg_to_chat(msg, group_name=self.room_group_name, user='admin')
+    #         return True
+    #     return False
 
 
 

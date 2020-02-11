@@ -155,8 +155,9 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
                     'message': str(data['chat_message']),
                     'username': 'Alice'
             }
-
-            async_to_sync(channel_layer.group_send)(
+            
+            # asyncio.get_event_loop().run_until_complete(command_receiver())
+            async_to_sync(channel_layer.group_send, force_new_loop=True)(
                 # andre@blackmesanetwork.com user_id
                 # 'jj0i1WGGl3S5ZzlQ1qO9',
                 #dante
@@ -164,10 +165,11 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
                 #andre@stringkeeper.com
                 #"xAu8XilVFGYyhnHoh4Sw",
                 {
-                    'type': 'chat_message_from_robot',
+                    'type': 'websocket_receive',
                     'text': json.dumps(my_text)
                 }
             )
+
 
         response = {
             'user': 'Alice',
