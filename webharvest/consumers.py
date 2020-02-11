@@ -89,7 +89,7 @@ class WebharvestConsumer(AsyncConsumer):
 
             # broadcasts message
             await self.channel_layer.group_send(
-                self.chat_room
+                self.chat_room,
                 # new_event
                 {
                     'type': 'chat_message',
