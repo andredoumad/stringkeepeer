@@ -70,7 +70,7 @@ class WebharvestConsumer(AsyncConsumer):
             msg = loaded_dict_data.get('message')
         if front_text is not None and msg != '':
             loaded_dict_data = json.loads(front_text)
-            msg = loaded_dict_data.get('message')
+            msg = loaded_dict_data.get('message', None)
             eventlog('websocket_receive: ' + str(msg) )
             #echo message back to browser
             user = self.scope['user']
@@ -78,7 +78,11 @@ class WebharvestConsumer(AsyncConsumer):
             username = 'default'
             if user.is_authenticated:
                 username = user.email
-            
+
+            robot_name = loaded_dict_data.get('robot_name', None)
+            if robot_name != None:
+                eventlog("loaded_dict_data.get('username'): " + str(loaded_dict_data.get('username')))
+                username = robot_name
 
             eventlog('websocket_receive: username: ' + str(username) )
             myResponse = {
