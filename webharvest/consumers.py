@@ -112,6 +112,23 @@ class WebharvestConsumer(AsyncConsumer):
             'text': event['text']
         })
 
+
+
+    async def chat_message_from_robot(self, event):
+        front_text = event.get('text', None)
+        loaded_dict_data = json.loads(front_text)
+        msg = loaded_dict_data.get('message')
+        robot_name = loaded_dict_data.get('username', None)
+        await self.create_chat_message(msg, robot_name)
+        eventlog('chat_message: ' + str(event))
+        #sends the actual message
+        await self.send({
+            'type': 'websocket.send',
+            'text': event['text']
+        })
+
+
+
     async def websocket_disconnect(self, event):
         eventlog('disconnected, event: ' + str(event))
 

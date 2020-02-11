@@ -153,7 +153,7 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
             # )
             my_text = {
                     'message': str(data['chat_message']),
-                    'robot_name': 'Alice'
+                    'username': 'Alice'
             }
 
             async_to_sync(channel_layer.group_send)(
@@ -164,7 +164,7 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
                 #andre@stringkeeper.com
                 #"xAu8XilVFGYyhnHoh4Sw",
                 {
-                    'type': 'websocket_receive',
+                    'type': 'chat_message_from_robot',
                     'text': json.dumps(my_text)
                 }
             )
