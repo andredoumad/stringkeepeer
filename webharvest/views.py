@@ -159,7 +159,10 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
             async_to_sync(channel_layer.group_send)(
                 # andre@blackmesanetwork.com user_id
                 # 'jj0i1WGGl3S5ZzlQ1qO9',
+                #dante
                 "dantegemlc0bw6idqs0edoumad",
+                #andre@stringkeeper.com
+                #"xAu8XilVFGYyhnHoh4Sw",
                 {
                     'type': 'websocket_receive',
                     'text': json.dumps(my_text)

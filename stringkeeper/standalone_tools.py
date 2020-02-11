@@ -180,7 +180,7 @@ def eventlog(logstring):
             f.write('')
             f.close()
         f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log', "a")
-        f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
+        f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(function_name) + ' | ' + str(logstring) + ' |==|')
         f.write('\n')
         f.close()
     else:
@@ -190,7 +190,7 @@ def eventlog(logstring):
             f.close()
         
         f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.log', "a")
-        f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(logstring) + ' |==|')
+        f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(function_name) + ' | ' + str(logstring) + ' |==|')
         f.write('\n')
         f.close()
     print('|==| ' + str(debug_line_number) + ' |==| ')
