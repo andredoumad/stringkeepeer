@@ -16,6 +16,11 @@ from django.conf import settings
 from .forms import ComposeForm
 from django.views.generic.edit import FormMixin
 from .models import WebharvestThread, WebharvestChatMessage
+from webharvest.consumers import WebharvestConsumer
+
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 
 
 BASE_URL = getattr(settings, 'BASE_URL', False)
@@ -59,11 +64,6 @@ class WebHarvestHomeView(DetailView):
     def get_object(self):
         return self.request.user
 
-
-
-
-
-
 # NEW WEBHARVEST CONSUMERS 
 class InboxView(LoginRequiredMixin, ListView):
     template_name = 'webharvest/inbox.html'
@@ -80,7 +80,10 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
         return WebharvestThread.objects.by_user(self.request.user)
 
     def get_object(self):
-        other_username  = self.kwargs.get("username")
+        other_username  = self.kwargs.get("username", None)
+        if other_username == None:
+            other_username = 'Alice'
+
         eventlog('get_object other_username: ' + str(other_username))
 
         eventlog('self.request.user: ' + str(self.request.user))
@@ -113,13 +116,6 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
         return super().form_valid(form)
 
 
-
-
-
-
-
-
-
 class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF?????
     def get(self, request, *args, **kwargs):
         eventlog('WebHarvestWebhookView GET request: ' + str(request))
@@ -130,6 +126,7 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
         json.dumps(data)
         eventlog('WebHarvestWebhookView GET json.dumps(data): ' + str(data))
         return HttpResponse("", status=200)
+ 
 
     def post(self, request, *args, **kwargs):
 
@@ -146,19 +143,31 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
 
         if 'chat_message' in data:
             eventlog('chat_message: ' + str(data['chat_message']))
-            # factory = APIRequestFactory()
-            # request = factory.post('/notes/', {'title': 'new idea'})
-            # eventlog('request: ' + str(request))
-
-            user = data['user']
-            payload = {
-                'recipient': user,
-                'body': data['chat_message']
+            channel_layer = get_channel_layer()
+            # async_to_sync(channel_layer.group_send)(
+            #     'thread_1',
+            #     {
+            #         'type': 'send_message_to_frontend',
+            #         'text': str(data['chat_message'])
+            #     }
+            # )
+            my_text = {
+                    'message': str(data['chat_message']),
+                    'robot_name': 'Alice'
             }
-            requests.post(str(BASE_URL + '/webharvest/api/v1/message/'), payload)
+
+            async_to_sync(channel_layer.group_send)(
+                # andre@blackmesanetwork.com user_id
+                # 'jj0i1WGGl3S5ZzlQ1qO9',
+                "dantegemlc0bw6idqs0edoumad",
+                {
+                    'type': 'websocket_receive',
+                    'text': json.dumps(my_text)
+                }
+            )
 
         response = {
-            'user': 'andre@blackmesanetwork.com',
+            'user': 'Alice',
             'chat': 'the record of chat for user'
         }
         return JsonResponse(response)

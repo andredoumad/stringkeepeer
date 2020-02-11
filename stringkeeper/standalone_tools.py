@@ -14,7 +14,6 @@ import calendar
 import datetime
 from django.utils import timezone
 from stringkeeper import settings
-import inspect
 import os.path
 import socket
 from datetime import datetime

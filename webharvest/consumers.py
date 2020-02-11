@@ -37,14 +37,16 @@ class WebharvestConsumer(AsyncConsumer):
         # eventlog('params = urlparse.parse_qs: ' + str(params))
 
 
-        other_user = self.scope['url_route']['kwargs']['username']
-        eventlog('other_user: ' + str(other_user) + ' me: ' + str(me))  
+        # other_user = self.scope['url_route']['kwargs']['username']
+        # this is where we get or create a robot, for now we just use Alice.
+        other_user = "Alice"
+        eventlog('other_user: ' + str(other_user) + ' me: ' + str(me)) 
         thread_obj = await self.get_thread(me, other_user)
         eventlog('thread_obj: ' + str(thread_obj))
         eventlog('me: ' + str(me) + ' thread_obj.id: ' + str(thread_obj.id))
         self.thread_obj = thread_obj
-        chat_room = f"thread_{thread_obj.id}"
-        # chat_room = str('thread_' + str(thread_obj.id))
+        # chat_room = f"thread_{thread_obj.id}"
+        chat_room = str(me.user_id)
         eventlog('chat_room: ' + str(chat_room))
         self.chat_room = chat_room
         eventlog('channel_name: ' + str(self.channel_name))
@@ -59,13 +61,14 @@ class WebharvestConsumer(AsyncConsumer):
         # wait one second then send hello world
         # await asyncio.sleep(1)
 
-
-
     async def websocket_receive(self, event):
         #{'type': 'websocket.receive', 'text': '{"message":"json dater!"}'} 
         eventlog('ChatConsumer receive, event: ' + str(event))
         front_text = event.get('text', None)
-        if front_text is not None:
+        if front_text is not None: 
+            loaded_dict_data = json.loads(front_text)
+            msg = loaded_dict_data.get('message')
+        if front_text is not None and msg != '':
             loaded_dict_data = json.loads(front_text)
             msg = loaded_dict_data.get('message')
             eventlog('websocket_receive: ' + str(msg) )
@@ -75,13 +78,20 @@ class WebharvestConsumer(AsyncConsumer):
             username = 'default'
             if user.is_authenticated:
                 username = user.email
-                
+            
+            robot_name = loaded_dict_data.get('robot_name', None)
+            eventlog('robot_name: ' + str(robot_name))
+            if robot_name != None:
+                eventlog('robot_name sent the data')
+                eventlog('robot_name: ' + str(robot_name))
+                username = robot_name
+
             eventlog('websocket_receive: username: ' + str(username) )
             myResponse = {
                 'message': msg,
                 'username': username
             }
-            await self.create_chat_message(msg)
+            await self.create_chat_message(msg, username)
 
             # broadcasts message
             await self.channel_layer.group_send(
@@ -94,8 +104,6 @@ class WebharvestConsumer(AsyncConsumer):
             )
             # await self.send()
 
-
-
     async def chat_message(self, event):
         eventlog('message: ' + str(event))
         #sends the actual message
@@ -107,16 +115,31 @@ class WebharvestConsumer(AsyncConsumer):
     async def websocket_disconnect(self, event):
         eventlog('ChatConsumer disconnected, event: ' + str(event))
 
-
     #critical decorator -- keeps the database stable 
     @database_sync_to_async
     def get_thread(self, user, other_username):
         return WebharvestThread.objects.get_or_new(user, other_username)[0]
 
-
-    #critical decorator -- keeps the database stable 
     @database_sync_to_async
-    def create_chat_message(self, msg):
+    def create_chat_message(self, msg, username):
+        eventlog(str(msg))
         thread_obj   = self.thread_obj
-        me           = self.scope['user']
-        return WebharvestChatMessage.objects.create(thread=thread_obj, user=me, message=msg)
+        # me           = self.scope['user']
+        return WebharvestChatMessage.objects.create(thread=thread_obj, user=username, message=msg)
+
+
+    async def send_message_to_frontend(self, event):
+        eventlog("EVENT TRIGGERED")
+        eventlog('event: ' + str(event))
+        await self.send({
+            'type': 'websocket.send',
+            'text': event['text']
+        })
+
+
+from channels.consumer import SyncConsumer
+
+class LongTask(SyncConsumer):
+
+    def long_task(self, message):
+        eventlog(message)
