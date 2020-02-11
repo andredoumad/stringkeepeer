@@ -105,7 +105,7 @@ class WebharvestConsumer(AsyncConsumer):
             # await self.send()
 
     async def chat_message(self, event):
-        eventlog('message: ' + str(event))
+        eventlog('chat_message: ' + str(event))
         #sends the actual message
         await self.send({
             'type': 'websocket.send',
@@ -113,16 +113,17 @@ class WebharvestConsumer(AsyncConsumer):
         })
 
     async def websocket_disconnect(self, event):
-        eventlog('ChatConsumer disconnected, event: ' + str(event))
+        eventlog('disconnected, event: ' + str(event))
 
     #critical decorator -- keeps the database stable 
     @database_sync_to_async
     def get_thread(self, user, other_username):
+        eventlog('user ' + str(user) + ' other_username: ' + str(other_username))
         return WebharvestThread.objects.get_or_new(user, other_username)[0]
 
     @database_sync_to_async
     def create_chat_message(self, msg, username):
-        eventlog(str(msg))
+        eventlog('msg: ' + str(msg) + ' username: ' + str(username))
         thread_obj   = self.thread_obj
         # me           = self.scope['user']
         return WebharvestChatMessage.objects.create(thread=thread_obj, user=username, message=msg)

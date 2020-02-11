@@ -164,7 +164,7 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
                 #andre@stringkeeper.com
                 #"xAu8XilVFGYyhnHoh4Sw",
                 {
-                    'type': 'chat_message',
+                    'type': 'websocket_receive',
                     'text': json.dumps(my_text)
                 }
             )
