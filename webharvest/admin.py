@@ -6,6 +6,7 @@ from .models import WebharvestThread, WebharvestChatMessage, WebharvestRobot
 class WebharvestChatMessage(admin.TabularInline):
     model = WebharvestChatMessage
 
+
 class WebharvestThreadAdmin(admin.ModelAdmin):
     inlines = [WebharvestChatMessage]
     class Meta:

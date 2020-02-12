@@ -16,6 +16,7 @@ from .models import WebharvestThread, WebharvestChatMessage
 
 
 class WebharvestConsumer(AsyncConsumer):
+
     eventlog('ChatConsumer! ChatConsumer! ')    
     async def websocket_connect(self, event):
         eventlog('ChatConsumer connected, event: ' + str(event))
@@ -100,10 +101,11 @@ class WebharvestConsumer(AsyncConsumer):
                     'text': json.dumps(myResponse)
                 }
             )
+
             # await self.send()
 
     async def chat_message(self, event):
-        # eventlog('chat_message: ' + str(event))
+        eventlog('chat_message: ' + str(event))
         # #sends the actual message
         # front_text = event.get('text', None)
         # loaded_dict_data = json.loads(front_text)
@@ -112,12 +114,120 @@ class WebharvestConsumer(AsyncConsumer):
         # eventlog('msg: ' + str(msg))
         # eventlog('username ' + str(username))
         # await self.create_chat_message(msg, username)
+        sleep(0.3)
         await self.send({
             'type': 'websocket.send',
             'text': event['text']
         })
+        # sleep(0.1)
 
 
+    # async def chat_message_from_robot(self, event):
+    #     eventlog('chat_message: ' + str(event))
+    #     # sends the actual message
+    #     thread_obj = await self.get_thread('dante@stringkeeper.com', 'Alice')
+    #     self.thread_obj = thread_obj
+    #     human = str(thread_obj)
+    #     eventlog('robot thread_obj: ' + str(thread_obj))
+
+
+    #     front_text = event.get('text', None)
+    #     loaded_dict_data = json.loads(front_text)
+    #     msg = loaded_dict_data.get('message')
+    #     username = loaded_dict_data.get('robot_name')
+    #     robot = str(username)
+    #     eventlog('msg: ' + str(msg))
+    #     eventlog('username ' + str(username))
+    #     WebharvestThread_objects = WebharvestThread.objects.filter()
+    #     eventlog('WebharvestThread_object: ' + str(WebharvestThread_objects))
+    #     current_thread = None
+
+    #     for thread in WebharvestThread_objects:
+    #         eventlog('WebharvestThread_object: ' + str(thread))
+    #         eventlog('WebharvestThread_object.id: ' + str(thread.id))
+    #         eventlog('WebharvestThread_object.human: ' + str(thread.human))
+    #         eventlog('WebharvestThread_object.robot: ' + str(thread.robot))
+    #         eventlog('WebharvestThread_object.updated: ' + str(thread.updated))
+    #         if thread.human == str(human) and thread.robot == str(robot):
+    #             if current_thread == None:
+    #                 current_thread = thread
+    #             else:
+    #                 if current_thread.updated < thread.updated:
+    #                     current_thread = thread
+
+    #     # for thread in current_thread:
+    #     #     eventlog('WebharvestThread_object.robot: ' + str(thread.robot))
+
+    #     # await self.create_chat_message(msg, username)
+
+    #     chat_message_objects = WebharvestChatMessage.objects.filter(thread=current_thread)
+    #     eventlog('chat_message_objects: ' + str(chat_message_objects))
+
+    #     chat_message_list = []
+    #     prev_msg = None
+    #     for chat_message in chat_message_objects:
+    #         eventlog('chat_message: ' + str(chat_message.message))
+    #         if str(prev_msg) == str(chat_message.message):
+    #             # chat_message.delete()
+    #             WebharvestChatMessage.objects.filter(id=chat_message.id).delete()
+    #             eventlog('DELETING chat_message: ' + str(chat_message.message))
+    #         else:
+    #             chat_message_list.append(str(chat_message.message))
+    #             prev_msg = str(chat_message.message)
+
+
+    #     eventlog('length of chat_message_list: ' + str(len(chat_message_list)))
+
+    #     delete_old_chats = False
+    #     if len(chat_message_list) > 15:
+    #         delete_old_chats = True
+
+
+    #     if delete_old_chats == True:
+    #         delete_up_to = len(chat_message_list) - 15
+    #         chat_message_objects = WebharvestChatMessage.objects.filter(thread=current_thread)
+    #         for i in range(0, delete_up_to):
+    #             eventlog('deleting ' + str(i) + ' of ' + str(delete_up_to))
+    #             eventlog('chat_message_id: ' + str(chat_message_objects[i].id))
+    #             WebharvestChatMessage.objects.filter(id=chat_message_objects[i].id).delete()
+
+    #     myResponse = {
+    #         'message': msg,
+    #         'username': username
+    #     }
+
+    #     sleep(0.2)
+    #     await self.send({
+    #         'type': 'websocket.send',
+    #         'text': json.dumps(myResponse)
+    #     })
+
+    #     sleep(0.2)
+
+    #     eventlog('last chat_message_list: ' + str(chat_message_list[-1]))
+    #     if str(msg) != str(chat_message_list[-1]):
+    #         await self.create_chat_message(msg, username)
+    #         # WebharvestChatMessage.objects.create(thread=thread_obj, user=username, message=msg)
+
+        
+    #     sleep(0.2)
+    #     chat_message_objects = WebharvestChatMessage.objects.filter(thread=current_thread)
+    #     eventlog('chat_message_objects: ' + str(chat_message_objects))
+
+    #     chat_message_list = []
+    #     prev_msg = None
+    #     for chat_message in chat_message_objects:
+    #         eventlog('chat_message: ' + str(chat_message.message))
+    #         if str(prev_msg) == str(chat_message.message):
+    #             # chat_message.delete()
+    #             WebharvestChatMessage.objects.filter(id=chat_message.id).delete()
+    #             eventlog('DELETING chat_message: ' + str(chat_message.message))
+    #         else:
+    #             chat_message_list.append(str(chat_message.message))
+    #             prev_msg = str(chat_message.message)
+
+
+    #     # sleep(0.1)
 
 
     # async def chat_message_from_robot(self, event):
@@ -146,9 +256,22 @@ class WebharvestConsumer(AsyncConsumer):
 
     @database_sync_to_async
     def create_chat_message(self, msg, username):
-        eventlog('msg: ' + str(msg) + ' username: ' + str(username))
+        
+
+        eventlog('create_chat_message msg: ' + str(msg) + ' create_chat_message username: ' + str(username))
         thread_obj   = self.thread_obj
+        # thread_obj = await self.get_thread('dante@stringkeeper.com', 'Alice')
         # me           = self.scope['user']
+
+        # thread_objects = thread_obj.objects.all()
+        # eventlog('thread_objects: ' + str(thread_objects))
+
+        # chat_message_objects = WebharvestChatMessage.objects.all()
+        # chat_message_objects = WebharvestChatMessage.objects.get()
+        # eventlog('chat_message_objects: ' + str(chat_message_objects))
+        # for chat_message in chat_message_objects:
+        #     eventlog('chat_message: ' + str(chat_message.message))
+
         return WebharvestChatMessage.objects.create(thread=thread_obj, user=username, message=msg)
 
 

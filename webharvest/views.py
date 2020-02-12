@@ -153,12 +153,13 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
             # )
             my_text = {
                     'message': str(data['chat_message']),
-                    'robot_name': 'Alice'
+                    'username': 'Alice'
             }
-            
+            thread_obj = WebharvestThread.objects.get_or_new('dante@stringkeeper.com', 'Alice')[0]
+            WebharvestChatMessage.objects.create(thread=thread_obj, user='Alice', message=str(data['chat_message']))
             # asyncio.get_event_loop().run_until_complete(command_receiver())
 
-            async_to_sync(channel_layer.group_send, force_new_loop=True)(
+            async_to_sync(channel_layer.group_send, force_new_loop=False)(
                 # andre@blackmesanetwork.com user_id
                 # 'jj0i1WGGl3S5ZzlQ1qO9',
                 #dante
@@ -166,10 +167,11 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
                 #andre@stringkeeper.com
                 #"xAu8XilVFGYyhnHoh4Sw",
                 {
-                    'type': 'websocket_receive',
+                    'type': 'chat_message',
                     'text': json.dumps(my_text)
                 }
             )
+
 
 
             # async_to_sync(channel_layer.group_send, force_new_loop=True)(
@@ -180,16 +182,17 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
             #     #andre@stringkeeper.com
             #     #"xAu8XilVFGYyhnHoh4Sw",
             #     {
-            #         'type': 'websocket_receive',
+            #         'type': 'chat_message_from_robot',
             #         'text': json.dumps(my_text)
             #     }
             # )
-            # sleep(0.001)
+
 
 
         response = {
             'user': 'Alice',
             'chat': 'the record of chat for user'
         }
+        # sleep(0.1)
         return JsonResponse(response)
 

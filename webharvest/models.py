@@ -161,9 +161,6 @@ class WebharvestThread(models.Model):
 
 
 
-
-
-
 class WebharvestChatMessage(models.Model):
     thread      = models.ForeignKey(WebharvestThread, null=True, blank=True, on_delete=models.SET_NULL)
     # user        = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='sender', on_delete=models.CASCADE)
