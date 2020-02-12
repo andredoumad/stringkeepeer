@@ -23,7 +23,7 @@ class WebharvestConsumer(AsyncConsumer):
 
 
         # wait 10 seocnds, then close connection
-        # await asyncio.sleep(10)
+        # await asyncio.# sleep(10)
         # await self.send({
         #     'type': 'websocket.close',
         # })
@@ -60,7 +60,7 @@ class WebharvestConsumer(AsyncConsumer):
             "type": "websocket.accept",
         })
         # wait one second then send hello world
-        # await asyncio.sleep(1)
+        # await asyncio.# sleep(1)
 
     async def websocket_receive(self, event):
         #{'type': 'websocket.receive', 'text': '{"message":"json dater!"}'} 
@@ -114,12 +114,12 @@ class WebharvestConsumer(AsyncConsumer):
         # eventlog('msg: ' + str(msg))
         # eventlog('username ' + str(username))
         # await self.create_chat_message(msg, username)
-        sleep(0.3)
+        # sleep(0.3)
         await self.send({
             'type': 'websocket.send',
             'text': event['text']
         })
-        # sleep(0.1)
+        # # sleep(0.1)
 
 
     # async def chat_message_from_robot(self, event):
@@ -196,13 +196,13 @@ class WebharvestConsumer(AsyncConsumer):
     #         'username': username
     #     }
 
-    #     sleep(0.2)
+    #     # sleep(0.2)
     #     await self.send({
     #         'type': 'websocket.send',
     #         'text': json.dumps(myResponse)
     #     })
 
-    #     sleep(0.2)
+    #     # sleep(0.2)
 
     #     eventlog('last chat_message_list: ' + str(chat_message_list[-1]))
     #     if str(msg) != str(chat_message_list[-1]):
@@ -210,7 +210,7 @@ class WebharvestConsumer(AsyncConsumer):
     #         # WebharvestChatMessage.objects.create(thread=thread_obj, user=username, message=msg)
 
         
-    #     sleep(0.2)
+    #     # sleep(0.2)
     #     chat_message_objects = WebharvestChatMessage.objects.filter(thread=current_thread)
     #     eventlog('chat_message_objects: ' + str(chat_message_objects))
 
@@ -227,7 +227,7 @@ class WebharvestConsumer(AsyncConsumer):
     #             prev_msg = str(chat_message.message)
 
 
-    #     # sleep(0.1)
+    #     # # sleep(0.1)
 
 
     # async def chat_message_from_robot(self, event):
