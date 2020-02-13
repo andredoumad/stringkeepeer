@@ -6,9 +6,7 @@
 <h5 class='text-center' >Chatting with {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h5class='text-center'>
 <hr/>
 
-
 <ul class='text-left' id='chat-items'>
-
 
 {% for chat in object.webharvestchatmessage_set.all reversed %}
 

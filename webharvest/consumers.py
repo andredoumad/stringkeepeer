@@ -11,15 +11,54 @@ from stringkeeper.standalone_tools import *
 from asgiref.sync import async_to_sync
 from .models import WebharvestThread, WebharvestChatMessage
 
+import tornado.ioloop
+import tornado.web
+import tornado.websocket
+import tornado.template
+
 # def ChatConsumer():
 #     eventlog('ChatConsumer! ChatConsumer! ')        
 
 
-class WebharvestConsumer(AsyncConsumer):
+class WSHandler(AsyncConsumer):
+    eventlog('WSHandler ChatConsumer! WSHandler ChatConsumer! ')
 
-    eventlog('ChatConsumer! ChatConsumer! ')    
     async def websocket_connect(self, event):
-        eventlog('ChatConsumer connected, event: ' + str(event))
+        eventlog('WSHandler connected, event: ' + str(event))
+        me = self.scope['user']
+        eventlog("me = self.scope['user']: " + str(me))
+
+        await self.send({
+            "type": "websocket.accept",
+        })
+
+    async def websocket_receive(self, event):
+        #{'type': 'websocket.receive', 'text': '{"message":"json dater!"}'} 
+        eventlog('WSHandler ChatConsumer receive, event: ' + str(event))
+
+        await self.send({
+            'type': 'websocket.send',
+            'text': event['text']
+        })
+
+
+    # def open(self):
+    #     print ('connection opened...')
+    #     self.write_message("The server says: 'Hello'. Connection was accepted.")
+
+    # def on_message(self, message):
+    #     self.write_message("The server says: " + message + " back at you")
+    #     print ('received:', message)
+
+    # def on_close(self):
+    #     print ('connection closed...')
+
+
+class WebharvestConsumer(AsyncConsumer):
+    eventlog('WebharvestConsumer ChatConsumer! WebharvestConsumer ChatConsumer! ')    
+
+    async def websocket_connect(self, event):
+        eventlog('WebharvestConsumer ChatConsumer connected, event: ' + str(event))
 
 
         # wait 10 seocnds, then close connection
@@ -84,6 +123,34 @@ class WebharvestConsumer(AsyncConsumer):
             if robot_name != None:
                 eventlog("loaded_dict_data.get('username'): " + str(loaded_dict_data.get('username')))
                 username = robot_name
+
+
+            # delete old messages block start
+            # thread_obj = await self.get_thread(user.email, 'Alice')
+            # chat_message_objects = WebharvestChatMessage.objects.filter(thread=self.thread_obj)
+            # eventlog('chat_message_objects: ' + str(chat_message_objects))
+
+            # chat_message_objects_list = []
+            # prev_msg = None
+            # for item in chat_message_objects:
+            #     chat_message_objects_list.append(str(item))
+
+
+            # eventlog('length of chat_message_list: ' + str(len(chat_message_list)))
+
+            # delete_old_chats = False
+            # if len(chat_message_objects_list) > 15:
+            #     delete_old_chats = True
+
+
+            # if delete_old_chats == True:
+            #     delete_up_to = len(chat_message_list) - 15
+            #     for i in range(0, delete_up_to):
+            #         eventlog('deleting ' + str(i) + ' of ' + str(delete_up_to))
+            #         eventlog('chat_message_id: ' + str(chat_message_objects_list[i].id))
+            #         WebharvestChatMessage.objects.filter(id=chat_message_objects_list[i].id).delete()
+            # delete old messages block end
+
 
             eventlog('websocket_receive: username: ' + str(username) )
             myResponse = {
