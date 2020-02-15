@@ -21,7 +21,7 @@ application = ProtocolTypeRouter({
                     url(r"^messages/(?P<username>[\w.@+-]+)/$", ChatConsumer),
                     url(r"^messages/(?P<username>[\w.@+-]+)$", ChatConsumer),
                     url(r"^webharvest/$", WebharvestConsumer),
-                    url(r"^webharvest/ws$", WSHandler),
+                    url(r"^webharvest/ws$", WebharvestConsumer),
                     url(r"^webharvest$", WebharvestConsumer),
                     url(r"^webharvest/(?P<username>[\w.@+-]+)/$", WebharvestConsumer),
                     url(r"^webharvest/(?P<username>[\w.@+-]+)$", WebharvestConsumer)

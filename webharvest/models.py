@@ -8,6 +8,7 @@ from stringkeeper.standalone_tools import *
 # from django.contrib.auth import get_user_model
 from channels.layers import get_channel_layer
 
+from django.db.models.signals import post_save, pre_save
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -171,6 +172,38 @@ class WebharvestChatMessage(models.Model):
 
 
 
+# def WebharvestChatMessageReceiver(sender, instance, created, *args, **kwargs):
+#     eventlog(' TRIGGERED WebharvestChatMessageReceiver TRIGGERED ')
+
+#     channel_layer = get_channel_layer()
+#     # async_to_sync(channel_layer.group_send)(
+#     #     'thread_1',
+#     #     {
+#     #         'type': 'send_message_to_frontend',
+#     #         'text': str(data['chat_message'])
+#     #     }
+#     # )
+#     my_text = {
+#             'message': 'WebharvestChatMessageReceiver testing message',
+#             'username': 'Alice'
+#     }
+
+#     eventlog(' async_to_sync TRIGGERED WebharvestChatMessageReceiver TRIGGERED async_to_sync ')
+#     # async_to_sync(channel_layer.group_send, force_new_loop=False)(
+#     #     "testing_channel_name",
+#     #     {
+#     #         'type': 'chat_message',
+#     #         'text': json.dumps(my_text)
+#     #     }
+#     # )
+
+
+#     channel_layer.send({
+#         'type': 'websocket.send',
+#         'text': json.dumps(my_text)
+#     })
+
+# post_save.connect(WebharvestChatMessageReceiver, sender=User)
 
 
 

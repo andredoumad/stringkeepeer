@@ -102,6 +102,7 @@ class User(AbstractBaseUser):
     staff   = models.BooleanField(default=False)
     admin   = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+    channel_name = models.CharField(max_length=255, blank=True, null=True)
     # confirmed_bool = models.BooleanField(default=False)
 
     #dates

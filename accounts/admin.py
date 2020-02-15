@@ -26,7 +26,8 @@ class UserAdmin(BaseUserAdmin):
             'first_name',
             'last_name',
             'full_name',
-            'user_id'
+            'user_id',
+            'channel_name'
             )}),
         ('Permissions', {'fields': ('admin', 'staff', 'is_active')}),
     )
@@ -43,7 +44,8 @@ class UserAdmin(BaseUserAdmin):
         'first_name', 
         'last_name', 
         'full_name',
-        'user_id'
+        'user_id',
+        'channel_name'
     )
     ordering = ('email',)
     filter_horizontal = ()
