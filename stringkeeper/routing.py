@@ -6,7 +6,7 @@ from django.conf.urls import url
 from chat.consumers import ChatConsumer
 from channels.security.websocket import AllowedHostsOriginValidator, OriginValidator
 
-from webharvest.consumers import WebharvestConsumer, WSHandler
+from webharvest.consumers import WebharvestConsumer
 
 
 

@@ -98,6 +98,7 @@ INSTALLED_APPS = [
     # 'core',
     'rest_framework',
     'channels',
+    'background_task'
 ]
 
 

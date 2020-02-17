@@ -18,78 +18,28 @@ import tornado.web
 import tornado.websocket
 import tornado.template
 
-# def ChatConsumer():
-#     eventlog('ChatConsumer! ChatConsumer! ')        
-
-
 from django.contrib.auth import get_user_model
+
+from background_task import background
+from datetime import datetime
+
 User = get_user_model()
 
-class WSHandler(AsyncConsumer):
-    eventlog('WSHandler ChatConsumer! WSHandler ChatConsumer! ')
 
-    async def websocket_connect(self, event):
-        eventlog('WSHandler connected, event: ' + str(event))
-        robot = 'Alice'
-        human = 'dante@stringkeeper.com'
-        thread_obj = await self.get_thread(human, robot)
+@background(schedule=30)
+def deactivate_webharvest_chat_countdown(user_email):
+    eventlog('notify_user has been triggered for ' + str(user_email))
+    user = User.objects.get(email=user_email)
+    eventlog('notify_user grabbed user object ' + str(user))
+    now = datetime.now()
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    eventlog(str(user) + ' bool_webharvest_chat_active: ' + str(user.bool_webharvest_chat_active))
+    eventlog(str(user) + ' notify user triggered ' + str(dt_string))
 
-        self.thread_obj = thread_obj
-        eventlog('thread_obj: ' + str(thread_obj))
+    user.bool_webharvest_chat_active = False
 
-
-
-        for item in User.objects.all():
-            eventlog('User: ' + str(item))
-
-
-        human_user = User.objects.get(email='dante@stringkeeper.com')
-        eventlog('human_user: ' + str(human_user))
-        eventlog('human_user.user_id: ' + str(human_user.user_id))
-        self.chat_room = str(human_user.user_id)
-        # self.chat_room = 'testing_channel_name'
-        eventlog('chat_room: ' + str(self.chat_room))
-        self.channel_name = str(human_user.channel_name)
-        eventlog('channel_name: ' + str(self.channel_name))
-        await self.channel_layer.group_add(self.chat_room, self.channel_name)
-
-        await self.send({
-            "type": "websocket.accept",
-        })
-
-        # myResponse = {
-        #     'message': "I'm now connected through websockets, AKA Stargates.",
-        #     'username': robot
-        # }
-
-        # await self.send({
-        #     'type': 'websocket.send',
-        #     'text': json.dumps(myResponse)
-        # })
-
-    async def websocket_receive(self, event):
-        #{'type': 'websocket.receive', 'text': '{"message":"json dater!"}'} 
-        eventlog('WSHandler ChatConsumer receive, event: ' + str(event))
-
-        # await self.send({
-        #     'type': 'websocket.send',
-        #     'text': event['text']
-        # })
-
-    # async def chat_message(self, event):
-    #     eventlog('chat_message: ' + str(event))
-    #     await self.send({
-    #         'type': 'websocket.send',
-    #         'text': event['text']
-    #     })
-    #     # # sleep(0.1)
-
-
-    #critical decorator -- keeps the database stable 
-    @database_sync_to_async
-    def get_thread(self, user, other_username):
-        eventlog('user ' + str(user) + ' other_username: ' + str(other_username))
-        return WebharvestThread.objects.get_or_new(user, other_username)[0]
+    user.save(update_fields=["bool_webharvest_chat_active"])
+    eventlog(str(user) + ' bool_webharvest_chat_active: ' + str(user.bool_webharvest_chat_active))
 
 
 class WebharvestConsumer(AsyncConsumer):
@@ -99,29 +49,9 @@ class WebharvestConsumer(AsyncConsumer):
         eventlog('WebharvestConsumer ChatConsumer connected, event: ' + str(event))
 
         me = self.scope['user']
+
         if str(me) == str('AnonymousUser'):
             eventlog('WSHandler connected, event: ' + str(event))
-            robot = 'Alice'
-            human = 'dante@stringkeeper.com'
-            thread_obj = await self.get_thread(human, robot)
-
-            self.thread_obj = thread_obj
-            eventlog('thread_obj: ' + str(thread_obj))
-
-            for item in User.objects.all():
-                eventlog('User: ' + str(item))
-
-            human_user = User.objects.get(email='dante@stringkeeper.com')
-            eventlog('human_user: ' + str(human_user))
-            eventlog('human_user.user_id: ' + str(human_user.user_id))
-            # self.chat_room = str(human_user.user_id)
-            self.chat_room = 'chat_room'
-            eventlog('chat_room: ' + str(self.chat_room))
-            # self.channel_name = str(human_user.channel_name)
-            # self.channel_name = str('Robot_channel_name')
-            eventlog('channel_name: ' + str(self.channel_name))
-            await self.channel_layer.group_add(self.chat_room, self.channel_name)
-
             await self.send({
                 "type": "websocket.accept",
             })
@@ -135,26 +65,21 @@ class WebharvestConsumer(AsyncConsumer):
             eventlog('me: ' + str(me) + ' thread_obj.id: ' + str(thread_obj.id))
             self.thread_obj = thread_obj
             # chat_room = f"thread_{thread_obj.id}"
-            # chat_room = str(me.user_id)
-            chat_room = 'chat_room'
+            chat_room = str(me.user_id)
+            # chat_room = 'chat_room'
             eventlog('chat_room: ' + str(chat_room))
             self.chat_room = chat_room
             # self.channel_name = 'Human_channel_name'
-            me.channel_name = str(self.channel_name)
-            eventlog('channel_name: ' + str(self.channel_name))
-            me.channel_name = self.channel_name
-            me.save(update_fields=["channel_name"])
+            me.bool_webharvest_chat_active = True
+            # eventlog('channel_name: ' + str(self.channel_name))
+            me.save(update_fields=["bool_webharvest_chat_active"])
 
-            # async_to_sync(self.channel_layer.group_add)(chat_room, self.channel_name)
-            # await self.accept()
             await self.channel_layer.group_add(self.chat_room, self.channel_name)
-            # await self.accept()
 
             await self.send({
                 "type": "websocket.accept",
             })
-            # wait one second then send hello world
-            # await asyncio.# sleep(1)
+            deactivate_webharvest_chat_countdown(me.email)
 
 
     async def delete_extra_messages(self, human, robot):
@@ -207,43 +132,41 @@ class WebharvestConsumer(AsyncConsumer):
 
 
     async def websocket_receive(self, event):
-        #{'type': 'websocket.receive', 'text': '{"message":"json dater!"}'} 
         eventlog('ChatConsumer receive, event: ' + str(event))
 
-        for item in event:
-            eventlog('event item: ' + str(item))
-        
-        
-        eventlog('channel_name: ' + str(self.channel_name))
-        eventlog('chat_room: ' + str(self.chat_room))
-        eventlog('channel_layer: ' + str(self.channel_layer))
+        front_text = event.get('text', None)
+        eventlog('front_text: ' + str(front_text))
+        loaded_dict_data = json.loads(front_text)
+        robot_id = loaded_dict_data.get('robot_id', None)
+        eventlog('robot_id: ' + str(robot_id))
 
-        # await self.send({
-        #     'type': 'websocket.send',
-        #     'text': str('testing ping... channel_name: ' + str(self.channel_name) + ' chat_room: ' + str(self.chat_room) + ' channel_layer: ' + str(self.channel_layer))
-        # })
+        if robot_id != None:
+            eventlog("Websocket Receive robot_id: " + str(robot_id))
+            robot = 'Alice'
+            human = 'dante@stringkeeper.com'
+            thread_obj = await self.get_thread(human, robot)
 
-        # async_to_sync(self.channel_layer.group_send)("testing_channel_name", {"type": "alert.receive"})
+            self.thread_obj = thread_obj
+            eventlog('thread_obj: ' + str(thread_obj))
 
-        # await self.channel_layer.group_send(
-        #     self.chat_room,
-        #     {
-        #     'type': 'websocket.send',
-        #     'text': str('testing ping... channel_name: ' + str(self.channel_name) + ' chat_room: ' + str(self.chat_room) + ' channel_layer: ' + str(self.channel_layer))
-        #     }
-        # )
-        # channel_layer = get_channel_layer()
+            for item in User.objects.all():
+                eventlog('User: ' + str(item))
 
-
-        # await self.channel_layer.group_send(str(self.channel_name), {
-        #     "type": "websocket.send",
-        #     "text": "Hello there!",
-        # })
+            human_user = User.objects.get(email='dante@stringkeeper.com')
+            eventlog('human_user: ' + str(human_user))
+            eventlog('human_user.user_id: ' + str(human_user.user_id))
+            self.chat_room = str(human_user.user_id)
+            # self.chat_room = 'chat_room'
+            eventlog('chat_room: ' + str(self.chat_room))
+            # self.channel_name = str(human_user.channel_name)
+            # self.channel_name = str('Robot_channel_name')
+            eventlog('channel_name: ' + str(self.channel_name))
+            await self.channel_layer.group_add(self.chat_room, self.channel_name)
 
         front_text = event.get('text', None)
         if front_text is not None: 
             loaded_dict_data = json.loads(front_text)
-            msg = loaded_dict_data.get('message')
+            msg = loaded_dict_data.get('message', None)
         if front_text is not None and msg != '':
             loaded_dict_data = json.loads(front_text)
             msg = loaded_dict_data.get('message', None)
@@ -255,8 +178,6 @@ class WebharvestConsumer(AsyncConsumer):
                 robot = 'Alice'
                 human = 'dante@stringkeeper.com'
 
-
-
                 myResponse = {
                     'message': msg,
                     'username': 'Alice'
@@ -264,42 +185,28 @@ class WebharvestConsumer(AsyncConsumer):
                 await self.delete_extra_messages(human, robot)
                 await self.create_chat_message(msg, 'Alice')
                 human_user = User.objects.get(email='dante@stringkeeper.com')
-                eventlog('websocket_receive: human_user.user_id: ' + str(human_user.user_id) )
-
-                # await self.send({
-                #     'type': 'websocket.send',
-                #     'text': 'testing ping'
-                # })
+                eventlog('websocket_receive: human_user.user_id: ' + str(human_user.user_id))
 
                 await self.channel_layer.group_send(
-                    # str(human_user.user_id),
                     self.chat_room,
-                    # new_event
                     {
                         'type': 'chat_message',
                         'text': json.dumps(myResponse)
                     }
                 )
-
-                # await self.send({
-                #     'type': 'websocket.send',
-                #     'text': json.dumps(myResponse)
-                # })
             else:
                 eventlog('websocket_receive: user: ' + str(user) )
                 username = 'default'
                 if user.is_authenticated:
                     username = user.email
-
+                    user.bool_webharvest_chat_active = True
+                    user.save(update_fields=["bool_webharvest_chat_active"])
+                    deactivate_webharvest_chat_countdown(user.email)
 
                 robot_name = loaded_dict_data.get('robot_name', None)
                 if robot_name != None:
-
                     eventlog("loaded_dict_data.get('username'): " + str(loaded_dict_data.get('username')))
                     username = robot_name
-
-                # await self.delete_extra_messages(user.email, robot_name)
-
 
                 eventlog('websocket_receive: username: ' + str(username) )
                 myResponse = {
@@ -308,10 +215,6 @@ class WebharvestConsumer(AsyncConsumer):
                 }
                 await self.create_chat_message(msg, username)
 
-                # await self.send({
-                #     'type': 'websocket.send',
-                #     'text': json.dumps(myResponse)
-                # })
 
                 # broadcasts message
                 await self.channel_layer.group_send(
@@ -325,36 +228,28 @@ class WebharvestConsumer(AsyncConsumer):
 
     async def chat_message(self, event):
         eventlog('chat_message: ' + str(event))
-        # self.channel_name = 'testing_channel_name'
-        eventlog(str('chat_message... channel_name: ' + str(self.channel_name) + ' chat_room: ' + str(self.chat_room) + ' channel_layer: ' + str(self.channel_layer)))
+        # eventlog(str('chat_message... channel_name: ' + str(self.channel_name) + ' chat_room: ' + str(self.chat_room) + ' channel_layer: ' + str(self.channel_layer)))
         
-
-
         await self.send({
             'type': 'websocket.send',
             'text': event['text']
         })
 
-        # channel_layer = get_channel_layer()
-        # await self.channel_layer.group_send(
-        #     'test_channel_name',
-        #     {"type": "chat.system_message", "text": 'hi ho'},
-        # )
-
-
-        # await self.channel_layer.group_send(
-        #     self.chat_room,
-        #     {
-        #     'type': 'websocket.send',
-        #     'text': str('testing ping... channel_name: ' + str(self.channel_name) + ' chat_room: ' + str(self.chat_room) + ' channel_layer: ' + str(self.channel_layer))
-        #     }
-        # )
-
-        # # sleep(0.1)
-
-
     async def websocket_disconnect(self, event):
         eventlog('disconnected, event: ' + str(event))
+        me = self.scope['user']
+
+        if str(me) == str('AnonymousUser'):
+            eventlog('AnonymousUser disconnected.')
+        else:
+            eventlog(str(me) + ' disconnected.')
+            me.bool_webharvest_chat_active = True
+            # eventlog('channel_name: ' + str(self.channel_name))
+            me.save(update_fields=["bool_webharvest_chat_active"])
+
+
+
+
 
     #critical decorator -- keeps the database stable 
     @database_sync_to_async
@@ -365,11 +260,5 @@ class WebharvestConsumer(AsyncConsumer):
     @database_sync_to_async
     def create_chat_message(self, msg, username):
         eventlog('create_chat_message msg: ' + str(msg) + ' create_chat_message username: ' + str(username))
-
-        # self.send({
-        #     'type': 'websocket.send',
-        #     'text': 'testing ping'
-        # })
         thread_obj   = self.thread_obj
         return WebharvestChatMessage.objects.create(thread=thread_obj, user=username, message=msg)
-

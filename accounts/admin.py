@@ -27,7 +27,7 @@ class UserAdmin(BaseUserAdmin):
             'last_name',
             'full_name',
             'user_id',
-            'channel_name'
+            'bool_webharvest_chat_active'
             )}),
         ('Permissions', {'fields': ('admin', 'staff', 'is_active')}),
     )
@@ -45,7 +45,7 @@ class UserAdmin(BaseUserAdmin):
         'last_name', 
         'full_name',
         'user_id',
-        'channel_name'
+        'bool_webharvest_chat_active'
     )
     ordering = ('email',)
     filter_horizontal = ()
