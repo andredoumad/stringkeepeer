@@ -22,6 +22,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 
+from django.contrib.auth import get_user_model
 
 BASE_URL = getattr(settings, 'BASE_URL', False)
 
@@ -125,7 +126,28 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
         eventlog('WebHarvestWebhookView GET data: ' + str(data))
         json.dumps(data)
         eventlog('WebHarvestWebhookView GET json.dumps(data): ' + str(data))
-        return HttpResponse("", status=200)
+        # return HttpResponse("hello", status=200)
+
+        # if 'getter' in data:
+        #     eventlog('getter is in data....')
+        #     if str(data['getter']) == 'webharvest_robot_router':
+        #         eventlog('getter is webharvest_robot_router....')
+        #         eventlog('generating list of active webharvest chatroom users')
+
+        #         active_users = {}
+        #         inactive_users = {}
+        #         User = get_user_model()
+        #         for item in User.objects.all():
+        #             eventlog('User: ' + str(item))
+        #             if item.bool_webharvest_chat_active == True:
+        #                 active_users[item.email] = item.webharvest_robot_name
+        #             else:
+        #                 inactive_users[item.email] = item.webharvest_robot_name
+        #         return JsonResponse({
+        #             'active_users': json.dumps(active_users),
+        #             'inactive_users': json.dumps(inactive_users)
+        #             })
+        return JsonResponse({'response_message': 'henlo'})
  
 
     def post(self, request, *args, **kwargs):
