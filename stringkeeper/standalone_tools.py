@@ -89,7 +89,7 @@ def get_ascii_art():
         art_string += str('\n')
     return str(art_string)
 
-
+# alskfnalksfnaklsfn
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
