@@ -18,7 +18,6 @@ import os.path
 import socket
 from datetime import datetime
 
-
 def get_time_string():
     #named_tuple = time.localtime() # get struct_time
     now = timezone.now()
@@ -89,9 +88,6 @@ def get_ascii_art():
         art_string += str(line)
         art_string += str('\n')
     return str(art_string)
-
-
-
 
 
 
