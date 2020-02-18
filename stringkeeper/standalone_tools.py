@@ -12,7 +12,7 @@ import ftfy
 from datetime import date
 import calendar
 import datetime
-# from django.utils import timezone
+from django.utils import timezone
 from stringkeeper import settings
 import os.path
 import socket
