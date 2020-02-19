@@ -5,6 +5,7 @@ import socket
 from .standalone_tools import *
 from django.core.exceptions import ImproperlyConfigured
 
+from django.contrib.auth import get_user_model
 import logging
 
 logging.basicConfig(level=logging.CRITICAL)
@@ -289,6 +290,13 @@ if socket.gethostname()=="www.stringkeeper.com":
             },
         },
     }
+
+    # reset user activity status -- 
+
+    User = get_user_model()
+    for user in User.objects.all():
+        user.bool_webharvest_chat_active = False
+        user.save(update_fields=["bool_webharvest_chat_active"])
 
 else:
     eventlog(' running non-production settings')
