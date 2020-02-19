@@ -63,7 +63,8 @@ from django.conf.urls import url
 
 urlpatterns = [
     # path('__debug__/', include(debug_toolbar.urls)),
-    path('', home_page, name='home'),
+    # path('', home_page, name='home'),
+    path('', RedirectView.as_view(url='subscriptions/web-harvest/')),
     path('blog-new/', blog_post_create_view),
     path('blog/', include('blog.urls', namespace='blog'), name='blog'),
     path('about/', about_page, name='about'),
