@@ -142,6 +142,7 @@ class WebharvestConsumer(AsyncConsumer):
 
         if robot_id != None:
             if robot_id != 'webharvest_robot_router':
+                
                 eventlog("Websocket Receive robot_id: " + str(robot_id))
                 robot = loaded_dict_data.get('username', None)
                 human = loaded_dict_data.get('human', None)
@@ -150,18 +151,24 @@ class WebharvestConsumer(AsyncConsumer):
                 self.thread_obj = thread_obj
                 eventlog('thread_obj: ' + str(thread_obj))
 
-                for item in User.objects.all():
-                    eventlog('User: ' + str(item))
+                # for item in User.objects.all():
+                #     eventlog('User: ' + str(item))
 
+                User = get_user_model()
                 human_user = User.objects.get(email=human)
+                eventlog("DEBUG DEBUG DEBUG DEBUG")
                 eventlog('human_user: ' + str(human_user))
                 eventlog('human_user.user_id: ' + str(human_user.user_id))
+
                 self.chat_room = str(human_user.user_id)
+
                 # self.chat_room = 'chat_room'
                 eventlog('chat_room: ' + str(self.chat_room))
                 # self.channel_name = str(human_user.channel_name)
                 # self.channel_name = str('Robot_channel_name')
                 eventlog('channel_name: ' + str(self.channel_name))
+
+
                 await self.channel_layer.group_add(self.chat_room, self.channel_name)
             else:
                 active_users = {}
@@ -209,6 +216,7 @@ class WebharvestConsumer(AsyncConsumer):
                     }
                     await self.delete_extra_messages(human, robot)
                     await self.create_chat_message(msg, robot)
+                    User = get_user_model()
                     human_user = User.objects.get(email=human)
                     eventlog('websocket_receive: human_user.user_id: ' + str(human_user.user_id))
 
