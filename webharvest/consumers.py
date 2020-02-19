@@ -176,28 +176,36 @@ class WebharvestConsumer(AsyncConsumer):
 
                 await self.channel_layer.group_add(self.chat_room, self.channel_name)
             else:
-                active_users = {}
-                inactive_users = {}
-                User = get_user_model()
-                for item in User.objects.all():
-                    eventlog('User: ' + str(item))
-                    if item.bool_webharvest_chat_active == True:
-                        active_users[item.email] = item.webharvest_robot_name
-                    else:
-                        inactive_users[item.email] = item.webharvest_robot_name
-                # return JsonResponse({
-                #     'active_users': json.dumps(active_users),
-                #     'inactive_users': json.dumps(inactive_users)
-                #     })
+                robot_command = loaded_dict_data.get('robot_command', None)
+                if robot_command == 'get_active_and_inactive_users':
+                    active_users = {}
+                    inactive_users = {}
+                    User = get_user_model()
+                    for item in User.objects.all():
+                        eventlog('User: ' + str(item))
+                        if item.bool_webharvest_chat_active == True:
+                            active_users[item.email] = item.webharvest_robot_name
+                        else:
+                            inactive_users[item.email] = item.webharvest_robot_name
+                    # return JsonResponse({
+                    #     'active_users': json.dumps(active_users),
+                    #     'inactive_users': json.dumps(inactive_users)
+                    #     })
 
-                myResponse = {
-                    'active_users': json.dumps(active_users),
-                    'inactive_users': json.dumps(inactive_users)
-                }
-                await self.send({                    
-                    'type': 'websocket.send',
-                    'text': json.dumps(myResponse)
-                })
+                    myResponse = {
+                        'active_users': json.dumps(active_users),
+                        'inactive_users': json.dumps(inactive_users)
+                    }
+                    await self.send({                    
+                        'type': 'websocket.send',
+                        'text': json.dumps(myResponse)
+                    })
+                elif robot_command == 'set_all_users_to_inactive':
+                    User = get_user_model()
+                    for user in User.objects.all():
+                        eventlog('set_all_users_to_inactive: ' + str(user))
+                        user.bool_webharvest_chat_active = False
+                        user.save(update_fields=["bool_webharvest_chat_active"])
 
         if robot_id != 'webharvest_robot_router':
             front_text = event.get('text', None)
