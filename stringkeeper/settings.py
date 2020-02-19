@@ -293,10 +293,6 @@ if socket.gethostname()=="www.stringkeeper.com":
 
     # reset user activity status -- 
 
-    User = get_user_model()
-    for user in User.objects.all():
-        user.bool_webharvest_chat_active = False
-        user.save(update_fields=["bool_webharvest_chat_active"])
 
 else:
     eventlog(' running non-production settings')
@@ -349,7 +345,9 @@ else:
             },
         },
     }
-    #https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+
     
+    #https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+
 
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'

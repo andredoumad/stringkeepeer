@@ -61,6 +61,14 @@ admin.site.site_title = 'Stringkeeper Admin' # default: "Django site admin"
 
 from django.conf.urls import url
 
+
+if socket.gethostname()=="www.stringkeeper.com":
+    User = get_user_model()
+    for user in User.objects.all():
+        user.bool_webharvest_chat_active = False
+        user.save(update_fields=["bool_webharvest_chat_active"])
+
+
 urlpatterns = [
     # path('__debug__/', include(debug_toolbar.urls)),
     # path('', home_page, name='home'),
