@@ -33,6 +33,7 @@ User = get_user_model()
 
 @background(schedule=30)
 def deactivate_webharvest_chat_countdown(user_email):
+    eventlog('deactivate_webharvest_chat_countdown')
     eventlog('notify_user has been triggered for ' + str(user_email))
     user = User.objects.get(email=user_email)
     eventlog('notify_user grabbed user object ' + str(user))
@@ -85,6 +86,18 @@ class WebharvestConsumer(AsyncConsumer):
                 "type": "websocket.accept",
             })
             deactivate_webharvest_chat_countdown(me.email)
+            my_text = {
+                    'message': 'connected to webharvest',
+                    'human': str(me.email),
+                    'robot_command': 'update_user_status'
+            }
+            await self.channel_layer.group_send(
+                'user_status_updates',
+                {
+                    'type': 'chat_message',
+                    'text': json.dumps(my_text)
+                }
+            )
 
 
     async def delete_extra_messages(self, human, robot):
@@ -120,7 +133,6 @@ class WebharvestConsumer(AsyncConsumer):
         if len(chat_message_list) > 5:
             delete_old_chats = True
 
-
         if delete_old_chats == True:
             delete_up_to = len(chat_message_list) - 5
             # chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
@@ -129,11 +141,6 @@ class WebharvestConsumer(AsyncConsumer):
                 eventlog('deleting ' + str(i) + ' of ' + str(delete_up_to))
                 eventlog('chat_message_id: ' + str(chat_message_list[i].id))
                 WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
-        # delete block end
-        # await self.send({
-        #     'type': 'websocket.send',
-        #     'text': 'testing ping'
-        # })
 
 
     async def websocket_receive(self, event):
@@ -194,7 +201,8 @@ class WebharvestConsumer(AsyncConsumer):
 
                     myResponse = {
                         'active_users': json.dumps(active_users),
-                        'inactive_users': json.dumps(inactive_users)
+                        'inactive_users': json.dumps(inactive_users),
+                        'robot_command': 'get_active_and_inactive_users'
                     }
                     await self.send({                    
                         'type': 'websocket.send',
@@ -206,6 +214,9 @@ class WebharvestConsumer(AsyncConsumer):
                         eventlog('set_all_users_to_inactive: ' + str(user))
                         user.bool_webharvest_chat_active = False
                         user.save(update_fields=["bool_webharvest_chat_active"])
+                elif robot_command == 'subscribe_to_user_status_updates':
+                    eventlog('robot_command user_status_updates')
+                    await self.channel_layer.group_add('user_status_updates', self.channel_name)
 
         if robot_id != 'webharvest_robot_router':
             front_text = event.get('text', None)
@@ -248,6 +259,18 @@ class WebharvestConsumer(AsyncConsumer):
                         user.bool_webharvest_chat_active = True
                         user.save(update_fields=["bool_webharvest_chat_active"])
                         deactivate_webharvest_chat_countdown(user.email)
+                        my_text = {
+                                'message': str(msg),
+                                'human': str(username),
+                                'robot_command': 'update_user_status'
+                        }
+                        await self.channel_layer.group_send(
+                            'user_status_updates',
+                            {
+                                'type': 'chat_message',
+                                'text': json.dumps(my_text)
+                            }
+                        )
 
                     robot_name = loaded_dict_data.get('robot_name', None)
                     if robot_name != None:
