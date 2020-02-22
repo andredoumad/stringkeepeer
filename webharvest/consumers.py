@@ -25,12 +25,6 @@ from datetime import datetime
 
 User = get_user_model()
 
-
-
-
-
-
-
 @background(schedule=30)
 def deactivate_webharvest_chat_countdown(user_email):
     eventlog('deactivate_webharvest_chat_countdown')
