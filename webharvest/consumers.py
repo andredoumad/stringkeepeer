@@ -232,7 +232,7 @@ class WebharvestConsumer(AsyncConsumer):
                         'message': msg,
                         'username': robot
                     }
-                    await self.delete_extra_messages(human, robot)
+                    # await self.delete_extra_messages(human, robot)
                     await self.create_chat_message(msg, robot)
                     User = get_user_model()
                     human_user = User.objects.get(email=human)

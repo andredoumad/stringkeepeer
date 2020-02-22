@@ -3,6 +3,7 @@
 {% block content %}
 <hr/>
 <h5 class='text-center' >Logged in as {{ request.user }}</h5>
+
 <!-- <h5 class='text-center' >Chatting with {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h5class='text-center'> -->
 <hr/>
 <!-- <div class="overflow-auto"> -->
@@ -28,8 +29,11 @@
 
     {% for chat in object.webharvestchatmessage_set.all reversed %}
 
-    <li>{{ chat.message }} via {{ chat.user }}</li>
-
+    {% if request.user.email == chat.user %}
+        <li><font color = 'orange'>you: </font>{{ chat.message }}</li>
+    {% else %}
+        <li><font color = 'blue'>{{ chat.user }}: </font>{{ chat.message }}</li>
+    {% endif %}
     {% endfor %}
     </ul>
 </div>
@@ -75,7 +79,8 @@ socket.onmessage = function(e){
     console.log("onmessage: ", e)
     var chatDataMsg = JSON.parse(e.data)
     console.log('chatDataMsg: ' + e.data)
-    chatHolder.append("<li>" + chatDataMsg.message + " via " + chatDataMsg.username + "</li>")
+
+    chatHolder.append("<li><font color = 'orange'>you: </font>" + chatDataMsg.message + "</li>")
     var objDiv = document.getElementById("scroll");
     objDiv.scrollTop = objDiv.scrollHeight;
     
