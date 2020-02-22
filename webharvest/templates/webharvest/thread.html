@@ -79,8 +79,12 @@ socket.onmessage = function(e){
     console.log("onmessage: ", e)
     var chatDataMsg = JSON.parse(e.data)
     console.log('chatDataMsg: ' + e.data)
-
-    chatHolder.append("<li><font color = 'orange'>you: </font>" + chatDataMsg.message + "</li>")
+    if (me == chatDataMsg.username){
+        chatHolder.append("<li><font color = 'orange'>you: </font>" + chatDataMsg.message + "</li>")
+    }else{
+        chatHolder.append("<li><font color = 'orange'>" + chatDataMsg.username + ": </font>" + chatDataMsg.message + "</li>")
+    }
+    // chatHolder.append("<li><font color = 'orange'>you: </font>" + chatDataMsg.message + "</li>")
     var objDiv = document.getElementById("scroll");
     objDiv.scrollTop = objDiv.scrollHeight;
     
