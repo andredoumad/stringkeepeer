@@ -13,10 +13,12 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.conf import settings
 
-from .forms import ComposeForm
+from .forms import ComposeForm, WebharvestJobForm
 from django.views.generic.edit import FormMixin
-from .models import WebharvestThread, WebharvestChatMessage
+from .models import WebharvestThread, WebharvestChatMessage, WebharvestJob
 from webharvest.consumers import WebharvestConsumer
+
+from .multiform import *
 
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -72,9 +74,90 @@ class InboxView(LoginRequiredMixin, ListView):
         return WebharvestThread.objects.by_user(self.request.user)
 
 
+# # class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
+# class ThreadView(LoginRequiredMixin, MultiFormMixin, DetailView):
+#     template_name = 'webharvest/thread.html'
+#     form_classes = {
+#         'form': ComposeForm,
+#         'form2': WebharvestJob
+#     }
+#     success_url = './'
+
+#     # def get_form_initial(self):
+#     #     return {'message':'testing'}
+
+#     # def get_form2_initial(self):
+#     #     return {'user_email':'dave@dave.com'}
+
+
+#     def get_queryset(self):
+#         return WebharvestThread.objects.by_user(self.request.user)
+
+#     def get_object(self):
+#         other_username  = self.kwargs.get("username", None)
+#         if other_username == None:
+#             other_username = 'Alice'
+
+#         eventlog('get_object other_username: ' + str(other_username))
+
+#         eventlog('self.request.user: ' + str(self.request.user))
+#         obj, created    = WebharvestThread.objects.get_or_new(self.request.user, other_username)
+#         if obj == None:
+#             raise Http404
+#         return obj
+        
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         forms = self.get_form_classes()
+#         context['form'] = self.get_forms(forms, 'form')
+
+#         context['form2'] = self.get_forms(forms, 'form2')
+#         for item in context:
+#             eventlog('context item: ' + str(item))
+#             if item == 'form2':
+#                 eventlog('context item' + str(item.user_email))
+#         return context
+
+#     def post(self, request, *args, **kwargs):
+#         if not request.user.is_authenticated:
+#             return HttpResponseForbidden()
+#         self.object = self.get_object()
+#         forms = self.get_form_classes()
+#         form = None
+#         for a_form in forms:
+#             if 'form' in request.POST:
+#                 if str(a_form) == 'form':
+#                     eventlog('form: ' + str(a_form))
+#                     form = a_form
+        
+#         self.forms_valid(forms, 'form')
+        
+#         return self.forms_valid(forms, 'form')
+#         # if forms[0].is_valid():
+#         #     return self.form_valid(form)
+#         # else:
+#         #     return self.form_invalid(form)
+
+#     def form_valid(self, form):
+#         thread = self.get_object()
+#         user = self.request.user
+#         eventlog('form_valid user: ' + str(user))
+#         message = form.cleaned_data.get("message")
+#         WebharvestChatMessage.objects.create(user=user, thread=thread, message=message)
+#         return super().form_valid(form)
+
+
+
+
+
+
+
 class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
+
     template_name = 'webharvest/thread.html'
     form_class = ComposeForm
+    second_form_class = WebharvestJobForm
     success_url = './'
 
     def get_queryset(self):
@@ -92,29 +175,130 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
         if obj == None:
             raise Http404
         return obj
+        
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.get_form()
+        job, new = WebharvestJob.objects.get_or_new(user=self.request.user)
+        eventlog('job.somesetting: ' + str(job.somesetting))
+        if 'form2' not in context:
+            context['form2'] = self.second_form_class()
         return context
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return HttpResponseForbidden()
         self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
+
+        if 'form' in request.POST:
+            form_class = self.get_form_class()
+            form_name = 'form'
         else:
-            return self.form_invalid(form)
+            form_class = self.second_form_class
+            form_name = 'form2'
+
+        form = self.get_form(form_class)
+        eventlog('post -- form: ' + str(form))
+        if 'form' in request.POST:
+            if form.is_valid():
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
+        else:
+            if form.is_valid():
+                return self.form2_valid(form)
+            else:
+                return self.form_invalid(form)
 
     def form_valid(self, form):
+        eventlog("form_valid")
         thread = self.get_object()
         user = self.request.user
         eventlog('form_valid user: ' + str(user))
         message = form.cleaned_data.get("message")
         WebharvestChatMessage.objects.create(user=user, thread=thread, message=message)
         return super().form_valid(form)
+
+    def form2_valid(self, form):
+        eventlog("form2_valid")
+        thread = self.get_object()
+        user = self.request.user
+        eventlog('form_valid user: ' + str(user))
+        # user_email = form.cleaned_data.get("user_email")
+        job_name = form.cleaned_data.get('job_name')
+        somesetting = form.cleaned_data.get('somesetting')
+        # thread = WebharvestThread.objects.by_user(self.request.user)
+        
+        robot = thread.robot
+        eventlog('thread robot: ' + str(robot))
+        robot_name = robot.robot_name
+        eventlog('thread robot_name: ' + str(robot_name))
+
+        job, new = WebharvestJob.objects.get_or_new(user=self.request.user)
+        eventlog('WebharvestJob: ' + str(job))
+        job.job_name = job_name
+        job.user_email = self.request.user.email
+        job.robot_name = robot_name
+        job.somesetting = somesetting
+        job.save()
+
+        # WebharvestJob.objects.create(user_email=self.request.user.email)
+        return super().form_valid(form)
+
+
+
+
+
+
+
+
+# class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
+
+#     template_name = 'webharvest/thread.html'
+#     form_class = ComposeForm
+#     success_url = './'
+
+#     def get_queryset(self):
+#         return WebharvestThread.objects.by_user(self.request.user)
+
+#     def get_object(self):
+#         other_username  = self.kwargs.get("username", None)
+#         if other_username == None:
+#             other_username = 'Alice'
+
+#         eventlog('get_object other_username: ' + str(other_username))
+
+#         eventlog('self.request.user: ' + str(self.request.user))
+#         obj, created    = WebharvestThread.objects.get_or_new(self.request.user, other_username)
+#         if obj == None:
+#             raise Http404
+#         return obj
+        
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['form'] = self.get_form()
+#         return context
+
+#     def post(self, request, *args, **kwargs):
+#         if not request.user.is_authenticated:
+#             return HttpResponseForbidden()
+#         self.object = self.get_object()
+#         form = self.get_form()
+#         if form.is_valid():
+#             return self.form_valid(form)
+#         else:
+#             return self.form_invalid(form)
+
+#     def form_valid(self, form):
+#         thread = self.get_object()
+#         user = self.request.user
+#         eventlog('form_valid user: ' + str(user))
+#         message = form.cleaned_data.get("message")
+#         WebharvestChatMessage.objects.create(user=user, thread=thread, message=message)
+#         return super().form_valid(form)
+
 
 
 class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF?????

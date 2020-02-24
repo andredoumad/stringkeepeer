@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<hr/>
-<h5 class='text-center' >Logged in as {{ request.user }}</h5>
+<!-- <hr/> -->
+<!-- <h5 class='text-center' >Logged in as {{ request.user }}</h5> -->
 
 <!-- <h5 class='text-center' >Chatting with {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h5class='text-center'> -->
-<hr/>
+<!-- <hr/> -->
 <!-- <div class="overflow-auto"> -->
     <style> 
         h1 { 
@@ -17,8 +17,9 @@
             background-color: black; 
             /* width: 500px;  */
             width: 100%;
-            /* height: 110px;  */
-            height: 200px; 
+            height: 300px; 
+            /* height: auto;  */
+            /* min-height: 300px; */
             overflow-x: hidden; 
             overflow-x: auto; 
             text-align:justify; 
@@ -40,10 +41,18 @@
 <!-- </div> -->
 <form id='form' method='POST'> {% csrf_token %}
     <input type='hidden' id='myUsername' value='{{ user.email }}' />
-{{form.as_p }}
-<input id="buttonId" value="Like" type='submit' class='btn btn-primary'/>
+{{ form.as_p }}
+<input id="buttonId" value="Like" name="form" type='submit' class='btn btn-primary'/>
 </form>
 
+
+
+
+<form id='form2' method='POST'> {% csrf_token %}
+    <input type='hidden' id='myUsername2' value='{{ user.email }}' />
+{{ form2.as_p }}
+<input id="buttonId2" value="Like2" name="form2" type='submit' class='btn btn-primary'/>
+</form>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
 
@@ -64,6 +73,7 @@ console.log('thread websocket connecting...')
 var wsStart = 'ws://' 
 var loc = window.location
 var formData = $("#form")
+var formData2 = $("#form2")
 var msgInput = $("#id_message")
 var chatHolder = $("#chat-items")
 var me = $("#myUsername").val()
@@ -94,6 +104,7 @@ socket.onopen = function(e){
     console.log("onopen: ", e)
     formData.submit(function(event){
         event.preventDefault()
+        console.log('FORM DATA HAS TRIGGERED')
         var msgText = msgInput.val()
         // chatHolder.append("<li>" + msgText + ' via ' + me + '</li>')
         var finalData = {
@@ -106,6 +117,57 @@ socket.onopen = function(e){
         // u can alternatively clear it like this
         // msgInput.val('')
     })
+    formData2.submit(function(event){
+        
+        console.log('form2: ' + form2)
+        for(item in form2){
+            console.log('item: ' + item)
+        }
+        event.preventDefault()
+        console.log('FORM 2 DATA HAS TRIGGERED')
+        console.log(event)
+        console.log(form2.somesetting)
+        console.log(form2.somesetting.value)
+
+        var $formDater = $(this).serialize()
+        var $thisURL = window.location.href // or set your own url
+        $.ajax({
+            method: "POST",
+            url: $thisURL,
+            data: $formDater,
+            success: handleFormSuccess,
+            error: handleFormError,
+        })
+
+
+        function handleFormSuccess(data, textStatus, jqXHR){
+            console.log(data)
+            console.log(textStatus)
+            console.log(jqXHR)
+            // formData2.reset(); // reset form data
+        }
+
+        function handleFormError(jqXHR, textStatus, errorThrown){
+            console.log(jqXHR)
+            console.log(textStatus)
+            console.log(errorThrown)
+        }
+        // console.log(form2.instance.somesetting)
+        // console.log(form2.instance.somesetting.val())
+
+        // var msgText = msgInput.val()
+        // chatHolder.append("<li>" + msgText + ' via ' + me + '</li>')
+
+        // var finalData = {
+        //     'user_email': msgText
+        // }
+        // socket.send(JSON.stringify(finalData))
+        // form data clear element 0
+        // this way lets you clear other fields if you'd like.
+        // formData[0].reset()
+        // u can alternatively clear it like this
+        // msgInput.val('')
+    })
 }
 socket.onerror = function(e){
     console.log("onerror: ", e)
@@ -115,4 +177,25 @@ socket.onclose = function(e){
 }
 
 </script>
+
+
+<hr>
+ComposeForm: {{ ComposeForm }}
+
+<hr>
+
+
+<hr>
+WebharvestJobForm: {{ WebharvestJobForm }}
+
+<hr>
+
+<hr>
+WebharvestJob: {{ WebharvestJob }}
+
+<hr>
+
+
+
+
 {% endblock %}

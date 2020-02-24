@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 
-from .models import WebharvestThread, WebharvestChatMessage, WebharvestRobot
+from .models import WebharvestThread, WebharvestChatMessage, WebharvestRobot, WebharvestJob
 
 class WebharvestChatMessage(admin.TabularInline):
     model = WebharvestChatMessage
@@ -10,7 +10,7 @@ class WebharvestChatMessage(admin.TabularInline):
 class WebharvestThreadAdmin(admin.ModelAdmin):
     inlines = [WebharvestChatMessage]
     class Meta:
-        model = WebharvestThread 
+        model = WebharvestThread
 
 admin.site.register(WebharvestThread, WebharvestThreadAdmin)
 
@@ -19,6 +19,12 @@ class WebharvestRobotAdmin(admin.ModelAdmin):
     model = WebharvestRobot
 
 admin.site.register(WebharvestRobot, WebharvestRobotAdmin)
+
+class WebharvestJobAdmin(admin.ModelAdmin):
+    model = WebharvestJob
+
+admin.site.register(WebharvestJob, WebharvestJobAdmin)
+
 
 
 # from django.contrib.admin import ModelAdmin, site

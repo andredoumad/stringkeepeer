@@ -12,66 +12,6 @@ from django.db.models.signals import post_save, pre_save
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-# FOR A USER AND A BOT
-# class WebharvestMessageModel(Model):
-#     """
-#     This class represents a chat message. It has a owner (user), timestamp and
-#     the message body.
-
-#     """
-#     user = ForeignKey(User, on_delete=CASCADE, verbose_name='user',
-#                       related_name='from_user', db_index=True)
-#     recipient = ForeignKey(User, on_delete=CASCADE, verbose_name='recipient',
-#                            related_name='to_user', db_index=True)
-#     timestamp = DateTimeField('timestamp', auto_now_add=True, editable=False,
-#                               db_index=True)
-#     body = TextField('body')
-
-#     def __str__(self):
-#         return str(self.id)
-
-#     def characters(self):
-#         """
-#         Toy function to count body characters.
-#         :return: body's char number
-#         """
-#         return len(self.body)
-
-#     def notify_ws_clients(self):
-#         """
-#         Inform client there is a new message.
-#         """
-#         notification = {
-#             'type': 'receive_group_message',
-#             'message': '{}'.format(self.id)
-#         }
-
-#         channel_layer = get_channel_layer()
-#         eventlog("notify_ws_clients user.id {}".format(self.user.id))
-#         eventlog("notify_ws_clients recipient.id {}".format(self.recipient.id))
-
-#         async_to_sync(channel_layer.group_send)("{}".format(self.user.id), notification)
-#         async_to_sync(channel_layer.group_send)("{}".format(self.recipient.id), notification)
-#         return 'notify_ws_clients ran notify_ws_clients'
-
-#     def save(self, *args, **kwargs):
-#         """
-#         Trims white spaces, saves the message and notifies the recipient via WS
-#         if the message is new.
-#         """
-#         new = self.id
-#         self.body = self.body.strip()  # Trimming whitespaces from the body
-#         super(WebharvestMessageModel, self).save(*args, **kwargs)
-#         if new is None:
-#             self.notify_ws_clients()
-
-#     # Meta
-#     class Meta:
-#         app_label = 'webharvest'
-#         verbose_name = 'message'
-#         verbose_name_plural = 'messages'
-#         ordering = ('-timestamp',)
-
 
 class WebharvestThreadManager(models.Manager):
     def by_user(self, user):
@@ -107,8 +47,8 @@ class WebharvestThreadManager(models.Manager):
             eventlog('Creating a new WebharvestThread')
             # Klass = user.__class__
             Klass = WebharvestRobot
-            eventlog('Klass is: ' + str(Klass) )
-            user2 = Klass.objects.get(robot_name='Alice')
+            eventlog('Klass: ' + str(Klass) )
+            user2 = Klass.objects.get(robot_name=other_username)
             eventlog("Klass.objects.get(robot_name='Alice'): " + str(user2) )
             if user != user2:
                 eventlog('user != user2')
@@ -168,6 +108,42 @@ class WebharvestChatMessage(models.Model):
     user        = models.CharField(max_length=255, verbose_name='sender', blank=True, null=True)
     message     = models.TextField()
     timestamp   = models.DateTimeField(auto_now_add=True)
+
+
+
+
+class WebharvestJobManager(models.Manager):
+
+    def get_or_new(self, user):
+        eventlog('WebharvestJobManager get_or_new')
+        jobs = None
+        jobs = WebharvestJob.objects.filter(user_email=user.email)
+        # eventlog('jobs: ' + str(jobs))
+        # eventlog('len(jobs): ' + str(len(jobs)))
+        if len(jobs) >= 1:
+            eventlog('RETURNING EXISTING JOB')
+            return jobs[0], False
+        else:
+            eventlog('CREATING NEW JOB')
+            obj = self.create(user_email = user.email, job_name = user.email)
+            return obj, True
+            
+
+        # for item in WebharvestJob.objects.filter(user_email=user.email):
+        #     eventlog('for item in WebharvestJob.objects.filter(user_email=user.email):' + str(user.email))
+        #     eventlog('item: ' + str(item))
+        
+
+
+
+class WebharvestJob(models.Model):
+    job_name = models.CharField(max_length=255, blank=True, null=True)
+    user_email = models.CharField(max_length=255, blank=True, null=True)
+    robot_name = models.CharField(max_length=255, blank=True, null=True)
+    somesetting = models.CharField(max_length=255, blank=True, null=True)
+    objects = WebharvestJobManager()
+    def __str__(self):
+        return self.user_email
 
 
 
