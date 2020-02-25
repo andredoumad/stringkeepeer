@@ -51,7 +51,7 @@
 <form id='form2' method='POST'> {% csrf_token %}
     <input type='hidden' id='myUsername2' value='{{ user.email }}' />
 {{ form2.as_p }}
-<input id="buttonId2" value="Like2" name="form2" type='submit' class='btn btn-primary'/>
+<input id="buttonId2" value="Perform Data Mining" name="form2" type='submit' class='btn btn-info btn-block'/>
 </form>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
@@ -178,7 +178,7 @@ socket.onclose = function(e){
 
 </script>
 
-
+<!-- 
 <hr>
 ComposeForm: {{ ComposeForm }}
 
@@ -193,7 +193,7 @@ WebharvestJobForm: {{ WebharvestJobForm }}
 <hr>
 WebharvestJob: {{ WebharvestJob }}
 
-<hr>
+<hr> -->
 
 
 

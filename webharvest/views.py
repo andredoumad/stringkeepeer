@@ -181,9 +181,12 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['form'] = self.get_form()
         job, new = WebharvestJob.objects.get_or_new(user=self.request.user)
+
         eventlog('job.somesetting: ' + str(job.somesetting))
         if 'form2' not in context:
             context['form2'] = self.second_form_class()
+            context['form2'].initial['somesetting'] = str(job.somesetting)
+            context['form2'].initial['search_keywords'] = str(job.search_keywords)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -226,21 +229,21 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
         user = self.request.user
         eventlog('form_valid user: ' + str(user))
         # user_email = form.cleaned_data.get("user_email")
-        job_name = form.cleaned_data.get('job_name')
-        somesetting = form.cleaned_data.get('somesetting')
         # thread = WebharvestThread.objects.by_user(self.request.user)
-        
+        job, new = WebharvestJob.objects.get_or_new(user=self.request.user)
+        eventlog('WebharvestJob: ' + str(job))
+        job_name = form.cleaned_data.get('job_name')
+        job.job_name = job_name
+        job.user_email = self.request.user.email
         robot = thread.robot
         eventlog('thread robot: ' + str(robot))
         robot_name = robot.robot_name
         eventlog('thread robot_name: ' + str(robot_name))
-
-        job, new = WebharvestJob.objects.get_or_new(user=self.request.user)
-        eventlog('WebharvestJob: ' + str(job))
-        job.job_name = job_name
-        job.user_email = self.request.user.email
         job.robot_name = robot_name
+        somesetting = form.cleaned_data.get('somesetting')
         job.somesetting = somesetting
+        search_keywords = form.cleaned_data.get('search_keywords')
+        job.search_keywords = search_keywords
         job.save()
 
         # WebharvestJob.objects.create(user_email=self.request.user.email)

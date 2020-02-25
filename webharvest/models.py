@@ -141,6 +141,7 @@ class WebharvestJob(models.Model):
     user_email = models.CharField(max_length=255, blank=True, null=True)
     robot_name = models.CharField(max_length=255, blank=True, null=True)
     somesetting = models.CharField(max_length=255, blank=True, null=True)
+    search_keywords = models.TextField(blank=True, null=True)
     objects = WebharvestJobManager()
     def __str__(self):
         return self.user_email
