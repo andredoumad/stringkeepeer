@@ -25,7 +25,7 @@ from datetime import datetime
 
 User = get_user_model()
 
-@background(schedule=30)
+@background(schedule=3600)
 def deactivate_webharvest_chat_countdown(user_email):
     eventlog('deactivate_webharvest_chat_countdown')
     eventlog('notify_user has been triggered for ' + str(user_email))
@@ -145,10 +145,14 @@ class WebharvestConsumer(AsyncConsumer):
         loaded_dict_data = json.loads(front_text)
         robot_id = loaded_dict_data.get('robot_id', None)
         eventlog('robot_id: ' + str(robot_id))
-
+        From = loaded_dict_data.get('From', 'stringkeeeper')
+        
+        # is it a robot ?
         if robot_id != None:
+            eventlog('MESSAGE FROM ROBOT')
+            # is it a webharvest router ?
             if robot_id != 'webharvest_robot_router':
-                
+                eventlog('ROBOT IS ROUTER')
                 eventlog("Websocket Receive robot_id: " + str(robot_id))
                 robot = loaded_dict_data.get('username', None)
                 human = loaded_dict_data.get('human', None)
@@ -176,7 +180,10 @@ class WebharvestConsumer(AsyncConsumer):
 
 
                 await self.channel_layer.group_add(self.chat_room, self.channel_name)
+            
+            # It is a known robot
             else:
+                eventlog('ROBOT IS ROBOT COMMAND IS ....')
                 robot_command = loaded_dict_data.get('robot_command', None)
                 if robot_command == 'get_active_and_inactive_users':
                     active_users = {}
@@ -196,7 +203,8 @@ class WebharvestConsumer(AsyncConsumer):
                     myResponse = {
                         'active_users': json.dumps(active_users),
                         'inactive_users': json.dumps(inactive_users),
-                        'robot_command': 'get_active_and_inactive_users'
+                        'robot_command': 'get_active_and_inactive_users',
+                        'From': From
                     }
                     await self.send({                    
                         'type': 'websocket.send',
@@ -213,6 +221,7 @@ class WebharvestConsumer(AsyncConsumer):
                     await self.channel_layer.group_add('user_status_updates', self.channel_name)
 
         if robot_id != 'webharvest_robot_router':
+            eventlog('ROBOT IS ROBOT')
             front_text = event.get('text', None)
             if front_text is not None: 
                 loaded_dict_data = json.loads(front_text)
@@ -230,7 +239,8 @@ class WebharvestConsumer(AsyncConsumer):
 
                     myResponse = {
                         'message': msg,
-                        'username': robot
+                        'username': robot,
+                        'From': From
                     }
                     # await self.delete_extra_messages(human, robot)
                     await self.create_chat_message(msg, robot)
@@ -256,7 +266,8 @@ class WebharvestConsumer(AsyncConsumer):
                         my_text = {
                                 'message': str(msg),
                                 'human': str(username),
-                                'robot_command': 'update_user_status'
+                                'robot_command': 'update_user_status',
+                                'From': From
                         }
                         await self.channel_layer.group_send(
                             'user_status_updates',
@@ -274,7 +285,8 @@ class WebharvestConsumer(AsyncConsumer):
                     eventlog('websocket_receive: username: ' + str(username) )
                     myResponse = {
                         'message': msg,
-                        'username': username
+                        'username': username,
+                        'From': From
                     }
                     await self.create_chat_message(msg, username)
 

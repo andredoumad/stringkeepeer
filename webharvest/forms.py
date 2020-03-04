@@ -67,5 +67,5 @@ class WebharvestJobForm(forms.ModelForm):
 
     class Meta:
         model = WebharvestJob
-        fields = ['job_name', 'user_email', 'robot_name', 'somesetting']
+        fields = ['job_name', 'user_email', 'robot_name', 'somesetting', 'search_keywords']
         # model.full_name = str(str(first_name) + ' ' + str(last_name))
