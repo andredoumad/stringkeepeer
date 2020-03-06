@@ -152,7 +152,7 @@ class WebharvestConsumer(AsyncConsumer):
             eventlog('MESSAGE FROM ROBOT')
             # is it a webharvest router ?
             if robot_id != 'webharvest_robot_router':
-                eventlog('ROBOT IS ROUTER')
+                eventlog('ROBOT IS NOT ROUTER')
                 eventlog("Websocket Receive robot_id: " + str(robot_id))
                 robot = loaded_dict_data.get('username', None)
                 human = loaded_dict_data.get('human', None)
@@ -183,7 +183,7 @@ class WebharvestConsumer(AsyncConsumer):
             
             # It is a known robot
             else:
-                eventlog('ROBOT IS ROBOT COMMAND IS ....')
+                eventlog('ROBOT IS ROUTER COMMAND IS ....')
                 robot_command = loaded_dict_data.get('robot_command', None)
                 if robot_command == 'get_active_and_inactive_users':
                     active_users = {}
@@ -220,15 +220,43 @@ class WebharvestConsumer(AsyncConsumer):
                     eventlog('robot_command user_status_updates')
                     await self.channel_layer.group_add('user_status_updates', self.channel_name)
 
+
         if robot_id != 'webharvest_robot_router':
             eventlog('ROBOT IS ROBOT')
+            eventlog('event: ' + str(event))
             front_text = event.get('text', None)
-            if front_text is not None: 
-                loaded_dict_data = json.loads(front_text)
+            loaded_dict_data = json.loads(front_text)
+
+            if front_text is not None:
                 msg = loaded_dict_data.get('message', None)
-            if front_text is not None and msg != '':
-                loaded_dict_data = json.loads(front_text)
-                msg = loaded_dict_data.get('message', None)
+            else:
+                msg = 'No message found...'
+
+            if msg != '':
+                # msg = 'Message is empty!'
+
+                robot_command = loaded_dict_data.get('robot_command', None)
+                eventlog('ROBOT_COMMAND: ' + str(robot_command))
+                if robot_command != None:
+                    eventlog('ROBOT COMMAND FOUND')
+                    if robot_command == 'clear':
+                        eventlog('CLEARING CHATROOM MESSAGES')
+                        human = loaded_dict_data.get('human', None)
+                        robot_id = loaded_dict_data.get('robot_id', None)
+                        await self.robot_command_clear(human, robot_id)
+                    elif robot_command == 'test_command':
+                        eventlog('testing test_command')
+                        # human = loaded_dict_data.get('human', None)
+                        # robot_id = loaded_dict_data.get('robot_id', None)
+                        # await self.robot_command_clear(human, robot_id)
+                    msg = 'Processed: ' + msg
+                else:
+                    eventlog('NO ROBOT COMMAND')
+
+
+
+
+
                 eventlog('websocket_receive: ' + str(msg) )
                 #echo message back to browser
                 user = self.scope['user']
@@ -330,3 +358,50 @@ class WebharvestConsumer(AsyncConsumer):
         eventlog('create_chat_message msg: ' + str(msg) + ' create_chat_message username: ' + str(username))
         thread_obj   = self.thread_obj
         return WebharvestChatMessage.objects.create(thread=thread_obj, user=username, message=msg)
+
+
+
+
+
+    async def robot_command_clear(self, human, robot):
+        eventlog('delete_extra_messages')
+        eventlog('human: ' + str(human) + ' robot: ' + str(robot))
+        thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
+
+        # self.thread_obj = thread_obj
+        eventlog('self.thread_obj: ' + str(thread_obj))
+        # delete block start
+        chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
+        eventlog('chat_message_objects: ' + str(chat_message_objects))
+
+        chat_message_list = []
+
+        # for chat_message in chat_message_objects:
+        for chat_message in reversed(chat_message_objects):
+            chat_message_list.append(chat_message)
+
+        eventlog('length of chat_message_list: ' + str(len(chat_message_list)))
+
+        for chat_message in chat_message_list:
+            eventlog('message: ' + str(chat_message))
+
+
+        # for chat_message in chat_message_list:
+        #     try:
+        #         eventlog('message: ' + str(chat_message.message))
+        #     except:
+        #         eventlog('message: ' + str(chat_message) + ' does not have message')
+        #         pass
+        # delete_old_chats = False
+        # if len(chat_message_list) > 5:
+        #     delete_old_chats = True
+        
+        # delete_old_chats = True
+        # if delete_old_chats == True:
+        #     delete_up_to = len(chat_message_list) - 5
+        #     # chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
+
+        for i in range(0, len(chat_message_list)):
+            eventlog('deleting ' + str(i) + ' of ' + str(len(chat_message_list)))
+            eventlog('chat_message_id: ' + str(chat_message_list[i].id))
+            WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
