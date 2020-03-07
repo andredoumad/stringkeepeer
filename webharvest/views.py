@@ -24,7 +24,13 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 
+
+
 from django.contrib.auth import get_user_model
+
+import string
+
+User = get_user_model()
 
 BASE_URL = getattr(settings, 'BASE_URL', False)
 
@@ -35,8 +41,8 @@ class WebHarvestHomeView(DetailView):
 
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('register')
+        # if not request.user.is_authenticated:
+        #     return redirect('register')
         return super(WebHarvestHomeView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
@@ -153,17 +159,111 @@ class InboxView(LoginRequiredMixin, ListView):
 
 
 
-class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
-
+# class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
+class ThreadView(FormMixin, DetailView):
     template_name = 'webharvest/thread.html'
     form_class = ComposeForm
     second_form_class = WebharvestJobForm
     success_url = './'
 
+    def __init__(self):
+        self.temp_user = False
+        self.user_ip = None
+        self.temp_user = None
+        self.temp_user_first = ''
+        self.temp_user_last = ''
+        self.temp_user_password = ''
+        self.temp_user_email = ''
+        self.temp_user_full_name = ''
+        self.temp_user_id = ''
+        eventlog('INITIALIZED THREADVIEW!')
+        # if self.temp_user == None and str(self.request.user) == 'AnonymousUser':
+        #     eventlog('USER IS ANONYMOUS!!')
+        #     self.GetOrMakeTemporaryUser()
+
+
+    def ConvertUserIPToUserEmail(self):
+        eventlog('CREATING TEMPORARY USER EMAIL!')
+        # d = dict(enumerate(string.ascii_lowercase, 1))
+        d = dict(enumerate(string.ascii_lowercase, 1))
+        eventlog(d[3]) # c
+
+        # for key, value in d.items():
+        #     eventlog('Key: ' + str(key) + ' Value: ' + str(value))
+
+        ip_alphas = ''
+        for item in self.user_ip:
+            if item.isdigit():
+                if int(item) == 0:
+                    ip_alphas += str('Z')
+                else:                    
+                    eventlog('item: ' + str(item))
+                    ip_alphas += str(d[int(item)])
+            else:
+                if item.isalpha():
+                    ip_alphas += item
+                else:
+                    ip_alphas += 'A'
+        ip_alphas = (ip_alphas[:26] + '..') if len(ip_alphas) > 26 else ip_alphas
+        eventlog('ip_alphas = ' + str(ip_alphas))
+        self.temp_user_first = ip_alphas
+        self.temp_user_last = 'temporaryuser'
+        self.temp_user_password = ip_alphas
+        self.temp_user_email = str(str(ip_alphas) + '@stringkeeper.com') 
+        eventlog('self.temp_user_email = ' + self.temp_user_email)
+
+    def RegisterTemporaryUser(self):
+
+        # self.temp_user.first_name = self.temp_user_first
+        # self.temp_user.last_name = self.temp_user_last
+        # self.temp_user.email = self.temp_user_email
+        self.temp_full_name = str(str(self.temp_user_first) + ' ' + str(self.temp_user_last))
+        self.temp_user_id = str(str(self.temp_user_first) + str(''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(15))) + str(self.temp_user_last))
+
+        
+        self.temp_user = User.objects.create_user(
+            email = self.temp_user_email,
+            password = self.temp_user_password,
+            first_name = self.temp_user_first,
+            last_name = self.temp_user_last,
+            full_name = self.temp_full_name,
+        )
+        self.temp_user.bool_temp_user = True
+        self.temp_user.is_active = True
+        self.temp_user.bool_webharvest_chat_active = True
+        self.temp_user.temporary_user_ip = self.user_ip
+        self.temp_user.user_id = self.temp_user_id
+        self.temp_user.save()
+
+
+    def GetOrMakeTemporaryUser(self):
+        self.temp_user = True
+        self.ConvertUserIPToUserEmail()
+        user_qs = None
+        user_qs = User.objects.filter(email=self.temp_user_email)
+        searching = True
+        the_user = None
+        while searching:
+            for user in user_qs:
+                eventlog('user_qs user: ' + str(user))
+                if len(user) > 3:
+                    the_user = user
+                    searching = False
+            searching = False
+
+        eventlog('user: ' + str(the_user))
+        if the_user == None:
+            self.RegisterTemporaryUser()
+
     def get_queryset(self):
         return WebharvestThread.objects.by_user(self.request.user)
 
     def get_object(self):
+        self.user_ip = get_client_ip(self.request)
+        if str(self.request.user) == 'AnonymousUser':
+            eventlog('USER IS ANONYMOUS!!')
+            self.GetOrMakeTemporaryUser()
+
         other_username  = self.kwargs.get("username", None)
         if other_username == None:
             other_username = 'Alice'
@@ -179,7 +279,10 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+
         context['form'] = self.get_form()
+        context['user_ip'] = self.user_ip
         job, new = WebharvestJob.objects.get_or_new(user=self.request.user)
 
         eventlog('job.somesetting: ' + str(job.somesetting))
@@ -187,6 +290,7 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
             context['form2'] = self.second_form_class()
             context['form2'].initial['somesetting'] = str(job.somesetting)
             context['form2'].initial['search_keywords'] = str(job.search_keywords)
+
         return context
 
     def post(self, request, *args, **kwargs):

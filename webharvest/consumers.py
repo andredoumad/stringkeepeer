@@ -178,7 +178,6 @@ class WebharvestConsumer(AsyncConsumer):
                 # self.channel_name = str('Robot_channel_name')
                 eventlog('channel_name: ' + str(self.channel_name))
 
-
                 await self.channel_layer.group_add(self.chat_room, self.channel_name)
             
             # It is a known robot
@@ -252,9 +251,6 @@ class WebharvestConsumer(AsyncConsumer):
                     msg = 'Processed: ' + msg
                 else:
                     eventlog('NO ROBOT COMMAND')
-
-
-
 
 
                 eventlog('websocket_receive: ' + str(msg) )

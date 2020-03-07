@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+user_ip = {{ user_ip }}
+
 <!-- <hr/> -->
 <!-- <h5 class='text-center' >Logged in as {{ request.user }}</h5> -->
 
 <!-- <h5 class='text-center' >Chatting with {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h5class='text-center'> -->
 <!-- <hr/> -->
 <!-- <div class="overflow-auto"> -->
-    <style> 
+    <style>
         h1 { 
             color:Green; 
         } 
@@ -24,7 +27,7 @@
             overflow-x: auto; 
             text-align:justify; 
         } 
-    </style> 
+    </style>
     <div id='scroll' class="scroll">
     <ul class='text-left' id='chat-items' style="padding:4px; margin:4px, 4px; list-style-type:none;font-family:Palatino;list-style-position: inside;">
 
@@ -44,8 +47,6 @@
 {{ form.as_p }}
 <input id="buttonId" value="Like" name="form" type='submit' class='btn btn-primary'/>
 </form>
-
-
 
 
 <!-- <form id='form2' method='POST'> {% csrf_token %}

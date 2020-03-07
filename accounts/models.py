@@ -105,6 +105,8 @@ class User(AbstractBaseUser):
     bool_webharvest_chat_active = models.BooleanField(default=False)
     bool_webharvest_robot_assigned = models.BooleanField(default=False)
     webharvest_robot_name = models.CharField(max_length=255, blank=True, null=True)
+    bool_temporary_user = models.BooleanField(default=False)
+    temporary_user_ip = models.CharField(max_length=255, blank=True, null=True)
     # confirmed_bool = models.BooleanField(default=False)
 
     #dates
