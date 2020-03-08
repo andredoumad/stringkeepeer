@@ -2,8 +2,8 @@
 
 {% block content %}
 
-user_ip = {{ user_ip }} <br>
-user_email = {{ user_email }} <br>
+<!-- user_ip = {{ user_ip }} <br> -->
+<!-- user_email = {{ user_email }} <br> -->
 
 <!-- <hr/> -->
 <!-- <h5 class='text-center' >Logged in as {{ request.user }}</h5> -->
@@ -33,7 +33,7 @@ user_email = {{ user_email }} <br>
     <ul class='text-left' id='chat-items' style="padding:4px; margin:4px, 4px; list-style-type:none;font-family:Palatino;list-style-position: inside;">
 
     {% for chat in object.webharvestchatmessage_set.all reversed %}
-    chat.user = {{ chat.user }}
+    <!-- chat.user = {{ chat.user }} -->
 
     {% if user_email == chat.user %}
         <li><font color = 'orange'>you: </font>{{ chat.message }}</li>
@@ -106,7 +106,7 @@ socket.onmessage = function(e){
 socket.onopen = function(e){
     console.log("onopen: ", e)
     var initialData = {
-            'message': 'helloelo',
+            'message': '',
             'From': me,
             'datatest': 'thosedata'
         }
