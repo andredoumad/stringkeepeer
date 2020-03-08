@@ -282,10 +282,10 @@ class ThreadView(FormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        self.user_ip = get_client_ip(self.request)
-        if str(self.request.user) == 'AnonymousUser':
-            eventlog('USER IS ANONYMOUS!!')
-            self.GetOrMakeTemporaryUser()
+        # self.user_ip = get_client_ip(self.request)
+        # if str(self.request.user) == 'AnonymousUser':
+        #     eventlog('USER IS ANONYMOUS!!')
+        #     self.GetOrMakeTemporaryUser()
 
         if self.bool_temp_user != True:
             context['user_email'] = self.request.user.email
