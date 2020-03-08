@@ -186,6 +186,8 @@ class ThreadView(FormMixin, DetailView):
 
         # for key, value in d.items():
         #     eventlog('Key: ' + str(key) + ' Value: ' + str(value))
+        eventlog('self.request....')
+        eventlog('self.request: ' + str(self.request))
         self.user_ip = get_client_ip(self.request)
         eventlog('self.user_ip: ' + str(self.user_ip))
         ip_alphas = ''
