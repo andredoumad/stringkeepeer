@@ -7,7 +7,7 @@ from django.db.models.signals import pre_save, post_save
 from stringkeeper.standalone_tools import *
 from accounts.signals import user_logged_in
 from .signals import object_viewed_signal
-from .utils import get_client_ip
+# from stringkeeper.standalone_tools import get_client_ip
 
 
 User = settings.AUTH_USER_MODEL
