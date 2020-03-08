@@ -86,12 +86,12 @@ class WebharvestThread(models.Model):
         if self.human != None:
             value = self.human
         else:
-            value = updated
+            value = self.updated
         return str(value)
 
     @property
     def room_group_name(self):
-        return str(human.user_id)
+        return str(self.human.user_id)
         # return f'chat_{self.id}'
 
     # def broadcast(self, msg=None):

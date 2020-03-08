@@ -167,7 +167,7 @@ class ThreadView(FormMixin, DetailView):
     success_url = './'
 
     def __init__(self):
-        self.temp_user = False
+        self.bool_temp_user = False
         self.user_ip = None
         self.temp_user = None
         self.temp_user_first = ''
@@ -176,10 +176,6 @@ class ThreadView(FormMixin, DetailView):
         self.temp_user_email = ''
         self.temp_user_full_name = ''
         self.temp_user_id = ''
-        eventlog('INITIALIZED THREADVIEW!')
-        # if self.temp_user == None and str(self.request.user) == 'AnonymousUser':
-        #     eventlog('USER IS ANONYMOUS!!')
-        #     self.GetOrMakeTemporaryUser()
 
 
     def ConvertUserIPToUserEmail(self):
@@ -237,7 +233,7 @@ class ThreadView(FormMixin, DetailView):
 
 
     def GetOrMakeTemporaryUser(self):
-        self.temp_user = True
+        self.bool_temp_user = True
         self.ConvertUserIPToUserEmail()
         user_qs = None
         user_qs = User.objects.filter(email=self.temp_user_email)
@@ -246,7 +242,7 @@ class ThreadView(FormMixin, DetailView):
         while searching:
             for user in user_qs:
                 eventlog('user_qs user: ' + str(user))
-                if len(user) > 3:
+                if len(str(user)) > 3:
                     the_user = user
                     searching = False
             searching = False
@@ -254,6 +250,8 @@ class ThreadView(FormMixin, DetailView):
         eventlog('user: ' + str(the_user))
         if the_user == None:
             self.RegisterTemporaryUser()
+        else:
+            self.temp_user = the_user
 
     def get_queryset(self):
         return WebharvestThread.objects.by_user(self.request.user)
@@ -269,9 +267,13 @@ class ThreadView(FormMixin, DetailView):
             other_username = 'Alice'
 
         eventlog('get_object other_username: ' + str(other_username))
+        if self.bool_temp_user != True:
+            eventlog('self.request.user: ' + str(self.request.user))
+            obj, created    = WebharvestThread.objects.get_or_new(self.request.user, other_username)
+        else:
+            eventlog('self.temp_user: ' + str(self.temp_user))
+            obj, created    = WebharvestThread.objects.get_or_new(self.temp_user, other_username)
 
-        eventlog('self.request.user: ' + str(self.request.user))
-        obj, created    = WebharvestThread.objects.get_or_new(self.request.user, other_username)
         if obj == None:
             raise Http404
         return obj
@@ -279,11 +281,24 @@ class ThreadView(FormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.user_ip = get_client_ip(self.request)
+        if str(self.request.user) == 'AnonymousUser':
+            eventlog('USER IS ANONYMOUS!!')
+            self.GetOrMakeTemporaryUser()
 
+        if self.bool_temp_user != True:
+            context['user_email'] = self.request.user.email
+        else:
+            context['user_email'] = self.temp_user.email
 
         context['form'] = self.get_form()
         context['user_ip'] = self.user_ip
-        job, new = WebharvestJob.objects.get_or_new(user=self.request.user)
+
+        if self.bool_temp_user != True:
+            job, new = WebharvestJob.objects.get_or_new(user=self.request.user)
+        else:
+            eventlog('temp_user: ' + str(self.temp_user))
+            job, new = WebharvestJob.objects.get_or_new(user=self.temp_user)
 
         eventlog('job.somesetting: ' + str(job.somesetting))
         if 'form2' not in context:
@@ -294,8 +309,8 @@ class ThreadView(FormMixin, DetailView):
         return context
 
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return HttpResponseForbidden()
+        # if not request.user.is_authenticated:
+        #     return HttpResponseForbidden()
         self.object = self.get_object()
 
         if 'form' in request.POST:
@@ -321,7 +336,11 @@ class ThreadView(FormMixin, DetailView):
     def form_valid(self, form):
         eventlog("form_valid")
         thread = self.get_object()
-        user = self.request.user
+        if self.bool_temp_user != True:
+            user = self.request.user
+        else:
+            user = self.temp_user
+        # user = self.request.user
         eventlog('form_valid user: ' + str(user))
         message = form.cleaned_data.get("message")
         WebharvestChatMessage.objects.create(user=user, thread=thread, message=message)
@@ -330,15 +349,19 @@ class ThreadView(FormMixin, DetailView):
     def form2_valid(self, form):
         eventlog("form2_valid")
         thread = self.get_object()
-        user = self.request.user
+        if self.bool_temp_user != True:
+            user = self.request.user
+        else:
+            user = self.temp_user
+
         eventlog('form_valid user: ' + str(user))
         # user_email = form.cleaned_data.get("user_email")
         # thread = WebharvestThread.objects.by_user(self.request.user)
-        job, new = WebharvestJob.objects.get_or_new(user=self.request.user)
+        job, new = WebharvestJob.objects.get_or_new(user=user)
         eventlog('WebharvestJob: ' + str(job))
         job_name = form.cleaned_data.get('job_name')
         job.job_name = job_name
-        job.user_email = self.request.user.email
+        job.user_email = user.email
         robot = thread.robot
         eventlog('thread robot: ' + str(robot))
         robot_name = robot.robot_name

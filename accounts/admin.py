@@ -27,7 +27,11 @@ class UserAdmin(BaseUserAdmin):
             'last_name',
             'full_name',
             'user_id',
-            'bool_webharvest_chat_active'
+            'bool_webharvest_chat_active',
+            'bool_webharvest_robot_assigned',
+            'webharvest_robot_name',
+            'bool_temporary_user',
+            'temporary_user_ip'
             )}),
         ('Permissions', {'fields': ('admin', 'staff', 'is_active')}),
     )
