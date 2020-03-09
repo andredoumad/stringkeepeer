@@ -36,9 +36,9 @@
     <!-- chat.user = {{ chat.user }} -->
 
     {% if user_email == chat.user %}
-        <li><font color = 'orange'>you: </font>{{ chat.message }}</li>
+        <li><font color = '#FF8A14'>you: </font>{{ chat.message }}</li>
     {% else %}
-        <li><font color = 'blue'>{{ chat.user }}: </font>{{ chat.message }}</li>
+        <li><font color = '#1589FF'>{{ chat.user }}: </font>{{ chat.message }}</li>
     {% endif %}
     {% endfor %}
     </ul>
@@ -47,7 +47,7 @@
 <form id='form' method='POST'> {% csrf_token %}
     <input type='hidden' id='myUsername' value='{{ user_email }}' />
 {{ form.as_p }}
-<input id="buttonId" value="Like" name="form" type='submit' class='btn btn-primary'/>
+<input id="buttonId" value="Send" name="form" type='submit' class='btn-block btn-info'/>
 </form>
 
 
@@ -60,14 +60,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
 
 <body onload="hideButton()">
-<script>
+<!-- <script>
 function hideButton()
 {
     document.getElementById("buttonId").style.display='none';
     //or you can try
     //document.getElementById("buttonId").style.visibility='hidden';
 }
-</script>
+</script> -->
 
 
 <script>

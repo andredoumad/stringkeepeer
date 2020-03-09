@@ -9,7 +9,7 @@ class ComposeForm(forms.Form):
             widget=forms.TextInput(
                 attrs={
                     'style': 'background-color:rgb(35, 39, 43); color: white;',
-                    'class': 'form-control my-2',
+                    'class': 'form-control my-1',
                     "label": ""
                     }
                 )
