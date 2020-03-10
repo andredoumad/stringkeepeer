@@ -1,19 +1,16 @@
 from django.contrib import admin
-
-
 from .models import WebharvestThread, WebharvestChatMessage, WebharvestRobot, WebharvestJob
 
 class WebharvestChatMessage(admin.TabularInline):
     model = WebharvestChatMessage
 
-
 class WebharvestThreadAdmin(admin.ModelAdmin):
     inlines = [WebharvestChatMessage]
+    # list_filter = ('human')
     class Meta:
         model = WebharvestThread
 
 admin.site.register(WebharvestThread, WebharvestThreadAdmin)
-
 
 class WebharvestRobotAdmin(admin.ModelAdmin):
     model = WebharvestRobot

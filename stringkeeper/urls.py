@@ -50,6 +50,7 @@ from .views import (
     about_page,
     contact_page,
     preview_page,
+    maintenance_page,
     #example_page,
     #login_page,
     #register_page
@@ -73,6 +74,7 @@ urlpatterns = [
     # path('__debug__/', include(debug_toolbar.urls)),
     # path('', home_page, name='home'),
     path('', RedirectView.as_view(url='webharvest/')),
+    path('maintenance_page/', maintenance_page, name='maintenance_page'),
     path('blog-new/', blog_post_create_view),
     path('blog/', include('blog.urls', namespace='blog'), name='blog'),
     path('about/', about_page, name='about'),

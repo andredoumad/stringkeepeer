@@ -60,11 +60,6 @@ class WebharvestThreadManager(models.Manager):
                 return obj, True
             return None, False
 
-
-
-
-# class WebharvestThreadManager(models.Manager):
-
     
 class WebharvestRobot(models.Model):
     robot_name = models.CharField(max_length=255, blank=True, null=True)

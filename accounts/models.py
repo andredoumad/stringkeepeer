@@ -107,6 +107,25 @@ class User(AbstractBaseUser):
     webharvest_robot_name = models.CharField(max_length=255, blank=True, null=True)
     bool_temporary_user = models.BooleanField(default=False)
     temporary_user_ip = models.CharField(max_length=255, blank=True, null=True)
+
+
+    geo_ip_organization_name    = models.CharField(max_length=255, blank=True, null=True)
+    geo_ip_region               = models.CharField(max_length=255, blank=True, null=True)
+    geo_ip_accuracy             = models.CharField(max_length=255, blank=True, null=True)
+    geo_ip_organization         = models.CharField(max_length=255, blank=True, null=True)
+    geo_ip_timezone             = models.CharField(max_length=255, blank=True, null=True)
+    geo_ip_longitude            = models.CharField(max_length=255, blank=True, null=True)
+    geo_ip_country_code3        = models.CharField(max_length=255, blank=True, null=True)
+    geo_ip_area_code            = models.CharField(max_length=255, blank=True, null=True)
+    geo_ip_ip                   = models.CharField(max_length=255, blank=True, null=True)
+    geo_ip_city                 = models.CharField(max_length=255, blank=True, null=True)
+    geo_ip_country              = models.CharField(max_length=255, blank=True, null=True)
+    geo_ip_continent_code       = models.CharField(max_length=255, blank=True, null=True)
+    geo_ip_country_code         = models.CharField(max_length=255, blank=True, null=True)
+    geo_ip_latitude             = models.CharField(max_length=255, blank=True, null=True)
+    
+
+
     # confirmed_bool = models.BooleanField(default=False)
 
     #dates

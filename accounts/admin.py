@@ -19,7 +19,7 @@ class UserAdmin(BaseUserAdmin):
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
     list_display = ('email', 'admin')
-    list_filter = ('admin', 'staff', 'is_active',)
+    list_filter = ('admin', 'staff', 'is_active', 'bool_temporary_user')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': (
@@ -31,7 +31,22 @@ class UserAdmin(BaseUserAdmin):
             'bool_webharvest_robot_assigned',
             'webharvest_robot_name',
             'bool_temporary_user',
-            'temporary_user_ip'
+            'temporary_user_ip',
+            'geo_ip_organization_name',
+            'geo_ip_region',
+            'geo_ip_accuracy',
+            'geo_ip_organization',
+            'geo_ip_timezone',
+            'geo_ip_longitude',
+            'geo_ip_country_code3',
+            'geo_ip_area_code',
+            'geo_ip_ip',
+            'geo_ip_city',
+            'geo_ip_country',
+            'geo_ip_continent_code',
+            'geo_ip_country_code',
+            'geo_ip_latitude'
+
             )}),
         ('Permissions', {'fields': ('admin', 'staff', 'is_active')}),
     )
@@ -45,11 +60,30 @@ class UserAdmin(BaseUserAdmin):
     )
     search_fields = (
         'email', 
-        'first_name', 
-        'last_name', 
+        'first_name',
+        'last_name',
         'full_name',
         'user_id',
-        'bool_webharvest_chat_active'
+        'bool_webharvest_chat_active',
+        'bool_webharvest_robot_assigned',
+        'webharvest_robot_name',
+        'bool_temporary_user',
+        'temporary_user_ip',
+        'geo_ip_organization_name',
+        'geo_ip_region',
+        'geo_ip_accuracy',
+        'geo_ip_organization',
+        'geo_ip_timezone',
+        'geo_ip_longitude',
+        'geo_ip_country_code3',
+        'geo_ip_area_code',
+        'geo_ip_ip',
+        'geo_ip_city',
+        'geo_ip_country',
+        'geo_ip_continent_code',
+        'geo_ip_country_code',
+        'geo_ip_latitude'
+
     )
     ordering = ('email',)
     filter_horizontal = ()
