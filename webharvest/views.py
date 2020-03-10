@@ -233,41 +233,44 @@ class ThreadView(FormMixin, DetailView):
         self.temp_user.temporary_user_ip = self.user_ip
         self.temp_user.user_id = self.temp_user_id
 
-
-        geo_request_url = 'https://get.geojs.io/v1/ip/geo/' + str(self.user_ip) + '.json'
-        geo_request = requests.get(geo_request_url)
-        geo_data = geo_request.json()
-        eventlog(geo_data)
-        for key, value in geo_data.items():
-            eventlog('item: ' + str(key) + ' : ' + str(value))
-            if key == 'organization_name':
-                self.temp_user.geo_ip_organization_name = str(value)
-            elif key == 'region':
-                self.temp_user.geo_ip_region = str(value)
-            elif key == 'accuracy':
-                self.temp_user.geo_ip_accuracy = str(value)
-            elif key == 'organization':
-                self.temp_user.geo_ip_organization = str(value)
-            elif key == 'timezone':
-                self.temp_user.geo_ip_timezone = str(value)
-            elif key == 'longitude':
-                self.temp_user.geo_ip_longitude = str(value)
-            elif key == 'country_code3':
-                self.temp_user.geo_ip_country_code3 = str(value)
-            elif key == 'area_code':
-                self.temp_user.geo_ip_area_code = str(value)
-            elif key == 'ip':
-                self.temp_user.geo_ip_ip = str(value)
-            elif key == 'city':
-                self.temp_user.geo_ip_city = str(value)
-            elif key == 'country':
-                self.temp_user.geo_ip_country = str(value)
-            elif key == 'continent_code':
-                self.temp_user.geo_ip_continent_code = str(value)
-            elif key == 'country_code':
-                self.temp_user.geo_ip_country_code = str(value)
-            elif key == 'latitude':
-                self.temp_user.geo_ip_latitude = str(value)
+        try:
+            geo_request_url = 'https://get.geojs.io/v1/ip/geo/' + str(self.user_ip) + '.json'
+            geo_request = requests.get(geo_request_url)
+            geo_data = geo_request.json()
+            eventlog(geo_data)
+            for key, value in geo_data.items():
+                eventlog('item: ' + str(key) + ' : ' + str(value))
+                if key == 'organization_name':
+                    self.temp_user.geo_ip_organization_name = str(value)
+                elif key == 'region':
+                    self.temp_user.geo_ip_region = str(value)
+                elif key == 'accuracy':
+                    self.temp_user.geo_ip_accuracy = str(value)
+                elif key == 'organization':
+                    self.temp_user.geo_ip_organization = str(value)
+                elif key == 'timezone':
+                    self.temp_user.geo_ip_timezone = str(value)
+                elif key == 'longitude':
+                    self.temp_user.geo_ip_longitude = str(value)
+                elif key == 'country_code3':
+                    self.temp_user.geo_ip_country_code3 = str(value)
+                elif key == 'area_code':
+                    self.temp_user.geo_ip_area_code = str(value)
+                elif key == 'ip':
+                    self.temp_user.geo_ip_ip = str(value)
+                elif key == 'city':
+                    self.temp_user.geo_ip_city = str(value)
+                elif key == 'country':
+                    self.temp_user.geo_ip_country = str(value)
+                elif key == 'continent_code':
+                    self.temp_user.geo_ip_continent_code = str(value)
+                elif key == 'country_code':
+                    self.temp_user.geo_ip_country_code = str(value)
+                elif key == 'latitude':
+                    self.temp_user.geo_ip_latitude = str(value)
+        except:
+            pass
+        
         self.temp_user.save()
 
 
