@@ -268,7 +268,6 @@ class ThreadView(FormMixin, DetailView):
                 self.temp_user.geo_ip_country_code = str(value)
             elif key == 'latitude':
                 self.temp_user.geo_ip_latitude = str(value)
-        user.save()
         self.temp_user.save()
 
 
