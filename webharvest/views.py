@@ -516,8 +516,12 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
         json.dumps(data)
         eventlog('WebHarvestWebhookView POST json.dumps(data): ' + str(data))
         # return HttpResponse("", status=200)
-        if 'user' in data:
-            eventlog('user: ' + str(data['user']))            
+        if 'human' in data:
+            eventlog('user: ' + str(data['human']))
+            User = get_user_model()    
+            user = User.objects.get(email=human)
+            eventlog('post user target: ' + str(user))
+            eventlog('post user id: ' + str(user.user_id))
 
         if 'chat_message' in data:
             eventlog('chat_message: ' + str(data['chat_message']))
@@ -533,7 +537,8 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
                     'message': str(data['chat_message']),
                     'username': 'Alice'
             }
-            thread_obj = WebharvestThread.objects.get_or_new('dante@stringkeeper.com', 'Alice')[0]
+            
+            thread_obj = WebharvestThread.objects.get_or_new((str(human)), 'Alice')[0]
             WebharvestChatMessage.objects.create(thread=thread_obj, user='Alice', message=str(data['chat_message']))
             # asyncio.get_event_loop().run_until_complete(command_receiver())
 
@@ -541,8 +546,9 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
                 # andre@blackmesanetwork.com user_id
                 # 'jj0i1WGGl3S5ZzlQ1qO9',
                 #dante
-                "dantegemlc0bw6idqs0edoumad",
+                # "dantegemlc0bw6idqs0edoumad",
                 #andre@stringkeeper.com
+                str(user.user_id),
                 #"xAu8XilVFGYyhnHoh4Sw",
                 {
                     'type': 'chat_message',
