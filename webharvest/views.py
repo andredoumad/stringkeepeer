@@ -519,6 +519,8 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
         if 'human' in data:
             eventlog('user: ' + str(data['human']))
             User = get_user_model()    
+            human = str(data['human'])
+            eventlog('human: ' + str(human))
             user = User.objects.get(email=human)
             eventlog('post user target: ' + str(user))
             eventlog('post user id: ' + str(user.user_id))
@@ -535,10 +537,11 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
             # )
             my_text = {
                     'message': str(data['chat_message']),
-                    'username': 'Alice'
+                    'username': 'Alice',
+                    'From': 'Alice'
             }
             
-            thread_obj = WebharvestThread.objects.get_or_new((str(human)), 'Alice')[0]
+            thread_obj = WebharvestThread.objects.get_or_new(human, 'Alice')[0] 
             WebharvestChatMessage.objects.create(thread=thread_obj, user='Alice', message=str(data['chat_message']))
             # asyncio.get_event_loop().run_until_complete(command_receiver())
 
