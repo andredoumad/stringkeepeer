@@ -584,7 +584,8 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
             my_text = {
                     'message': str(data['chat_message']),
                     'username': 'Alice',
-                    'From': 'Alice'
+                    'From': 'Alice',
+                    'command': str(data['command'])
             }
             
             thread_obj = WebharvestThread.objects.get_or_new(human, 'Alice')[0] 
@@ -607,7 +608,7 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
         
 
         if 'command' in data:
-            if str(data['human']) == 'clear':
+            if str(data['command']) == 'clear':
                 try:
                     self.robot_command_clear(str(data['human']), str(data['From']))
                 except Exception as e:
