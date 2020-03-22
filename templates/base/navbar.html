@@ -11,54 +11,56 @@
 {% load static %}
 <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"></nav> -->
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark mb-3">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <!-- <div class="navbar-collapse" id="navbarSupportedContent"> -->
+  <div class="container text-center">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- <div class="navbar-collapse" id="navbarSupportedContent"> -->
 
-      <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto">
 
-        <li class="nav-item {% if request.path == home_url  %}active{% endif %}">
-            <a class="nav-link" href="{{ home_url }}">Stringkeeper</a>
+          <li class="nav-item {% if request.path == home_url  %}active{% endif %}">
+              <a class="nav-link" href="{{ home_url }}">Stringkeeper</a>
+            </li>
+
+          <li class="nav-item {% if request.path == subscription_url  %}active{% endif %}">
+            <a class="nav-link" href="{{ subscription_url }}">Subscriptions</a>
           </li>
 
-        <li class="nav-item {% if request.path == subscription_url  %}active{% endif %}">
-          <a class="nav-link" href="{{ subscription_url }}">Subscriptions</a>
-        </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item {% if request.path == accounts_url  %}active{% endif %}">
+            <a class="nav-link" href="{{ accounts_url }}">Account</a>
+          </li>
+          
+          <li class="nav-item {% if request.path == library_url  %}active{% endif %}">
+            <a class="nav-link" href="{{ library_url }}">Library</a>
+          </li>
 
-        {% if user.is_authenticated %}
-        <li class="nav-item {% if request.path == accounts_url  %}active{% endif %}">
-          <a class="nav-link" href="{{ accounts_url }}">Account</a>
-        </li>
-        
-        <li class="nav-item {% if request.path == library_url  %}active{% endif %}">
-          <a class="nav-link" href="{{ library_url }}">Library</a>
-        </li>
+          <li class="nav-item {% if request.path == logout_url  %}active{% endif %}">
+            <a class="nav-link" href="{{ logout_url }}">Logout</a>
+          </li>
 
-        <li class="nav-item {% if request.path == logout_url  %}active{% endif %}">
-          <a class="nav-link" href="{{ logout_url }}">Logout</a>
-        </li>
+          {% endif %}
 
-        {% endif %}
+          {% if not user.is_authenticated %}
 
-        {% if not user.is_authenticated %}
+          <li class="nav-item {% if request.path == auth_login_url  %}active{% endif %}">
+            <a class="nav-link" href="{{ auth_login_url }}">Login</a>
+          </li>
 
-        <li class="nav-item {% if request.path == auth_login_url  %}active{% endif %}">
-          <a class="nav-link" href="{{ auth_login_url }}">Login</a>
-        </li>
+          <li class="nav-item {% if request.path == register_url  %}active{% endif %}">
+            <a class="nav-link" href="{{ register_url }}">Register</a>
+          </li>
 
-        <li class="nav-item {% if request.path == register_url  %}active{% endif %}">
-          <a class="nav-link" href="{{ register_url }}">Register</a>
-        </li>
+          {% endif %}
 
-        {% endif %}
+          <li class="nav-item {% if request.path == contact_url  %}active{% endif %}">
+            <a class="nav-link" href="{{ contact_url }}">Contact</a>
+          </li>
 
-        <li class="nav-item {% if request.path == contact_url  %}active{% endif %}">
-          <a class="nav-link" href="{{ contact_url }}">Contact</a>
-        </li>
-
-      </ul>
+        </ul>
+      </div>
     </div>
   </div>
 </nav>

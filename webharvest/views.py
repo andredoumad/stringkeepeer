@@ -5,29 +5,20 @@ from django.views.generic import CreateView, FormView, DetailView, View, UpdateV
 from billing.models import BillingProfile
 from orders.models import Order, SubscriptionPurchase
 from rest_framework.test import APIRequestFactory
-# Create your views here.
 from .mixins import CsrfExemptMixin
 from django.http import HttpResponse, Http404, HttpResponseForbidden
 import json, requests
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.conf import settings
-
 from .forms import ComposeForm, WebharvestJobForm
 from django.views.generic.edit import FormMixin
 from .models import WebharvestThread, WebharvestChatMessage, WebharvestJob
 from webharvest.consumers import WebharvestConsumer
-
 from .multiform import *
-
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
-
-
-
-
 from django.contrib.auth import get_user_model
-
 import string
 
 User = get_user_model()
@@ -80,85 +71,6 @@ class InboxView(LoginRequiredMixin, ListView):
         return WebharvestThread.objects.by_user(self.request.user)
 
 
-# # class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
-# class ThreadView(LoginRequiredMixin, MultiFormMixin, DetailView):
-#     template_name = 'webharvest/thread.html'
-#     form_classes = {
-#         'form': ComposeForm,
-#         'form2': WebharvestJob
-#     }
-#     success_url = './'
-
-#     # def get_form_initial(self):
-#     #     return {'message':'testing'}
-
-#     # def get_form2_initial(self):
-#     #     return {'user_email':'dave@dave.com'}
-
-
-#     def get_queryset(self):
-#         return WebharvestThread.objects.by_user(self.request.user)
-
-#     def get_object(self):
-#         other_username  = self.kwargs.get("username", None)
-#         if other_username == None:
-#             other_username = 'Alice'
-
-#         eventlog('get_object other_username: ' + str(other_username))
-
-#         eventlog('self.request.user: ' + str(self.request.user))
-#         obj, created    = WebharvestThread.objects.get_or_new(self.request.user, other_username)
-#         if obj == None:
-#             raise Http404
-#         return obj
-        
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         forms = self.get_form_classes()
-#         context['form'] = self.get_forms(forms, 'form')
-
-#         context['form2'] = self.get_forms(forms, 'form2')
-#         for item in context:
-#             eventlog('context item: ' + str(item))
-#             if item == 'form2':
-#                 eventlog('context item' + str(item.user_email))
-#         return context
-
-#     def post(self, request, *args, **kwargs):
-#         if not request.user.is_authenticated:
-#             return HttpResponseForbidden()
-#         self.object = self.get_object()
-#         forms = self.get_form_classes()
-#         form = None
-#         for a_form in forms:
-#             if 'form' in request.POST:
-#                 if str(a_form) == 'form':
-#                     eventlog('form: ' + str(a_form))
-#                     form = a_form
-        
-#         self.forms_valid(forms, 'form')
-        
-#         return self.forms_valid(forms, 'form')
-#         # if forms[0].is_valid():
-#         #     return self.form_valid(form)
-#         # else:
-#         #     return self.form_invalid(form)
-
-#     def form_valid(self, form):
-#         thread = self.get_object()
-#         user = self.request.user
-#         eventlog('form_valid user: ' + str(user))
-#         message = form.cleaned_data.get("message")
-#         WebharvestChatMessage.objects.create(user=user, thread=thread, message=message)
-#         return super().form_valid(form)
-
-
-
-
-
-
-
 # class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
 class ThreadView(FormMixin, DetailView):
     template_name = 'webharvest/thread.html'
@@ -180,12 +92,9 @@ class ThreadView(FormMixin, DetailView):
 
     def ConvertUserIPToUserEmail(self):
         eventlog('CREATING TEMPORARY USER EMAIL!')
-        # d = dict(enumerate(string.ascii_lowercase, 1))
         d = dict(enumerate(string.ascii_lowercase, 1))
         eventlog(d[3]) # c
 
-        # for key, value in d.items():
-        #     eventlog('Key: ' + str(key) + ' Value: ' + str(value))
         eventlog('self.request....')
         eventlog('self.request: ' + str(self.request))
         self.user_ip = get_client_ip(self.request)
@@ -212,14 +121,9 @@ class ThreadView(FormMixin, DetailView):
         eventlog('self.temp_user_email = ' + self.temp_user_email)
 
     def RegisterTemporaryUser(self):
-
-        # self.temp_user.first_name = self.temp_user_first
-        # self.temp_user.last_name = self.temp_user_last
-        # self.temp_user.email = self.temp_user_email
         self.temp_full_name = str(str(self.temp_user_first) + ' ' + str(self.temp_user_last))
         self.temp_user_id = str(str(self.temp_user_first) + str(''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(15))) + str(self.temp_user_last))
 
-        
         self.temp_user = User.objects.create_user(
             email = self.temp_user_email,
             password = self.temp_user_password,
@@ -233,46 +137,48 @@ class ThreadView(FormMixin, DetailView):
         self.temp_user.temporary_user_ip = self.user_ip
         self.temp_user.user_id = self.temp_user_id
 
+        self.UpdateUserGeoIPData(self.temp_user, self.user_ip)
+
+
+    def UpdateUserGeoIPData(self, user, user_ip):
         try:
-            geo_request_url = 'https://get.geojs.io/v1/ip/geo/' + str(self.user_ip) + '.json'
+            geo_request_url = 'https://get.geojs.io/v1/ip/geo/' + str(user_ip) + '.json'
             geo_request = requests.get(geo_request_url)
             geo_data = geo_request.json()
             eventlog(geo_data)
             for key, value in geo_data.items():
                 eventlog('item: ' + str(key) + ' : ' + str(value))
                 if key == 'organization_name':
-                    self.temp_user.geo_ip_organization_name = str(value)
+                    user.geo_ip_organization_name = str(value)
                 elif key == 'region':
-                    self.temp_user.geo_ip_region = str(value)
+                    user.geo_ip_region = str(value)
                 elif key == 'accuracy':
-                    self.temp_user.geo_ip_accuracy = str(value)
+                    user.geo_ip_accuracy = str(value)
                 elif key == 'organization':
-                    self.temp_user.geo_ip_organization = str(value)
+                    user.geo_ip_organization = str(value)
                 elif key == 'timezone':
-                    self.temp_user.geo_ip_timezone = str(value)
+                    user.geo_ip_timezone = str(value)
                 elif key == 'longitude':
-                    self.temp_user.geo_ip_longitude = str(value)
+                    user.geo_ip_longitude = str(value)
                 elif key == 'country_code3':
-                    self.temp_user.geo_ip_country_code3 = str(value)
+                    user.geo_ip_country_code3 = str(value)
                 elif key == 'area_code':
-                    self.temp_user.geo_ip_area_code = str(value)
+                    user.geo_ip_area_code = str(value)
                 elif key == 'ip':
-                    self.temp_user.geo_ip_ip = str(value)
+                    user.geo_ip_ip = str(value)
                 elif key == 'city':
-                    self.temp_user.geo_ip_city = str(value)
+                    user.geo_ip_city = str(value)
                 elif key == 'country':
-                    self.temp_user.geo_ip_country = str(value)
+                    user.geo_ip_country = str(value)
                 elif key == 'continent_code':
-                    self.temp_user.geo_ip_continent_code = str(value)
+                    user.geo_ip_continent_code = str(value)
                 elif key == 'country_code':
-                    self.temp_user.geo_ip_country_code = str(value)
+                    user.geo_ip_country_code = str(value)
                 elif key == 'latitude':
-                    self.temp_user.geo_ip_latitude = str(value)
+                    user.geo_ip_latitude = str(value)
         except:
             pass
-        
-        self.temp_user.save()
-
+        user.save()
 
     def GetOrMakeTemporaryUser(self):
         self.bool_temp_user = True
@@ -300,9 +206,14 @@ class ThreadView(FormMixin, DetailView):
 
     def get_object(self):
         self.user_ip = get_client_ip(self.request)
+        self.the_user = None
         if str(self.request.user) == 'AnonymousUser':
             eventlog('USER IS ANONYMOUS!!')
             self.GetOrMakeTemporaryUser()
+            self.the_user = self.temp_user
+        else:
+            self.UpdateUserGeoIPData(self.request.user, self.user_ip)
+            self.the_user = self.request.user
 
         other_username  = self.kwargs.get("username", None)
         if other_username == None:
@@ -323,10 +234,6 @@ class ThreadView(FormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # self.user_ip = get_client_ip(self.request)
-        # if str(self.request.user) == 'AnonymousUser':
-        #     eventlog('USER IS ANONYMOUS!!')
-        #     self.GetOrMakeTemporaryUser()
 
         if self.bool_temp_user != True:
             context['user_email'] = self.request.user.email
@@ -335,6 +242,7 @@ class ThreadView(FormMixin, DetailView):
 
         context['form'] = self.get_form()
         context['user_ip'] = self.user_ip
+        context['the_user'] = self.the_user
 
         if self.bool_temp_user != True:
             job, new = WebharvestJob.objects.get_or_new(user=self.request.user)
@@ -397,8 +305,7 @@ class ThreadView(FormMixin, DetailView):
             user = self.temp_user
 
         eventlog('form_valid user: ' + str(user))
-        # user_email = form.cleaned_data.get("user_email")
-        # thread = WebharvestThread.objects.by_user(self.request.user)
+
         job, new = WebharvestJob.objects.get_or_new(user=user)
         eventlog('WebharvestJob: ' + str(job))
         job_name = form.cleaned_data.get('job_name')
@@ -415,62 +322,7 @@ class ThreadView(FormMixin, DetailView):
         job.search_keywords = search_keywords
         job.save()
 
-        # WebharvestJob.objects.create(user_email=self.request.user.email)
         return super().form_valid(form)
-
-
-
-
-
-
-
-
-# class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
-
-#     template_name = 'webharvest/thread.html'
-#     form_class = ComposeForm
-#     success_url = './'
-
-#     def get_queryset(self):
-#         return WebharvestThread.objects.by_user(self.request.user)
-
-#     def get_object(self):
-#         other_username  = self.kwargs.get("username", None)
-#         if other_username == None:
-#             other_username = 'Alice'
-
-#         eventlog('get_object other_username: ' + str(other_username))
-
-#         eventlog('self.request.user: ' + str(self.request.user))
-#         obj, created    = WebharvestThread.objects.get_or_new(self.request.user, other_username)
-#         if obj == None:
-#             raise Http404
-#         return obj
-        
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['form'] = self.get_form()
-#         return context
-
-#     def post(self, request, *args, **kwargs):
-#         if not request.user.is_authenticated:
-#             return HttpResponseForbidden()
-#         self.object = self.get_object()
-#         form = self.get_form()
-#         if form.is_valid():
-#             return self.form_valid(form)
-#         else:
-#             return self.form_invalid(form)
-
-#     def form_valid(self, form):
-#         thread = self.get_object()
-#         user = self.request.user
-#         eventlog('form_valid user: ' + str(user))
-#         message = form.cleaned_data.get("message")
-#         WebharvestChatMessage.objects.create(user=user, thread=thread, message=message)
-#         return super().form_valid(form)
-
 
 
 class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF?????
@@ -482,78 +334,21 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
         eventlog('WebHarvestWebhookView GET data: ' + str(data))
         json.dumps(data)
         eventlog('WebHarvestWebhookView GET json.dumps(data): ' + str(data))
-        # return HttpResponse("hello", status=200)
-
-        # if 'getter' in data:
-        #     eventlog('getter is in data....')
-        #     if str(data['getter']) == 'webharvest_robot_router':
-        #         eventlog('getter is webharvest_robot_router....')
-        #         eventlog('generating list of active webharvest chatroom users')
-
-        #         active_users = {}
-        #         inactive_users = {}
-        #         User = get_user_model()
-        #         for item in User.objects.all():
-        #             eventlog('User: ' + str(item))
-        #             if item.bool_webharvest_chat_active == True:
-        #                 active_users[item.email] = item.webharvest_robot_name
-        #             else:
-        #                 inactive_users[item.email] = item.webharvest_robot_name
-        #         return JsonResponse({
-        #             'active_users': json.dumps(active_users),
-        #             'inactive_users': json.dumps(inactive_users)
-        #             })
         return JsonResponse({'response_message': 'henlo'})
  
-
-
     def robot_command_clear(self, human, robot):
         eventlog('delete_extra_messages')
         eventlog('human: ' + str(human) + ' robot: ' + str(robot))
         thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
-
-        # self.thread_obj = thread_obj
-        # eventlog('self.thread_obj: ' + str(thread_obj))
-        # delete block start
         chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
-        # eventlog('chat_message_objects: ' + str(chat_message_objects))
-
         chat_message_list = []
-
-        # for chat_message in chat_message_objects:
-        for chat_message in reversed(chat_message_objects):
+        for chat_message in chat_message_objects:
             chat_message_list.append(chat_message)
 
-        # eventlog('length of chat_message_list: ' + str(len(chat_message_list)))
-
-        # for chat_message in chat_message_list:
-        #     eventlog('message: ' + str(chat_message))
-
-
-        # for chat_message in chat_message_list:
-        #     try:
-        #         eventlog('message: ' + str(chat_message.message))
-        #     except:
-        #         eventlog('message: ' + str(chat_message) + ' does not have message')
-        #         pass
-        # delete_old_chats = False
-        # if len(chat_message_list) > 5:
-        #     delete_old_chats = True
-        
-        # delete_old_chats = True
-        # if delete_old_chats == True:
-        #     delete_up_to = len(chat_message_list) - 5
-        #     # chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
-
         for i in range(0, len(chat_message_list)):
-            # eventlog('deleting ' + str(i) + ' of ' + str(len(chat_message_list)))
-            # eventlog('chat_message_id: ' + str(chat_message_list[i].id))
             WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
 
-
-
     def post(self, request, *args, **kwargs):
-
         eventlog('WebHarvestWebhookView POST request: ' + str(request))
         eventlog('WebHarvestWebhookView POST args: ' + str(*args))
         eventlog('WebHarvestWebhookView POST kwargs: ' + str(**kwargs))
@@ -574,13 +369,6 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
         if 'chat_message' in data:
             eventlog('chat_message: ' + str(data['chat_message']))
             channel_layer = get_channel_layer()
-            # async_to_sync(channel_layer.group_send)(
-            #     'thread_1',
-            #     {
-            #         'type': 'send_message_to_frontend',
-            #         'text': str(data['chat_message'])
-            #     }
-            # )
             my_text = {
                     'message': str(data['chat_message']),
                     'username': 'Alice',
@@ -590,7 +378,6 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
             
             thread_obj = WebharvestThread.objects.get_or_new(human, 'Alice')[0] 
             WebharvestChatMessage.objects.create(thread=thread_obj, user='Alice', message=str(data['chat_message']))
-            # asyncio.get_event_loop().run_until_complete(command_receiver())
 
             async_to_sync(channel_layer.group_send, force_new_loop=False)(
                 # andre@blackmesanetwork.com user_id
