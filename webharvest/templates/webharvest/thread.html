@@ -2,46 +2,37 @@
 
 {% block content %}
 
-<!-- user_ip = {{ user_ip }} <br> -->
-<!-- user_email = {{ user_email }} <br> -->
+<style>
+    h1 { 
+        color:Green; 
+    } 
+    div.scroll { 
+        margin:4px, 4px; 
+        padding:4px; 
+        background-color: black; 
+        /* width: 500px;  */
+        width: 100%;
+        height: 350px; 
+        /* height: auto;  */
+        /* min-height: 300px; */
+        overflow-x: hidden; 
+        overflow-x: auto; 
+        text-align:justify; 
+    } 
+</style>
+<div id='scroll' class="scroll">
+<ul class='text-left' id='chat-items' style="padding:4px; margin:4px, 4px; list-style-type:none;font-family:Palatino;list-style-position: inside;">
 
-<!-- <hr/> -->
-<!-- <h5 class='text-center' >Logged in as {{ request.user }}</h5> -->
+{% for chat in object.webharvestchatmessage_set.all %}
+<!-- chat.user = {{ chat.user }} -->
 
-<!-- <h5 class='text-center' >Chatting with {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h5class='text-center'> -->
-<!-- <hr/> -->
-<!-- <div class="overflow-auto"> -->
-    <style>
-        h1 { 
-            color:Green; 
-        } 
-        div.scroll { 
-            margin:4px, 4px; 
-            padding:4px; 
-            background-color: black; 
-            /* width: 500px;  */
-            width: 100%;
-            height: 350px; 
-            /* height: auto;  */
-            /* min-height: 300px; */
-            overflow-x: hidden; 
-            overflow-x: auto; 
-            text-align:justify; 
-        } 
-    </style>
-    <div id='scroll' class="scroll">
-    <ul class='text-left' id='chat-items' style="padding:4px; margin:4px, 4px; list-style-type:none;font-family:Palatino;list-style-position: inside;">
-
-    {% for chat in object.webharvestchatmessage_set.all %}
-    <!-- chat.user = {{ chat.user }} -->
-
-    {% if user_email == chat.user %}
-        <li><font color = '#FF8A14'>you: </font>{{ chat.message }}</li>
-    {% else %}
-        <li><font color = '#1589FF'>{{ chat.user }}: </font>{{ chat.message }}</li>
-    {% endif %}
-    {% endfor %}
-    </ul>
+{% if user_email == chat.user %}
+    <li><font color = '#FF8A14'>you: </font>{{ chat.message }}</li>
+{% else %}
+    <li><font color = '#1589FF'>{{ chat.user }}: </font>{{ chat.message }}</li>
+{% endif %}
+{% endfor %}
+</ul>
 </div>
 <!-- </div> -->
 <form id='form' method='POST'> {% csrf_token %}
@@ -49,7 +40,6 @@
 {{ form.as_p }}
 <input id="buttonId" value="Send" name="form" type='submit' class='btn-block btn-info'/>
 </form>
-
 
 <!-- <form id='form2' method='POST'> {% csrf_token %}
     <input type='hidden' id='myUsername2' value='{{ user.email }}' />
@@ -68,6 +58,35 @@ function hideButton()
     //document.getElementById("buttonId").style.visibility='hidden';
 }
 </script> -->
+
+
+<hr/>
+
+<table class="table table-hover table-dark">
+    <thead>
+      <tr>
+        <th scope="col"><h5>Command</h5></th>
+        <th scope="col"><h5>Description</h5></th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>search</td>
+        <td>find entities associated keys</td>
+      </tr>
+      <tr>
+        <td>stop</td>
+        <td>stop current operation</td>
+      </tr>
+  </table>
+
+
+<hr/>
+
+<h6 class='text-center' >IP: {{ the_user.geo_ip_ip }}</h5>
+<h6 class='text-center' >Country: {{ the_user.geo_ip_country }} City: {{ the_user.geo_ip_city }}</h5>
+<h6 class='text-center' >Longitude: {{ the_user.geo_ip_longitude }} Latitude: {{ the_user.geo_ip_latitude }}</h5>
 
 
 <script>
