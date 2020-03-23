@@ -241,7 +241,7 @@ class ThreadView(FormMixin, DetailView):
         context['form'] = self.get_form()
         context['user_ip'] = self.user_ip
         context['the_user'] = self.the_user
-        context['ascii_art'] = get_ascii_art()
+        context['ascii_art'] = get_ascii_art()  
 
         if self.bool_temp_user != True:
             job, new = WebharvestJob.objects.get_or_new(user=self.request.user)

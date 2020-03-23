@@ -306,7 +306,8 @@ pre_save.connect(pre_save_email_activation, sender=EmailActivation)
 
 def post_save_user_create_receiver(sender, instance, created, *args, **kwargs):
     if created:
-        if instance.bool_temporary_user != True:
+        if instance.last_name != 'temporaryuser':
+            eventlog('SENDING USER ACTIVATION!')
             obj = EmailActivation.objects.create(user=instance, email=instance.email)
             obj.send_activation()
 
