@@ -89,7 +89,6 @@ class ThreadView(FormMixin, DetailView):
         self.temp_user_full_name = ''
         self.temp_user_id = ''
 
-
     def ConvertUserIPToUserEmail(self):
         eventlog('CREATING TEMPORARY USER EMAIL!')
         d = dict(enumerate(string.ascii_lowercase, 1))
@@ -138,7 +137,6 @@ class ThreadView(FormMixin, DetailView):
         self.temp_user.user_id = self.temp_user_id
 
         self.UpdateUserGeoIPData(self.temp_user, self.user_ip)
-
 
     def UpdateUserGeoIPData(self, user, user_ip):
         try:
@@ -243,6 +241,7 @@ class ThreadView(FormMixin, DetailView):
         context['form'] = self.get_form()
         context['user_ip'] = self.user_ip
         context['the_user'] = self.the_user
+        context['ascii_art'] = get_ascii_art()
 
         if self.bool_temp_user != True:
             job, new = WebharvestJob.objects.get_or_new(user=self.request.user)
