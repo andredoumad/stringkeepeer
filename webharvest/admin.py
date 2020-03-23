@@ -6,6 +6,7 @@ class WebharvestChatMessage(admin.TabularInline):
 
 class WebharvestThreadAdmin(admin.ModelAdmin):
     inlines = [WebharvestChatMessage]
+    list_display = ('updated', 'human')
     # list_filter = ('human')
     class Meta:
         model = WebharvestThread
