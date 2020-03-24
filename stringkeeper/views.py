@@ -12,7 +12,7 @@ from random import randint
 from django.contrib.auth import authenticate, login, get_user_model
 from .forms import ContactForm
 from blog.models import BlogPost
-from webharvest.models import WebharvestChatMessage
+from webharvest.models import WebharvestChatMessage, WebharvestThread
 import requests
 
 #definition for wsgi 
@@ -101,50 +101,27 @@ def maintenance_page(request):
 
         if request.user.email == 'andre@stringkeeper.com':
 
-            # cycle through all the messages pertaining to a specific user
-            # chat_message_objects = WebharvestChatMessage.objects.filter(user='andre@stringkeeper.com')
-            # for chat_message in chat_message_objects:
-            #     eventlog('chat_message: ' + str(chat_message))
-
             User = get_user_model()
             for user in User.objects.all():
-                if user.last_name.find('temporary') != -1:
-                    geo_request_url = 'https://get.geojs.io/v1/ip/geo/' + str(user.temporary_user_ip) + '.json'
-                    geo_request = requests.get(geo_request_url)
-                    geo_data = geo_request.json()
-                    eventlog(geo_data)
-                    for key, value in geo_data.items():
-                        eventlog('item: ' + str(key) + ' : ' + str(value))
-                        if key == 'organization_name':
-                            user.geo_ip_organization_name = str(value)
-                        elif key == 'region':
-                            user.geo_ip_region = str(value)
-                        elif key == 'accuracy':
-                            user.geo_ip_accuracy = str(value)
-                        elif key == 'organization':
-                            user.geo_ip_organization = str(value)
-                        elif key == 'timezone':
-                            user.geo_ip_timezone = str(value)
-                        elif key == 'longitude':
-                            user.geo_ip_longitude = str(value)
-                        elif key == 'country_code3':
-                            user.geo_ip_country_code3 = str(value)
-                        elif key == 'area_code':
-                            user.geo_ip_area_code = str(value)
-                        elif key == 'ip':
-                            user.geo_ip_ip = str(value)
-                        elif key == 'city':
-                            user.geo_ip_city = str(value)
-                        elif key == 'country':
-                            user.geo_ip_country = str(value)
-                        elif key == 'continent_code':
-                            user.geo_ip_continent_code = str(value)
-                        elif key == 'country_code':
-                            user.geo_ip_country_code = str(value)
-                        elif key == 'latitude':
-                            user.geo_ip_latitude = str(value)
-                    user.save()
-                sleep(1)
+                obj, created    = WebharvestThread.objects.get_or_new(user, 'Alice')
+
+                # thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
+                eventlog('WebharvestThread obj: ' + str(obj))
+
+
+                chat_message_objects = WebharvestChatMessage.objects.filter(thread=obj)
+                
+                for chat_message in chat_message_objects:
+                    # chat_message_list.append(chat_message)
+                    eventlog('WebharvestThread chat_message: ' + str(chat_message))
+
+                # for i in range(0, len(chat_message_list)):
+                #     WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
+
+                obj.message_count = len(chat_message_objects)
+                obj.save()
+                
+                sleep(0.1)
 
             # geo_request_url = 'https://get.geojs.io/v1/ip/geo/' + str('68.231.221.181') + '.json'
             # geo_request = requests.get(geo_request_url)

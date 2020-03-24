@@ -73,6 +73,7 @@ class WebharvestThread(models.Model):
     robot       = models.ForeignKey(WebharvestRobot, null=True, on_delete=models.CASCADE, related_name='webharvest_chat_thread_robot')
     updated      = models.DateTimeField(auto_now=True)
     timestamp    = models.DateTimeField(auto_now_add=True)
+    message_count = models.IntegerField(blank=True, null=True)
     
     objects      = WebharvestThreadManager()
 

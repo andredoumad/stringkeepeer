@@ -225,6 +225,22 @@ class ThreadView(FormMixin, DetailView):
             eventlog('self.temp_user: ' + str(self.temp_user))
             obj, created    = WebharvestThread.objects.get_or_new(self.temp_user, other_username)
 
+        # thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
+        eventlog('WebharvestThread obj: ' + str(obj))
+
+
+        chat_message_objects = WebharvestChatMessage.objects.filter(thread=obj)
+        
+        for chat_message in chat_message_objects:
+            # chat_message_list.append(chat_message)
+            eventlog('WebharvestThread chat_message: ' + str(chat_message))
+
+        # for i in range(0, len(chat_message_list)):
+        #     WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
+
+        obj.message_count = len(chat_message_objects)
+        obj.save()
+        
         if obj == None:
             raise Http404
         return obj
@@ -243,11 +259,19 @@ class ThreadView(FormMixin, DetailView):
         context['the_user'] = self.the_user
         context['ascii_art'] = get_ascii_art()  
 
+
+        # WebharvestThread_qs = WebharvestThread.objects.by_user(self.the_user)
+        # WebharvestThread_qs
+        # eventlog('WebharvestThread_qs: ' + str(WebharvestThread_qs))
+        # context['message_count'] = 
+
         if self.bool_temp_user != True:
             job, new = WebharvestJob.objects.get_or_new(user=self.request.user)
         else:
             eventlog('temp_user: ' + str(self.temp_user))
             job, new = WebharvestJob.objects.get_or_new(user=self.temp_user)
+
+
 
         eventlog('job.somesetting: ' + str(job.somesetting))
         if 'form2' not in context:
