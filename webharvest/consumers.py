@@ -355,6 +355,7 @@ class WebharvestConsumer(AsyncConsumer):
                                 'text': json.dumps(my_text)
                             }
                         )
+
                         eventlog('self.channel_layer.group_send: success')
 
                     robot_name = loaded_dict_data.get('robot_name', None)
@@ -410,27 +411,16 @@ class WebharvestConsumer(AsyncConsumer):
     @database_sync_to_async
     def create_chat_message(self, msg, username):
         eventlog('create_chat_message msg: ' + str(msg) + ' create_chat_message username: ' + str(username))
-        # eventlog('DEBUG ++++++++ DEBUG DEBUG DEBUG ++++++++ DEBUG ')
-        # if username != 'Alice':
-            # thread_obj = self.get_thread(username, 'Alice')
         if username != 'Alice':
-            #  the user is anonymous (temp user)
             thread_obj = WebharvestThread.objects.get_or_new(username, 'Alice')[0]
             eventlog('thread_obj: ' + str(thread_obj))
-
         else:
-            #  the user is not anonymous
             thread_obj = self.thread_obj
         
+        thread_obj.message_count += 1
+        thread_obj.save()
         eventlog('DEBUG ++++++++ DEBUG DEBUG DEBUG ++++++++ DEBUG ')
-        # self.thread_obj = thread_obj
-        # eventlog('self.thread_obj: ' + str(self.thread_obj))
-        # thread_obj   = self.thread_obj
-
         return WebharvestChatMessage.objects.create(thread=thread_obj, user=username, message=msg)
-
-
-
 
 
     async def robot_command_clear(self, human, robot):
@@ -438,17 +428,11 @@ class WebharvestConsumer(AsyncConsumer):
         eventlog('human: ' + str(human) + ' robot: ' + str(robot))
         thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
 
-        # self.thread_obj = thread_obj
         eventlog('self.thread_obj: ' + str(thread_obj))
-        # delete block start
         chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
         eventlog('chat_message_objects: ' + str(chat_message_objects))
 
         chat_message_list = []
-
-        # for chat_message in chat_message_objects:
-        # for chat_message in reversed(chat_message_objects):
-        #     chat_message_list.append(chat_message)
 
         for chat_message in chat_message_objects:
             chat_message_list.append(chat_message)
@@ -459,23 +443,8 @@ class WebharvestConsumer(AsyncConsumer):
         for chat_message in chat_message_list:
             eventlog('message: ' + str(chat_message))
 
-
-        # for chat_message in chat_message_list:
-        #     try:
-        #         eventlog('message: ' + str(chat_message.message))
-        #     except:
-        #         eventlog('message: ' + str(chat_message) + ' does not have message')
-        #         pass
-        # delete_old_chats = False
-        # if len(chat_message_list) > 5:
-        #     delete_old_chats = True
-        
-        # delete_old_chats = True
-        # if delete_old_chats == True:
-        #     delete_up_to = len(chat_message_list) - 5
-        #     # chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
-
         for i in range(0, len(chat_message_list)):
             eventlog('deleting ' + str(i) + ' of ' + str(len(chat_message_list)))
             eventlog('chat_message_id: ' + str(chat_message_list[i].id))
             WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
+
