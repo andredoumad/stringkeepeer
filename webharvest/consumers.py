@@ -423,9 +423,6 @@ class WebharvestConsumer(AsyncConsumer):
         return WebharvestChatMessage.objects.create(thread=thread_obj, user=username, message=msg)
 
 
-
-
-
     async def robot_command_clear(self, human, robot):
         eventlog('delete_extra_messages')
         eventlog('human: ' + str(human) + ' robot: ' + str(robot))
