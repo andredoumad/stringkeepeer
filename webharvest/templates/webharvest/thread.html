@@ -84,6 +84,110 @@ function hideButton()
 
 <hr/>
 
+
+
+<table class="table table-hover table-dark">
+    <thead>
+      <tr>
+        <th scope="col"><h4>Recognizable Categories</h4></th>
+        <th scope="col"><h4>Description</h4></th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>EMAIL</td>
+        <td>An email address</td>
+      </tr>
+      <tr>
+        <td>PHONE</td>
+        <td>A telephone number</td>
+      </tr>
+      <tr>
+        <td>TITLE</td>
+        <td>The title of a persons position</td>
+      </tr>
+      <tr>
+        <td>CONTACT</td>
+        <td>A description of a person, including their contact info and description.</td>
+      </tr>
+      <tr>
+        <td>PERSON</td>
+        <td>People, including fictional.</td>
+      </tr>
+      <tr>
+        <td>NORP</td>
+        <td>Nationalities or religious or political groups.</td>
+      </tr>
+      <tr>
+        <td>FAC</td>
+        <td>Buildings, airports, highways, bridges, etc.</td>
+      </tr>
+      <tr>
+        <td>ORG</td>
+        <td>Companies, agencies, institutions, etc.</td>
+      </tr>
+      <tr>
+        <td>GPE</td>
+        <td>Countries, cities, states.</td>
+      </tr>
+      <tr>
+        <td>LOC</td>
+        <td>Non-GPE locations, mountain ranges, bodies of water.</td>
+      </tr>
+      <tr>
+        <td>PRODUCT</td>
+        <td>Objects, vehicles, foods, etc. (Not services.)</td>
+      </tr>
+      <tr>
+        <td>EVENT</td>
+        <td>Named hurricanes, battles, wars, sports events, etc.</td>
+      </tr>
+      <tr>
+        <td>WORK_OF_ART</td>
+        <td>Titles of books, songs, etc.</td>
+      </tr>
+      <tr>
+        <td>LAW</td>
+        <td>Named documents made into laws.</td>
+      </tr>
+      <tr>
+        <td>LANGUAGE</td>
+        <td>Any named language.</td>
+      </tr>
+      <tr>
+        <td>DATE</td>
+        <td>Absolute or relative dates or periods.</td>
+      </tr>
+      <tr>
+        <td>TIME</td>
+        <td>Times smaller than a day.</td>
+      </tr>
+      <tr>
+        <td>PERCENT</td>
+        <td>Percentage, including ”%“.</td>
+      </tr>
+      <tr>
+        <td>MONEY</td>
+        <td>Monetary values, including unit.</td>
+      </tr>
+      <tr>
+        <td>QUANTITY</td>
+        <td>Measurements, as of weight or distance.</td>
+      </tr>
+      <tr>
+        <td>ORDINAL</td>
+        <td>“first”, “second”, etc.</td>
+      </tr>
+      <tr>
+        <td>CARDINAL</td>
+        <td>Numerals that do not fall under another type.</td>
+      </tr>
+  </table>
+
+
+  <hr/>
+
 <h6 class='text-center' >IP: {{ the_user.geo_ip_ip }}</h5>
 <h6 class='text-center' >Country: {{ the_user.geo_ip_country }} City: {{ the_user.geo_ip_city }}</h5>
 <h6 class='text-center' >Longitude: {{ the_user.geo_ip_longitude }} Latitude: {{ the_user.geo_ip_latitude }}</h5>
