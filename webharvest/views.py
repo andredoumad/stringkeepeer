@@ -394,8 +394,8 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
             channel_layer = get_channel_layer()
             my_text = {
                     'message': str(data['chat_message']),
-                    'username': 'Alice',
-                    'From': 'Alice',
+                    'username': 'Alice', # using the username alice
+                    'From': 'Alice', # from the robot alice
                     'command': str(data['command'])
             }
             
