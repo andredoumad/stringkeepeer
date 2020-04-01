@@ -119,41 +119,39 @@ class WebharvestConsumer(AsyncConsumer):
         )
 
     async def delete_extra_messages(self, human, robot):
-        pass
+        eventlog('delete_extra_messages')
+        eventlog('human: ' + str(human) + ' robot: ' + str(robot))
+        thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
+        eventlog('self.thread_obj: ' + str(thread_obj))
+        chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
+        eventlog('chat_message_objects: ' + str(chat_message_objects))
+        chat_message_list = []
 
-        # eventlog('delete_extra_messages')
-        # eventlog('human: ' + str(human) + ' robot: ' + str(robot))
-        # thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
-        # eventlog('self.thread_obj: ' + str(thread_obj))
-        # chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
-        # eventlog('chat_message_objects: ' + str(chat_message_objects))
-        # chat_message_list = []
+        for chat_message in chat_message_objects:
+            chat_message_list.append(chat_message)
 
-        # for chat_message in chat_message_objects:
-        #     chat_message_list.append(chat_message)
+        eventlog('length of chat_message_list: ' + str(len(chat_message_list)))
 
-        # eventlog('length of chat_message_list: ' + str(len(chat_message_list)))
+        for chat_message in chat_message_list:
+            eventlog('message: ' + str(chat_message))
 
-        # for chat_message in chat_message_list:
-        #     eventlog('message: ' + str(chat_message))
+        for chat_message in chat_message_list:
+            try:
+                eventlog('message: ' + str(chat_message.message))
+            except:
+                eventlog('message: ' + str(chat_message) + ' does not have message')
+                pass
+        delete_old_chats = False
+        if len(chat_message_list) > 5:
+            delete_old_chats = True
 
-        # for chat_message in chat_message_list:
-        #     try:
-        #         eventlog('message: ' + str(chat_message.message))
-        #     except:
-        #         eventlog('message: ' + str(chat_message) + ' does not have message')
-        #         pass
-        # delete_old_chats = False
-        # if len(chat_message_list) > 5:
-        #     delete_old_chats = True
+        if delete_old_chats == True:
+            delete_up_to = len(chat_message_list) - 5
 
-        # if delete_old_chats == True:
-        #     delete_up_to = len(chat_message_list) - 5
-
-        #     for i in range(0, delete_up_to):
-        #         eventlog('deleting ' + str(i) + ' of ' + str(delete_up_to))
-        #         eventlog('chat_message_id: ' + str(chat_message_list[i].id))
-        #         WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
+            for i in range(0, delete_up_to):
+                eventlog('deleting ' + str(i) + ' of ' + str(delete_up_to))
+                eventlog('chat_message_id: ' + str(chat_message_list[i].id))
+                WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
 
     async def websocket_receive(self, event):
         eventlog('ChatConsumer receive, event: ' + str(event))

@@ -360,17 +360,16 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
         return JsonResponse({'response_message': 'henlo'})
  
     def robot_command_clear(self, human, robot):
-        pass
-        # eventlog('delete_extra_messages')
-        # eventlog('human: ' + str(human) + ' robot: ' + str(robot))
-        # thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
-        # chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
-        # chat_message_list = []
-        # for chat_message in chat_message_objects:
-        #     chat_message_list.append(chat_message)
+        eventlog('delete_extra_messages')
+        eventlog('human: ' + str(human) + ' robot: ' + str(robot))
+        thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
+        chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
+        chat_message_list = []
+        for chat_message in chat_message_objects:
+            chat_message_list.append(chat_message)
 
-        # for i in range(0, len(chat_message_list)):
-        #     WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
+        for i in range(0, len(chat_message_list)):
+            WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
 
     def post(self, request, *args, **kwargs):
         eventlog('WebHarvestWebhookView POST request: ' + str(request))
