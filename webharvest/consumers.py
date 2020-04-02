@@ -74,7 +74,8 @@ class WebharvestConsumer(AsyncConsumer):
             })
             deactivate_webharvest_chat_countdown(me.email)
             my_text = {
-                    'message': 'connected to webharvest',
+                    # 'message': 'connected to webharvest',
+                    'message': '',
                     'human': str(me.email),
                     'robot_command': 'update_user_status'
             }
@@ -106,7 +107,8 @@ class WebharvestConsumer(AsyncConsumer):
         })
         deactivate_webharvest_chat_countdown(me.email)
         my_text = {
-                'message': 'connected to webharvest',
+                # 'message': 'connected to webharvest',
+                'message': '',
                 'human': str(me.email),
                 'robot_command': 'update_user_status'
         }
@@ -410,7 +412,7 @@ class WebharvestConsumer(AsyncConsumer):
 
     @database_sync_to_async
     def create_chat_message(self, msg, username):
-        eventlog('create_chat_message msg: ' + str(msg) + ' create_chat_message username: ' + str(username))
+        # eventlog('create_chat_message msg: ' + str(msg) + ' create_chat_message username: ' + str(username))
         if username != 'Alice':
             thread_obj = WebharvestThread.objects.get_or_new(username, 'Alice')[0]
             eventlog('thread_obj: ' + str(thread_obj))
@@ -419,12 +421,12 @@ class WebharvestConsumer(AsyncConsumer):
         
         thread_obj.message_count += 1
         thread_obj.save()
-        eventlog('DEBUG ++++++++ DEBUG DEBUG DEBUG ++++++++ DEBUG ')
+        # eventlog('DEBUG ++++++++ DEBUG DEBUG DEBUG ++++++++ DEBUG ')
         return WebharvestChatMessage.objects.create(thread=thread_obj, user=username, message=msg)
 
 
     async def robot_command_clear(self, human, robot):
-        eventlog('delete_extra_messages')
+        eventlog('robot_command_clear')
         eventlog('human: ' + str(human) + ' robot: ' + str(robot))
         thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
 
