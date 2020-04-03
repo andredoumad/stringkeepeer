@@ -11,7 +11,12 @@
 {% load static %}
 <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"></nav> -->
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark mb-3">
+
   <div class="container text-center">
+    <a class="navbar-brand" href="{{ home_url }}">
+      <img src="{% static 'image\stringkeeper_logo_square_small.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+      Stringkeeper
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -19,13 +24,12 @@
       <!-- <div class="navbar-collapse" id="navbarSupportedContent"> -->
 
         <ul class="navbar-nav mr-auto">
-          <a class="navbar-brand" href="{{ home_url }}">
-            
+          <!-- <a class="navbar-brand" href="{{ home_url }}">
             <img src="{% static 'image\stringkeeper_logo_square_small.png' %}" width="30" height="30" alt="" >
-          </a>
-          <li class="nav-item {% if request.path == home_url  %}active{% endif %}">
+          </a> -->
+          <!-- <li class="nav-item {% if request.path == home_url  %}active{% endif %}">
               <a class="nav-link" href="{{ home_url }}">Stringkeeper</a>
-            </li>
+            </li> -->
 
           <li class="nav-item {% if request.path == subscription_url  %}active{% endif %}">
             <a class="nav-link" href="{{ subscription_url }}">Subscriptions</a>
