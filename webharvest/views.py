@@ -371,6 +371,11 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
         for i in range(0, len(chat_message_list)):
             WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
 
+
+        chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
+        thread_obj.message_count = len(chat_message_objects)
+        thread_obj.save()
+
     def post(self, request, *args, **kwargs):
         eventlog('WebHarvestWebhookView POST request: ' + str(request))
         eventlog('WebHarvestWebhookView POST args: ' + str(*args))
