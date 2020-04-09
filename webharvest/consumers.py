@@ -429,7 +429,7 @@ class WebharvestConsumer(AsyncConsumer):
         # eventlog('DEBUG ++++++++ DEBUG DEBUG DEBUG ++++++++ DEBUG ')
         return WebharvestChatMessage.objects.create(thread=thread_obj, user=username, message=msg)
 
-
+    #how can i consolidate the non async version of this method from views.py into one method?
     async def robot_command_clear(self, human, robot):
         eventlog('robot_command_clear')
         eventlog('human: ' + str(human) + ' robot: ' + str(robot))
