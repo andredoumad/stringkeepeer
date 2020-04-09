@@ -63,30 +63,77 @@
 <!-- <button id="function">function</button>  -->
 
 
+
 <hr/>
-  <div id="spreadsheet"></div>
+  <div id="spreadsheet" style='font-weight: bold; color:rgb(0, 0, 0); background-color: rgb(61, 70, 78);'></div>
 <hr/>
 
 <hr/>
+
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jexcel/2.1.0/css/jquery.jexcel.bootstrap.min.css" type="text/css" /> -->
+
 <script>
-  var data1 = [['-','-','-','-','-','-','-']]
+  var data1 = [
+    ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL']
+    // ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL'],
+    // ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL'],
+    // ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL'],
+    ]
   var table1 = jexcel(document.getElementById('spreadsheet'), {
       data:data1,
+      tableOverflow:true,
+      lazyLoading:true,
+      loadingSpin:true,
+      // readOnly:true,
+      
+      // style:'font-weight:bold; color:white; background-color: rgb(61, 70, 78);',
       // onchange:update,
       columns: [
           // { type: 'numeric', title:'index', width:120 },
-          { type: 'text', title:'url', width:120 },
-          { type: 'text', title:'sentence', width:120 },
-          { type: 'text', title:'noun chunk', width:120 },
-          { type: 'text', title:'lemma', width:120 },
-          { type: 'text', title:'pos', width:120 },
-          { type: 'text', title:'text', width:120 },
-          { type: 'text', title:'label', width:120 }
-      ]
+          { type: 'text', title:'url', width:100},
+          { type: 'text', title:'sentence', width:140},
+          { type: 'text', title:'noun chunk', width:220},
+          { type: 'text', title:'lemma', width:140},
+          { type: 'text', title:'pos', width:140},
+          { type: 'text', title:'text', width:220},
+          { type: 'text', title:'label', width:100}
+      ],
+    //   style: {
+    //     // A1:'background-color: orange;',
+    //     // B1:'background-color: orange;',
+    // },
   });
+  // table1.jexcel('setSyle', [ { A1:'background-color:red' }, { B1: 'color:red'} ]);
+  setup_table();
+
+  function setup_table() {
+    console.log('SETUP TABLE INITIALIZED')
+    // table1.insertRow(['testing']) // works
+    // table1('insertRow', 1)
+    // table1.insertRow(30) // works
+    // table1.hideIndex() // works
+    // table1.setStyle({A1:'background-color: orange'}) //works
+    // table1.setStyle({B1:'background-color: orange'}) //
+    // table1.setStyle({cell:'background-color: orange'}) //
+    // table1.setStyle({table:'background-color: orange'}) //
+    // table1.setStyle({ A1:'font-weight: bold; color:red;', B1:'background-color: yellow;', C1:'text-decoration: underline;', A1:'text-align:left;' }) //works
+    table1.setStyle({ 
+      A1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
+      B1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
+      C1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
+      D1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
+      E1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
+      F1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
+      G1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
+
+      }) //
+
+    // table1.setStyle({
+    //   table1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);'
+    // }) //
+  }
 
 </script>
-
 
 
 <div id='scroll' class="scroll">
@@ -126,6 +173,7 @@
         // table1.insertRow('{{ record.index }}')
         // table1.insertRow()
         table1.insertRow(['{{ record.url }}', '{{ record.sentence }}', '{{ record.noun_chunk }}', '{{ record.lemma }}', '{{ record.pos }}', '{{ record.text }}', '{{ record.label }}' ])
+
         // document.write(person.name);
       }
     </script>
