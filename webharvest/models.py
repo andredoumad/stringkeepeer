@@ -68,13 +68,17 @@ class WebharvestRobot(models.Model):
         return self.robot_name
 
 
+
+
 class WebharvestThread(models.Model):
+    # import WebharvestSpreadSheet
     human        = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE, related_name='webharvest_chat_thread_human')
     robot       = models.ForeignKey(WebharvestRobot, null=True, on_delete=models.CASCADE, related_name='webharvest_chat_thread_robot')
+    spreadsheet = models.ForeignKey('WebharvestSpreadSheet', null=True, on_delete=models.CASCADE, related_name='webharvest_chat_thread_spreadsheet')
     updated      = models.DateTimeField(auto_now=True)
     timestamp    = models.DateTimeField(auto_now_add=True)
     message_count = models.IntegerField(blank=True, null=True)
-    
+
     objects      = WebharvestThreadManager()
 
     def __str__(self):
@@ -100,12 +104,37 @@ class WebharvestThread(models.Model):
 
 class WebharvestChatMessage(models.Model):
     thread      = models.ForeignKey(WebharvestThread, null=True, blank=True, on_delete=models.SET_NULL)
-    # user        = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='sender', on_delete=models.CASCADE)
     user        = models.CharField(max_length=255, verbose_name='sender', blank=True, null=True)
     message     = models.TextField()
     timestamp   = models.DateTimeField(auto_now_add=True)
 
+class WebharvestSpreadSheet(models.Model):
+    thread      = models.ForeignKey(WebharvestThread, null=True, blank=True, on_delete=models.SET_NULL)
+    record_count = models.IntegerField(blank=True, null=True)
+    first_row     = models.TextField(blank=True, null=True)
+    filepath        = models.CharField(max_length=255, blank=True, null=True)
+    timestamp   = models.DateTimeField(auto_now_add=True)
 
+
+    def __str__(self):
+        # value = ''
+        # if thread != None:
+        #     value = self.human
+        # else:
+        #     value = self.updated
+        return self.thread.human.email
+
+
+class WebharvestSpreadSheetRecord(models.Model):
+    spreadsheet = models.ForeignKey(WebharvestSpreadSheet, null=True, blank=True, on_delete=models.SET_NULL)
+    index       = models.IntegerField(blank=True, null=True)
+    url    = models.TextField(blank=True, null=True)
+    sentence    = models.TextField(blank=True, null=True)
+    noun_chunk    = models.TextField(blank=True, null=True)
+    lemma    = models.TextField(blank=True, null=True)
+    pos    = models.CharField(max_length=32, blank=True, null=True)
+    text    = models.TextField(blank=True, null=True)
+    label    = models.CharField(max_length=64, blank=True, null=True)
 
 
 class WebharvestJobManager(models.Manager):
