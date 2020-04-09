@@ -1,6 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- <head> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
+
+<script src="https://bossanova.uk/jexcel/v3/jexcel.js"></script>
+<script src="https://bossanova.uk/jsuites/v2/jsuites.js"></script>
+<link rel="stylesheet" href="https://bossanova.uk/jsuites/v2/jsuites.css" type="text/css" />
+<link rel="stylesheet" href="https://bossanova.uk/jexcel/v3/jexcel.css" type="text/css" />
+
+
+<input type='hidden' id='records_list' value='{{ records_list }}' />
+<!-- <input type='hidden' id='records_test' value='{{ records_test }}' /> -->
+<!-- records test: {{ records_list }} -->
+<!-- <body onload="hideButton()"></body> -->
+<!-- </head> -->
+
+<script>
+      var records_list = $("#records_list").val();
+</script>
 
 <style>
     h1 {
@@ -21,25 +39,100 @@
     }
 </style>
 <div id='scroll' class="scroll">
-<ul class='text-left' id='chat-items' style="padding:4px; margin:4px, 4px; list-style-type:none;font-family:Palatino;list-style-position: inside;">
-
-{% for chat in object.webharvestchatmessage_set.all %}
-<!-- chat.user = {{ chat.user }} -->
-
-{% if user_email == chat.user %}
-    <li><font color = '#FF8A14'>you: </font>{{ chat.message }}</li>
-{% else %}
-    <li><font color = '#1589FF'>{{ chat.user }}: </font>{{ chat.message }}</li>
-{% endif %}
-{% endfor %}
-</ul>
+  <ul class='text-left' id='chat-items' style="padding:4px; margin:4px, 4px; list-style-type:none;font-family:Palatino;list-style-position: inside;">
+    {% for chat in object.webharvestchatmessage_set.all %}
+    {% if user_email == chat.user %}
+        <li><font color = '#FF8A14'>you: </font>{{ chat.message }}</li>
+    {% else %}
+        <li><font color = '#1589FF'>{{ chat.user }}: </font>{{ chat.message }}</li>
+    {% endif %}
+    {% endfor %}
+  </ul>
 </div>
 <!-- </div> -->
 <form id='form' method='POST'> {% csrf_token %}
     <input type='hidden' id='myUsername' value='{{ user_email }}' />
+    <!-- <input type='hidden' id='records_list' value='{{ records_list }}' /> -->
+    <!-- <input type='hidden' id='records_data' value='{{ records_data }}' /> -->
 {{ form.as_p }}
 <input id="buttonId" value="Send" name="form" type='submit' class='btn-block btn-info'/>
 </form>
+<hr/>
+
+
+<!-- <button id="function">function</button>  -->
+
+
+<hr/>
+  <div id="spreadsheet"></div>
+<hr/>
+
+<hr/>
+<script>
+  var data1 = [['-','-','-','-','-','-','-']]
+  var table1 = jexcel(document.getElementById('spreadsheet'), {
+      data:data1,
+      // onchange:update,
+      columns: [
+          // { type: 'numeric', title:'index', width:120 },
+          { type: 'text', title:'url', width:120 },
+          { type: 'text', title:'sentence', width:120 },
+          { type: 'text', title:'noun chunk', width:120 },
+          { type: 'text', title:'lemma', width:120 },
+          { type: 'text', title:'pos', width:120 },
+          { type: 'text', title:'text', width:120 },
+          { type: 'text', title:'label', width:120 }
+      ]
+  });
+
+</script>
+
+
+
+<div id='scroll' class="scroll">
+  <ul class='text-left' id='spreadsheetHolder' style="padding:4px; margin:4px, 4px; list-style-type:none;font-family:Palatino;list-style-position: inside;">
+    {% for record in records_list %}
+    <!-- {% if user_email == chat.user %}
+        <li><font color = '#FF8A14'>you: </font>{{ chat.message }}</li>
+    {% else %}
+        <li><font color = '#1589FF'>{{ chat.user }}: </font>{{ chat.message }}</li>
+    {% endif %} -->
+    <li>
+      <font color = '#FF8A14'>{{ record.index }}</font>
+      <input type='hidden' id='record_index' value='{{ record.index }}' />
+      <font color = '#FFFFFF'>,</font>
+      <font color = '#00cc99'>{{ record.url }}</font>
+      <font color = '#FFFFFF'>,</font>
+      <font color = '#990066'>{{ record.sentence }}</font>
+      <font color = '#FFFFFF'>,</font>
+      <font color = '#66ff33'>{{ record.noun_chunk }}</font>
+      <font color = '#FFFFFF'>,</font>
+      <font color = '#0033cc'>{{ record.lemma }}</font>
+      <font color = '#FFFFFF'>,</font>
+      <font color = '#ffff00'>{{ record.pos }}</font>
+      <font color = '#FFFFFF'>,</font>
+      <font color = '#33cc00'>{{ record.text }}</font>
+      <font color = '#FFFFFF'>,</font>
+      <font color = '#ff00cc'>{{ record.label }}</font>
+    </li>
+    <!-- tryMe(record.index) -->
+    <!-- function() -->
+    <script>
+      var record_index = $("#record_index").val()
+      // var records_index = 'testing...'
+      tryMe(record_index);
+      function tryMe(record_index) {
+        console.log('TRYME: ' + '{{ record.index }}')
+        // table1.insertRow('{{ record.index }}')
+        // table1.insertRow()
+        table1.insertRow(['{{ record.url }}', '{{ record.sentence }}', '{{ record.noun_chunk }}', '{{ record.lemma }}', '{{ record.pos }}', '{{ record.text }}', '{{ record.label }}' ])
+        // document.write(person.name);
+      }
+    </script>
+    {% endfor %}
+  </ul>
+</div>
+
 
 <!-- <form id='form2' method='POST'> {% csrf_token %}
     <input type='hidden' id='myUsername2' value='{{ user.email }}' />
@@ -47,17 +140,15 @@
 <input id="buttonId2" value="Perform Data Mining" name="form2" type='submit' class='btn btn-info btn-block'/>
 </form> -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
 
-<body onload="hideButton()">
-<!-- <script>
+<script>
 function hideButton()
 {
     document.getElementById("buttonId").style.display='none';
     //or you can try
     //document.getElementById("buttonId").style.visibility='hidden';
 }
-</script> -->
+</script>
 
 
 <hr/>
@@ -80,8 +171,6 @@ function hideButton()
         <td>stop current operation</td>
       </tr>
   </table>
-
-
 <hr/>
 
 
@@ -183,6 +272,18 @@ function hideButton()
         <td>CARDINAL</td>
         <td>Numerals that do not fall under another type.</td>
       </tr>
+      <tr>
+        <td>Lemma</td>
+        <td>The base form of the word.</td>
+      </tr>
+      <tr>
+        <td>POS</td>
+        <td>The simple part-of-speech tag.</td>
+      </tr>
+      <tr>
+        <td>Noun Chunk</td>
+        <td>The original text of the word connecting the noun chunk to the rest of the parse.</td>
+      </tr>
   </table>
 
 
@@ -193,126 +294,176 @@ function hideButton()
 <h6 class='text-center' >Longitude: {{ the_user.geo_ip_longitude }} Latitude: {{ the_user.geo_ip_latitude }}</h5>
 
 
-<script>
-// websocket scripts
-console.log('thread websocket connecting...')
-var wsStart = 'ws://' 
-var loc = window.location
-var formData = $("#form")
-var formData2 = $("#form2")
-var msgInput = $("#id_message")
-var chatHolder = $("#chat-items")
-var me = $("#myUsername").val()
 
-if (loc.protocol == 'https:'){
-    wsStart = 'wss://'
-}
-var endpoint = wsStart + loc.host + loc.pathname 
-console.log('endpoint: ' + endpoint)
-var socket = new ReconnectingWebSocket(endpoint)
 
-socket.onmessage = function(e){
-    console.log("onmessage: ", e)
-    var chatDataMsg = JSON.parse(e.data)
-    console.log('chatDataMsg: ' + e.data)
-    if (me == chatDataMsg.username){
-        chatHolder.append("<li><font color = '#FF8A14'>you: </font>" + chatDataMsg.message + "</li>")
-    }else{
-        chatHolder.append("<li><font color = '#1589FF'>" + chatDataMsg.username + ": </font>" + chatDataMsg.message + "</li>")
+  <script type="text/javascript">
+    // websocket scripts
+    console.log('thread websocket connecting...')
+    var wsStart = 'ws://' 
+    var loc = window.location
+    var formData = $("#form")
+    var formData2 = $("#form2")
+    var msgInput = $("#id_message")
+    var chatHolder = $("#chat-items")
+    var csv_box = $("#spreadsheetHolder")
+    var me = $("#myUsername").val()
+    // var records_list = $("#records_list").val();
+    // var records_test = $("#records_test").val()
+
+
+    for (i = 0; i < records_list.length; i++) {      
+      console.log('records_list[' + i + ']: ' + records_list[i])
     }
-    // chatHolder.append("<li><font color = 'orange'>you: </font>" + chatDataMsg.message + "</li>")
-    var objDiv = document.getElementById("scroll");
-    objDiv.scrollTop = objDiv.scrollHeight;
+
+    if (loc.protocol == 'https:'){
+        wsStart = 'wss://'
+    }
+    var endpoint = wsStart + loc.host + loc.pathname 
+    console.log('endpoint: ' + endpoint)
+    var socket = new ReconnectingWebSocket(endpoint)
+
+
     
-}
-
-socket.onopen = function(e){
-    console.log("onopen: ", e)
-    var initialData = {
-            'message': '',
-            'From': me,
-            'datatest': 'thosedata'
-        }
-    socket.send(JSON.stringify(initialData))
-
-    formData.submit(function(event){
-        event.preventDefault()
-        console.log('FORM DATA HAS TRIGGERED')
-        var msgText = msgInput.val()
-        console.log('msgText: ' + msgText)
-        console.log('me: ' + me)
-        // chatHolder.append("<li>" + msgText + ' via ' + me + '</li>')
-        var finalData = {
-            'message': msgText,
-            'From': me
-        }
-        socket.send(JSON.stringify(finalData))
-        // form data clear element 0
-        // this way lets you clear other fields if you'd like.
-        formData[0].reset()
-        // u can alternatively clear it like this
-        // msgInput.val('')
-    })
-    formData2.submit(function(event){
+    socket.onmessage = function(e){
+        console.log("onmessage: ", e)
+        var chatDataMsg = JSON.parse(e.data)
+        console.log('chatDataMsg: ' + e.data)
         
-        console.log('form2: ' + form2)
-        for(item in form2){
-            console.log('item: ' + item)
+        if (me == chatDataMsg.username && chatDataMsg.command == 'print' || me == chatDataMsg.username && chatDataMsg.command == null ){
+            chatHolder.append("<li><font color = '#FF8A14'>you: </font>" + chatDataMsg.message + "</li>")
         }
-        event.preventDefault()
-        console.log('FORM 2 DATA HAS TRIGGERED')
-        console.log(event)
-        console.log(form2.somesetting)
-        console.log(form2.somesetting.value)
-
-        var $formDater = $(this).serialize()
-        var $thisURL = window.location.href // or set your own url
-        $.ajax({
-            method: "POST",
-            url: $thisURL,
-            data: $formDater,
-            success: handleFormSuccess,
-            error: handleFormError,
+        else if (chatDataMsg.command == 'print'){
+            chatHolder.append("<li><font color = '#1589FF'>" + chatDataMsg.username + ": </font>" + chatDataMsg.message + "</li>")
+        }
+        else if (chatDataMsg.command == 'a_csv'){
+          console.log('APPEND TO CSV TRIGGERED!')
+          // csv_box.append("<li><font color = '#FFFFFF'>" + chatDataMsg.csv_index + "," + chatDataMsg.csv_url + "," + chatDataMsg.csv_sentence + "," + chatDataMsg.csv_noun_chunk + "," + chatDataMsg.csv_lemma + "," + chatDataMsg.csv_pos + "," + chatDataMsg.csv_text + "," + chatDataMsg.csv_label + " </font></li>")
+          csv_box.append(
+            "<li> <font color = '#FF8A14'>" + chatDataMsg.csv_index + "</font>" +
+            "<font color = '#FFFFFF'>,</font>" +
+            "<font color = '#00cc99'>" + chatDataMsg.csv_url + "</font>" +
+            "<font color = '#FFFFFF'>,</font>" +
+            "<font color = '#990066'>" + chatDataMsg.csv_sentence + "</font>" +
+            "<font color = '#FFFFFF'>,</font>" +
+            "<font color = '#66ff33'>" + chatDataMsg.csv_noun_chunk + "</font>" +
+            "<font color = '#FFFFFF'>,</font>" +
+            "<font color = '#0033cc'>" + chatDataMsg.csv_lemma + "</font>" +
+            "<font color = '#FFFFFF'>,</font>" +
+            "<font color = '#ffff00'>" + chatDataMsg.csv_pos + "</font>" +
+            "<font color = '#FFFFFF'>,</font>" +
+            "<font color = '#33cc00'>" + chatDataMsg.csv_text + "</font>" +
+            "<font color = '#FFFFFF'>,</font>" +
+            "<font color = '#ff00cc'>" + chatDataMsg.csv_label + "</font> </li>"
+            )
+          table1.insertRow([
+          chatDataMsg.csv_url,
+          chatDataMsg.csv_sentence,
+          chatDataMsg.csv_noun_chunk,
+          chatDataMsg.csv_lemma,
+          chatDataMsg.csv_pos,
+          chatDataMsg.csv_text,
+          chatDataMsg.csv_label
+          ])
+          // table1.insertRow([chatDataMsg.csv_index,chatDataMsg.csv_url,chatDataMsg.csv_sentence,chatDataMsg.csv_noun_chunk,chatDataMsg.csv_lemma,chatDataMsg.csv_pos,chatDataMsg.csv_text,chatDataMsg.csv_label])
+          // table1.insertRow([chatDataMsg.csv_index,chatDataMsg.csv_url,chatDataMsg.csv_sentence,chatDataMsg.csv_noun_chunk,chatDataMsg.csv_lemma,chatDataMsg.csv_pos,chatDataMsg.csv_text,chatDataMsg.csv_label ], 1);
+          // console.log('data: ' + data)
+        }
+    
+        // chatHolder.append("<li><font color = 'orange'>you: </font>" + chatDataMsg.message + "</li>")
+        var objDiv = document.getElementById("scroll");
+        objDiv.scrollTop = objDiv.scrollHeight;
+        
+    }
+    
+    socket.onopen = function(e){
+        console.log("onopen: ", e)
+        var initialData = {
+                'message': '',
+                'From': me,
+                'datatest': 'thosedata'
+            }
+        socket.send(JSON.stringify(initialData))
+    
+        formData.submit(function(event){
+            event.preventDefault()
+            console.log('FORM DATA HAS TRIGGERED')
+            var msgText = msgInput.val()
+            console.log('msgText: ' + msgText)
+            console.log('me: ' + me)
+            // chatHolder.append("<li>" + msgText + ' via ' + me + '</li>')
+            var finalData = {
+                'message': msgText,
+                'From': me
+            }
+            socket.send(JSON.stringify(finalData))
+            // form data clear element 0
+            // this way lets you clear other fields if you'd like.
+            formData[0].reset()
+            // u can alternatively clear it like this
+            // msgInput.val('')
         })
-
-
-        function handleFormSuccess(data, textStatus, jqXHR){
-            console.log(data)
-            console.log(textStatus)
-            console.log(jqXHR)
-            // formData2.reset(); // reset form data
-        }
-
-        function handleFormError(jqXHR, textStatus, errorThrown){
-            console.log(jqXHR)
-            console.log(textStatus)
-            console.log(errorThrown)
-        }
-        // console.log(form2.instance.somesetting)
-        // console.log(form2.instance.somesetting.val())
-
-        // var msgText = msgInput.val()
-        // chatHolder.append("<li>" + msgText + ' via ' + me + '</li>')
-
-        // var finalData = {
-        //     'user_email': msgText
-        // }
-        // socket.send(JSON.stringify(finalData))
-        // form data clear element 0
-        // this way lets you clear other fields if you'd like.
-        // formData[0].reset()
-        // u can alternatively clear it like this
-        // msgInput.val('')
-    })
-}
-socket.onerror = function(e){
-    console.log("onerror: ", e)
-}
-socket.onclose = function(e){
-    console.log("onclose: ", e)
-}
-
-</script>
+        formData2.submit(function(event){
+            
+            console.log('form2: ' + form2)
+            for(item in form2){
+                console.log('item: ' + item)
+            }
+            event.preventDefault()
+            console.log('FORM 2 DATA HAS TRIGGERED')
+            console.log(event)
+            console.log(form2.somesetting)
+            console.log(form2.somesetting.value)
+    
+            var $formDater = $(this).serialize()
+            var $thisURL = window.location.href // or set your own url
+            $.ajax({
+                method: "POST",
+                url: $thisURL,
+                data: $formDater,
+                success: handleFormSuccess,
+                error: handleFormError,
+            })
+    
+    
+            function handleFormSuccess(data, textStatus, jqXHR){
+                console.log(data)
+                console.log(textStatus)
+                console.log(jqXHR)
+                // formData2.reset(); // reset form data
+            }
+    
+            function handleFormError(jqXHR, textStatus, errorThrown){
+                console.log(jqXHR)
+                console.log(textStatus)
+                console.log(errorThrown)
+            }
+            // console.log(form2.instance.somesetting)
+            // console.log(form2.instance.somesetting.val())
+    
+            // var msgText = msgInput.val()
+            // chatHolder.append("<li>" + msgText + ' via ' + me + '</li>')
+    
+            // var finalData = {
+            //     'user_email': msgText
+            // }
+            // socket.send(JSON.stringify(finalData))
+            // form data clear element 0
+            // this way lets you clear other fields if you'd like.
+            // formData[0].reset()
+            // u can alternatively clear it like this
+            // msgInput.val('')
+        })
+    }
+    socket.onerror = function(e){
+        console.log("onerror: ", e)
+    }
+    socket.onclose = function(e){
+        console.log("onclose: ", e)
+    }
+    
+    
+    
+  </script>
 
 <!-- 
 <hr>

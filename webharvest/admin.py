@@ -1,12 +1,12 @@
 from django.contrib import admin
-from .models import WebharvestThread, WebharvestChatMessage, WebharvestRobot, WebharvestJob
+from .models import WebharvestThread, WebharvestChatMessage, WebharvestRobot, WebharvestJob, WebharvestSpreadSheet, WebharvestSpreadSheetRecord
 
 class WebharvestChatMessage(admin.TabularInline):
     model = WebharvestChatMessage
 
 class WebharvestThreadAdmin(admin.ModelAdmin):
     inlines = [WebharvestChatMessage]
-    list_display = ('updated', 'human', 'message_count')
+    list_display = ('updated', 'human', 'message_count', 'spreadsheet')
     # list_filter = ('human')
     class Meta:
         model = WebharvestThread
@@ -23,6 +23,15 @@ class WebharvestJobAdmin(admin.ModelAdmin):
 
 admin.site.register(WebharvestJob, WebharvestJobAdmin)
 
+
+class WebharvestSpreadSheetRecord(admin.TabularInline):
+    model = WebharvestSpreadSheetRecord
+
+class WebharvestSpreadSheetAdmin(admin.ModelAdmin):
+    model = WebharvestSpreadSheet
+    inlines = [WebharvestSpreadSheetRecord]
+
+admin.site.register(WebharvestSpreadSheet, WebharvestSpreadSheetAdmin)
 
 
 # from django.contrib.admin import ModelAdmin, site

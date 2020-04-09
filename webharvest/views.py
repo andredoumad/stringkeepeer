@@ -13,13 +13,14 @@ from django.http import JsonResponse
 from django.conf import settings
 from .forms import ComposeForm, WebharvestJobForm
 from django.views.generic.edit import FormMixin
-from .models import WebharvestThread, WebharvestChatMessage, WebharvestJob
+from .models import WebharvestThread, WebharvestChatMessage, WebharvestJob, WebharvestSpreadSheet, WebharvestSpreadSheetRecord
 from webharvest.consumers import WebharvestConsumer
 from .multiform import *
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.contrib.auth import get_user_model
 import string
+
 
 User = get_user_model()
 
@@ -248,22 +249,44 @@ class ThreadView(FormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        email = None
         if self.bool_temp_user != True:
             context['user_email'] = self.request.user.email
+            email = self.request.user.email
         else:
             context['user_email'] = self.temp_user.email
+            email = self.temp_user.email
 
         context['form'] = self.get_form()
         context['user_ip'] = self.user_ip
         context['the_user'] = self.the_user
-        context['ascii_art'] = get_ascii_art()  
+        context['ascii_art'] = get_ascii_art()
 
+        thread_obj = WebharvestThread.objects.get_or_new(email, 'Alice')[0]
+        spreadsheet = thread_obj.spreadsheet
+        records = WebharvestSpreadSheetRecord.objects.filter(spreadsheet=spreadsheet)
+        records_list = []
+        records_test = []
+        for record in records:
+            records_list.append(record)
+            # records_test.append(json.dumps(record))
+            # records_test.append(
+            #         str(
+            #             str(record.index) + 
+            #             str(record.url) + 
+            #             str(record.sentence) +
+            #             str(record.noun_chunk) +
+            #             str(record.lemma) + 
+            #             str(record.pos) + 
+            #             str(record.text) +
+            #             str(record.label)
+            #         )
+            #     )
 
-        # WebharvestThread_qs = WebharvestThread.objects.by_user(self.the_user)
-        # WebharvestThread_qs
-        # eventlog('WebharvestThread_qs: ' + str(WebharvestThread_qs))
-        # context['message_count'] = 
+        context['records_list'] = records_list
+
+        # context['records_test'] = records_test
+        # context['records_test'] = json.dumps(records_list)
 
         if self.bool_temp_user != True:
             job, new = WebharvestJob.objects.get_or_new(user=self.request.user)
@@ -358,18 +381,7 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
         json.dumps(data)
         eventlog('WebHarvestWebhookView GET json.dumps(data): ' + str(data))
         return JsonResponse({'response_message': 'henlo'})
- 
-    def robot_command_clear(self, human, robot):
-        eventlog('delete_extra_messages')
-        eventlog('human: ' + str(human) + ' robot: ' + str(robot))
-        thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
-        chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
-        chat_message_list = []
-        for chat_message in chat_message_objects:
-            chat_message_list.append(chat_message)
 
-        for i in range(0, len(chat_message_list)):
-            WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
 
     def post(self, request, *args, **kwargs):
         eventlog('WebHarvestWebhookView POST request: ' + str(request))
@@ -389,6 +401,10 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
             eventlog('post user target: ' + str(user))
             eventlog('post user id: ' + str(user.user_id))
 
+        command = None
+        if 'command' in data:
+            command = str(data['command'])
+
         if 'chat_message' in data:
             eventlog('chat_message: ' + str(data['chat_message']))
             channel_layer = get_channel_layer()
@@ -400,7 +416,52 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
             }
             
             thread_obj = WebharvestThread.objects.get_or_new(human, 'Alice')[0] 
-            WebharvestChatMessage.objects.create(thread=thread_obj, user='Alice', message=str(data['chat_message']))
+            
+            if command == 'print':
+                WebharvestChatMessage.objects.create(thread=thread_obj, user='Alice', message=str(data['chat_message']))
+
+            if command == 'a_csv':
+                if thread_obj.spreadsheet == None:
+                    eventlog('CreateWebharvestSpreadsheet SPREADSHEET IS NONE! creating spreadsheet!')
+                    WebharvestSpreadSheet.objects.create(thread=thread_obj, first_row='URL,Sentence,Noun Chunk,Lemma,POS,Entity Text,Label')
+                    spreadsheet_objects = WebharvestSpreadSheet.objects.filter(thread=thread_obj)
+                    
+                    for spreadsheet in spreadsheet_objects:
+                        # chat_message_list.append(chat_message)
+                        eventlog('spreadsheet: ' + str(spreadsheet))
+                        thread_obj.spreadsheet = spreadsheet
+                    
+                    thread_obj.save()
+                if thread_obj.spreadsheet.record_count == None:
+                    thread_obj.spreadsheet.record_count = 0
+                    thread_obj.spreadsheet.save(update_fields=["record_count"])
+
+                thread_obj.spreadsheet.record_count += 1
+                thread_obj.spreadsheet.save(update_fields=["record_count"])
+                WebharvestSpreadSheetRecord.objects.create(
+                    spreadsheet=thread_obj.spreadsheet,
+                    index=thread_obj.spreadsheet.record_count,
+                    url=data['csv_url'],
+                    sentence=data['csv_sentence'],
+                    noun_chunk=data['csv_noun_chunk'],
+                    lemma=data['csv_lemma'],
+                    pos=data['csv_pos'],
+                    text=data['csv_text'],
+                    label=data['csv_label']
+                    )
+
+                my_text['csv_index'] = thread_obj.spreadsheet.record_count
+                my_text['csv_url'] = data['csv_url']
+                my_text['csv_sentence'] = data['csv_sentence']
+                my_text['csv_noun_chunk'] = data['csv_noun_chunk']
+                my_text['csv_lemma'] = data['csv_lemma']
+                my_text['csv_pos'] = data['csv_pos']
+                my_text['csv_text'] = data['csv_text']
+                my_text['csv_label'] = data['csv_label']
+
+                
+                
+                
 
             async_to_sync(channel_layer.group_send, force_new_loop=False)(
                 # andre@blackmesanetwork.com user_id
@@ -417,12 +478,18 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
             )
         
 
-        if 'command' in data:
-            if str(data['command']) == 'clear':
-                try:
-                    self.robot_command_clear(str(data['human']), str(data['From']))
-                except Exception as e:
-                    eventlog('EXCEPTION::: ' + str(e))
+
+
+        if command == 'clear':
+            try:
+                eventlog('COMMAND FROM WEBHOOK IS CLEAR')
+                self.robot_command_clear(str(data['human']), str(data['From']))
+                # self.robot_command_clear(str(data['human']), str(data['From']))
+                eventlog('EXECUTED CLEAR COMMAND')
+            except Exception as e:
+                eventlog('EXCEPTION::: ' + str(e))
+
+
             
 
 
@@ -433,3 +500,47 @@ class WebHarvestWebhookView(CsrfExemptMixin, View): # HTTP GET -- def get() CSRF
         # sleep(0.1)
         return JsonResponse(response)
 
+
+    #how can i consolidate the async version of this method from consumers.py into one method?
+    def robot_command_clear(self, human, robot):
+        eventlog('robot_command_clear')
+        eventlog('human: ' + str(human) + ' robot: ' + str(robot))
+        thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
+
+        eventlog('self.thread_obj: ' + str(thread_obj))
+        chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
+        eventlog('chat_message_objects: ' + str(chat_message_objects))
+
+        chat_message_list = []
+
+        for chat_message in chat_message_objects:
+            chat_message_list.append(chat_message)
+
+
+        eventlog('length of chat_message_list: ' + str(len(chat_message_list)))
+
+        for chat_message in chat_message_list:
+            eventlog('message: ' + str(chat_message))
+
+        for i in range(0, len(chat_message_list)):
+            eventlog('deleting ' + str(i) + ' of ' + str(len(chat_message_list)))
+            eventlog('chat_message_id: ' + str(chat_message_list[i].id))
+            WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
+
+
+        records = WebharvestSpreadSheetRecord.objects.filter(spreadsheet=thread_obj.spreadsheet)
+        records_list = []
+        eventlog('about to cycle through SPREADSHEET records: ')
+        eventlog('records: ' + str(records))
+        
+        for record in records:
+            eventlog('appending record: ' + str(record))
+            records_list.append(record)
+        
+        for i in range(0, len(records_list)):
+            # eventlog('record: ' + str(WebharvestSpreadSheetRecord.objects.filter(id=records_list[i].id)))
+            WebharvestSpreadSheetRecord.objects.filter(id=records_list[i].id).delete()
+
+
+        thread_obj.spreadsheet.record_count = 0
+        thread_obj.spreadsheet.save()

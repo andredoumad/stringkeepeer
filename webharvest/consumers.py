@@ -9,7 +9,7 @@ from channels.generic.websocket import WebsocketConsumer
 
 from stringkeeper.standalone_tools import * 
 from asgiref.sync import async_to_sync
-from .models import WebharvestThread, WebharvestChatMessage
+from .models import WebharvestThread, WebharvestChatMessage, WebharvestSpreadSheet, WebharvestSpreadSheetRecord
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
@@ -279,6 +279,7 @@ class WebharvestConsumer(AsyncConsumer):
                 eventlog('websocket_receive: user: ' + str(user))
 
                 the_user = None
+                command = loaded_dict_data.get('command', None)
                 if str(user) == str('AnonymousUser'):
                     user_qs = None
                     User = get_user_model()
@@ -309,7 +310,9 @@ class WebharvestConsumer(AsyncConsumer):
                         myResponse = {
                             'message': msg,
                             'username': robot,
-                            'From': From
+                            'From': From,
+                            'command': command,
+
                         }
                         # await self.delete_extra_messages(human, robot)
                         await self.create_chat_message(msg, robot)
@@ -347,7 +350,8 @@ class WebharvestConsumer(AsyncConsumer):
                                 'message': str(msg),
                                 'human': str(username),
                                 'robot_command': 'update_user_status',
-                                'From': From
+                                'From': From,
+                                'command': command
                         }
                         eventlog('my_text: ' + str(my_text))
                         await self.channel_layer.group_send(
@@ -370,7 +374,8 @@ class WebharvestConsumer(AsyncConsumer):
                     myResponse = {
                         'message': msg,
                         'username': username,
-                        'From': From
+                        'From': From,
+                        'command': command
                     }
                     eventlog('create_chat_message(msg, username): ' + str(msg)  + ' ' + str(username))
                     await self.create_chat_message(msg, username)
@@ -424,7 +429,7 @@ class WebharvestConsumer(AsyncConsumer):
         # eventlog('DEBUG ++++++++ DEBUG DEBUG DEBUG ++++++++ DEBUG ')
         return WebharvestChatMessage.objects.create(thread=thread_obj, user=username, message=msg)
 
-
+    #how can i consolidate the non async version of this method from views.py into one method?
     async def robot_command_clear(self, human, robot):
         eventlog('robot_command_clear')
         eventlog('human: ' + str(human) + ' robot: ' + str(robot))
@@ -449,4 +454,22 @@ class WebharvestConsumer(AsyncConsumer):
             eventlog('deleting ' + str(i) + ' of ' + str(len(chat_message_list)))
             eventlog('chat_message_id: ' + str(chat_message_list[i].id))
             WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
+
+
+        records = WebharvestSpreadSheetRecord.objects.filter(spreadsheet=thread_obj.spreadsheet)
+        records_list = []
+        eventlog('about to cycle through SPREADSHEET records: ')
+        eventlog('records: ' + str(records))
+        
+        for record in records:
+            eventlog('appending record: ' + str(record))
+            records_list.append(record)
+        
+        for i in range(0, len(records_list)):
+            # eventlog('record: ' + str(WebharvestSpreadSheetRecord.objects.filter(id=records_list[i].id)))
+            WebharvestSpreadSheetRecord.objects.filter(id=records_list[i].id).delete()
+
+
+        thread_obj.spreadsheet.record_count = 0
+        thread_obj.spreadsheet.save()
 

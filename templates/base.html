@@ -37,30 +37,31 @@
         {% endfor %}
     </div>
         {% endif %}
-            {% block content %}{% endblock %}
-            {% block javascript %}{% endblock %}
-            <footer class="container">
-                <font color = '#FFFFFF'>
+        {% block content %}{% endblock %}
+        {% block javascript %}{% endblock %}
+        <footer class="container">
 
-                <hr/>
-                <h6 class='text-center'><font color = 'white'>This site is under active development and is for <font color = 'orange'> demonstration purposes only.</font></h6 class='text-center'>
-                <script type="text/javascript">
-                  var d = new Date()
-                  document.write("<font color = 'grey'><p class='text-center text-monospace' style='font-size:80%;'>Stringkeeper &copy; " + d.getFullYear() + "</p></font>")
-                </script>
-                <hr/>
-                {% if ascii_art %}
-                
-                <div class="container-md">
-                    <pre>
-                      <p class='text-monospace' style="font-size:2px">
-                      <font color = '#85C1E9'> {{ascii_art}}
-                    </pre>
-                </div>
-                
-                
-                {% endif %}
-              </footer>
+
+          
+          <font color = '#FFFFFF'>
+
+          <hr/>
+          <h6 class='text-center'><font color = 'white'>This site is under active development and is for <font color = 'orange'> demonstration purposes only.</font></h6 class='text-center'>
+          <script type="text/javascript">
+            var d = new Date()
+            document.write("<font color = 'grey'><p class='text-center text-monospace' style='font-size:80%;'>Stringkeeper &copy; " + d.getFullYear() + "</p></font>")
+          </script>
+          <hr/>
+          {% if ascii_art %}
+          
+            <div class="container-md">
+              <pre>
+                <p class='text-monospace' style="font-size:2px">
+                <font color = '#85C1E9'> {{ascii_art}}
+              </pre>
+            </div>
+          {% endif %}
+        </footer>
     </div>
   </body>
 </html>
