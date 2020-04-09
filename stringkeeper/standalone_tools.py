@@ -173,18 +173,20 @@ def eventlog(logstring):
     # print('|==| ' + str(debug_line_number) + ' |==| ')
     print('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(function_name) + ' | ' + str(logstring) + ' |==|')
     if socket.gethostname()=="www.stringkeeper.com":
-        if os.path.getsize('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log') > 1000000:
-            f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log', "w")
-            f.write('')
-            f.close()
-        if os.path.getsize('/home/ubuntu/stringkeeper/daphne.log') > 1000000:
-            f = open('/home/ubuntu/stringkeeper/daphne.log', "w")
-            f.write('')
-            f.close()
-        f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log', "a")
-        f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(function_name) + ' | ' + str(logstring) + ' |==|')
-        f.write('\n')
-        f.close()
+        pass
+
+        # if os.path.getsize('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log') > 1000000:
+        #     f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log', "w")
+        #     f.write('')
+        #     f.close()
+        # if os.path.getsize('/home/ubuntu/stringkeeper/daphne.log') > 1000000:
+        #     f = open('/home/ubuntu/stringkeeper/daphne.log', "w")
+        #     f.write('')
+        #     f.close()
+        # f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log', "a")
+        # f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(function_name) + ' | ' + str(logstring) + ' |==|')
+        # f.write('\n')
+        # f.close()
     else:
         if os.path.getsize('/home/gordon/stringkeeper/stringkeeperlocaldebug.log') > 1000000:
             f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.log', "w")
