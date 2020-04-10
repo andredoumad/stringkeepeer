@@ -373,24 +373,25 @@ function hideButton()
         }
         else if (chatDataMsg.command == 'a_csv'){
           console.log('APPEND TO CSV TRIGGERED!')
-          // csv_box.append("<li><font color = '#FFFFFF'>" + chatDataMsg.csv_index + "," + chatDataMsg.csv_url + "," + chatDataMsg.csv_sentence + "," + chatDataMsg.csv_noun_chunk + "," + chatDataMsg.csv_lemma + "," + chatDataMsg.csv_pos + "," + chatDataMsg.csv_text + "," + chatDataMsg.csv_label + " </font></li>")
-          csv_box.append(
-            "<li> <font color = '#FF8A14'>" + chatDataMsg.csv_index + "</font>" +
-            "<font color = '#FFFFFF'>,</font>" +
-            "<font color = '#00cc99'>" + chatDataMsg.csv_url + "</font>" +
-            "<font color = '#FFFFFF'>,</font>" +
-            "<font color = '#990066'>" + chatDataMsg.csv_sentence + "</font>" +
-            "<font color = '#FFFFFF'>,</font>" +
-            "<font color = '#66ff33'>" + chatDataMsg.csv_noun_chunk + "</font>" +
-            "<font color = '#FFFFFF'>,</font>" +
-            "<font color = '#0033cc'>" + chatDataMsg.csv_lemma + "</font>" +
-            "<font color = '#FFFFFF'>,</font>" +
-            "<font color = '#ffff00'>" + chatDataMsg.csv_pos + "</font>" +
-            "<font color = '#FFFFFF'>,</font>" +
-            "<font color = '#33cc00'>" + chatDataMsg.csv_text + "</font>" +
-            "<font color = '#FFFFFF'>,</font>" +
-            "<font color = '#ff00cc'>" + chatDataMsg.csv_label + "</font> </li>"
-            )
+
+          // csv_box.append(
+          //   "<li> <font color = '#FF8A14'>" + chatDataMsg.csv_index + "</font>" +
+          //   "<font color = '#FFFFFF'>,</font>" +
+          //   "<font color = '#00cc99'>" + chatDataMsg.csv_url + "</font>" +
+          //   "<font color = '#FFFFFF'>,</font>" +
+          //   "<font color = '#990066'>" + chatDataMsg.csv_sentence + "</font>" +
+          //   "<font color = '#FFFFFF'>,</font>" +
+          //   "<font color = '#66ff33'>" + chatDataMsg.csv_noun_chunk + "</font>" +
+          //   "<font color = '#FFFFFF'>,</font>" +
+          //   "<font color = '#0033cc'>" + chatDataMsg.csv_lemma + "</font>" +
+          //   "<font color = '#FFFFFF'>,</font>" +
+          //   "<font color = '#ffff00'>" + chatDataMsg.csv_pos + "</font>" +
+          //   "<font color = '#FFFFFF'>,</font>" +
+          //   "<font color = '#33cc00'>" + chatDataMsg.csv_text + "</font>" +
+          //   "<font color = '#FFFFFF'>,</font>" +
+          //   "<font color = '#ff00cc'>" + chatDataMsg.csv_label + "</font> </li>"
+          //   )
+
           table1.insertRow([
           chatDataMsg.csv_url,
           chatDataMsg.csv_sentence,
@@ -400,9 +401,7 @@ function hideButton()
           chatDataMsg.csv_text,
           chatDataMsg.csv_label
           ])
-          // table1.insertRow([chatDataMsg.csv_index,chatDataMsg.csv_url,chatDataMsg.csv_sentence,chatDataMsg.csv_noun_chunk,chatDataMsg.csv_lemma,chatDataMsg.csv_pos,chatDataMsg.csv_text,chatDataMsg.csv_label])
-          // table1.insertRow([chatDataMsg.csv_index,chatDataMsg.csv_url,chatDataMsg.csv_sentence,chatDataMsg.csv_noun_chunk,chatDataMsg.csv_lemma,chatDataMsg.csv_pos,chatDataMsg.csv_text,chatDataMsg.csv_label ], 1);
-          // console.log('data: ' + data)
+
         }
     
         // chatHolder.append("<li><font color = 'orange'>you: </font>" + chatDataMsg.message + "</li>")
