@@ -91,13 +91,13 @@
       // onchange:update,
       columns: [
           // { type: 'numeric', title:'index', width:120 },
-          { type: 'text', title:'url', width:100},
-          { type: 'text', title:'sentence', width:140},
+          { type: 'text', title:'url', width:200},
+          { type: 'text', title:'sentence', width:340},
           // { type: 'text', title:'noun chunk', width:220},
           // { type: 'text', title:'lemma', width:140},
           // { type: 'text', title:'pos', width:140},
-          { type: 'text', title:'text', width:220},
-          { type: 'text', title:'label', width:100}
+          { type: 'text', title:'text', width:390},
+          { type: 'text', title:'label', width:120}
       ],
     //   style: {
     //     // A1:'background-color: orange;',
@@ -136,11 +136,11 @@
 
 </script>
 
-<!-- 
-<div id='scroll' class="scroll">
-  <ul class='text-left' id='spreadsheetHolder' style="padding:4px; margin:4px, 4px; list-style-type:none;font-family:Palatino;list-style-position: inside;">
+
+<!-- <div id='scroll' class="scroll">
+  <ul class='text-left' id='spreadsheetHolder' style="padding:4px; margin:4px, 4px; list-style-type:none;font-family:Palatino;list-style-position: inside;"> -->
     {% for record in records_list %}
-    <li>
+    <!-- <li>
       <font color = '#FF8A14'>{{ record.index }}</font>
       <input type='hidden' id='record_index' value='{{ record.index }}' />
       <font color = '#FFFFFF'>,</font>
@@ -157,17 +157,19 @@
       <font color = '#33cc00'>{{ record.text }}</font>
       <font color = '#FFFFFF'>,</font>
       <font color = '#ff00cc'>{{ record.label }}</font>
-    </li>
+    </li> -->
     <script>
-      var record_index = $("#record_index").val()
-      tryMe(record_index);
-      function tryMe(record_index) {
+      // var record_index = $("#record_index").val()
+      tryMe();
+      function tryMe() {
         console.log('TRYME: ' + '{{ record.index }}')
-        table1.insertRow(['{{ record.url }}', '{{ record.sentence }}', '{{ record.noun_chunk }}', '{{ record.lemma }}', '{{ record.pos }}', '{{ record.text }}', '{{ record.label }}' ])
+        // table1.insertRow(['{{ record.url }}', '{{ record.sentence }}', '{{ record.noun_chunk }}', '{{ record.lemma }}', '{{ record.pos }}', '{{ record.text }}', '{{ record.label }}' ])
+        table1.insertRow(['{{ record.url }}', '{{ record.sentence }}', '{{ record.text }}', '{{ record.label }}' ])
+        sleep(60);
       }
     </script>
     {% endfor %}
-  </ul>
+  <!-- </ul>
 </div> -->
 
 
@@ -309,7 +311,7 @@ function hideButton()
         <td>CARDINAL</td>
         <td>Numerals that do not fall under another type.</td>
       </tr>
-      <tr>
+      <!-- <tr>
         <td>Lemma</td>
         <td>The base form of the word.</td>
       </tr>
@@ -320,7 +322,7 @@ function hideButton()
       <tr>
         <td>Noun Chunk</td>
         <td>The original text of the word connecting the noun chunk to the rest of the parse.</td>
-      </tr>
+      </tr> -->
   </table>
 
 
