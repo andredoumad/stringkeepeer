@@ -135,15 +135,10 @@
 
 </script>
 
-
+<!-- 
 <div id='scroll' class="scroll">
   <ul class='text-left' id='spreadsheetHolder' style="padding:4px; margin:4px, 4px; list-style-type:none;font-family:Palatino;list-style-position: inside;">
     {% for record in records_list %}
-    <!-- {% if user_email == chat.user %}
-        <li><font color = '#FF8A14'>you: </font>{{ chat.message }}</li>
-    {% else %}
-        <li><font color = '#1589FF'>{{ chat.user }}: </font>{{ chat.message }}</li>
-    {% endif %} -->
     <li>
       <font color = '#FF8A14'>{{ record.index }}</font>
       <input type='hidden' id='record_index' value='{{ record.index }}' />
@@ -162,24 +157,17 @@
       <font color = '#FFFFFF'>,</font>
       <font color = '#ff00cc'>{{ record.label }}</font>
     </li>
-    <!-- tryMe(record.index) -->
-    <!-- function() -->
     <script>
       var record_index = $("#record_index").val()
-      // var records_index = 'testing...'
       tryMe(record_index);
       function tryMe(record_index) {
         console.log('TRYME: ' + '{{ record.index }}')
-        // table1.insertRow('{{ record.index }}')
-        // table1.insertRow()
         table1.insertRow(['{{ record.url }}', '{{ record.sentence }}', '{{ record.noun_chunk }}', '{{ record.lemma }}', '{{ record.pos }}', '{{ record.text }}', '{{ record.label }}' ])
-
-        // document.write(person.name);
       }
     </script>
     {% endfor %}
   </ul>
-</div>
+</div> -->
 
 
 <!-- <form id='form2' method='POST'> {% csrf_token %}
