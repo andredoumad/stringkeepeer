@@ -74,7 +74,8 @@
 
 <script>
   var data1 = [
-    ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL']
+    ['URL','SENTENCE','TEXT','LABEL']
+  // ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL']
     // ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL'],
     // ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL'],
     // ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL'],
@@ -92,9 +93,9 @@
           // { type: 'numeric', title:'index', width:120 },
           { type: 'text', title:'url', width:100},
           { type: 'text', title:'sentence', width:140},
-          { type: 'text', title:'noun chunk', width:220},
-          { type: 'text', title:'lemma', width:140},
-          { type: 'text', title:'pos', width:140},
+          // { type: 'text', title:'noun chunk', width:220},
+          // { type: 'text', title:'lemma', width:140},
+          // { type: 'text', title:'pos', width:140},
           { type: 'text', title:'text', width:220},
           { type: 'text', title:'label', width:100}
       ],
@@ -121,10 +122,10 @@
       A1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
       B1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
       C1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
-      D1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
-      E1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
-      F1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
-      G1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
+      D1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);'
+      // E1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
+      // F1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
+      // G1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
 
       }) //
 
@@ -347,9 +348,9 @@ function hideButton()
     // var records_test = $("#records_test").val()
 
 
-    for (i = 0; i < records_list.length; i++) {      
-      console.log('records_list[' + i + ']: ' + records_list[i])
-    }
+    // for (i = 0; i < records_list.length; i++) {      
+    //   console.log('records_list[' + i + ']: ' + records_list[i])
+    // }
 
     if (loc.protocol == 'https:'){
         wsStart = 'wss://'
@@ -361,9 +362,9 @@ function hideButton()
 
     
     socket.onmessage = function(e){
-        console.log("onmessage: ", e)
+        // console.log("onmessage: ", e)
         var chatDataMsg = JSON.parse(e.data)
-        console.log('chatDataMsg: ' + e.data)
+        // console.log('chatDataMsg: ' + e.data)
         
         if (me == chatDataMsg.username && chatDataMsg.command == 'print' || me == chatDataMsg.username && chatDataMsg.command == null ){
             chatHolder.append("<li><font color = '#FF8A14'>you: </font>" + chatDataMsg.message + "</li>")
@@ -395,9 +396,9 @@ function hideButton()
           table1.insertRow([
           chatDataMsg.csv_url,
           chatDataMsg.csv_sentence,
-          chatDataMsg.csv_noun_chunk,
-          chatDataMsg.csv_lemma,
-          chatDataMsg.csv_pos,
+          // chatDataMsg.csv_noun_chunk,
+          // chatDataMsg.csv_lemma,
+          // chatDataMsg.csv_pos,
           chatDataMsg.csv_text,
           chatDataMsg.csv_label
           ])
