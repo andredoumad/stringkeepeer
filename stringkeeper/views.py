@@ -12,7 +12,7 @@ from random import randint
 from django.contrib.auth import authenticate, login, get_user_model
 from .forms import ContactForm
 from blog.models import BlogPost
-from webharvest.models import WebharvestChatMessage, WebharvestThread, WebharvestSpreadSheet
+from webharvest.models import WebharvestChatMessage, WebharvestThread, WebharvestSpreadSheet, WebharvestSpreadSheetRecord
 import requests
 
 #definition for wsgi 
@@ -144,9 +144,62 @@ def maintenance_page(request):
                 
                 thread_obj.save()
             
-            CreateWebharvestSpreadsheet()
+            # CreateWebharvestSpreadsheet()
 
 
+
+
+            #how can i consolidate the async version of this method from consumers.py into one method?
+            def robot_command_clear():
+                for user in User.objects.all():
+                    human = user
+                    robot = 'Alice'
+                    try:
+                        eventlog('robot_command_clear')
+                        eventlog('human: ' + str(human) + ' robot: ' + str(robot))
+                        thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
+
+                        eventlog('self.thread_obj: ' + str(thread_obj))
+                        chat_message_objects = WebharvestChatMessage.objects.filter(thread=thread_obj)
+                        eventlog('chat_message_objects: ' + str(chat_message_objects))
+
+                        chat_message_list = []
+
+                        for chat_message in chat_message_objects:
+                            chat_message_list.append(chat_message)
+
+
+                        eventlog('length of chat_message_list: ' + str(len(chat_message_list)))
+
+                        for chat_message in chat_message_list:
+                            eventlog('message: ' + str(chat_message))
+
+                        for i in range(0, len(chat_message_list)):
+                            eventlog('deleting ' + str(i) + ' of ' + str(len(chat_message_list)))
+                            eventlog('chat_message_id: ' + str(chat_message_list[i].id))
+                            WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
+
+
+                        records = WebharvestSpreadSheetRecord.objects.filter(spreadsheet=thread_obj.spreadsheet)
+                        records_list = []
+                        eventlog('about to cycle through SPREADSHEET records: ')
+                        eventlog('records: ' + str(records))
+                        
+                        for record in records:
+                            eventlog('appending record: ' + str(record))
+                            records_list.append(record)
+                        
+                        for i in range(0, len(records_list)):
+                            # eventlog('record: ' + str(WebharvestSpreadSheetRecord.objects.filter(id=records_list[i].id)))
+                            WebharvestSpreadSheetRecord.objects.filter(id=records_list[i].id).delete()
+
+
+                        thread_obj.spreadsheet.record_count = 0
+                        thread_obj.spreadsheet.save()
+                    except Exception as e:
+                        eventlog('EXCEPTION: ' + str(e))
+
+            robot_command_clear()
 
 
             context         = {'title': 'maintenance_page'}
