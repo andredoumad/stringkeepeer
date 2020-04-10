@@ -65,7 +65,7 @@
 
 
 <hr/>
-  <div id="spreadsheet" style='font-weight: bold; color:rgb(0, 0, 0); background-color: rgb(61, 70, 78);'></div>
+  <div id="spreadsheet" style='font-weight: bold; color:rgb(0, 0, 0); background-color: rgb(128, 128, 128);'></div>
 <hr/>
 
 <hr/>
@@ -82,22 +82,24 @@
     ]
   var table1 = jexcel(document.getElementById('spreadsheet'), {
       data:data1,
-      tableOverflow:true,
-      lazyLoading:true,
-      loadingSpin:true,
+      // tableOverflow:true,
+      // lazyLoading:true,
+      // loadingSpin:true,
       // readOnly:true,
+      search:true,
+      pagination:10,
       
       // style:'font-weight:bold; color:white; background-color: rgb(61, 70, 78);',
       // onchange:update,
       columns: [
           // { type: 'numeric', title:'index', width:120 },
           { type: 'text', title:'url', width:200},
-          { type: 'text', title:'sentence', width:340},
+          { type: 'text', title:'sentence', width:320},
           // { type: 'text', title:'noun chunk', width:220},
           // { type: 'text', title:'lemma', width:140},
           // { type: 'text', title:'pos', width:140},
-          { type: 'text', title:'text', width:390},
-          { type: 'text', title:'label', width:120}
+          { type: 'text', title:'text', width:320},
+          { type: 'text', title:'label', width:150}
       ],
     //   style: {
     //     // A1:'background-color: orange;',
