@@ -74,7 +74,8 @@
 
 <script>
   var data1 = [
-    ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL']
+    ['URL','SENTENCE','TEXT','LABEL']
+  // ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL']
     // ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL'],
     // ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL'],
     // ['URL','SENTENCE','NOUN CHUNK','LEMMA','POS','TEXT','LABEL'],
@@ -90,13 +91,13 @@
       // onchange:update,
       columns: [
           // { type: 'numeric', title:'index', width:120 },
-          { type: 'text', title:'url', width:100},
-          { type: 'text', title:'sentence', width:140},
-          { type: 'text', title:'noun chunk', width:220},
-          { type: 'text', title:'lemma', width:140},
-          { type: 'text', title:'pos', width:140},
-          { type: 'text', title:'text', width:220},
-          { type: 'text', title:'label', width:100}
+          { type: 'text', title:'url', width:200},
+          { type: 'text', title:'sentence', width:340},
+          // { type: 'text', title:'noun chunk', width:220},
+          // { type: 'text', title:'lemma', width:140},
+          // { type: 'text', title:'pos', width:140},
+          { type: 'text', title:'text', width:390},
+          { type: 'text', title:'label', width:120}
       ],
     //   style: {
     //     // A1:'background-color: orange;',
@@ -121,10 +122,10 @@
       A1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
       B1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
       C1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
-      D1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
-      E1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
-      F1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
-      G1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
+      D1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);'
+      // E1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
+      // F1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
+      // G1:'font-weight: bold; color:white; background-color: rgb(61, 70, 78);',
 
       }) //
 
@@ -135,11 +136,11 @@
 
 </script>
 
-<!-- 
-<div id='scroll' class="scroll">
-  <ul class='text-left' id='spreadsheetHolder' style="padding:4px; margin:4px, 4px; list-style-type:none;font-family:Palatino;list-style-position: inside;">
+
+<!-- <div id='scroll' class="scroll">
+  <ul class='text-left' id='spreadsheetHolder' style="padding:4px; margin:4px, 4px; list-style-type:none;font-family:Palatino;list-style-position: inside;"> -->
     {% for record in records_list %}
-    <li>
+    <!-- <li>
       <font color = '#FF8A14'>{{ record.index }}</font>
       <input type='hidden' id='record_index' value='{{ record.index }}' />
       <font color = '#FFFFFF'>,</font>
@@ -156,17 +157,19 @@
       <font color = '#33cc00'>{{ record.text }}</font>
       <font color = '#FFFFFF'>,</font>
       <font color = '#ff00cc'>{{ record.label }}</font>
-    </li>
+    </li> -->
     <script>
-      var record_index = $("#record_index").val()
-      tryMe(record_index);
-      function tryMe(record_index) {
+      // var record_index = $("#record_index").val()
+      tryMe();
+      function tryMe() {
         console.log('TRYME: ' + '{{ record.index }}')
-        table1.insertRow(['{{ record.url }}', '{{ record.sentence }}', '{{ record.noun_chunk }}', '{{ record.lemma }}', '{{ record.pos }}', '{{ record.text }}', '{{ record.label }}' ])
+        // table1.insertRow(['{{ record.url }}', '{{ record.sentence }}', '{{ record.noun_chunk }}', '{{ record.lemma }}', '{{ record.pos }}', '{{ record.text }}', '{{ record.label }}' ])
+        table1.insertRow(['{{ record.url }}', '{{ record.sentence }}', '{{ record.text }}', '{{ record.label }}' ])
+        sleep(60);
       }
     </script>
     {% endfor %}
-  </ul>
+  <!-- </ul>
 </div> -->
 
 
@@ -308,7 +311,7 @@ function hideButton()
         <td>CARDINAL</td>
         <td>Numerals that do not fall under another type.</td>
       </tr>
-      <tr>
+      <!-- <tr>
         <td>Lemma</td>
         <td>The base form of the word.</td>
       </tr>
@@ -319,7 +322,7 @@ function hideButton()
       <tr>
         <td>Noun Chunk</td>
         <td>The original text of the word connecting the noun chunk to the rest of the parse.</td>
-      </tr>
+      </tr> -->
   </table>
 
 
@@ -347,9 +350,9 @@ function hideButton()
     // var records_test = $("#records_test").val()
 
 
-    for (i = 0; i < records_list.length; i++) {      
-      console.log('records_list[' + i + ']: ' + records_list[i])
-    }
+    // for (i = 0; i < records_list.length; i++) {      
+    //   console.log('records_list[' + i + ']: ' + records_list[i])
+    // }
 
     if (loc.protocol == 'https:'){
         wsStart = 'wss://'
@@ -361,9 +364,9 @@ function hideButton()
 
     
     socket.onmessage = function(e){
-        console.log("onmessage: ", e)
+        // console.log("onmessage: ", e)
         var chatDataMsg = JSON.parse(e.data)
-        console.log('chatDataMsg: ' + e.data)
+        // console.log('chatDataMsg: ' + e.data)
         
         if (me == chatDataMsg.username && chatDataMsg.command == 'print' || me == chatDataMsg.username && chatDataMsg.command == null ){
             chatHolder.append("<li><font color = '#FF8A14'>you: </font>" + chatDataMsg.message + "</li>")
@@ -395,9 +398,9 @@ function hideButton()
           table1.insertRow([
           chatDataMsg.csv_url,
           chatDataMsg.csv_sentence,
-          chatDataMsg.csv_noun_chunk,
-          chatDataMsg.csv_lemma,
-          chatDataMsg.csv_pos,
+          // chatDataMsg.csv_noun_chunk,
+          // chatDataMsg.csv_lemma,
+          // chatDataMsg.csv_pos,
           chatDataMsg.csv_text,
           chatDataMsg.csv_label
           ])
