@@ -128,7 +128,18 @@
     // }) //
   }
 
+
+
+  function ExportSpreadsheet() {
+  console.log('clicked Export my spreadsheet as CSV')
+  $('#spreadsheet').jexcel('download');
+  }
+
 </script>
+<!-- <input id="buttonId" value="Send" name="form" type='submit' class='btn-block btn-info'/> -->
+
+
+  <button value="Send" name="form" class='btn-block btn-info' onclick="ExportSpreadsheet()">Download Spreadsheet</button> 
 
 
 <!-- <div id='scroll' class="scroll">
@@ -686,7 +697,7 @@ function IncrementPieLabel(chart, label) {
           chatDataMsg.csv_label
           ])
           IncrementPieLabel(piechart, chatDataMsg.csv_label)
-          sleep(60);
+          // sleep(60);
 
         }
     
