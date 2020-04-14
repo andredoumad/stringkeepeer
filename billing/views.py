@@ -183,19 +183,23 @@ def payment_method_view(request):
     for subscriptionPurchase in subscriptionPurchases:
         if subscriptionPurchase.is_canceled == True:
             customer_canceled_subscriptionPurchases.append(subscriptionPurchase)
-        subscription_slug = subscriptionPurchase.subscription.slug
-        eventlog('Checking subscriptionPurchase.subscription.slug: ' + str(subscription_slug))
-        for customer_subscription in customer_subscriptions:
-            if str(subscription_slug) == str(customer_subscription.plan_id):
-                eventlog('customer_subscription.plan_id: ' + str(customer_subscription.plan_id))
-                eventlog('subscription_slug: ' + str(subscription_slug))
-                eventlog('customer_subscription.id: ' + str(customer_subscription.id))
-                eventlog('subscriptionPurchase.braintree_subscription_id: ' + str(subscriptionPurchase.braintree_subscription_id))
-                eventlog('SUBSCRIPTION_SLUG: ' + str(subscription_slug) + ' MATCHES ' + str(customer_subscription.plan_id))
-                if str(subscriptionPurchase.braintree_subscription_id) != str(customer_subscription.id):
-                    eventlog('subscriptionPurchase.braintree_subscription_id: ' + str(subscriptionPurchase.braintree_subscription_id) + ' DOES NOT MATCH ' + str(customer_subscription.id))
-                    subscriptionPurchase.braintree_subscription_id = str(customer_subscription.id)
-                    subscriptionPurchase.save()
+        try:
+
+            subscription_slug = subscriptionPurchase.subscription.slug
+            eventlog('Checking subscriptionPurchase.subscription.slug: ' + str(subscription_slug))
+            for customer_subscription in customer_subscriptions:
+                if str(subscription_slug) == str(customer_subscription.plan_id):
+                    eventlog('customer_subscription.plan_id: ' + str(customer_subscription.plan_id))
+                    eventlog('subscription_slug: ' + str(subscription_slug))
+                    eventlog('customer_subscription.id: ' + str(customer_subscription.id))
+                    eventlog('subscriptionPurchase.braintree_subscription_id: ' + str(subscriptionPurchase.braintree_subscription_id))
+                    eventlog('SUBSCRIPTION_SLUG: ' + str(subscription_slug) + ' MATCHES ' + str(customer_subscription.plan_id))
+                    if str(subscriptionPurchase.braintree_subscription_id) != str(customer_subscription.id):
+                        eventlog('subscriptionPurchase.braintree_subscription_id: ' + str(subscriptionPurchase.braintree_subscription_id) + ' DOES NOT MATCH ' + str(customer_subscription.id))
+                        subscriptionPurchase.braintree_subscription_id = str(customer_subscription.id)
+                        subscriptionPurchase.save()
+        except Exception as e:
+            eventlog('EXCEPTION: ' + str(e))
 
     # PROCESS THE BRAINTREE DROPIN
     if request.method == 'POST' and request.is_ajax() == False:
