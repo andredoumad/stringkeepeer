@@ -199,9 +199,17 @@ function hideButton()
 
 
 <!-- <div class="chart-container" style="position: relative; height:40vh; width:80vw"> -->
+
+<hr/>
+<div align="center" >
+  <h2><font color = '#FFFFFF'>Category Occurances</font></h2>
+</div>
+
 <div class="chart-container" style="position: relative">
   <canvas id="myChart"></canvas>
 </div>
+
+<hr/>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
@@ -346,6 +354,16 @@ var piechart = new Chart(ctx, {
     options: {
       responsive: true,
       responsiveAnimationDuration: 0,
+
+      // title: {
+      //       display: true,
+      //       text: 'Category Occurances',
+      //       fontColor: "white",
+      //       fontSize: 24
+
+
+      //     },
+
       legend: {
         
         display: false,
