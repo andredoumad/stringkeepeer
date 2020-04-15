@@ -1,0 +1,14 @@
+ 1594  pip install --upgrade pip
+ 1596  pip install rest_framework
+ 1597  pip install djangorestframework
+ 1600  pip install channels
+ 1602  pip search background_task
+ 1603  pip install django-background-tasks
+ 1605  pip search boto
+ 1606  pip install boto
+ 1608  pip install requests
+ 1610  pip install mailchimp3
+ 1612  pip install braintree
+ 1614  pip install stripe
+ 1616  pip install stripe
+ 1619  pip install tornado
