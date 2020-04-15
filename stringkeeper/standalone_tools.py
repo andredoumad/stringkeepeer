@@ -188,15 +188,18 @@ def eventlog(logstring):
         # f.write('\n')
         # f.close()
     else:
-        if os.path.getsize('/home/gordon/stringkeeper/stringkeeperlocaldebug.log') > 1000000:
-            f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.log', "w")
-            f.write('')
-            f.close()
+
         
-        f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.log', "a")
+        f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.log', "a+")
         f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(function_name) + ' | ' + str(logstring) + ' |==|')
         f.write('\n')
         f.close()
+
+        if os.path.getsize('/home/gordon/stringkeeper/stringkeeperlocaldebug.log') > 10000:
+            f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.log', "w")
+            f.write('')
+            f.close()
+
     # print('|==| ' + str(debug_line_number) + ' |==| ')
     # log_filepath = str(str(log_directory_path) + '/' + str(caller_filename))
     #eventlog('log_filepath: ' + str(log_filepath))
