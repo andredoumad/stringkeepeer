@@ -19,7 +19,6 @@ from django.contrib.auth.models import (
 from django.db.models import Q
 from django.core.mail import send_mail
 from django.template.loader import get_template
-from django.utils import timezone
 from stringkeeper.standalone_tools import * 
 
 
@@ -31,7 +30,7 @@ DEFAULT_ACTIVATION_DAYS = getattr(settings, 'DEFAULT_ACTIVATION_DAYS', 7)
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, password=None, is_active=False, last_name=None, first_name=None, full_name=None, is_staff=False, is_admin=False):
+    def create_user(self, email=None, password=None, is_active=False, last_name=None, first_name=None, full_name=None, is_staff=False, is_admin=False, user_id=None):
         
         if not email:
             raise ValueError("users must have a valid email address")
@@ -61,9 +60,9 @@ class UserManager(BaseUserManager):
 
         return user_obj
 
-    def create_staffuser(self, email, password=None, last_name=None, first_name=None):
+    def create_staffuser(self, email=None, password=None, last_name=None, first_name=None):
         user = self.create_user(
-            email,
+            email=email,
             password = password,
             first_name = first_name,
             last_name = last_name,
@@ -75,9 +74,9 @@ class UserManager(BaseUserManager):
         return user
 
 
-    def create_superuser(self, email, password=None, last_name=None, first_name=None):
+    def create_superuser(self, email=None, password=None, last_name=None, first_name=None):
         user = self.create_user(
-            email,
+            email=email,
             password = password,
             first_name = first_name,
             last_name = last_name,
@@ -351,3 +350,24 @@ def generate_user_id():
     if matching_id != None:
         return generate_user_id()
     return user_id
+
+
+def unique_slug_generator(instance, new_slug=None):
+    """
+    This is for a Django project and it assumes your instance 
+    has a model with a slug field and a title character (char) field.
+    """
+    if new_slug is not None:
+        slug = new_slug
+    else:
+        slug = slugify(instance.title)
+
+    Klass = instance.__class__
+    qs_exists = Klass.objects.filter(slug=slug).exists()
+    if qs_exists:
+        new_slug = "{slug}-{randstr}".format(
+                    slug=slug,
+                    randstr=random_string_generator(size=4)
+                )
+        return unique_slug_generator(instance, new_slug=new_slug)
+    return slug

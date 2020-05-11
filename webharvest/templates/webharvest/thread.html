@@ -48,6 +48,7 @@
 <!-- </div> -->
 <form id='form' method='POST'> {% csrf_token %}
     <input type='hidden' id='myUsername' value='{{ user_email }}' />
+    <input type='hidden' id='myUserId' value='{{ user_id }}' />
     <!-- <input type='hidden' id='records_list' value='{{ records_list }}' /> -->
     <!-- <input type='hidden' id='records_data' value='{{ records_data }}' /> -->
 {{ form.as_p }}
@@ -658,6 +659,7 @@ function IncrementPieLabel(chart, label) {
     var chatHolder = $("#chat-items")
     // var csv_box = $("#spreadsheetHolder")
     var me = $("#myUsername").val()
+    var user_id = $('#myUserId').val()
     // var records_list = $("#records_list").val();
     // var records_test = $("#records_test").val()
 
@@ -680,7 +682,7 @@ function IncrementPieLabel(chart, label) {
     chatHolder.append("<li>Hello there, you can ask me to crawl the web and perform data mining operations for you. Input your messages into the field below and press send to chat with me. :) </li>")
     
     socket.onmessage = function(e){
-        // console.log("onmessage: ", e)
+        console.log("onmessage: ")
         var chatDataMsg = JSON.parse(e.data)
         // console.log('chatDataMsg: ' + e.data)
         
@@ -736,7 +738,8 @@ function IncrementPieLabel(chart, label) {
         var initialData = {
                 'message': '',
                 'From': me,
-                'datatest': 'thosedata'
+                'datatest': 'thosedata',
+                'user_id': user_id
             }
         socket.send(JSON.stringify(initialData))
     

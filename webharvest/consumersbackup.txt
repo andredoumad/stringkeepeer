@@ -22,19 +22,8 @@ from django.contrib.auth import get_user_model
 
 from background_task import background
 from datetime import datetime
-# from accounts.models import *
 
 User = get_user_model()
-
-# testUser = User
-
-# users = User.objects.all()
-# for user in users:
-#     print('user: ' + str(user))
-
-# me = User.objects.get(email='andre@stringkeeper.com')
-# print('ANDRE is : ' + str(me))
-# exit()
 
 @background(schedule=900)
 def deactivate_webharvest_chat_countdown(user_email):
@@ -54,21 +43,11 @@ def deactivate_webharvest_chat_countdown(user_email):
 
 
 class WebharvestConsumer(AsyncConsumer):
-
-    # def __init__(self):
-    #     eventlog('WebharvestConsumer ChatConsumer! WebharvestConsumer ChatConsumer! ')
-    #     self.Users = get_user_model()
-    #     eventlog('WebharvestConsumer got self.Users! ')
-    #     # self.get_users()
-
-
-
+    eventlog('WebharvestConsumer ChatConsumer! WebharvestConsumer ChatConsumer! ')    
 
     async def websocket_connect(self, event):
-        os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
         eventlog('WebharvestConsumer ChatConsumer connected, event: ' + str(event))
         me = self.scope['user']
-        # self.get_users()
 
         if str(me) == str('AnonymousUser'):
             eventlog('WSHandler connected, event: ' + str(event))
@@ -109,7 +88,6 @@ class WebharvestConsumer(AsyncConsumer):
             )
 
     async def open_chatroom(self, me):
-        os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
         eventlog("me = self.scope['user']: " + str(me))
         other_user = "Alice"
         eventlog('other_user: ' + str(other_user) + ' me: ' + str(me))
@@ -143,7 +121,6 @@ class WebharvestConsumer(AsyncConsumer):
         )
 
     async def delete_extra_messages(self, human, robot):
-        os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
         eventlog('delete_extra_messages')
         eventlog('human: ' + str(human) + ' robot: ' + str(robot))
         thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
@@ -178,9 +155,7 @@ class WebharvestConsumer(AsyncConsumer):
                 eventlog('chat_message_id: ' + str(chat_message_list[i].id))
                 WebharvestChatMessage.objects.filter(id=chat_message_list[i].id).delete()
 
-
     async def websocket_receive(self, event):
-        os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
         eventlog('ChatConsumer receive, event: ' + str(event))
 
         front_text = event.get('text', None)
@@ -192,69 +167,26 @@ class WebharvestConsumer(AsyncConsumer):
         datatest = loaded_dict_data.get('datatest', None)
 
         if datatest == 'thosedata':
-            MyUser = get_user_model()
-            user_id = loaded_dict_data.get('user_id', 'stringkeeeper')
-            eventlog('user_id: ' + user_id)
-
-            try:
-                os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
-                # person_set = MyUser.objects.all()
-                # for person in person_set.iterator():
-                #     print(person.first_name)
-                me = MyUser.objects.get(email=str(From))
-            except Exception as e:
-                eventlog('EXCEPTION: ' + str(e))
-
+            eventlog("FOUND THOSE DATA")
+            User = get_user_model()
+            me = User.objects.get(email=From)
+            eventlog("me = self.scope['user']: " + str(me))
             other_user = "Alice"
-            # me = From
-            # eventlog('other_user: ' + str(other_user) + ' me: ' + str(me))
+            eventlog('other_user: ' + str(other_user) + ' me: ' + str(me))
             thread_obj = await self.get_thread(me, other_user)
-            eventlog("FOUND THOSE DATA FROM thread_obj" )
-            # eventlog('thread_obj: ' + str(thread_obj))
-            # eventlog('me: ' + str(me) + ' thread_obj.id: ' + str(thread_obj.id))
+            eventlog('thread_obj: ' + str(thread_obj))
+            eventlog('me: ' + str(me) + ' thread_obj.id: ' + str(thread_obj.id))
             self.thread_obj = thread_obj
-
-
-            
-
-
-
-            # sleep(3)
-            # chats = WebharvestChatMessage.objects.all()
-            # for chat in chats:
-            #     print('sheet: ' + chat)
-            #     sleep(0.3)
-            # users = MyUser.objects.all()
-            # for user in users:
-            #     print('user: ' + str(user))
-
-            # me = MyUser.objects.get(email='andre@stringkeeper.com')
-            # print('ANDRE is : ' + str(me))
-            # sleep(6)
-            # users = User.objects.all()
-            # for user in users:
-            #     print('user: ' + str(user))
-            # user_qs = User.objects.filter(email=From)
-            # eventlog('user_qs: ' + str(user_qs))
-            # exit()
-            # users = User.objects
-            # me = User.objects.get(staff=True)
-            # eventlog('me: ' + str(me))
-            # eventlog('i am: ' + str(User.objects.get(email='andre@stringkeeper')))
-            # me = MyUser.objects.get(email=str(From))
-            # print('ANDRE is : ' + str(me))
-            # sleep(3)
-
-            eventlog("FOUND THOSE DATA about to get chat_room" )
-
+            chat_room = str(me.user_id)
+            eventlog('chat_room: ' + str(chat_room))
+            self.chat_room = chat_room
             me.bool_webharvest_chat_active = True
 
             me.save(update_fields=["bool_webharvest_chat_active"])
 
-            await self.channel_layer.group_add(me.user_id, self.channel_name)
+            await self.channel_layer.group_add(self.chat_room, self.channel_name)
             eventlog("WORKING ON THOSE DATA")
-            # sleep(5)
-
+                    
         # is it a robot ?
         if robot_id != None:
             eventlog('MESSAGE FROM ROBOT')
@@ -458,7 +390,6 @@ class WebharvestConsumer(AsyncConsumer):
                     )
 
     async def chat_message(self, event):
-        os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
         eventlog('chat_message: ' + str(event))
         await self.send({
             'type': 'websocket.send',
@@ -466,7 +397,6 @@ class WebharvestConsumer(AsyncConsumer):
         })
 
     async def websocket_disconnect(self, event):
-        os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
         eventlog('disconnected, event: ' + str(event))
         me = self.scope['user']
 
@@ -487,7 +417,6 @@ class WebharvestConsumer(AsyncConsumer):
 
     @database_sync_to_async
     def create_chat_message(self, msg, username):
-        os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
         # eventlog('create_chat_message msg: ' + str(msg) + ' create_chat_message username: ' + str(username))
         if username != 'Alice':
             thread_obj = WebharvestThread.objects.get_or_new(username, 'Alice')[0]
@@ -502,7 +431,6 @@ class WebharvestConsumer(AsyncConsumer):
 
     #how can i consolidate the non async version of this method from views.py into one method?
     async def robot_command_clear(self, human, robot):
-        os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
         eventlog('robot_command_clear')
         eventlog('human: ' + str(human) + ' robot: ' + str(robot))
         thread_obj = WebharvestThread.objects.get_or_new(human, robot)[0]
@@ -532,14 +460,15 @@ class WebharvestConsumer(AsyncConsumer):
         records_list = []
         eventlog('about to cycle through SPREADSHEET records: ')
         eventlog('records: ' + str(records))
-
+        
         for record in records:
             eventlog('appending record: ' + str(record))
             records_list.append(record)
-
+        
         for i in range(0, len(records_list)):
             # eventlog('record: ' + str(WebharvestSpreadSheetRecord.objects.filter(id=records_list[i].id)))
             WebharvestSpreadSheetRecord.objects.filter(id=records_list[i].id).delete()
+
 
         thread_obj.spreadsheet.record_count = 0
         thread_obj.spreadsheet.save()

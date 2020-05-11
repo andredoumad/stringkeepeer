@@ -250,17 +250,21 @@ class ThreadView(FormMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         email = None
+        user_id = None
         if self.bool_temp_user != True:
             context['user_email'] = self.request.user.email
             email = self.request.user.email
+            user_id = self.request.user.user_id
         else:
             context['user_email'] = self.temp_user.email
             email = self.temp_user.email
+            user_id = self.temp_user.user_id
 
         context['form'] = self.get_form()
         context['user_ip'] = self.user_ip
         context['the_user'] = self.the_user
         context['ascii_art'] = get_ascii_art()
+        context['user_id'] = user_id
 
         thread_obj = WebharvestThread.objects.get_or_new(email, 'Alice')[0]
         spreadsheet = thread_obj.spreadsheet
