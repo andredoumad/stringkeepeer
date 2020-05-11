@@ -55,15 +55,6 @@ def deactivate_webharvest_chat_countdown(user_email):
 
 class WebharvestConsumer(AsyncConsumer):
 
-    # def __init__(self):
-    #     eventlog('WebharvestConsumer ChatConsumer! WebharvestConsumer ChatConsumer! ')
-    #     self.Users = get_user_model()
-    #     eventlog('WebharvestConsumer got self.Users! ')
-    #     # self.get_users()
-
-
-
-
     async def websocket_connect(self, event):
         os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
         eventlog('WebharvestConsumer ChatConsumer connected, event: ' + str(event))
@@ -83,12 +74,9 @@ class WebharvestConsumer(AsyncConsumer):
             eventlog('thread_obj: ' + str(thread_obj))
             eventlog('me: ' + str(me) + ' thread_obj.id: ' + str(thread_obj.id))
             self.thread_obj = thread_obj
-            chat_room = str(me.user_id)
-            eventlog('chat_room: ' + str(chat_room))
-            self.chat_room = chat_room
             me.bool_webharvest_chat_active = True
             me.save(update_fields=["bool_webharvest_chat_active"])
-            await self.channel_layer.group_add(self.chat_room, self.channel_name)
+            await self.channel_layer.group_add(str(me.user_id), self.channel_name)
 
             await self.send({
                 "type": "websocket.accept",
