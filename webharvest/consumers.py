@@ -169,8 +169,6 @@ class WebharvestConsumer(AsyncConsumer):
 
     async def websocket_receive(self, event):
         os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
-        eventlog('ChatConsumer receive, event: ' + str(event))
-
         front_text = event.get('text', None)
         eventlog('front_text: ' + str(front_text))
         loaded_dict_data = json.loads(front_text)
@@ -183,65 +181,16 @@ class WebharvestConsumer(AsyncConsumer):
             MyUser = get_user_model()
             user_id = loaded_dict_data.get('user_id', 'stringkeeeper')
             eventlog('user_id: ' + user_id)
-
-            try:
-                os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
-                # person_set = MyUser.objects.all()
-                # for person in person_set.iterator():
-                #     print(person.first_name)
-                me = MyUser.objects.get(email=str(From))
-            except Exception as e:
-                eventlog('EXCEPTION: ' + str(e))
-
+            me = MyUser.objects.get(email=str(From))
+            self.chat_room = str(me.user_id)
             other_user = "Alice"
-            # me = From
-            # eventlog('other_user: ' + str(other_user) + ' me: ' + str(me))
             thread_obj = await self.get_thread(me, other_user)
-            eventlog("FOUND THOSE DATA FROM thread_obj" )
-            # eventlog('thread_obj: ' + str(thread_obj))
-            # eventlog('me: ' + str(me) + ' thread_obj.id: ' + str(thread_obj.id))
             self.thread_obj = thread_obj
 
-
-            
-
-
-
-            # sleep(3)
-            # chats = WebharvestChatMessage.objects.all()
-            # for chat in chats:
-            #     print('sheet: ' + chat)
-            #     sleep(0.3)
-            # users = MyUser.objects.all()
-            # for user in users:
-            #     print('user: ' + str(user))
-
-            # me = MyUser.objects.get(email='andre@stringkeeper.com')
-            # print('ANDRE is : ' + str(me))
-            # sleep(6)
-            # users = User.objects.all()
-            # for user in users:
-            #     print('user: ' + str(user))
-            # user_qs = User.objects.filter(email=From)
-            # eventlog('user_qs: ' + str(user_qs))
-            # exit()
-            # users = User.objects
-            # me = User.objects.get(staff=True)
-            # eventlog('me: ' + str(me))
-            # eventlog('i am: ' + str(User.objects.get(email='andre@stringkeeper')))
-            # me = MyUser.objects.get(email=str(From))
-            # print('ANDRE is : ' + str(me))
-            # sleep(3)
-
-            eventlog("FOUND THOSE DATA about to get chat_room" )
-
             me.bool_webharvest_chat_active = True
-
             me.save(update_fields=["bool_webharvest_chat_active"])
+            await self.channel_layer.group_add(self.chat_room, self.channel_name)
 
-            await self.channel_layer.group_add(me.user_id, self.channel_name)
-            eventlog("WORKING ON THOSE DATA")
-            # sleep(5)
 
         # is it a robot ?
         if robot_id != None:
@@ -305,7 +254,7 @@ class WebharvestConsumer(AsyncConsumer):
 
         if robot_id != 'webharvest_robot_router':
             eventlog('ROBOT IS ROBOT')
-            eventlog('event: ' + str(event))
+            # eventlog('event: ' + str(event))
             front_text = event.get('text', None)
             loaded_dict_data = json.loads(front_text)
 
@@ -485,7 +434,7 @@ class WebharvestConsumer(AsyncConsumer):
         
         thread_obj.message_count += 1
         thread_obj.save()
-        # eventlog('DEBUG ++++++++ DEBUG DEBUG DEBUG ++++++++ DEBUG ')
+        eventlog('DEBUG ++++++++ DEBUG DEBUG DEBUG ++++++++ DEBUG ')
         return WebharvestChatMessage.objects.create(thread=thread_obj, user=username, message=msg)
 
     #how can i consolidate the non async version of this method from views.py into one method?
