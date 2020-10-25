@@ -1,0 +1,17 @@
+[Unit]
+Description=daphne service to run django application
+After=network.target
+After=postgresql.service
+After=nginx.service
+
+[Service]
+Type=simple
+RuntimeDirectory=daphne
+PIDFile=/run/daphne/pid
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/stringkeeper
+ExecStart=/home/ubuntu/.local/bin/daphne -u /home/ubuntu/daphne.sock --access-log /home/ubuntu/stringkeeper/daphne.log --proxy-headers stringkeeper.asgi:application
+ExecStop=/bin/kill -s TERM $MAINPID
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,16 @@
+ftfy
+django
+boto3
+django-storages
+djangorestframework
+channels
+django-background-tasks
+psycopg2-binary
+boto
+botocore
+mailchimp3
+braintree
+stripe
+tornado
+pillow
+gunicorn

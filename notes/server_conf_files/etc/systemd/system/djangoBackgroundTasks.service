@@ -1,0 +1,10 @@
+[Unit]
+Description=django process background tasks
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/home/ubuntu/stringkeeper/background_tasks.sh
+
+[Install]
+WantedBy=multi-user.target
