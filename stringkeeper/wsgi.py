@@ -8,8 +8,11 @@ https://docs.djangoproject.com/en/2.2/howto/deployment/wsgi/
 """
 
 import os, sys
+from pathlib import Path
+# print(Path.home())
+# exit()
 print ('===== sys.path / PYTHONPATH =====')
-sys.path.append('/home/ubuntu/.local/lib/python3.8/site-packages')
+sys.path.append(Path.home() + '/.local/lib/python3.8/site-packages')
 for k in sorted(os.environ.keys()):
     v = os.environ[k]
     print ('%-30s %s' % (k,v[:70]))
@@ -19,3 +22,6 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'stringkeeper.settings')
 
 application = get_wsgi_application()
+
+if __name__ == '__main__':
+    pass
