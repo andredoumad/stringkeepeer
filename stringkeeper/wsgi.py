@@ -7,12 +7,14 @@ For more information on this file, see
 https://docs.djangoproject.com/en/2.2/howto/deployment/wsgi/
 """
 
-import os, sys
+import os, sys, socket
 from pathlib import Path
 # print(Path.home())
 # exit()
-print ('===== sys.path / PYTHONPATH =====')
-sys.path.append('/home/ubuntu/.local/lib/python3.8/site-packages')
+if socket.gethostname()=="www.stringkeeper.com":
+    print ('appending path for ubuntu server on amazon aws')
+    sys.path.append('/home/ubuntu/.local/lib/python3.8/site-packages')
+
 for k in sorted(os.environ.keys()):
     v = os.environ[k]
     print ('%-30s %s' % (k,v[:70]))
