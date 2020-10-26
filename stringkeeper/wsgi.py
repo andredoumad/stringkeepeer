@@ -12,7 +12,7 @@ from pathlib import Path
 # print(Path.home())
 # exit()
 print ('===== sys.path / PYTHONPATH =====')
-sys.path.append(str(Path.home()) + '/.local/lib/python3.8/site-packages')
+sys.path.append('/home/ubuntu/.local/lib/python3.8/site-packages')
 for k in sorted(os.environ.keys()):
     v = os.environ[k]
     print ('%-30s %s' % (k,v[:70]))
