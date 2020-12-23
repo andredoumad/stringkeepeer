@@ -240,11 +240,11 @@ INTERNAL_IPS = [
 if socket.gethostname()=="www.stringkeeper.com":
     eventlog ('running production mode')
     BASE_URL = 'https://www.stringkeeper.com'
-    DEBUG = False
+    DEBUG = True
     # ssl
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE=True
-    SESSION_COOKIE_HTTPONLY=True
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE=False
+    SESSION_COOKIE_HTTPONLY=False
     # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
     # SECURE_SSL_REDIRECT = True
 
