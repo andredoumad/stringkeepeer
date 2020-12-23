@@ -242,12 +242,16 @@ if socket.gethostname()=="www.stringkeeper.com":
     BASE_URL = 'https://www.stringkeeper.com'
     DEBUG = True
     # ssl
+    # CSRF_COOKIE_SECURE = True
+    # SESSION_COOKIE_SECURE=True
+    # SESSION_COOKIE_HTTPONLY=True
+    # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
+    # SECURE_SSL_REDIRECT = True
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE=False
     SESSION_COOKIE_HTTPONLY=False
-    # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
-    # SECURE_SSL_REDIRECT = True
-
+    SECURE_PROXY_SSL_HEADER = None
+    SECURE_SSL_REDIRECT = False
     eventlog('log filepath: ' + str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.log')) )
     f = open(str(os.path.join(BASE_DIR, 'stringkeeperremotedebug.log')), "w")
     f.write("")
