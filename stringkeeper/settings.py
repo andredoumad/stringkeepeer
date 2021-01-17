@@ -2,7 +2,7 @@ import os
 
 import socket
 # import debug_toolbar
-from .standalone_tools import *
+from .standalone_tools import eventlog
 from django.core.exceptions import ImproperlyConfigured
 
 from django.contrib.auth import get_user_model
