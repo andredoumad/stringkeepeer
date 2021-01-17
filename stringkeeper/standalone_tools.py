@@ -17,6 +17,7 @@ from stringkeeper import settings
 import os.path
 import socket
 from datetime import datetime
+LOGGING_FILEPATH = getattr(settings, 'LOGGING_FILEPATH', False)
 
 def get_time_string():
     #named_tuple = time.localtime() # get struct_time
@@ -138,7 +139,7 @@ if b_fp == True:
                 f.write('')
                 f.close()
 '''
-LOGGING_FILEPATH = getattr(settings, 'LOGGING_FILEPATH', False)
+
 def eventlog(logstring):
     # get the caller's stack frame and extract its file path
     #frame_info = inspect.stack()[1]
@@ -172,33 +173,44 @@ def eventlog(logstring):
         debug_line_number = str('0' + str(line_number))
     # print('|==| ' + str(debug_line_number) + ' |==| ')
     print('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(function_name) + ' | ' + str(logstring) + ' |==|')
-    if socket.gethostname()=="www.stringkeeper.com":
-        pass
+    # if socket.gethostname()=="www.stringkeeper.com":
+    #     pass
 
-        # if os.path.getsize('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log') > 1000000:
-        #     f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log', "w")
-        #     f.write('')
-        #     f.close()
-        # if os.path.getsize('/home/ubuntu/stringkeeper/daphne.log') > 1000000:
-        #     f = open('/home/ubuntu/stringkeeper/daphne.log', "w")
-        #     f.write('')
-        #     f.close()
-        # f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log', "a")
-        # f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(function_name) + ' | ' + str(logstring) + ' |==|')
-        # f.write('\n')
-        # f.close()
-    else:
+    #     # if os.path.getsize('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log') > 1000000:
+    #     #     f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log', "w")
+    #     #     f.write('')
+    #     #     f.close()
+    #     # if os.path.getsize('/home/ubuntu/stringkeeper/daphne.log') > 1000000:
+    #     #     f = open('/home/ubuntu/stringkeeper/daphne.log', "w")
+    #     #     f.write('')
+    #     #     f.close()
+    #     # f = open('/home/ubuntu/stringkeeper/stringkeeperremotedebug.log', "a")
+    #     # f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(function_name) + ' | ' + str(logstring) + ' |==|')
+    #     # f.write('\n')
+    #     # f.close()
+    # else:
 
         
-        f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.log', "a+")
-        f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(function_name) + ' | ' + str(logstring) + ' |==|')
-        f.write('\n')
-        f.close()
+    #     f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.log', "a+")
+    #     f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(function_name) + ' | ' + str(logstring) + ' |==|')
+    #     f.write('\n')
+    #     f.close()
 
-        if os.path.getsize('/home/gordon/stringkeeper/stringkeeperlocaldebug.log') > 10000:
-            f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.log', "w")
-            f.write('')
-            f.close()
+    #     if os.path.getsize('/home/gordon/stringkeeper/stringkeeperlocaldebug.log') > 10000:
+    #         f = open('/home/gordon/stringkeeper/stringkeeperlocaldebug.log', "w")
+    #         f.write('')
+    #         f.close()
+
+
+    f = open(LOGGING_FILEPATH, "a+")
+    f.write('|==| ' + str(debug_line_number) + ' |==| ' + str(filename)[-25:] + ' | ' + str(function_name) + ' | ' + str(logstring) + ' |==|')
+    f.write('\n')
+    f.close()
+
+    if os.path.getsize(LOGGING_FILEPATH) > 10000:
+        f = open(LOGGING_FILEPATH, "w")
+        f.write('')
+        f.close()
 
     # print('|==| ' + str(debug_line_number) + ' |==| ')
     # log_filepath = str(str(log_directory_path) + '/' + str(caller_filename))
