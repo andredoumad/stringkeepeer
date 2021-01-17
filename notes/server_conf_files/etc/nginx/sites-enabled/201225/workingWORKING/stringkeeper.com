@@ -11,6 +11,7 @@ server {
     ssl_certificate /etc/letsencrypt/live/stringkeeper.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/stringkeeper.com/privkey.pem;
     ssl_trusted_certificate /etc/letsencrypt/live/stringkeeper.com/chain.pem;
+    include snippets/ssl.conf;
 }
 
 server {
@@ -22,6 +23,7 @@ server {
         ssl_certificate /etc/letsencrypt/live/stringkeeper.com/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/stringkeeper.com/privkey.pem;
         ssl_trusted_certificate /etc/letsencrypt/live/stringkeeper.com/chain.pem;
+        include snippets/ssl.conf;
 
         location /static/ {
             sendfile on;
