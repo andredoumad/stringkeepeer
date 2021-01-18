@@ -290,7 +290,8 @@ if socket.gethostname()=="www.stringkeeper.com":
                 # "hosts": [('www.stringkeeper.com', 6379)],
                 # "hosts": [('44.232.251.35', 6379)],
                 #"hosts": [('127.0.0.1', 6729)],
-                "hosts": [("redis://:Fzy5dDT2e6tlMNJ7GXyRGicCMbKxR60xHbigVcYFlw3cHW4dOxe7WfB9cFfdADF9jB9y3ajAIrcn5YdH@172.26.14.96:6379/0")],
+                # "hosts": [("redis://:Fzy5dDT2e6tlMNJ7GXyRGicCMbKxR60xHbigVcYFlw3cHW4dOxe7WfB9cFfdADF9jB9y3ajAIrcn5YdH@172.26.14.96:6379/0")],
+                "hosts": [("172.26.14.96", 6379)],
             },
         },
     }

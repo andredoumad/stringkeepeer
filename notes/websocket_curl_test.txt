@@ -1,0 +1,23 @@
+curl \
+    --include \
+    --no-buffer \
+    --header "Connection: Upgrade" \
+    --header "Upgrade: websocket" \
+    --header "Host: stringkeeper.com:443" \
+    --header "Origin: https://stringkeeper.com:443" \
+    --header "Sec-WebSocket-Key: SGVsbG8sIHdvcmxkIQ==" \
+    --header "Sec-WebSocket-Version: 13" \
+    https://stringkeeper.com:443/
+
+
+
+curl \
+    --include \
+    --no-buffer \
+    --header "Connection: Upgrade" \
+    --header "Upgrade: websocket" \
+    --header "Host: stringkeeper.com:443" \
+    --header "Origin: https://stringkeeper.com:443" \
+    --header "Sec-WebSocket-Key: SGVsbG8sIHdvcmxkIQ==" \
+    --header "Sec-WebSocket-Version: 13" \
+    https://stringkeeper.com/webharvest/
